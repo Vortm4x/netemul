@@ -22,7 +22,6 @@
 #include <QtDebug>
 #include <QToolBar>
 #include <QComboBox>
-#include <QHelpEngineCore>
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -559,15 +558,7 @@ void MainWindow::adapterShow()
 //Help=)
 void MainWindow::showHelp()
 {
-    QHelpEngineCore helpEngine("../doc/ex.qhc");
-    QMap<QString, QUrl> links = helpEngine.linksForIdentifier("Display");
-    QTextEdit *t = new QTextEdit;
-    if (links.count()) {
-        QByteArray helpData = helpEngine.fileData(links.constBegin().value());
-        if (!helpData.isEmpty())
-            t->setHtml(helpData);
-    }
-    t->show();
+
 }
 
 

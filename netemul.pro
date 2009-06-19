@@ -7,12 +7,15 @@ TARGET = netemul
 DEPENDPATH += . src ui
 INCLUDEPATH +=  . src
 QT += script
-CONFIG += warn_on + release
+win32 {
+    message("Static link ...")
+    CONFIG += static + console
+}
+CONFIG += warn_on
 contains(QT_CONFIG, opengl) { 
     message("OpenGL connected ...")
     QT += opengl
 }
-CONFIG += help
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = src
