@@ -535,8 +535,7 @@ void myCanvas::timerEvent(QTimerEvent *e)
 void myCanvas::motionFrame()
 {
     foreach ( cableDev *t , connections) {
-        if ( t->isBusy() )
-            t->motion();
+            t->motion();     
     }
 }
 
@@ -562,7 +561,7 @@ device* myCanvas::oneSelectedDevice()
 
 device* myCanvas::deviceInPoint(QPointF p)
 {
-    if ( items(p).isEmpty() || items(p).first()->type() == cableDev::Type ) return NULL;
+    if ( !itemAt(p) || itemAt(p)->type() == cableDev::Type ) return NULL;
     return qgraphicsitem_cast<device*>(items(p).first());
 }
 

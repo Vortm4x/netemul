@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     view = new QGraphicsView(canva,this);
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
-    view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    view->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
 #ifndef QT_NO_OPENGL
 #if USER != frost
     view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));

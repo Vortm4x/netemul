@@ -45,12 +45,12 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 }
 
 void cableDev::updatePosition()
- {
+{
     QLineF line(myStartDev->getPointCable(myEndDev->pos()),
                  myEndDev->getPointCable(myStartDev->pos()));
     setLine(line);
     update(boundingRect());
- }
+}
 
 void cableDev::input(frame *fr,devicePort *cur)
 {
@@ -76,6 +76,7 @@ void cableDev::output(frame *fr)
 
 void cableDev::motion()
 {
+        if ( myFrames.isEmpty() ) return;
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
        foreach ( frame *temp , myFrames ) {

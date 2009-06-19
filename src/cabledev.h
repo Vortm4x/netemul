@@ -44,7 +44,6 @@ private:
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget = 0); // Как будем рисовать
-    //void timerEvent(QTimerEvent *e);
 };
 
 #endif // CABLEDEV_H

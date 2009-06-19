@@ -2,10 +2,9 @@
 
 abstractChip::abstractChip()
 {
-    quint8 t[4] = { 0 , 0 , 0 ,0 };
     myMac.setRandom();
-    myIp.setIp(t);
-    myMask.setIp(t);
+    myIp.setIp("0.0.0.0");
+    myMask.setIp("0.0.0.0");
     myReceiveFrame = 0;
     myReceivePacket = 0;
     mySendFrame = 0 ;
