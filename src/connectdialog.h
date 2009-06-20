@@ -2,27 +2,25 @@
 #define CONNECTDIALOG_H
 
 #include <QDialog>
-class QListWidget;
-class QPushButton;
 class device;
-class devicePort;
 
-class connectDialog : public QDialog
+#include "ui_connectdialog.h"
+
+class connectDialog : public QDialog , private Ui::connectDilog
 {
     Q_OBJECT
+    Q_DISABLE_COPY(connectDialog)
 public:
-    connectDialog(device *start,device *end);
+    explicit connectDialog(device *start,device *end);
 public slots:
     void changeSelect();
     QString getStart();
     QString getEnd();
 private:
-    QPushButton *okButton;
-    QPushButton *cancelButton;
-    QListWidget *startList;
-    QListWidget *endList;
-    QList<devicePort*> startInterfaceList;
-    QList<devicePort*> endInterfaceList;
+    device *start;
+    device *end;
+protected:
+    virtual void changeEvent(QEvent *e);
 };
 
 #endif // CONNECTDIALOG_H

@@ -14,6 +14,7 @@ cableDev::cableDev(device *start,device *end,devicePort* startInter, devicePort*
     else myModel = 1;
     myStartPort = startInter;
     myEndPort = endInter;
+    setToolTip(trUtf8("Соединяет порты:<br>%1 - %2").arg(myStartPort->name()).arg(myEndPort->name()));
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
 }
 

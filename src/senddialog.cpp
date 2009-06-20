@@ -60,7 +60,7 @@ void sendDialog::prepare()
         sizeBox->setSuffix(trUtf8(" KB"));
         connect( sizeBox, SIGNAL(valueChanged(int)),sizeSlider, SLOT(setValue(int)));
         connect(sizeSlider , SIGNAL(valueChanged(int)) ,sizeBox, SLOT(setValue(int)));
-        check = new QCheckBox(trUtf8("Широковешательный"));
+        check = new QCheckBox(trUtf8("Широковещательный"));
         check->setChecked(false);
         okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Далее"));
         QGroupBox *box = new QGroupBox(trUtf8("Выбирете протокол:"));

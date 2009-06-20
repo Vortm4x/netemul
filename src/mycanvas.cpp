@@ -15,7 +15,6 @@
 #include <QDataStream>
 #include <QMessageBox>
 #include <QTime>
-#include <QGraphicsView>
 
 myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {

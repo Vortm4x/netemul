@@ -122,21 +122,8 @@ void MainWindow::createAction()
     showGridAct->setCheckable(true);
     showGridAct->setChecked(true);
 
-    zoomInAct = createOneAction(trUtf8("Увеличить"),trUtf8("Увеличить масштаб"));
-    zoomInAct->setShortcut(QKeySequence::ZoomIn);
-    connect( zoomInAct , SIGNAL(triggered()) , SLOT(zoomIn()));
-
-    zoomOutAct = createOneAction(trUtf8("Уменьшить"),trUtf8("Уменьшить масштаб"));
-    zoomOutAct->setShortcuts(QKeySequence::ZoomOut);
-    connect( zoomOutAct, SIGNAL(triggered()) , SLOT(zoomOut()));
-
     deleteAct = createOneAction(trUtf8("Удалить"),trUtf8("Удалить объект") , QIcon(":/im/images/minus2.png"));
     deleteAct->setShortcut(QKeySequence::Delete);
-
-    fullScreenAct = createOneAction( trUtf8("Полный экран"),trUtf8("Переключиться в полноэкранный режим"));
-    fullScreenAct->setCheckable(true);
-    fullScreenAct->setChecked(false);
-    connect( fullScreenAct ,SIGNAL(toggled(bool)) , SLOT(setFullScreen(bool)));
 
     settingAct = createOneAction( trUtf8("Настройки") , trUtf8("Настройки"));
     connect( settingAct , SIGNAL(triggered()) , SLOT(setting()));
@@ -224,9 +211,6 @@ void MainWindow::createMenu()
     viewMenu->addAction( deviceBar->toggleViewAction() );
     viewMenu->addAction( controlBar->toggleViewAction() );
     viewMenu->addAction(showGridAct);
-    zoomMenu = viewMenu->addMenu( trUtf8("Масштаб"));
-    zoomMenu->addAction( zoomInAct);
-    zoomMenu->addAction( zoomOutAct);
 
     itemMenu = menuBar()->addMenu(trUtf8("Объект"));
     itemMenu->addAction(deleteAct);
@@ -327,6 +311,7 @@ void MainWindow::selectionChange()
         controlBar->setEnabled(true);
         tableAct->setVisible( !t->hasTable().isEmpty() );
         tableAct->setText( t->hasTable() );
+        tableAct->setToolTip( t->hasTable() );
         adapterAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
         foreach ( devicePort *i , d ) cb_ports->addItem( i->connectIcon() , i->name() );
         addPortAct->setEnabled(false);
@@ -344,13 +329,6 @@ void MainWindow::selectionChange()
         controlBar->setEnabled(false);
     }
     itemMenu->setEnabled( canva->selectedItems().count() );
-}
-
-// Слот установки полноэкранного режима , пока не будем об этом =)
-void MainWindow::setFullScreen(bool cur)
-{
-    if (cur) setWindowState(Qt::WindowFullScreen);
-    else setWindowState(Qt::WindowMaximized);
 }
 
 // Слот окна настроек
@@ -471,16 +449,6 @@ void MainWindow::readSetting()
     canva->setTtlArp(setting.value("ttl/Arp",300).toInt());
     canva->setTtlMac(setting.value("ttl/Mac",300).toInt());
     canva->setRip(setting.value("ttl/Rip",30).toInt());
-}
-
-void MainWindow::zoomIn()
-{
-     view->scale(1.1, 1.1);
-}
-
-void MainWindow::zoomOut()
-{
-     view->scale(1/1.1, 1/1.1);
 }
 
 void MainWindow::groupClicked(QAction *clk)

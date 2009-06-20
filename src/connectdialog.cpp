@@ -1,61 +1,35 @@
 #include "connectdialog.h"
 #include "device.h"
 #include "interface.h"
-#include "computer.h"
-#include "switchdevice.h"
-#include "hubdevice.h"
-#include <QPushButton>
-#include <QBoxLayout>
-#include <QListWidget>
-#include <QLabel>
-#include <QApplication>
 
-connectDialog::connectDialog(device *start, device *end)
+connectDialog::connectDialog(device *s, device *e)
 {
-    bool s = false;
-    QListWidgetItem *c;
+    setupUi(this);
+    start = s;
+    end = e;
     setWindowTitle(trUtf8("Укажите начальные настройки соединения"));
-    QHBoxLayout *tempLayout = new QHBoxLayout;
-    QVBoxLayout *allLayout = new QVBoxLayout;
-    okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Создать"),this);
-    okButton->setEnabled(false);
-    cancelButton = new QPushButton(QIcon(":/im/images/minus2.png"),trUtf8("Отмена"),this);
+    connect( startList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
+    connect( endList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
 
-    startList = new QListWidget;
-    connect( startList , SIGNAL(itemSelectionChanged()) , this , SLOT(changeSelect()));
-    endList = new QListWidget;
-    connect( endList , SIGNAL(itemSelectionChanged()) , this , SLOT(changeSelect()));
+    QList<devicePort*> l = start->sockets();
+    foreach ( devicePort* i , l)
+         new QListWidgetItem( i->connectIcon() , i->name() , startList ,i->isConnect() );
 
-    QList<devicePort*> inters = start->sockets();
-    foreach ( devicePort* item , inters ) {
-        QListWidgetItem *temp = new QListWidgetItem( item->name() );
-        temp->setIcon(item->connectIcon());
-        if ( !s && !item->isConnect() ) { c = temp; s = true; }
-        startList->addItem(temp);
-        startInterfaceList << item;
-    }
-    if (s) startList->setCurrentItem(c);
-    s = false;
-    inters = end->sockets();
-    foreach ( devicePort* item , inters ) {
-        QListWidgetItem *temp = new QListWidgetItem( item->name() );
-        temp->setIcon(item->connectIcon());
-        if ( !s && !item->isConnect() ) { c = temp; s = true; }
-        endList->addItem(temp);
-        endInterfaceList << item;
-    }
-    if(s) endList->setCurrentItem(c);
-    tempLayout->addWidget(startList);
-    tempLayout->addWidget(endList);
-    allLayout->addWidget( new QLabel(trUtf8("Выберите соединяемые интерфейсы:")) , 0 , Qt::AlignCenter);
-    allLayout->addLayout(tempLayout);
-    tempLayout = new QHBoxLayout;
-    tempLayout->addWidget(okButton, 1 , Qt::AlignCenter);
-    tempLayout->addWidget(cancelButton, 1 , Qt::AlignCenter);
-    allLayout->addLayout(tempLayout);
-    setLayout(allLayout);
-    connect( okButton , SIGNAL(pressed()), this , SLOT(accept()));
-    connect( cancelButton , SIGNAL(pressed()) , this , SLOT(reject()));
+    l = end->sockets();
+    foreach ( devicePort* i , l )
+        new QListWidgetItem(  i->connectIcon() , i->name() , endList , i->isConnect() );
+
+    for ( int i = 0 ; i < startList->count() ; i++ )
+        if ( !startList->item(i)->type() ) {
+            startList->setCurrentRow(i);
+            break;
+        }
+
+    for ( int i = 0 ; i < endList->count() ; i++ )
+        if ( !endList->item(i)->type() ) {
+            endList->setCurrentRow(i);
+            break;
+        }
     resize( sizeHint());
 }
 
@@ -65,18 +39,29 @@ void connectDialog::changeSelect()
         okButton->setEnabled(false);
         return;
     }
-    okButton->setEnabled( devicePort::isCompability( startInterfaceList.at( startList->currentRow() ),
-                                                     endInterfaceList.at(endList->currentRow()) ) ) ;
+    okButton->setEnabled( !start->socket( startList->currentItem()->text() )->isConnect() &&
+                          !end->socket( endList->currentItem()->text() )->isConnect() );
 }
 
 QString connectDialog::getStart()
 {
-    return startInterfaceList.at( startList->currentRow() )->name() ;
+    return startList->currentItem()->text() ;
 }
 
 QString connectDialog::getEnd()
 {
-    return endInterfaceList.at( endList->currentRow() )->name() ;
+    return  endList->currentItem()->text() ;
+}
+
+void connectDialog::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        retranslateUi(this);
+        break;
+    default:
+        break;
+    }
 }
 
 

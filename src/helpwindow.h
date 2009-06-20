@@ -8,7 +8,6 @@ class helpWindow : public QWidget, private Ui::helpWindow {
     Q_DISABLE_COPY(helpWindow)
 public:
     explicit helpWindow(QWidget *parent = 0);
-
 protected:
     virtual void changeEvent(QEvent *e);
 };
