@@ -1,11 +1,5 @@
 #include "tableswitch.h"
 #include "switchdevice.h"
-#include <QTableWidget>
-#include <QBoxLayout>
-#include <QPushButton>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QLabel>
 
 tableSwitch::tableSwitch()
 {
