@@ -50,11 +50,16 @@ adapterProperty::adapterProperty()
     all->addWidget(lb_sendPacket);
 
     all->addStretch(1);
-;
+
     all->addLayout(lay);
     setLayout(all);
 
     connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab()));
+}
+
+adapterProperty::~adapterProperty()
+{
+    sd->setCheckedSocket("");
 }
 
 void adapterProperty::setSmart(smartDevice *r)

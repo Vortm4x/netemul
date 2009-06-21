@@ -17,6 +17,7 @@ class adapterProperty : public dialogTemplate
     Q_OBJECT
 public:
     adapterProperty();
+    ~adapterProperty();
     void setSmart(smartDevice *r);
     void updateTab(devicePort *d);
 private:
