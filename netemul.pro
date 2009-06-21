@@ -12,7 +12,7 @@ QT += script
 win32 { 
     message("Static link ...")
     CONFIG += static \
-                console
+        console
 }
 CONFIG += warn_on
 contains(QT_CONFIG, opengl) { 
@@ -60,7 +60,8 @@ HEADERS += src/abstractchip.h \
     src/testdialog.h
 FORMS += ui/helpwindow.ui \
     ui/testdialog.ui \
-    ui/connectdialog.ui
+    ui/connectdialog.ui \
+    ui/tableswitch.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \
