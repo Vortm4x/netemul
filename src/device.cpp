@@ -39,3 +39,9 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     scene()->clearSelection();
     //scene()->setSelectionArea( QPainterPath() );
 }
+
+void device::setCheckedSocket(const QString s)
+{
+    foreach ( devicePort *i , mySockets )
+        if (i->isConnect()) i->setChecked( i->name() == s );
+}

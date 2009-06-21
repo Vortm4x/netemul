@@ -33,7 +33,10 @@ public:
     int model() { return myModel; }
     void input(frame *fr,devicePort *cur);
     void output(frame *fr);
+    void setChecked(bool c) { myChecked = c; update(boundingRect()); }
+    bool isChecked() const { return myChecked; }
 private:
+    bool myChecked;
     int myModel;
     QList<frame*> myFrames;
     device *myStartDev; // Указатель на объект начала

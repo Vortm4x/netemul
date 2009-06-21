@@ -6,6 +6,7 @@
 #include "computer.h"
 #include "routerdevice.h"
 #include "switchdevice.h"
+#include "helpwindow.h"
 #include <QGraphicsView>
 #include <QApplication>
 #include <QDockWidget>

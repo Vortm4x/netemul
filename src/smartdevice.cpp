@@ -54,6 +54,7 @@ void smartDevice::adapterShow()
     adapterProperty *d = new adapterProperty;
     d->setSmart(this);
     d->exec();
+    this->setCheckedSocket("");
     delete d;
 }
 

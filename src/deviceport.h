@@ -30,7 +30,8 @@ public:
     macAddress parentMac() const;
     void addToQueue(frame *f);
     void sendFrame(frame *temp);
-    void receiveFrame(frame *temp);    
+    void receiveFrame(frame *temp);
+    void setChecked(bool c) { myCable->setChecked(c); }
 private:
     QQueue<frame*> myQueue;
     cableDev *myCable;

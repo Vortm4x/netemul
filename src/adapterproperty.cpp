@@ -8,6 +8,7 @@
 
 adapterProperty::adapterProperty()
 {
+    sd = NULL;
     QVBoxLayout *all = new QVBoxLayout;
     tab_interfaces = new QTabBar;
     all->addWidget(tab_interfaces);
@@ -71,7 +72,10 @@ void adapterProperty::changeTab()
 {
     QList<devicePort*> ports = sd->sockets();
     foreach ( devicePort *i , ports ) {
-        if ( i->name() == tab_interfaces->tabText(tab_interfaces->currentIndex()) ) updateTab(i);
+        if ( i->name() == tab_interfaces->tabText(tab_interfaces->currentIndex()) ) {
+            updateTab(i);
+            break;
+        }
     }
 }
 
@@ -85,6 +89,7 @@ void adapterProperty::updateTab(devicePort *d)
     lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( d->parentDev()->countRecPacket() ) );
     lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( d->parentDev()->countSendFrame() ) );
     lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( d->parentDev()->countSendPacket() ) );
+    if (sd) sd->setCheckedSocket( d->name() );
 }
 
 void adapterProperty::apply()

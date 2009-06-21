@@ -29,6 +29,7 @@ public:
     QString nextName() { return QString("eth%1").arg(count++); }
     devicePort* socket(const QString name);
     template<class T>T* toT() { return qgraphicsitem_cast<T*>(this); }
+    void setCheckedSocket(const QString s);
     virtual QPointF getPointCable(QPointF otherDev) = 0;
     virtual devicePort* addInterface(QString str,int t) = 0;
     virtual void write(QDataStream &stream) const = 0;
