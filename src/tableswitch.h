@@ -1,7 +1,6 @@
 #ifndef TABLESWITCH_H
 #define TABLESWITCH_H
 
-#include <QDialog>
 #include "ui_tableswitch.h"
 
 class switchDevice;

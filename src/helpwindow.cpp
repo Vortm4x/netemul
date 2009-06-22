@@ -1,7 +1,7 @@
 #include "helpwindow.h"
 
-helpWindow::helpWindow(QWidget *parent) :
-    QWidget(parent){
+helpWindow::helpWindow(QWidget *parent) :QDialog(parent)
+{
     setupUi(this);
 }
 
@@ -14,4 +14,9 @@ void helpWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void helpWindow::setAddress(QString s)
+{
+    textBrowser->setSource(QUrl(s));
 }

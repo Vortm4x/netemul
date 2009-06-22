@@ -1,7 +1,6 @@
 #ifndef CONNECTDIALOG_H
 #define CONNECTDIALOG_H
 
-#include <QDialog>
 class device;
 
 #include "ui_connectdialog.h"

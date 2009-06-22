@@ -58,10 +58,10 @@ HEADERS += src/abstractchip.h \
     src/switchproperty.h \
     src/tableswitch.h \
     src/testdialog.h
-FORMS += ui/helpwindow.ui \
-    ui/testdialog.ui \
+FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
-    ui/tableswitch.ui
+    ui/tableswitch.ui \
+    ui/helpwindow.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \

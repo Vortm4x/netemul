@@ -527,7 +527,10 @@ void MainWindow::adapterShow()
 //Help=)
 void MainWindow::showHelp()
 {
-
+    helpWindow *d = new helpWindow;
+    d->setAddress("doc/index.html");
+    d->exec();
+    delete d;
 }
 
 

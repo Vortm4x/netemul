@@ -3,11 +3,12 @@
 
 #include "ui_helpwindow.h"
 
-class helpWindow : public QWidget, private Ui::helpWindow {
+class helpWindow : public QDialog, private Ui::helpWindow {
     Q_OBJECT
     Q_DISABLE_COPY(helpWindow)
 public:
     explicit helpWindow(QWidget *parent = 0);
+    void setAddress(QString s);
 protected:
     virtual void changeEvent(QEvent *e);
 };
