@@ -38,20 +38,20 @@ bool devicePort::isCompability(devicePort *one , devicePort *two)
 
 macAddress devicePort::parentMac() const
 {
-    return parentDev()->mac();
+    return myParentDev->mac();
 }
 
 void devicePort::sendFrame(frame *temp)
 {
-    parentDev()->addSend(1,0);
+    myParentDev->addSend(1,0);
     if ( !isConnect() ) delete temp;
     myCable->input(temp,this);
 }
 
 void devicePort::receiveFrame(frame *temp)
 {
-    parentDev()->addRec(1,0);
-    parentDev()->receiveEvent(temp,this);
+    myParentDev->addRec(1,0);
+    myParentDev->receiveEvent(temp,this);
 }
 
 void devicePort::timerEvent(QTimerEvent *e)
@@ -70,12 +70,19 @@ void devicePort::timerEvent(QTimerEvent *e)
 
 void devicePort::addToQueue(frame *f)
 {
-    if ( parentDev()->mode() == abstractChip::test ) {
+    if ( myParentDev->mode() == abstractChip::test ) {
         sendFrame(f);
         return;
     }
     if ( !myTimer )  myTimer = startTimer(100);
     myQueue.enqueue(f);
+}
+
+void devicePort::setConnect(bool cur,cableDev *cable)
+{
+    myConnect = cur;
+    myCable = cable;
+    if ( !cur && !cable) myParentDev->clearArp();
 }
 
 QDataStream& operator<<(QDataStream &stream,const devicePort &port)

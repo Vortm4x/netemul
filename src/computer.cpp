@@ -56,8 +56,8 @@ devicePort* computer::addInterface(QString str,int t)
     devicePort *tempPort = new devicePort;
     interface *tempInter = new interface(tempPort, t);
     tempInter->setSmart(this);
-    tempPort->setConnect(false, NULL);
     tempPort->setParentDev(tempInter);
+    tempPort->setConnect(false, NULL);
     tempPort->setName(str);
     addSocket(tempPort);
     return tempPort;

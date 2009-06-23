@@ -6,6 +6,7 @@
 #include <QSpinBox>
 #include <QBoxLayout>
 #include <QLabel>
+#include <QComboBox>
 
 routeEditor::routeEditor()
 {
@@ -21,8 +22,13 @@ routeEditor::routeEditor()
     all->addWidget(ip_mask);
     ip_gateway = new ipEdit(trUtf8("Шлюз: "));
     all->addWidget(ip_gateway);
-    ip_out = new ipEdit(trUtf8("Интерфейс: "));
-    all->addWidget(ip_out);
+    QHBoxLayout *temp = new QHBoxLayout;
+    temp->addWidget( new QLabel(trUtf8("Интерфейс: ")) );
+    cb_out = new QComboBox;
+    cb_out->setFixedWidth(250);
+    temp->addWidget(cb_out);
+    temp->addStretch(1);
+    all->addLayout(temp);
     QHBoxLayout *lay = new QHBoxLayout;
     QLabel *lb = new QLabel(trUtf8("Метрика: "));
     lay->addWidget(lb);
@@ -56,6 +62,8 @@ routeEditor::routeEditor()
 void routeEditor::setDevice(smartDevice *s)
 {
     dev = s;
+    foreach ( devicePort *i , s->sockets() )
+        if ( i->isConnect() ) cb_out->addItem( i->parentDev()->ip().ipString() );
     updateTable();
 }
 
@@ -102,11 +110,11 @@ void routeEditor::resizeEvent(QResizeEvent *e)
 
 void routeEditor::addRecord()
 {
-    dev->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , ip_out->ipText() ,0 , sp_metr->value() );
+    dev->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() ,0 , sp_metr->value() );
     ip_dest->clear();
     ip_mask->clear();
     ip_gateway->clear();
-    ip_out->clear();
+    cb_out->setCurrentIndex(0);
     sp_metr->setValue(0);
     updateTable();
 }

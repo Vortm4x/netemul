@@ -41,6 +41,7 @@ public:
     virtual void sendPacket(ipPacket *p, ipAddress gw = ipAddress("0.0.0.0") )
                             { Q_UNUSED(p); Q_UNUSED(gw); }
     virtual void updateArp(int u) { Q_UNUSED(u); }
+    virtual void clearArp() { }
 protected:
     int myType;
     devicePort *mySocket;

@@ -126,6 +126,12 @@ void interface::updateArp(int u)
     }
 }
 
+void interface::clearArp()
+{
+    qDeleteAll(myArpTable);
+    myArpTable.clear();
+}
+
 void interface::receiveArp(arpPacket *arp, devicePort *sender)
 {
     if ( arp->type() == arpPacket::answer ) {

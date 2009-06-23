@@ -32,6 +32,7 @@ public:
     void sendBroadcast(ipPacket *p);
     void setSmart(smartDevice *s) { mySmart = s; }
     void updateArp(int u);
+    void clearArp();
     smartDevice* smart() { return mySmart; }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
     arpPacket* createArp(ipAddress senderIp , macAddress senderMac, ipAddress receiverIp,macAddress receiverMac,int t);

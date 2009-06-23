@@ -5,6 +5,7 @@
 class QTableWidget;
 class QPushbutton;
 class QSpinBox;
+class QComboBox;
 
 class ipEdit;
 class smartDevice;
@@ -21,7 +22,7 @@ private:
     ipEdit *ip_dest;
     ipEdit *ip_mask;
     ipEdit *ip_gateway;
-    ipEdit *ip_out;
+    QComboBox *cb_out;
     QSpinBox *sp_metr;
     QPushButton *btn_add;
     QPushButton *btn_remove;

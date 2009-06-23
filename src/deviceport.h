@@ -21,7 +21,7 @@ public:
     bool isBusy() const { return myBusy; }
     void setBusy(bool cur) { myBusy = cur; }
     bool isConnect() const { return myConnect;}
-    void setConnect(bool cur,cableDev *cable) { myConnect = cur;myCable = cable; }
+    void setConnect(bool cur,cableDev *cable);
     QIcon connectIcon() const;
     void setName(QString temp) { myName = temp; }
     QString name() const  { return myName; }

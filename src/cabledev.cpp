@@ -36,11 +36,6 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
                  myEndDev->getPointCable(myStartDev->pos()));
     setLine(centerLine); // И мы её и ставим
     painter->drawLine(line()); // А потом рисуем заново
-    if ( isSelected() ) {
-        painter->setFont( QFont("mono",8,8,false) );
-        painter->setPen(Qt::red);
-        painter->drawText( line().pointAt(0.4) , trUtf8("%1 - %2").arg(myStartPort->name()).arg(myEndPort->name()));
-    }
     foreach ( frame *temp , myFrames ) {
         painter->setPen(QPen(temp->color(),4));
         painter->drawPoint( line().pointAt( temp->pos() ) );
