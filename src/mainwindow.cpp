@@ -6,7 +6,6 @@
 #include "computer.h"
 #include "routerdevice.h"
 #include "switchdevice.h"
-#include "helpwindow.h"
 #include <QGraphicsView>
 #include <QApplication>
 #include <QDockWidget>
@@ -527,10 +526,7 @@ void MainWindow::adapterShow()
 //Help=)
 void MainWindow::showHelp()
 {
-    helpWindow *d = new helpWindow;
-    d->setAddress("doc/index.html");
-    d->exec();
-    delete d;
+
 }
 
 

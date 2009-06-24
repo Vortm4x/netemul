@@ -36,7 +36,6 @@ HEADERS += src/abstractchip.h \
     src/deviceport.h \
     src/dialogtemplate.h \
     src/frame.h \
-    src/helpwindow.h \
     src/hubdevice.h \
     src/hubproperty.h \
     src/interface.h \
@@ -61,8 +60,7 @@ HEADERS += src/abstractchip.h \
     src/tablearp.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
-    ui/tableswitch.ui \
-    ui/helpwindow.ui
+    ui/tableswitch.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \
@@ -75,7 +73,6 @@ SOURCES += src/abstractchip.cpp \
     src/deviceport.cpp \
     src/dialogtemplate.cpp \
     src/frame.cpp \
-    src/helpwindow.cpp \
     src/hubdevice.cpp \
     src/hubproperty.cpp \
     src/interface.cpp \
