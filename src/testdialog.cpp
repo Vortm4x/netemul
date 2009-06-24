@@ -52,7 +52,7 @@ void testDialog::start()
 {
     bool how = true;
     startButton->setEnabled(false);
-    canva->killTimer( canva->timerId() );
+    canva->stop();
     if ( canva->isOpen() ) canva->closeFile();
     bool b = checkBox->isChecked();
     int t = (b) ? 0 : listWidget->currentRow() ;
@@ -78,7 +78,7 @@ void testDialog::start()
         label->setStyleSheet("background : red");
     }
     startButton->setEnabled(true);
-    canva->timerId() = canva->startTimer(100);
+    canva->play();
     if (canva->isOpen() ) canva->closeFile();
 }
 

@@ -51,6 +51,7 @@ public slots:
     void tableShow();
     void adapterShow();
     void showHelp();
+    void playBack();
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);
@@ -103,6 +104,7 @@ private:
         QAction *aboutAct;
         QAction *helpAct;
         QAction *adapterAct;
+        QAction *playAct;
 };
 
 #endif // MAINWINDOW_H

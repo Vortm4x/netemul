@@ -192,6 +192,10 @@ void MainWindow::createAction()
 
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы") );
     connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
+
+    playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
+                               QIcon(":/im/images/pause.png") );
+    connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
 }
 
 //Создаем меню
@@ -245,6 +249,8 @@ void MainWindow::createTools()
     deviceBar->addAction( switchAct);
     deviceBar->addAction( routerAct);
     deviceBar->addAction( sendAct);
+    deviceBar->addSeparator();
+    deviceBar->addAction( playAct);
     //deviceBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     deviceBar->setEnabled(false);
     cb_ports = new QComboBox(this);
@@ -528,5 +534,25 @@ void MainWindow::showHelp()
 {
 
 }
+
+/*
+  Если таймер сцены выключен, мы включаем его и наоборот. Таким образом достигаем
+  эффекта полной остановки действий на сцене. Естественно обновляем картинку на кнопке.
+ */
+void MainWindow::playBack()
+{
+    if ( canva->isPlayed() ) {
+        canva->stop();
+        playAct->setIcon(QIcon(":/im/images/play.png"));
+        playAct->setToolTip(trUtf8("Запустить"));
+        playAct->setStatusTip(trUtf8("Запустить симуляцию"));
+    } else {
+        canva->play();
+        playAct->setIcon(QIcon(":/im/images/pause.png"));
+        playAct->setToolTip(trUtf8("Остановить"));
+        playAct->setStatusTip(trUtf8("Остановить симуляцию"));
+    }
+}
+//--------------------------------------------------
 
 

@@ -15,6 +15,7 @@ class ipEdit;
 class adapterProperty : public dialogTemplate
 {
     Q_OBJECT
+    Q_DISABLE_COPY(adapterProperty)
 public:
     adapterProperty();
     ~adapterProperty();

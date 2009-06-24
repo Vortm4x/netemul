@@ -15,8 +15,7 @@ interface::interface(devicePort *parent, int t )
 
 interface::~interface()
 {
-    qDeleteAll(myArpTable);
-    myArpTable.clear();
+    clearArp();
 }
 
 void interface::receiveEvent(frame *fr,devicePort *sender)
@@ -48,6 +47,7 @@ void interface::sendPacket(ipPacket *p,ipAddress gw)
     foreach ( arpRecord *i , myArpTable )
         if ( i->ip == t ) {
             frame *f = createFrame( myMac , i->mac , frame::tIp );
+            i->time = 0; // Стартуем заново время жизни arp записи
             f->setPacket(p);
             addSend(0,1);
             mySocket->addToQueue(f);

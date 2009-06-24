@@ -30,7 +30,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     prevMode = move;
     prevType = noDev;
     myOpen = false;
-    myTimer = startTimer(100);
+    play();
 }
 
 myCanvas::~myCanvas()

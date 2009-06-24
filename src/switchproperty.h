@@ -13,7 +13,8 @@ class ipEdit;
 
 class switchProperty : public dialogTemplate
 {
-Q_OBJECT
+    Q_OBJECT
+    Q_DISABLE_COPY(switchProperty)
 public:
     switchProperty();
     void setSwitch(switchDevice *d);

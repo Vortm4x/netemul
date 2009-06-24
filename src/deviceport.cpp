@@ -82,7 +82,11 @@ void devicePort::setConnect(bool cur,cableDev *cable)
 {
     myConnect = cur;
     myCable = cable;
-    if ( !cur && !cable) myParentDev->clearArp();
+    if ( !cur && !cable) {
+        myParentDev->clearArp();
+        qDeleteAll(myQueue);
+        myQueue.clear();
+    }
 }
 
 QDataStream& operator<<(QDataStream &stream,const devicePort &port)

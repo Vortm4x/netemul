@@ -18,5 +18,7 @@
         <file>images/gadu.png</file>
         <file>images/redo.png</file>
         <file>images/router.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
     </qresource>
 </RCC>
