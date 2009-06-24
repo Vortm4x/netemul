@@ -18,12 +18,14 @@ private:
     computer *comp;
     QPushButton *btn_adapter;
     QPushButton *btn_table;
+    QPushButton *btn_arp;
     QCheckBox *cb_route;
     ipEdit *gateway;
 public slots:
     void apply();
     void adapterDialog();
     void tableDialog();
+    void arpDialog();
 };
 
 #endif // COMPUTERPROPERTY_H

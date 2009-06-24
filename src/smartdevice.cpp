@@ -1,6 +1,7 @@
 #include "smartdevice.h"
 #include "routeeditor.h"
 #include "adapterproperty.h"
+#include "tablearp.h"
 #include <QtDebug>
 
 smartDevice::smartDevice()
@@ -52,6 +53,14 @@ void smartDevice::editorShow()
 void smartDevice::adapterShow()
 {
     adapterProperty *d = new adapterProperty;
+    d->setSmart(this);
+    d->exec();
+    delete d;
+}
+
+void smartDevice::arpShow()
+{
+    tableArp *d = new tableArp;
     d->setSmart(this);
     d->exec();
     delete d;

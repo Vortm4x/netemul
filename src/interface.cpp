@@ -67,16 +67,27 @@ void interface::sendPacket(ipPacket *p,ipAddress gw)
     return;
 }
 
+void interface::removeFromTable(QString ip)
+{
+    ipAddress a(ip);
+    foreach ( arpRecord *i, myArpTable )
+        if ( i->ip == a ) {
+            myArpTable.removeOne(i);
+            delete i;
+        }
+}
+
 arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
 {
-    foreach ( arpRecord *i , myArpTable )
-        if ( i->ip == ip ) {
-            if ( i->mac == mac ) return i;
-            else {
-                if ( i->mode != staticMode ) i->mac = mac ;
-                return i;
-            }
+    foreach ( arpRecord *i , myArpTable ) {
+        if ( i->ip == ip && i->mac == mac ) return i;
+        if ( i->mode != staticMode && (i->ip == ip || i->mac == mac ) ) {
+            i->ip = ip;
+            i->mac = mac;
+            i->mode = mode;
+            return i;
         }
+    }
     arpRecord *t = new arpRecord;
     t->ip = ip;
     t->mac = mac;

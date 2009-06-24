@@ -30,6 +30,7 @@ public:
     interface* ipToAdapter(ipAddress a);
     void editorShow();
     void adapterShow();
+    void arpShow();
     void sendMessage(ipAddress dest, int size , int pr);
     void receivePacket(ipPacket *p,interface *f);
     virtual void treatPacket(ipPacket *p) { Q_UNUSED(p) }

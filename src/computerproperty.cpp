@@ -25,8 +25,11 @@ computerProperty::computerProperty()
     connect(btn_adapter, SIGNAL(clicked()), SLOT(adapterDialog()));
     btn_table = new QPushButton(trUtf8("Таблица маршрутизации"));
     connect(btn_table, SIGNAL(clicked()), SLOT(tableDialog()));
+    btn_arp = new QPushButton(trUtf8("ARP-таблица"));
+    connect(btn_arp, SIGNAL(clicked()), SLOT(arpDialog()));
     temp->addWidget(btn_adapter);
     temp->addWidget(btn_table);
+    temp->addWidget(btn_arp);
     temp->setAlignment(Qt::AlignRight);
     all->addLayout(temp);
     all->addLayout(lay);
@@ -51,19 +54,16 @@ void computerProperty::apply()
 
 void computerProperty::tableDialog()
 {
-    routeEditor *d = new routeEditor;
-    d->setDevice(comp);
-    d->exec();
-    delete d;
+    comp->editorShow();
 }
 
 void computerProperty::adapterDialog()
 {
-    adapterProperty *d = new adapterProperty;
-    d->setSmart(comp);
-    d->exec();
-    delete d;
+    comp->adapterShow();
 }
 
-
+void computerProperty::arpDialog()
+{
+    comp->arpShow();
+}
 

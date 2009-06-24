@@ -7,12 +7,7 @@
 class smartDevice;
 class frame;
 
-struct arpRecord {
-    macAddress mac;
-    ipAddress ip;
-    int time;
-    int mode;
-};
+struct arpRecord;
 
 const QString names[] = { QObject::trUtf8("Ethernet(10/100 Мбит/с)") , QObject::trUtf8("Ethernet(10/100/1000 Мбит/с)") };
 
@@ -35,12 +30,25 @@ public:
     void clearArp();
     smartDevice* smart() { return mySmart; }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
+    void removeFromTable (QString ip);
     arpPacket* createArp(ipAddress senderIp , macAddress senderMac, ipAddress receiverIp,macAddress receiverMac,int t);
     frame* createFrame( macAddress senderMac, macAddress receiverMac , int t);
+    QList<arpRecord*> arpTable() const { return myArpTable; }
 private:
     smartDevice *mySmart;
     QList<arpRecord*> myArpTable;
     QMultiMap<ipAddress,ipPacket*> myWaits;
+};
+
+struct arpRecord {
+    macAddress mac;
+    ipAddress ip;
+    int time;
+    int mode;
+    QString modeString() const {
+        if ( mode == interface::staticMode ) return QObject::trUtf8("Статическая");
+        else return QObject::trUtf8("Динамическая");
+    }
 };
 
 #endif // INTERFACE_H

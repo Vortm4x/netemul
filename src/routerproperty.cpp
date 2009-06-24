@@ -23,8 +23,11 @@ routerProperty::routerProperty()
     connect(btn_adapter, SIGNAL(clicked()), SLOT(adapterDialog()));
     btn_table = new QPushButton(trUtf8("Таблица маршрутизации"));
     connect(btn_table, SIGNAL(clicked()), SLOT(tableDialog()));
+    btn_arp = new QPushButton(trUtf8("Arp-таблица"));
+    connect(btn_arp, SIGNAL(clicked()), SLOT(arpDialog()));
     temp->addWidget(btn_adapter);
     temp->addWidget(btn_table);
+    temp->addWidget(btn_arp);
     temp->setAlignment(Qt::AlignRight);
     all->addLayout(temp);
     all->addLayout(lay);
@@ -59,6 +62,11 @@ void routerProperty::adapterDialog()
     d->setSmart(rt);
     d->exec();
     delete d;
+}
+
+void routerProperty::arpDialog()
+{
+    rt->arpShow();
 }
 
 void routerProperty::createButtons()

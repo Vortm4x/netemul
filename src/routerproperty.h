@@ -18,12 +18,14 @@ private:
     routerDevice *rt;
     QPushButton *btn_adapter;
     QPushButton *btn_table;
+    QPushButton *btn_arp;
     QRadioButton *rtn_route[3];
     QGroupBox *box_group;
 public slots:
     void apply();
     void tableDialog();
     void adapterDialog();
+    void arpDialog();
 };
 
 #endif // ROUTERPROPERTY_H
