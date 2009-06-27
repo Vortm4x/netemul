@@ -30,7 +30,6 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     prevMode = move;
     prevType = noDev;
     myOpen = false;
-    play();
 }
 
 myCanvas::~myCanvas()
@@ -533,9 +532,8 @@ void myCanvas::timerEvent(QTimerEvent *e)
 
 void myCanvas::motionFrame()
 {
-    foreach ( cableDev *t , connections) {
+    foreach ( cableDev *t , connections)
             t->motion();     
-    }
 }
 
 void myCanvas::whileMotion()

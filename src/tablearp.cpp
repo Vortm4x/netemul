@@ -8,15 +8,19 @@
 #include <QLabel>
 #include <QComboBox>
 
+/**
+   Конструктор создает основной интерфейс окна.
+*/
 tableArp::tableArp(QWidget *parent) : QDialog(parent)
 {
     QVBoxLayout *all = new QVBoxLayout;
-    table = new QTableWidget(0,4);
+    table = new QTableWidget(0,5);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setMinimumWidth(300);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     QStringList head;
-    head << trUtf8("Mac-адрес") << trUtf8("Ip-адрес") << trUtf8("Тип записи") << trUtf8("Имя интерфейса");
+    head << trUtf8("Mac-адрес") << trUtf8("Ip-адрес") << trUtf8("Тип записи") << trUtf8("Имя интерфейса")
+        << trUtf8("Время жизни") ;
     table->setHorizontalHeaderLabels(head);    
     all->addWidget(table);
     QHBoxLayout *temp = new QHBoxLayout;
@@ -49,20 +53,30 @@ tableArp::tableArp(QWidget *parent) : QDialog(parent)
     all->addLayout(temp);
     setLayout(all);
 }
-
+//------------------------------------------------------------------
+/**
+  Назначает диалогу устройство класса smartDevice, именно с этим устройством,
+  диалог и будет работать.
+*/
 void tableArp::setSmart(smartDevice *dev)
 {
     d = dev;
     updateTable();
 }
-
+//------------------------------------------------------------------
+/**
+  Корректирует размер колонок таблицы в соответствии с размером окна.
+*/
 void tableArp::correctSize()
 {
     int n = table->width();
-    for ( int i = 0; i < 4; i++)
-        table->setColumnWidth(i, n/4);
+    for ( int i = 0; i < 5; i++)
+        table->setColumnWidth(i, n/5);
 }
-
+//-------------------------------------------------------------------------
+/**
+  Обновляет содержимое таблицы арп записей при каких либо изменениях.
+*/
 void tableArp::updateTable()
 {
     table->clearContents();
@@ -79,15 +93,22 @@ void tableArp::updateTable()
             QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.ipString());
             QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
             QTableWidgetItem *ti_name = new QTableWidgetItem(p->name());
+            QTableWidgetItem *ti_time = new QTableWidgetItem( tr("%1").arg(r->time) );
             table->setItem( table->rowCount()-1, 0, ti_mac);
             table->setItem( table->rowCount()-1, 1, ti_ip);
             table->setItem( table->rowCount()-1, 2, ti_mode);
             table->setItem( table->rowCount()-1, 3, ti_name);
+            table->setItem( table->rowCount()-1, 4, ti_time);
         }
     }
     correctSize();
 }
-
+//---------------------------------------------------------------
+/**
+  Добавляет в таблицу arp указанного адаптера статическую запись.
+  Если значение mac или ip пустые добавления не происходит, обновляет таблицу и
+  обнуляет поля для ввода.
+*/
 void tableArp::addRecord()
 {
     if ( le_mac->text() == "00:00:00:00:00:00" || ip->text() == "0.0.0.0" ) return;
@@ -96,7 +117,10 @@ void tableArp::addRecord()
     ip->setText("0.0.0.0");
     le_mac->setText("00:00:00:00:00:00");
 }
-
+//----------------------------------------------------------------------
+/**
+  Удалеяет из таблицы существующую запись и обновляет таблицу.
+*/
 void tableArp::deleteRecord()
 {    
     if ( table->selectedItems().isEmpty() ) return;
@@ -104,3 +128,4 @@ void tableArp::deleteRecord()
     d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
     updateTable();
 }
+//------------------------------------------------------------------------

@@ -74,7 +74,7 @@ void cableDev::output(frame *fr)
 
 void cableDev::motion()
 {
-        if ( myFrames.isEmpty() ) return;
+       if ( myFrames.isEmpty() ) return;
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
        foreach ( frame *temp , myFrames ) {

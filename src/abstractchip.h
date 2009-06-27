@@ -9,6 +9,11 @@
 
 class ipPacket;
 
+/**
+  Класс являеться абстрактным устройством приема и обработки кадров.
+  Являеться предком для interface и boxDevice этот класс уже дает возможность вести статистику
+  входящих кадров и пакетов, поддерживает обработку и передачу кадров на уровень выше.
+*/
 class abstractChip : public QObject
 {
     Q_OBJECT
@@ -38,6 +43,7 @@ public:
     int type() { return myType; }
     int mode() const { return myMode; }
     void setMode(int i) { myMode = i; }
+    void resetStatics();
     virtual void sendPacket(ipPacket *p, ipAddress gw = ipAddress("0.0.0.0") )
                             { Q_UNUSED(p); Q_UNUSED(gw); }
     virtual void updateArp(int u) { Q_UNUSED(u); }

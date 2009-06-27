@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     view = new QGraphicsView(canva,this);
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
-    view->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 #ifndef QT_NO_OPENGL
 #if USER != frost
     view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
@@ -193,8 +193,9 @@ void MainWindow::createAction()
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы") );
     connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
 
-    playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
-                               QIcon(":/im/images/pause.png") );
+    // Изначально сеть остановлена
+    playAct = createOneAction( trUtf8("Запустить") , trUtf8("Запустить симуляцию сцены") ,
+                               QIcon(":/im/images/play.png") );
     connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
 }
 
@@ -420,14 +421,18 @@ bool MainWindow::eventFilter(QObject *obj,QEvent *event)
     } else
     return QMainWindow::eventFilter(obj,event);
 }
-
+/*
+  Запись настроек программы в файл.
+*/
 void MainWindow::writeSetting()
 {
-    QSettings setting("FROST","kts");
-    setting.setValue("window/width", width() );
-    setting.setValue("window/height", height() );
-    setting.setValue("window/left" , pos().x() );
-    setting.setValue("window/top" , pos().y() );
+    QSettings setting("FROST","netemul");
+    setting.beginGroup("window");
+    setting.setValue("width", width() );
+    setting.setValue("height", height() );
+    setting.setValue("left" , pos().x() );
+    setting.setValue("top" , pos().y() );
+    setting.endGroup();
     setting.setValue("computer/socketCount" , canva->computerSockets() );
     setting.setValue("hub/socketCount" , canva->hubSockets() );
     setting.setValue("switch/socketCount" , canva->switchSockets() );
@@ -438,25 +443,30 @@ void MainWindow::writeSetting()
     setting.setValue("ttl/Mac",canva->ttlMac());
     setting.setValue("ttl/Rip",canva->rip());
 }
-
+//---------------------------------------------------
+/*
+  Функция чтения настроек из файла.
+*/
 void MainWindow::readSetting()
 {
-    QSettings setting("FROST","kts");
-    resize( setting.value( "window/width", 800 ).toInt() ,
-            setting.value( "window/height", 600 ).toInt() );
-    move( setting.value( "window/left" , 100 ).toInt() ,
-          setting.value( "window/top" , 100 ).toInt() );
+    QSettings setting("FROST","netemul");
+    setting.beginGroup("window");
+    resize( setting.value( "width", 800 ).toInt() ,
+            setting.value( "height", 600 ).toInt() );
+    move( setting.value( "left" , 100 ).toInt() ,
+          setting.value( "top" , 100 ).toInt() );
+    setting.endGroup();
     canva->setComputerSockets( setting.value("computer/socketCount",1).toInt() );
     canva->setHubSockets( setting.value("hub/socketCount",4).toInt() );
     canva->setSwitchSockets( setting.value("switch/socketCount",4).toInt() );
     canva->setRouterSockets(setting.value("router/socketCount",4).toInt() );
     canva->setHubManual(setting.value("hub/manual").toBool());
     canva->setSwitchManual(setting.value("switch/manual").toBool());
-    canva->setTtlArp(setting.value("ttl/Arp",300).toInt());
+    canva->setTtlArp(setting.value("ttl/Arp",1200).toInt());
     canva->setTtlMac(setting.value("ttl/Mac",300).toInt());
     canva->setRip(setting.value("ttl/Rip",30).toInt());
 }
-
+//----------------------------------------------------
 void MainWindow::groupClicked(QAction *clk)
 {
     int m = clk->data().toInt() / 10;
@@ -535,9 +545,8 @@ void MainWindow::showHelp()
 
 }
 
-/*
-  Если таймер сцены выключен, мы включаем его и наоборот. Таким образом достигаем
-  эффекта полной остановки действий на сцене. Естественно обновляем картинку на кнопке.
+/**
+    Слот включает или выключает симуляцю сцены, меняет картинки и подсказки.
  */
 void MainWindow::playBack()
 {

@@ -70,8 +70,7 @@ void settingDialog::createGeneral()
    QLabel *label = new QLabel(trUtf8("Время жизни записей ARP-таблицы"));
    sp_ttlArp = new QSpinBox;
    sp_ttlArp->setFixedWidth(100);
-   sp_ttlArp->setRange(10,300);
-   sp_ttlArp->setValue(300);
+   sp_ttlArp->setRange(10,1200); // Возможное время жизни arp записи.
    sp_ttlArp->setSuffix(trUtf8(" сек"));
    QHBoxLayout *ttl = new QHBoxLayout;
    ttl->addWidget(label);

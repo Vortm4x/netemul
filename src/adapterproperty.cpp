@@ -6,6 +6,9 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
+/**
+  Конструктор создает основной интерфейс диалога.
+*/
 adapterProperty::adapterProperty()
 {
     sd = NULL;
@@ -50,18 +53,29 @@ adapterProperty::adapterProperty()
     all->addWidget(lb_sendPacket);
 
     all->addStretch(1);
-
+    QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),trUtf8("Сбросить статистику"));
+    connect( btn_reset , SIGNAL(clicked()) , SLOT(reset()));
+    all->addWidget(btn_reset, 0 , Qt::AlignRight);
     all->addLayout(lay);
     setLayout(all);
-
+    connect( le_ip , SIGNAL(maskChanged(quint8)) , le_mask , SLOT(setDefaultMask(quint8)));
     connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab()));
 }
-
+//-----------------------------------------------------------
+/**
+  Деструктор снимает выделение определенного интерфейса у устройства, тем самым когда мы
+  выходим из дилога у нас нет выделенного кабеля.
+*/
 adapterProperty::~adapterProperty()
 {
     sd->setCheckedSocket("");
 }
-
+//--------------------------------------------------
+/**
+  Задает диалогу устройство которое он будет отображать, так же эта функция, загружает первый адаптер устройства
+  в диалог.
+  @param r , указатель на устройво.
+*/
 void adapterProperty::setSmart(smartDevice *r)
 {
     sd = r;
@@ -72,7 +86,7 @@ void adapterProperty::setSmart(smartDevice *r)
     }
     btn_apply->setEnabled(false);
 }
-
+//-----------------------------------------------------
 void adapterProperty::changeTab()
 {
     QList<devicePort*> ports = sd->sockets();
@@ -83,20 +97,24 @@ void adapterProperty::changeTab()
         }
     }
 }
-
+/**
+  Обновляет содержимое диалога в зависимости от выбранного адапетра.
+  @param d указатель на сокет выбранного интерфейса.
+  */
 void adapterProperty::updateTab(devicePort *d)
 {
+    interface *t = qobject_cast<interface*>(d->parentDev());
     le_name->setText(d->name());
-    le_mac->setText( d->parentDev()->macString() );
-    le_ip->setText( d->parentDev()->ip().ipString() );
-    le_mask->setText( d->parentDev()->mask().ipString() );
-    lb_recFrame->setText( trUtf8("Получено кадров: %1").arg( d->parentDev()->countRecFrame() ) );
-    lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( d->parentDev()->countRecPacket() ) );
-    lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( d->parentDev()->countSendFrame() ) );
-    lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( d->parentDev()->countSendPacket() ) );
+    le_mac->setText( t->macString() );
+    le_ip->setText( t->ip().ipString() );
+    le_mask->setText( t->mask().ipString() );
+    lb_recFrame->setText( trUtf8("Получено кадров: %1").arg( t->countRecFrame() ) );
+    lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( t->countRecPacket() ) );
+    lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( t->countSendFrame() ) );
+    lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( t->countSendPacket() ) );
     if (sd) sd->setCheckedSocket( d->name() );
 }
-
+//-----------------------------------------------------
 void adapterProperty::apply()
 {
     QList<devicePort*> ports = sd->sockets();
@@ -121,3 +139,14 @@ void adapterProperty::apply()
     }
     if ( sender() == btn_ok ) accept();
 }
+//------------------------------------------------------------
+/**
+    Слот сбрасывает всю статистику у адаптера.
+*/
+void adapterProperty::reset()
+{
+    QString t = tab_interfaces->tabText( tab_interfaces->currentIndex() );
+    sd->adapter(t)->resetStatics();
+    updateTab(sd->socket(t));
+}
+//------------------------------------------------------------

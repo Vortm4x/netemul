@@ -12,6 +12,9 @@ class smartDevice;
 class devicePort;
 class ipEdit;
 
+/**
+  Класс диалога настройки адаптеров.
+*/
 class adapterProperty : public dialogTemplate
 {
     Q_OBJECT
@@ -34,6 +37,7 @@ private:
     ipEdit *le_mask;
 public slots:
     void changeTab();
+    void reset();
     void apply();
 };
 
