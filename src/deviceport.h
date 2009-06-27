@@ -11,7 +11,12 @@ class abstractChip;
 class QIcon;
 class frame;
 
-
+/**
+  Класс представляе собой место соединения кабеля с устройством(сокет, гнездо, отверстие).
+  Необходим этот класс из за того что устройство как абстрактный класс имеет гнезда,
+  но обработка у всех отличается, для того что бы оставить общее и разграничить разное,
+  был сделан этот класс.
+*/
 class devicePort : public QObject
 {
 public:
@@ -31,6 +36,7 @@ public:
     void addToQueue(frame *f);
     void sendFrame(frame *temp);
     void receiveFrame(frame *temp);
+    void queueEvent();
     void setChecked(bool c) { myCable->setChecked(c); }
 private:
     QQueue<frame*> myQueue;
@@ -41,9 +47,8 @@ private:
     QString myName;
     abstractChip *myParentDev;
 protected:
-    void timerEvent(QTimerEvent *e);
     friend QDataStream& operator<<(QDataStream &stream,const devicePort &port);
     friend QDataStream& operator>>(QDataStream &stream,devicePort &port);
 };
-
+//------------------------------------------------------
 #endif // DEVICEPORT_H

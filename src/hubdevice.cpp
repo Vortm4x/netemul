@@ -6,7 +6,6 @@
 hubDevice::hubDevice(int c)
 {
     int i;
-    setMode(abstractChip::normal);
     for ( i = 1 ; i <=  c ; i++ ) {
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
@@ -72,7 +71,6 @@ void hubDevice::read(QDataStream &stream)
     setPos(p);
     setSocketCount(n);
     stream >> myType;
-    stream >> myMode;
     stream >> myMac;
     stream >> myIp;
     stream >> myMask;
@@ -86,7 +84,6 @@ void hubDevice::write(QDataStream &stream) const
 {
     stream << hubDev << pos() << sockets().count();
     stream << myType;
-    stream << myMode;
     stream << myMac;
     stream << myIp;
     stream << myMask;

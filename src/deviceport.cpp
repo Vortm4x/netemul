@@ -53,31 +53,31 @@ void devicePort::receiveFrame(frame *temp)
     myParentDev->addRec(1,0);
     myParentDev->receiveEvent(temp,this);
 }
-
-void devicePort::timerEvent(QTimerEvent *e)
+/**
+  Достает кадр из очереди и отправляет его.
+*/
+void devicePort::queueEvent()
 {
-    Q_UNUSED(e);
-    //if ( !myBusy && !myCable->model() && myCable->isBusy() ) return;
-    frame *t;
-    if ( !myQueue.isEmpty() ) {
-        myBusy = true;
-        t = myQueue.dequeue();
-        sendFrame(t);
-        return;
-    }
-    if ( myTimer ) { killTimer(myTimer); myTimer = 0 ; myBusy = false;}
+    if ( myQueue.isEmpty() ) return;
+    frame *t = myQueue.dequeue();
+    sendFrame(t);
 }
-
+//-----------------------------------------
+/**
+    Добавляет кадр в очередь на отправку.
+    @param f - указатель на кадр подлежащий отправке.
+*/
 void devicePort::addToQueue(frame *f)
 {
-    if ( myParentDev->mode() == abstractChip::test ) {
-        sendFrame(f);
-        return;
-    }
-    if ( !myTimer )  myTimer = startTimer(100);
     myQueue.enqueue(f);
 }
-
+//----------------------------------------------------------------
+/**
+   Устанавливает статус соединения устройства. если устройство включено
+   необходимо обязательно задать кабель вставленный в это устройство.
+   @param cur - true если соединяем , false если отключаем.
+   @param cable - указатель на подсоединяемый кабельь.
+*/
 void devicePort::setConnect(bool cur,cableDev *cable)
 {
     myConnect = cur;
@@ -88,7 +88,7 @@ void devicePort::setConnect(bool cur,cableDev *cable)
         myQueue.clear();
     }
 }
-
+//----------------------------------------------------------------
 QDataStream& operator<<(QDataStream &stream,const devicePort &port)
 {
     stream << port.name();

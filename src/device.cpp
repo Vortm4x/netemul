@@ -37,7 +37,6 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     Q_UNUSED(event);
     dialog();
     scene()->clearSelection();
-    //scene()->setSelectionArea( QPainterPath() );
 }
 
 void device::setCheckedSocket(const QString s)
@@ -45,3 +44,13 @@ void device::setCheckedSocket(const QString s)
     foreach ( devicePort *i , mySockets )
         if (i->isConnect()) i->setChecked( i->name() == s );
 }
+/*!
+  Функция перебирает все порты устройства и если их буферы содержат кадры,
+  то отправляет их.
+*/
+void device::sendEvent()
+{
+    foreach ( devicePort *i , mySockets)
+        if ( i->isConnect() ) i->queueEvent();
+}
+//-----------------------------------------------------------------------------

@@ -11,6 +11,7 @@ class ipEdit;
 class computerProperty : public dialogTemplate
 {
     Q_OBJECT
+    Q_DISABLE_COPY(computerProperty)
 public:
     computerProperty();
     void setComputer(computer *c);

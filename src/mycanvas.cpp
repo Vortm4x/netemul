@@ -16,6 +16,11 @@
 #include <QMessageBox>
 #include <QTime>
 
+/*!
+  Конструктор проводит начальную инициализацию сцены.
+  @param context - Контекстное устройств.
+  @param parent - Объект родитель.
+*/
 myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {
     nowMode = noFile; // Сначала файла нет
@@ -24,6 +29,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     selectRect = 0;
     p2Rect = QPoint();
     coordMap.clear();
+    myDevices.clear();
     insertRect = 0 ;
     sendEllipse = 0;
     myState = noSendItem;
@@ -31,7 +37,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     prevType = noDev;
     myOpen = false;
 }
-
+//------------------------------------------------------------------
 myCanvas::~myCanvas()
 {
 
@@ -95,8 +101,8 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         case move:
             QGraphicsScene::mousePressEvent(event);
             if ( selectedItems().count() && !items( event->scenePos()).isEmpty()) {
-                QList<QGraphicsItem*> devices = selectedItems();
-                foreach ( QGraphicsItem* i , devices) {
+                QList<QGraphicsItem*> myDevices = selectedItems();
+                foreach ( QGraphicsItem* i , myDevices) {
                     if ( i->type() != cableDev::Type )
                         coordMap.insert( qgraphicsitem_cast<device*>(i) , i->scenePos());
                 }
@@ -331,26 +337,33 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
         case noDev: return NULL;
             break;
     }
+    myDevices << item;
     return item;
 }
-
+/*!
+  Функция удаляет со сцены выделенные устройства и провода.
+*/
 void myCanvas::removeDevice()
 {
-    QList<QGraphicsItem*> lostItems = selectedItems();
-    foreach (QGraphicsItem *item, lostItems) {
-        if ( item->type() != cableDev::Type ) {
-            device* temp = qgraphicsitem_cast<device*>(item);
-            QList<cableDev*> lostCables = temp->cables();
-            foreach ( cableDev* itemka , lostCables) {
-                removeItem(itemka);
-                deleteConnection(itemka);
+    QList<QGraphicsItem*> l = selectedItems(); // Получаем список выделенных элементов.
+    foreach (QGraphicsItem *item, l ) {
+        if ( item->type() != cableDev::Type ) { // Если не кабель
+            device *t = qgraphicsitem_cast<device*>(item);
+            QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
+            foreach ( cableDev* i , lostCables) {
+                removeItem(i);
+                deleteConnection(i);
             }
+            myDevices.removeOne(t);
         }
-        else deleteConnection(qgraphicsitem_cast<cableDev*>(item));
-        removeItem(item);
+        else deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
+        removeItem(item); // Удаляем этот элемент со сцены
     }
 }
-
+//------------------------------------------------------
+/*!
+  Открывает новый файл, проводит подготовку внешнего вида сцены.
+*/
 void myCanvas::newFile()
 {
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
@@ -358,17 +371,21 @@ void myCanvas::newFile()
     setMode(myCanvas::move,myCanvas::noDev);
     myOpen = true;
 }
-
+//-------------------------------------------------
+/*!
+  Закрывает файл, очищает сцену, делает фон серым, удаляет все соединения.
+*/
 void myCanvas::closeFile()
 {
     setMode(myCanvas::noFile,myCanvas::noDev);
     clear();
+    myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
     setSceneRect(0,0,1,1);
     connections.clear();
     myOpen = false;
 }
-
+//---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
 {
     cable->startPort()->setConnect(false,cable);
@@ -508,28 +525,32 @@ void myCanvas::keyPressEvent(QKeyEvent *event)
     }
     event->accept();
 }
-
+/**
+  Событие таймера сцены выполняет очень много функций, так много что необходимо
+  разнести из по разным потокам, но не сейчас. Происходят следующие действия:
+  обновление arp,mac, rip таблиц и сдвиг пакетов на кабелях.
+*/
 void myCanvas::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
     static int n = 10;
     motionFrame();
-    if ( --n == 0 ) {
-        QList<QGraphicsItem*> l = items();
-        foreach ( QGraphicsItem *i, l ) {
-            if ( i->type() == routerDevice::Type || i->type() == computer::Type ){
-                smartDevice *t = qgraphicsitem_cast<smartDevice*>(i);
-                t->updateArp(myTtlArp);
-                t->sendRip(myRip);
-            } else if ( i->type() == switchDevice::Type ) {
-                switchDevice *t = qgraphicsitem_cast<switchDevice*>(i);
-                t->updateMac(myTtlMac);
-            }
+    n--;
+    foreach ( device *i, myDevices ) {
+        i->sendEvent();
+        if ( n ) continue;
+        if ( i->type() == routerDevice::Type || i->type() == computer::Type ) {
+            smartDevice *t = i->toT<smartDevice>();
+            t->updateArp(myTtlArp);
+            t->sendRip(myRip);
+        } else if ( i->type() == switchDevice::Type ) {
+            switchDevice *t = i->toT<switchDevice>();
+            t->updateMac(myTtlMac);
         }
-        n = 10;
     }
+    if ( !n ) n = 10;
 }
-
+//--------------------------------------------------------------
 void myCanvas::motionFrame()
 {
     foreach ( cableDev *t , connections)
@@ -576,8 +597,3 @@ QPointF myCanvas::calibrate(QPointF c)
     return c;
 }
 
-void myCanvas::setTest(bool c)
-{
-    Q_UNUSED(c)
-    return;
-}

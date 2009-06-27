@@ -18,13 +18,12 @@ class QAction;
 class cableDev;
 class connectDialog;
 class devicePort;
-
-/*
- Этот класс содержит нашу сцену и именно здесь
- В итоге будет содержаться вся её функциональность
- Начнем  ...
+/*!
+    Класс в котором содержиться вся логика отображения, именно в нем реализована
+    вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
+    по наследству все самое необходимое, для того что бы мы могли свободно писать логику используя
+    уже хорошо зарекомендовавший себя каркас.
 */
-
 class myCanvas : public QGraphicsScene
 {
     Q_OBJECT
@@ -48,8 +47,6 @@ public:
     }
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
-    void setTest(bool c);
-    bool test() const { return myTest; }
     int hubSockets() const { return myHubSockets; }
     int switchSockets() const { return mySwitchSockets; }
     int computerSockets() const { return myComputerSockets; }
@@ -80,7 +77,6 @@ public:
     }
     device* oneSelectedDevice();
     device* deviceInPoint(QPointF p);
-    int& timerId() { return myTimer; }
     QPointF calibrate(QPointF c);
     ~myCanvas();
 signals:
@@ -92,36 +88,18 @@ public slots:
     void removeDevice();
     void newFile();
     void closeFile();
-    /*
-      Две функции play и stop управляют таймером, при срабатывании таймера происходят все события сети, т.е.
-      Движение пакетов, уменьшение время жизни записей и.т.п. функции нужны для реализации кнопок
-      старт и стоп в приложении.
-
-      Функция isPlayed возвращает истину если включен таймер сцены.
-    */
     void play() { myTimer = startTimer(100); } // Включаем основной таймер
     void stop() { killTimer(myTimer); myTimer = 0; } // Выключаем таймер
     bool isPlayed() const { return myTimer; }
-    // ---------------------------------------------------
-    /*
-      Сохранить/загрузить сцену
-     */
     void saveScene(QString fileName);
     void openScene(QString fileName);
-    //-----------------------------------------------------
-    /*
-      Все эти функции объявленые как слоты нужны будут в будущем, когда все таки дойдут
-      руки до воплощения идеи QtScript.
-    */
     void createHub(short x,short y,int c) { createDev<hubDevice>(x,y,c); }
     void createRouter(short x,short y,int c) { createDev<routerDevice>(x,y,c); }
     void createComputer(short x,short y,int c) { createDev<computer>(x,y,c); }
     void createSwitch(short x,short y,int c) { createDev<switchDevice>(x,y,c); }
     void createBus(short x,short y,int c) { createDev<shareBus>(x,y,c); }
-    //----------------------------------------------------
 private:
     bool myOpen;
-    bool myTest; // Не забудь доделать
     sendState myState;
     QGraphicsLineItem *line; // Временная линия для рисования
     QGraphicsRectItem *selectRect; // Временный прямоугольник для выделения
@@ -130,6 +108,7 @@ private:
     QGraphicsEllipseItem *sendEllipse; // Кружочек для выделения отправителя и получателя
 
     QMap<device*,QPointF> coordMap; // Координаты всех перемещаемых устройств
+    QList<device*> myDevices; //!< Список всех устройств на сцене.
 
     // All temp transport varios
     int messageSize;
@@ -162,5 +141,5 @@ protected:
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *e);
 };
-
+//------------------------------------------------------------------
 #endif // MYCANVAS_H

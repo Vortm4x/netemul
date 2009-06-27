@@ -5,12 +5,6 @@ ipPacket::ipPacket()
     data.clear();
 }
 
-bool ipPacket::isNeedRoute(ipAddress m)
-{
-    if ( (myReceiver & m) == ( mySender & m ) ) return false;
-    return true;
-}
-
 ipPacket ipPacket::operator=(ipPacket other)
 {
     mySender = other.mySender;
@@ -39,15 +33,12 @@ void ipPacket::operator>>(QVariant &s) const
 
 bool ipPacket::isBroadcast(const ipAddress mask) const
 {
-    ipAddress a;
-    a = ~mask;
+    ipAddress a = ~mask;
     if ( ( myReceiver & a ) == a) return true;
     return false;
 }
 
 void ipPacket::setBroadcast(const ipAddress mask)
 {
-    ipAddress a;
-    a = ~mask;
-    myReceiver = mySender | a;
+    myReceiver = mySender | ~mask;
 }

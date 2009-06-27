@@ -42,6 +42,7 @@ void computerProperty::setComputer(computer *c)
     gateway->setText(c->gateway().ipString());
     cb_route->setChecked( comp->routeMode() );
     btn_apply->setEnabled(false);
+    cb_route->setEnabled( comp->sockets().count() > 1 );
 }
 
 void computerProperty::apply()

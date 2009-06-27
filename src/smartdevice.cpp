@@ -7,7 +7,7 @@
 smartDevice::smartDevice()
 {
     myRouteMode = noRoute;
-    time = 0;
+    time = qrand()%30;
 }
 
 smartDevice::~smartDevice()
@@ -268,7 +268,7 @@ void smartDevice::updateArp(int u)
 
 void smartDevice::sendRip(int u)
 {
-    if ( ++time < u ||  myRouteMode != ripRoute ) return;
+    if ( myRouteMode != ripRoute || ++time < u ) return;
     qDebug() << "Router say HELLO to All !";
     foreach ( devicePort *i , mySockets )
         if ( i->isConnect() ) {

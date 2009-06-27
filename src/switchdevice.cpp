@@ -8,7 +8,6 @@
 switchDevice::switchDevice(int c)
 {
     int i;
-    setMode(abstractChip::normal);
     for ( i = 1 ; i <=  c ; i++ ) {
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
@@ -96,7 +95,6 @@ void switchDevice::write(QDataStream &stream) const
     int k;
     stream << switchDev << pos() << sockets().count();
     stream << myType;
-    stream << myMode;
     stream << myMac;
     stream << myIp;
     stream << myMask;
@@ -122,7 +120,6 @@ void switchDevice::read(QDataStream &stream)
     setPos(p);
     setSocketCount(n);
     stream >> myType;
-    stream >> myMode;
     stream >> myMac;
     stream >> myIp;
     stream >> myMask;

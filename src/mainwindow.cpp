@@ -257,6 +257,7 @@ void MainWindow::createTools()
     cb_ports = new QComboBox(this);
     cb_ports->setFixedWidth(100);
     controlBar = addToolBar(trUtf8("Управление"));
+    controlBar->setIconSize(QSize(32,32));
     controlBar->addWidget(cb_ports);
     controlBar->addAction(addPortAct);
     controlBar->addAction(removePortAct);

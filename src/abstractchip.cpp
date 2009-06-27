@@ -1,6 +1,6 @@
 #include "abstractchip.h"
 
-/**
+/*!
   Задает устройству случайный Mac-адрес , пустой ip и маску подсети.
 */
 abstractChip::abstractChip()
@@ -36,7 +36,7 @@ QDataStream& operator>>(QDataStream &stream,abstractChip &chip)
     stream >> chip.mySendPacket;
     return stream;
 }
-/**
+/*!
   Сбрасывает всю статистику накопленную этим устройством.
 */
 void abstractChip::resetStatics()
