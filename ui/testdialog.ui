@@ -11,58 +11,19 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Запуск сценариев</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QListWidget" name="listWidget">
-       <item>
-        <property name="text">
-         <string>Switch table</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Big map</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Mac address</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>IP-address</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Router</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Arp</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Routing</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>QtScript</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>ipPacket</string>
-        </property>
-       </item>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::MultiSelection</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -108,7 +69,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>TextLabel</string>
+      <string>Click start</string>
      </property>
     </widget>
    </item>

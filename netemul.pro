@@ -97,3 +97,4 @@ SOURCES += src/abstractchip.cpp \
     src/testdialog.cpp \
     src/tablearp.cpp
 RESOURCES += netemul.qrc
+OTHER_FILES += test/README.txt

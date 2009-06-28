@@ -4,5 +4,6 @@
 
 TEMPLATE = subdirs
 SUBDIRS = mac \ 
-	ippacket
+	ippacket \
+	ipaddress \
 # Input

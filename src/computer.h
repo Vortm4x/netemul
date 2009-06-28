@@ -29,6 +29,4 @@ protected:
     void read(QDataStream &stream);
 };
 
-
-
 #endif // COMPUTER_H

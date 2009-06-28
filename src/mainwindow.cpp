@@ -163,7 +163,7 @@ void MainWindow::createAction()
                            QIcon(":/im/images/left_right.png"),true);
     sendAct->setData( myCanvas::send* 10 + myCanvas::noDev);
 
-    testAct = createOneAction( trUtf8("Тестирование") , trUtf8("Протестировать программу") );
+    testAct = createOneAction( trUtf8("Выполнить сценарий") , trUtf8("Запустить сценарий") );
     connect( testAct , SIGNAL(triggered()) , SLOT(test()));
 
     addPortAct = createOneAction( trUtf8("Добавить адаптер") , trUtf8("Добавить адаптер") ,
@@ -228,7 +228,7 @@ void MainWindow::createMenu()
     settingMenu->addAction(staticsAct);
     settingMenu->addAction(settingAct);
 
-    testMenu = menuBar()->addMenu( trUtf8("Тест") );
+    testMenu = menuBar()->addMenu( trUtf8("Сценарии") );
     testMenu->addAction( testAct );
 
     helpMenu = menuBar()->addMenu( trUtf8("Справка") );
@@ -257,7 +257,7 @@ void MainWindow::createTools()
     cb_ports = new QComboBox(this);
     cb_ports->setFixedWidth(100);
     controlBar = addToolBar(trUtf8("Управление"));
-    controlBar->setIconSize(QSize(32,32));
+    controlBar->setIconSize(QSize(24,24));
     controlBar->addWidget(cb_ports);
     controlBar->addAction(addPortAct);
     controlBar->addAction(removePortAct);
@@ -266,8 +266,9 @@ void MainWindow::createTools()
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }
-
-// Создаем сцену
+/*!
+  Создает сцену и проводит сигнально-слотовые соединения с ней.
+*/
 void MainWindow::createScene()
 {
     canva = new myCanvas(itemMenu,this); // Создаем сцену
@@ -279,24 +280,29 @@ void MainWindow::createScene()
     connect( newAct , SIGNAL(triggered()) , canva , SLOT(newFile()));
     connect( closeAct , SIGNAL(triggered()) , canva , SLOT(closeFile()));
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
+    connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
+    connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
 }
-
-
-// Слот , создать новый файл
+//------------------------------------------------------------------
+/*!
+  Подготавливает окно для работы.
+*/
 void MainWindow::newFile()
 {
     setWindowTitle( myFile = trUtf8("new.net") );
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
 }
-
-// Слот закрыть файл
+//----------------------------------------------------------
+/*!
+  Делает окно закрытым для работы.
+*/
 void MainWindow::closeFile()
 {
     setWindowTitle(myFile = trUtf8(""));
     setEnabledFileItems(false);
 }
-
+//-----------------------------------------------------------
 // Слот включает или отключает пункты меню в зависимости от того открыт файл или закрыт
 void MainWindow::setEnabledFileItems(bool cur)
 {

@@ -17,7 +17,6 @@ class ipPacket;
 class abstractChip : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int type READ type WRITE setType)
 public:
     enum { normal = 0 , test = 1 };
     abstractChip();

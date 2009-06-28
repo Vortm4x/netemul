@@ -214,23 +214,27 @@ void smartDevice::read(QDataStream &stream)
     }
     stream >> myRouteMode;
 }
-
+/*!
+  Задает устройству шлюз по умолчанию.
+  @param str - строка с адресом.
+*/
 void smartDevice::setGateway(const QString str)
 {
-    ipAddress t = ipAddress(str);
-    foreach ( routeRecord *i , myRouteTable )
+    ipAddress t(str);
+    foreach ( routeRecord *i , myRouteTable ) // Ищем старый шлюз
         if ( i->dest.isEmpty() && i->mask.isEmpty() ) {
-            deleteFromTable(i);
+            deleteFromTable(i); // Удаляем его
             break;
         }
-    foreach ( devicePort *i , mySockets ) {
+    foreach ( devicePort *i , mySockets ) { // Ищем интерфейс с которого будем отправлять на шлюз
         if ( (i->parentDev()->ip() & i->parentDev()->mask()) == ( t & i->parentDev()->mask() ) && i->isConnect() ) {
+            // Добавляем запись в таблицу.
             addToTable(ipAddress("0.0.0.0"),ipAddress("0.0.0.0"),t,i->parentDev()->ip(),0,0,staticMode);
             break;
         }
     }
 }
-
+//--------------------------------------------------------------
 ipAddress smartDevice::gateway() const
 {
     foreach ( routeRecord *i , myRouteTable )

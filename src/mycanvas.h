@@ -27,6 +27,7 @@ class devicePort;
 class myCanvas : public QGraphicsScene
 {
     Q_OBJECT
+    Q_PROPERTY(bool open READ isOpen WRITE setOpen)
 public:
     // режимы : нет файла , перемещение , вставка провода , вставка устройства
     enum { noFile = -1 , move = 0 ,cable = 1 , insert = 2 , send = 6};
@@ -40,11 +41,6 @@ public:
     void hideInsertRect();
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
-    Q_INVOKABLE void createConnection(int x1,int y1,int x2,int y2,QString strS ,QString strE) {
-        device *s = deviceInPoint(QPointF(x1*50+25,y1*50+25));
-        device *e = deviceInPoint(QPointF(x2*50+25,y2*50+25));
-        createConnection(s,e,strS,strE);
-    }
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     int hubSockets() const { return myHubSockets; }
@@ -73,16 +69,24 @@ public:
         temp->setMenu(itemMenu);
         addItem(temp);
         temp->setPos(x*50+25,y*50+25);
+        temp->setId(++lastId);
+        myDevices << temp;
         return temp;
     }
     device* oneSelectedDevice();
     device* deviceInPoint(QPointF p);
+    device* deviceWithId(int id);
     QPointF calibrate(QPointF c);
     ~myCanvas();
 signals:
-    void uncheck(); // передаем панели что бы сбросила текущее устройство
+    void uncheck(); //!< Сообщает панели о сбросе текущего устройства
+    void fileOpened(); //!< Сообщает главному окно что открыт новый файл
+    void fileClosed(); //!< Сообщает главному окну о закрытии файла
 public slots:
-    // Слот получает режим и тип устройства и устанавливает их
+    void createConnection(int x,int y,QString strS ,QString strE);
+    void setIp(int x,QString p,QString a);
+    void setMask(int x,QString p,QString a);
+    void setGateway(int x,QString a);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
     void removeDevice();
@@ -93,13 +97,14 @@ public slots:
     bool isPlayed() const { return myTimer; }
     void saveScene(QString fileName);
     void openScene(QString fileName);
-    void createHub(short x,short y,int c) { createDev<hubDevice>(x,y,c); }
-    void createRouter(short x,short y,int c) { createDev<routerDevice>(x,y,c); }
-    void createComputer(short x,short y,int c) { createDev<computer>(x,y,c); }
-    void createSwitch(short x,short y,int c) { createDev<switchDevice>(x,y,c); }
-    void createBus(short x,short y,int c) { createDev<shareBus>(x,y,c); }
+    int createHub(short x,short y,int c) { createDev<hubDevice>(x,y,c);return lastId; }
+    int createRouter(short x,short y,int c) { createDev<routerDevice>(x,y,c);return lastId; }
+    int createComputer(short x,short y,int c) { createDev<computer>(x,y,c);return lastId; }
+    int createSwitch(short x,short y,int c) { createDev<switchDevice>(x,y,c);return lastId; }
+    int createBus(short x,short y,int c) { createDev<shareBus>(x,y,c);return lastId; }
 private:
     bool myOpen;
+    int lastId;
     sendState myState;
     QGraphicsLineItem *line; // Временная линия для рисования
     QGraphicsRectItem *selectRect; // Временный прямоугольник для выделения

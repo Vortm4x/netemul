@@ -3,6 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QDataStream>
+#include <QtScript>
 #include "deviceport.h"
 
 class cableDev;
@@ -34,6 +35,8 @@ public:
     template<class T>T* toT() { return qgraphicsitem_cast<T*>(this); }
     void setCheckedSocket(const QString s);
     void sendEvent();
+    void setId(int i) { myId = i; }
+    int id() const { return myId; }
     virtual QPointF getPointCable(QPointF otherDev) = 0;
     virtual devicePort* addInterface(QString str,int t) = 0;
     virtual void write(QDataStream &stream) const = 0;
@@ -42,6 +45,7 @@ public:
     virtual QString hasTable() const = 0;
 private:
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
+    int myId; //!< Подобие указателя для QtScript
 protected:
     QList<devicePort*> mySockets; //!< Список всех сокетов устройства.
     QList<cableDev*> cableList; //!< Список всех подключеных проводов.

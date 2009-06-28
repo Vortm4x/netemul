@@ -94,15 +94,14 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         return;
     }
     bool isCorrect = true;
-    QList<QGraphicsItem*> col;
     switch (nowMode) {
         case noFile:
             return; // Если файл не открыт то не будем обрабатывать вообще
         case move:
             QGraphicsScene::mousePressEvent(event);
             if ( selectedItems().count() && !items( event->scenePos()).isEmpty()) {
-                QList<QGraphicsItem*> myDevices = selectedItems();
-                foreach ( QGraphicsItem* i , myDevices) {
+                QList<QGraphicsItem*> devs = selectedItems();
+                foreach ( QGraphicsItem* i , devs) {
                     if ( i->type() != cableDev::Type )
                         coordMap.insert( qgraphicsitem_cast<device*>(i) , i->scenePos());
                 }
@@ -123,15 +122,8 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
             isCorrect = insertRect->collidingItems().isEmpty();
             if (isCorrect) {
                 addDeviceOnScene(event->scenePos(), nowType); // Добавляем устройство на сцену
-                if ( insertRect ) {
-                    removeItem(insertRect);
-                    delete insertRect;
-                    insertRect = 0 ;
-                }
                 prevMode = insert;
                 prevType = nowType;
-                emit uncheck();
-                setMode( move , noDev );
             }
             break;
         case cable: // А если кабель
@@ -254,8 +246,6 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 line = NULL; // Линию временную делаем указателем на нуль
                 prevMode = cable;
                 prevType = noDev;
-                nowMode = move;
-                emit uncheck();
                 break;
             case move:
                 if ( coordMap.count() ) {
@@ -337,7 +327,6 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
         case noDev: return NULL;
             break;
     }
-    myDevices << item;
     return item;
 }
 /*!
@@ -366,10 +355,12 @@ void myCanvas::removeDevice()
 */
 void myCanvas::newFile()
 {
+    lastId = 0;
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     setSceneRect(0,0,myCanvas::width,myCanvas::height);
     setMode(myCanvas::move,myCanvas::noDev);
     myOpen = true;
+    emit fileOpened();
 }
 //-------------------------------------------------
 /*!
@@ -383,7 +374,9 @@ void myCanvas::closeFile()
     setBackgroundBrush(QBrush(Qt::lightGray));
     setSceneRect(0,0,1,1);
     connections.clear();
+    if ( myTimer ) stop();
     myOpen = false;
+    emit fileClosed();
 }
 //---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
@@ -448,7 +441,10 @@ void myCanvas::hideInsertRect()
     if ( insertRect ) insertRect->setPos( 100 , -100);
     if ( sendEllipse ) sendEllipse->setPos( 100 , -100);
 }
-
+/*!
+  Загружает сцену из файла.
+  @param fileName - имя файла из которого осуществляется загрузка.
+*/
 void myCanvas::openScene(QString fileName)
 {
     newFile();
@@ -487,9 +483,14 @@ void myCanvas::openScene(QString fileName)
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
+    emit fileOpened();
     qDebug() << QString("Scene was been open from %1").arg(fileName) ;
 }
-
+//-----------------------------------------------------------------------
+/*!
+  Сохраняет сцену в файл.
+  @param fileName - имя файла в который осуществляется сохранение.
+*/
 void myCanvas::saveScene(QString fileName)
 {
     QFile file(fileName);
@@ -499,13 +500,8 @@ void myCanvas::saveScene(QString fileName)
     }
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_2);
-    device *item;
-    QList<QGraphicsItem*> list = items();
-    foreach(QGraphicsItem *t, list) {
-        if (t->type() == cableDev::Type) continue;
-        item = qgraphicsitem_cast<device*>(t);
-        s << *item;
-    }
+    foreach(device *i, myDevices)
+        s << *i;
     s << noDev;
     s << connections.count();
     foreach (cableDev *tempCable, connections) {
@@ -516,7 +512,7 @@ void myCanvas::saveScene(QString fileName)
     file.close();
     qDebug() << QString("Scene was been saved in %1").arg(fileName) ;
 }
-
+//-------------------------------------------------------------------------
 void myCanvas::keyPressEvent(QKeyEvent *event)
 {
     if ( sceneRect().size().width() < 1000 ) return;
@@ -589,11 +585,82 @@ void myCanvas::setShowGrid(bool b)
     if (b) setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     else setBackgroundBrush(QBrush(Qt::white));
 }
-
+/*!
+  Выравнивает координаты точки по сетке.
+  @param с - точка подлещашая выравниванию.
+  @return - выровненая точка.
+*/
 QPointF myCanvas::calibrate(QPointF c)
 {
     c.setX( (qRound(c.x()) / 50)*50+25 );
     c.setY( (qRound(c.y()) / 50)*50+25 );
     return c;
 }
+//-----------------------------------------------------------------
+/*!
+  Используеться в QtScript, создает соединение.
+  @param x - id первого устройства.
+  @param y - id второго устройства.
+  @param s - Название порта первого устройства.
+  @param e - Название порта второго устройства.
+*/
+void myCanvas::createConnection(int x,int y,QString s ,QString e)
+{
+    device *start = deviceWithId(x);
+    device *end = deviceWithId(y);
+    createConnection(start,end,s,e);
+}
+//-------------------------------------------------------------------
+/*!
+  Используеться в QtScript для задания ip адреса.
+  @param x - id устройства
+  @param p - Имя порта
+  @param a - Новый адрес
+*/
+void myCanvas::setIp(int x,QString p,QString a)
+{
+    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
+    t->adapter(p)->setIp(a);
+    t->connectedNet(t->socket(p)); // Обновляем таблицу маршрутизации для подключенных сетей.
+}
+//-------------------------------------------------------------------
+/*!
+  Используеться в QtScript для задания маски.
+  @param x - id устройства
+  @param p - Имя порта
+  @param a - Новая маска
+*/
+void myCanvas::setMask(int x,QString p,QString a)
+{
+    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
+    t->adapter(p)->setMask(a);
+    t->connectedNet(t->socket(p)); // Обновляем таблицу маршрутизации для подключенных сетей.
+}
+//-------------------------------------------------------------------
+/*!
+  Используеться в QtScript для задания шлюза.
+  @param x - id устройства
+  @param a - Адрес шлюза
+*/
+void myCanvas::setGateway(int x,QString a)
+{
+    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
+    t->setGateway(a);
+}
+//-------------------------------------------------------------------
+/*!
+  Возвращает указатель на устройство с нужным id иначе NULL.
+  @param id - искомый id.
+  @return указатель на устройство.
+*/
+device* myCanvas::deviceWithId(int id)
+{
+    foreach ( device *i , myDevices ) // Перебираем устройство в поисках id
+        if ( i->id() == id ) return i; 
+    return NULL; // Иначе возвращаем NULL.
+}
+//-------------------------------------------------------------------
+
+
+
 

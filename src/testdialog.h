@@ -19,17 +19,12 @@ public:
     virtual ~testDialog();
 public slots:
     void start();
+    void selectAll(bool c);
 protected:
     virtual void changeEvent(QEvent *e);
 private:
     QScriptEngine engine;
-    bool test1();
-    bool test2();
-    bool test4();
-    bool test5();
-    bool test6();
-    bool test7();
-    bool test8();
+    bool test(QString s);
     myCanvas *canva;
 };
 

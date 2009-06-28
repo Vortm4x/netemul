@@ -8,6 +8,7 @@
 class dialogTemplate : public QDialog
 {
     Q_OBJECT
+    Q_DISABLE_COPY(dialogTemplate)
 public:
     dialogTemplate();
 protected:
