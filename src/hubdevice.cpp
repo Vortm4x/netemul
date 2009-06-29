@@ -1,6 +1,5 @@
 #include "hubdevice.h"
 #include "hubproperty.h"
-#include <QPainter>
 #include <QtDebug>
 
 hubDevice::hubDevice(int c)

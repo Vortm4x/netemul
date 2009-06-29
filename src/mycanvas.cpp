@@ -25,8 +25,8 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {
     nowMode = noFile; // Сначала файла нет
     itemMenu = context; // меню из аргумента
-    line = 0;
-    selectRect = 0;
+    line = 0; // Провода нет
+    selectRect = 0; // Выделения нет
     p2Rect = QPoint();
     coordMap.clear();
     myDevices.clear();
@@ -38,27 +38,34 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myOpen = false;
 }
 //------------------------------------------------------------------
+/*!
+ * Деструктор пока не выполняет ни каких действий.
+*/ 
 myCanvas::~myCanvas()
 {
 
 }
-
+//------------------------------------------------------------------
+/*!
+ * Событие перемещения мыши.
+ * @param event - переменная события
+*/ 
 void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    switch ( nowMode ) {
-            case noFile:
+    switch ( nowMode ) { // Исходя из режима в котором находится сцена мы выполняем действия
+            case noFile: // Сцена закрыта
                 return;
-            case cable: // Если режим у нас кабель
-                if (line != 0) line->setLine(QLineF(line->line().p1(), event->scenePos()));
+            case cable: // Если режим кабель
                 // Заново прорисовываем линию от начала кабеля до Текущей точки
+                if (line != 0) line->setLine(QLineF(line->line().p1(), event->scenePos()));
                 break;
-            case move:
-                if ( coordMap.count() )
-                        QGraphicsScene::mouseMoveEvent(event);
-                else  if (selectRect != 0 )
+            case move: // Если перемещение
+                // Если есть перемещаемые устройства используем метод предка для их перемещения
+                if ( coordMap.count() ) QGraphicsScene::mouseMoveEvent(event);
+                else  if (selectRect != 0 ) // Если есть выделение обновляем его.
                         selectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
                 break;
-            case insert:
+            case insert: // Если режим вставки устройства
                 if ( insertRect ) {
                     if ( insertRect->collidingItems().isEmpty() ) {
                         insertRect->setPen(QPen(Qt::blue));
@@ -86,7 +93,7 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 break;
     }
 }
-
+//----------------------------------------------------------------------
 void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->button() != Qt::LeftButton ) {

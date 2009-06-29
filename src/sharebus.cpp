@@ -1,6 +1,5 @@
 #include "sharebus.h"
 #include "cabledev.h"
-#include <QPainter>
 
 shareBus::shareBus(int c)
 {

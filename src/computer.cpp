@@ -2,8 +2,6 @@
 #include "cabledev.h"
 #include "interface.h"
 #include "computerproperty.h"
-#include <QPainter>
-#include <QPicture>
 #include <QtDebug>
 
 

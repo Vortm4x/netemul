@@ -112,7 +112,7 @@ private:
     QGraphicsRectItem *insertRect; // Прямоугольныник для вставки
     QGraphicsEllipseItem *sendEllipse; // Кружочек для выделения отправителя и получателя
 
-    QMap<device*,QPointF> coordMap; // Координаты всех перемещаемых устройств
+    QMap<device*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
     QList<device*> myDevices; //!< Список всех устройств на сцене.
 
     // All temp transport varios

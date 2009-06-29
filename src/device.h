@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QDataStream>
 #include <QtScript>
+#include <QPainter>
 #include "deviceport.h"
 
 class cableDev;

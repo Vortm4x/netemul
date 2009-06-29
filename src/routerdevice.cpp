@@ -1,6 +1,5 @@
 #include "routerdevice.h"
 #include "routerproperty.h"
-#include <QPainter>
 
 routerDevice::routerDevice(int c)
 {
