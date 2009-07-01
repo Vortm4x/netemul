@@ -10,6 +10,7 @@ class QGroupBox;
 class routerProperty : public dialogTemplate
 {
     Q_OBJECT
+    Q_DISABLE_COPY(routerProperty)
 public:
     routerProperty();
     void setRouter(routerDevice *r);

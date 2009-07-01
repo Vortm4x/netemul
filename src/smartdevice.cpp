@@ -128,6 +128,7 @@ void smartDevice::routePacket(ipPacket *p)
             else i->out->sendPacket(temp);
             return;
         }
+    delete p;
 }
 
 QString routeRecord::modeString() const
@@ -273,15 +274,6 @@ void smartDevice::updateArp(int u)
 void smartDevice::sendRip(int u)
 {
     if ( myRouteMode != ripRoute || ++time < u ) return;
-    qDebug() << "Router say HELLO to All !";
-    foreach ( devicePort *i , mySockets )
-        if ( i->isConnect() ) {
-            ipPacket *p = new ipPacket;
-            p->setSender( i->parentDev()->ip() );
-            p->setBroadcast( i->parentDev()->mask() );
-            *p << QVariant(QObject::tr("HELLO"));
-            i->parentDev()->sendPacket(p);
-        }
     time = 0;
 }
 

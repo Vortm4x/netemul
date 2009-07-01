@@ -20,17 +20,23 @@ interface::~interface()
 
 void interface::receiveEvent(frame *fr,devicePort *sender)
 {
-    if ( !fr->arp() && !fr->packet() ) { delete fr ; return; }
-    if ( fr->type() == frame::tIp ) receiveIp( fr->packet() , sender );
-
-    if ( fr->type() == frame::tArp ) receiveArp(fr->arp(), sender);
+    if ( fr->type() == frame::ip ) {
+        ipPacket *p = new ipPacket;
+        *fr >> *p;
+        receiveIp( p , sender );
+    }
+    if ( fr->type() == frame::arp ) {
+        arpPacket p;
+        *fr >> p;
+        receiveArp( p , sender);
+    }
     delete fr;
 }
 
 void interface::sendBroadcast(ipPacket *p)
 {
-    frame *f = createFrame( myMac , macAddress("FF:FF:FF:FF:FF:FF") , frame::tIp );
-    f->setPacket(p);
+    frame *f = createFrame( myMac , macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
+    *f << *p;
     addSend(0,1);
     mySocket->addToQueue(f);
 }
@@ -46,11 +52,12 @@ void interface::sendPacket(ipPacket *p,ipAddress gw)
     else t = gw;
     foreach ( arpRecord *i , myArpTable )
         if ( i->ip == t ) {
-            frame *f = createFrame( myMac , i->mac , frame::tIp );
+            frame *f = createFrame( myMac , i->mac , frame::ip );
             i->time = 0; // Стартуем заново время жизни arp записи
-            f->setPacket(p);
+            *f << *p;
             addSend(0,1);
             mySocket->addToQueue(f);
+            delete p;
             return;
         }
     if ( myWaits.contains( t ) ) {
@@ -59,9 +66,9 @@ void interface::sendPacket(ipPacket *p,ipAddress gw)
     }
     macAddress m;
     m.setBroadcast();
-    arpPacket *a = createArp( myIp , myMac , t , macAddress() , arpPacket::request );
-    frame *f = createFrame( myMac , m ,frame::tArp);
-    f->setArp(a);
+    arpPacket a(  macAddress() , myMac , t , myIp , arpPacket::request );
+    frame *f = createFrame( myMac , m ,frame::arp);
+    *f << a;
     mySocket->addToQueue(f);
     myWaits.insert(t,p);
     return;
@@ -97,19 +104,6 @@ arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
     return t;
 }
 
-arpPacket* interface::createArp(ipAddress senderIp , macAddress senderMac, ipAddress receiverIp,macAddress receiverMac,int t)
-{
-    arpPacket *a = new arpPacket;
-    a->setReceiverMac( receiverMac );
-    a->setSenderIp( senderIp );
-    a->setReceiverIp( receiverIp );
-    a->setSenderMac( senderMac );
-    a->setType(t);
-    if ( t == arpPacket::answer ) qDebug() << "send arp: " << senderIp << " answered "  << receiverIp ;
-    else qDebug() << "send arp: " << senderIp << " search "  << receiverIp ;
-    return a;
-}
-
 frame* interface::createFrame( macAddress senderMac, macAddress receiverMac, int t)
 {
     frame *f = new frame;
@@ -143,24 +137,24 @@ void interface::clearArp()
     myArpTable.clear();
 }
 
-void interface::receiveArp(arpPacket *arp, devicePort *sender)
+void interface::receiveArp(arpPacket arp, devicePort *sender)
 {
-    if ( arp->type() == arpPacket::answer ) {
-        addToTable(  arp->senderIp() , arp->senderMac() , dinamicMode );
+    if ( arp.type() == arpPacket::answer ) {
+        addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
         QMultiMap<ipAddress,ipPacket*>::iterator i;
         for ( i = myWaits.begin() ; i != myWaits.end() ; ++i ) {
-            if ( i.key() == arp->senderIp() ) {
+            if ( i.key() == arp.senderIp() ) {
                 sendPacket(i.value(),i.key());
                 myWaits.remove(i.key() , i.value() );
             }
         }
     }
     else {
-        arpRecord *t = addToTable(arp->senderIp() , arp->senderMac() , dinamicMode );
-        if ( arp->receiverIp() == myIp ) {
-            arp = createArp( myIp , myMac , t->ip , t->mac , arpPacket::answer );
-            frame *fr = createFrame( myMac, t->mac, frame::tArp);
-            fr->setArp(arp);
+        arpRecord *t = addToTable(arp.senderIp() , arp.senderMac() , dinamicMode );
+        if ( arp.receiverIp() == myIp ) {
+            arpPacket a( t->mac , myMac , t->ip ,myIp, arpPacket::answer );
+            frame *fr = createFrame( myMac, t->mac, frame::arp);
+            *fr << a;
             sender->addToQueue(fr);
         }
     }

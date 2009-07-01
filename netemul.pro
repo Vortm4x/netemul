@@ -57,7 +57,8 @@ HEADERS += src/abstractchip.h \
     src/switchproperty.h \
     src/tableswitch.h \
     src/testdialog.h \
-    src/tablearp.h
+    src/tablearp.h \
+    src/programm.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui
@@ -95,6 +96,6 @@ SOURCES += src/abstractchip.cpp \
     src/switchproperty.cpp \
     src/tableswitch.cpp \
     src/testdialog.cpp \
-    src/tablearp.cpp
+    src/tablearp.cpp \
+    src/programm.cpp
 RESOURCES += netemul.qrc
-OTHER_FILES += test/README.txt

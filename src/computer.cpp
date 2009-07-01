@@ -39,7 +39,10 @@ void computer::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(temp,5,5); //Рисуем край нашего компьютера
     painter->drawPixmap(temp,QPixmap(":/im/images/laptop.png")); // Потом картинку
-    if ( isConnect() ) painter->setBrush(Qt::green) ; else painter->setBrush(Qt::red);
+    if ( isConnect() ) {
+        painter->setBrush(Qt::green);
+    }
+    else painter->setBrush(Qt::red);
     painter->drawEllipse(-17,-17,6,6);
 }
 
@@ -79,5 +82,14 @@ void computer::dialog()
     d->exec();
     delete d;
 }
+/*!
+  Обрабатывает входящий пакет.
+  @param p - указатель на пакет.
+*/
+void computer::treatPacket(ipPacket *p)
+{
+    delete p;
+}
+//------------------------------------------
 
 

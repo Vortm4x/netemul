@@ -1,19 +1,14 @@
 #include "frame.h"
-#include "macaddress.h"
 #include <QDataStream>
-#include <QtDebug>
 
 frame::frame()
 {
     myColor = Qt::red;
-    myPacket = NULL;
-    myArp = NULL;
 }
 
 frame::~frame()
 {
-    if ( myPacket ) delete myPacket;
-    if ( myArp ) delete myArp;
+
 }
 
 frame frame::operator=(frame other)
@@ -24,44 +19,47 @@ frame frame::operator=(frame other)
     myReceiver = other.myReceiver;
     myColor = other.myColor;
     myType = other.myType;
-    if ( myType == tIp ) {
-        if ( myPacket ) delete myPacket;
-        if ( other.myPacket ) {
-            myPacket = new ipPacket;
-            *myPacket = *(other.myPacket);
-        } else myPacket = NULL;
-    }
-    else {
-        if ( myArp ) delete myArp;
-        if ( other.myArp ) {
-            myArp = new arpPacket;
-            *myArp = *(other.myArp);
-        } else myArp = NULL;
-    }
+    data = other.data;
     return *this;
 }
 
-frame::frame(const frame &other)
+/*!
+    Упаковывает arp-сообщение в кадр.
+    @param p - arp-сообщение.
+*/
+void frame::operator<<(arpPacket p)
 {
-    myColor = Qt::red;
-    myPacket = NULL;
-    myArp = NULL;
-    myDirect = other.myDirect;
-    myPos = other.myPos;
-    mySender = other.mySender;
-    myReceiver = other.myReceiver;
-    myColor = other.myColor;
-    myType = other.myType;
-    if ( myType == tIp ) {
-        if ( other.myPacket ) {
-            myPacket = new ipPacket;
-            *myPacket = *(other.myPacket);
-        }
-    }
-    else {
-        if ( other.myArp ) {
-            myArp = new arpPacket;
-            *myArp = *(other.myArp);
-        }
-    }
+    QDataStream in(&data,QIODevice::WriteOnly);
+    in << p;
 }
+//--------------------------------------------
+/*!
+    Извлекает arp-сообщение из кадра.
+    @param p - arp-сообщение в которое извлекаем.
+*/
+void frame::operator>>(arpPacket &p) const
+{
+    QDataStream out(data);
+    out >> p;
+}
+//--------------------------------------------
+/*!
+    Упаковывает ip-пакет в кадр.
+    @param p - ip-пакет.
+*/
+void frame::operator<<(ipPacket p)
+{
+    QDataStream in(&data,QIODevice::WriteOnly);
+    in << p;
+}
+//-----------------------------------------------
+/*!
+    Извлекает ip-пакет из кадра.
+    @param p - ip-пакет в который извлекаем.
+*/
+void frame::operator>>(ipPacket &p) const
+{
+    QDataStream out(data);
+    out >> p;
+}
+//------------------------------------------------

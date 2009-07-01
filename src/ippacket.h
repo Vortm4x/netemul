@@ -7,6 +7,8 @@
 class ipPacket
 {
 public:
+    /*! Используется для обозначения протокола верхнего уровня. */
+    enum { udp = 0 , tcp = 1 };
     ipPacket();
     ipPacket(ipAddress s,ipAddress r) { mySender = s ; myReceiver = r; }
     ipAddress sender() const { return mySender; }
@@ -18,13 +20,18 @@ public:
     void setBroadcast(const ipAddress mask);
     void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
     ipPacket operator=(ipPacket other);
-    void operator<<(const ipAddress &a);
-    void operator<<(const QVariant s);
-    void operator>>(QVariant &s) const;
+    /*! Задать протокол верхнего уровня
+        @param u - идентификатор протокола(константы tcp или udp) */
+    void setUpProtocol(qint8 u) { myUpProtocol = u; }
+    /*!  @return идентификатор протокола верхнего уровня. */
+    qint8 upProtocol() const { return myUpProtocol; }
 private:
-    ipAddress mySender;
-    ipAddress myReceiver;
-    QByteArray data;
+    ipAddress mySender; //!< Адрес отправителя.
+    ipAddress myReceiver; //!< Адрес получателя.
+    qint8 myUpProtocol; //!< Протокол верхнего уровня
+protected:
+    friend QDataStream& operator<<(QDataStream &stream,const ipPacket &p);
+    friend QDataStream& operator>>(QDataStream &stream,ipPacket &p);
 };
 
 #endif // IPPACKET_H

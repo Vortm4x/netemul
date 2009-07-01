@@ -22,7 +22,7 @@ public:
     QString nameInterface() { return names[myType]; }
     void receiveEvent(frame *fr,devicePort *sender);
     void receiveIp( ipPacket *ip , devicePort *sender);
-    void receiveArp( arpPacket *arp , devicePort *sender);
+    void receiveArp( arpPacket arp , devicePort *sender);
     void sendPacket(ipPacket *p,ipAddress gw = ipAddress("0.0.0.0"));
     void sendBroadcast(ipPacket *p);
     void setSmart(smartDevice *s) { mySmart = s; }
@@ -31,7 +31,6 @@ public:
     smartDevice* smart() { return mySmart; }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
     void removeFromTable (QString ip);
-    arpPacket* createArp(ipAddress senderIp , macAddress senderMac, ipAddress receiverIp,macAddress receiverMac,int t);
     frame* createFrame( macAddress senderMac, macAddress receiverMac , int t);
     QList<arpRecord*> arpTable() const { return myArpTable; }
 private:

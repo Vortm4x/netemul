@@ -86,6 +86,6 @@ void cableDev::motion()
                 if ( temp->pos() <= 0 ) output(temp);
             }
         }
-       update(boundingRect());
+       update();
 }
 

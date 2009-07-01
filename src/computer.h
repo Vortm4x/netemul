@@ -9,6 +9,7 @@ class devicePort;
 
 class computer : public smartDevice
 {
+    Q_DECLARE_TR_FUNCTIONS(computer)
 public:
     // Начнем с 5
     enum { Type = UserType + 5 , compDev = 3 };
@@ -21,9 +22,9 @@ public:
 
     devicePort* addInterface(QString str,int t);
 
-    void treatPacket(ipPacket *p) { Q_UNUSED(p) }
+    void treatPacket(ipPacket *p);
     void dialog();
-    QString hasTable() const { return QObject::trUtf8("Таблица маршрутизации"); }
+    QString hasTable() const { return trUtf8("Таблица маршрутизации"); }
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

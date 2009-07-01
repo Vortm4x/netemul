@@ -7,7 +7,8 @@
 class arpPacket
 {
 public:
-    arpPacket();
+    arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , int t);
+    arpPacket() { }
     enum { request = 0 , answer = 1 };
     void setType(int i) { myType = i; }
     int type() const { return myType; }
@@ -26,6 +27,9 @@ private:
     macAddress myReceiverMac;
     ipAddress mySenderIp;
     ipAddress myReceiverIp;
+protected:
+    friend QDataStream& operator<<(QDataStream &stream,const arpPacket &p);
+    friend QDataStream& operator>>(QDataStream &stream,arpPacket &p);
 };
 
 #endif // ARPPACKET_H

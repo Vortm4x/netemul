@@ -5,7 +5,7 @@ routerDevice::routerDevice(int c)
 {
     int i;
     for ( i = 1 ; i <=  c ; i++ ) {
-        QString t = QObject::trUtf8("LAN%1").arg(i);
+        QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
 }
@@ -78,7 +78,5 @@ void routerDevice::read(QDataStream &stream)
 
 void routerDevice::treatPacket(ipPacket *p)
 {
-    QVariant str;
-    *p >> str;
-    qDebug() << "Router receive message: " << str.toString();
+    delete p;
 }
