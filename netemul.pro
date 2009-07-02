@@ -11,8 +11,8 @@ INCLUDEPATH += . \
 QT += script
 win32 { 
     message("Static link ...")
-    CONFIG += static \
-        console
+    DEFINES += QT_NO_DEBUG_OUTPUT
+    CONFIG += static
 }
 CONFIG += warn_on
 contains(QT_CONFIG, opengl) { 
