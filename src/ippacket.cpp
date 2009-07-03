@@ -59,3 +59,43 @@ QDataStream& operator>>(QDataStream &stream,ipPacket &p)
     return stream;
 }
 //-------------------------------------------------------------
+/*!
+  Упаковывает в ip-пакет tcp-сегмент
+  @param p - tcp-сегмент.
+*/
+void ipPacket::operator<<( tcpPacket &p )
+{
+    QDataStream in( &data, QIODevice::WriteOnly );
+    in << p;
+}
+//------------------------------------------------------------
+/*!
+  Извлекает из ip-пакета tcp-сегмент
+  @param p - tcp-сегмент.
+*/
+void ipPacket::operator>>( tcpPacket &p ) const
+{
+    QDataStream out( data );
+    out >> p;
+}
+//-------------------------------------------------------------
+/*!
+  Упаковывает в ip-пакет udp-дейтаграмму
+  @param p - udp-дейтаграмма.
+*/
+void ipPacket::operator<<( udpPacket &p )
+{
+    QDataStream in( &data, QIODevice::WriteOnly );
+    in << p;
+}
+//-------------------------------------------------------------
+/*!
+  Извлекает из ip-пакета udp-дейтаграмму
+  @param p - udp-дейтаграмма.
+*/
+void ipPacket::operator>>( udpPacket &p ) const
+{
+    QDataStream out( data );
+    out >> p;
+}
+//------------------------------------------------------------

@@ -27,7 +27,7 @@ frame frame::operator=(frame other)
     Упаковывает arp-сообщение в кадр.
     @param p - arp-сообщение.
 */
-void frame::operator<<(arpPacket p)
+void frame::operator<<(arpPacket &p)
 {
     QDataStream in(&data,QIODevice::WriteOnly);
     in << p;
@@ -47,7 +47,7 @@ void frame::operator>>(arpPacket &p) const
     Упаковывает ip-пакет в кадр.
     @param p - ip-пакет.
 */
-void frame::operator<<(ipPacket p)
+void frame::operator<<(ipPacket &p)
 {
     QDataStream in(&data,QIODevice::WriteOnly);
     in << p;

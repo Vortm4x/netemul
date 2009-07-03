@@ -1,6 +1,8 @@
 #include <QtTest>
 #include "../../src/ippacket.h"
 #include "../../src/ipaddress.h"
+#include "../../src/tcppacket.h"
+#include "../../src/udppacket.h"
 
 /*!
   Тестирует класс ipPacket
@@ -10,6 +12,11 @@ class TestIpPacket : public QObject
     Q_OBJECT
 private slots:
     void setBroadcast();
+    void saveLoadTcp();
+    void saveLoadUdp();
+private:
+    ipPacket tcpIp;
+    ipPacket udpIp;
 };
 //---------------------------------------
 /*!
@@ -29,5 +36,34 @@ void TestIpPacket::setBroadcast()
     delete p;
 }
 //------------------------------------------
+
+void TestIpPacket::saveLoadTcp()
+{
+    tcpPacket *p = new tcpPacket;
+    p->setSender(1024);
+    p->setReceiver(512);
+    tcpIp << *p;
+    delete p;
+    p = new tcpPacket;
+    tcpIp >> *p;
+    QCOMPARE( p->sender() , quint16(1024) );
+    QCOMPARE( p->receiver() ,quint16( 512 ));
+    delete p;
+}
+
+void TestIpPacket::saveLoadUdp()
+{
+    udpPacket *p = new udpPacket;
+    p->setSender(1024);
+    p->setReceiver(512);
+    udpIp << *p;
+    delete p;
+    p = new udpPacket;
+    udpIp >> *p;
+    QCOMPARE( p->sender() , quint16(1024) );
+    QCOMPARE( p->receiver() , quint16(512) );
+    delete p;
+}
+
 QTEST_MAIN(TestIpPacket)
 #include "main.moc"

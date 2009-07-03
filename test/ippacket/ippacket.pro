@@ -1,22 +1,17 @@
-#-------------------------------------------------
-#
+# -------------------------------------------------
 # Project created by QtCreator 2009-06-28T01:50:47
-#
-#-------------------------------------------------
-
+# -------------------------------------------------
 QT += testlib
-
-QT -= gui
-
 TARGET = ippacket
-CONFIG   += console
-CONFIG   -= app_bundle
-
+CONFIG += console
 TEMPLATE = app
 SOURCES += main.cpp \
-            ../../src/ippacket.cpp \
-            ../../src/ipaddress.cpp
+    ../../src/ippacket.cpp \
+    ../../src/ipaddress.cpp \
+    ../../src/udppacket.cpp \
+    ../../src/tcppacket.cpp
 HEADERS += ../../src/ippacket.h \
-            ../../src/ipaddress.h
-INCLUDEPATH += ../../src
+    ../../src/ipaddress.h \
+   ../../src/udppacket.h \
+  ../../src/tcppacket.h
 

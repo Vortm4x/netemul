@@ -67,33 +67,29 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
                 break;
             case insert: // Если режим вставки устройства
                 if ( insertRect ) {
-                    if ( insertRect->collidingItems().isEmpty() ) {
-                        insertRect->setPen(QPen(Qt::blue));
-                        insertRect->setBrush( QBrush( QColor( 0 , 0 , 128 , 64)));
-                    }
+                    if ( insertRect->collidingItems().isEmpty() )
+                        setShapeView( insertRect , QPen(Qt::blue) , QBrush( QColor( 0 , 0 , 128 , 64) ) );
                     else
-                    {
-                        insertRect->setPen(QPen(Qt::red));
-                        insertRect->setBrush( QBrush( QColor( 128 , 0 , 0 , 64)));
-                    }
+                        setShapeView( insertRect , QPen(Qt::red) , QBrush( QColor( 128 , 0 , 0 , 64)) );
                     insertRect->setPos( event->scenePos() );
                 }
                 break;
-            case send:
+            case send: // Если режим отправки пакетов.
                 if ( sendEllipse ) {
-                    if ( myState == noSendItem ) {
-                        sendEllipse->setPen(QPen(Qt::lightGray));
-                        sendEllipse->setBrush( QBrush(QColor(255,128,0,128)));
-                    } else {
-                        sendEllipse->setPen(QPen(Qt::green));
-                        sendEllipse->setBrush( QBrush(QColor(0,128,0,128)));
-                    }
+                    if ( myState == noSendItem )
+                        setShapeView(sendEllipse , QPen(Qt::lightGray), QBrush(QColor(255,128,0,128)));
+                    else
+                        setShapeView(sendEllipse , QPen(Qt::green) , QBrush(QColor(0,128,0,128)));
                     sendEllipse->setPos( event->scenePos());
                 }
                 break;
     }
 }
 //----------------------------------------------------------------------
+/*!
+  Событие нажатия мыши.
+  @param event - переменная события.
+*/
 void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->button() != Qt::LeftButton ) {
@@ -104,22 +100,22 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
     switch (nowMode) {
         case noFile:
             return; // Если файл не открыт то не будем обрабатывать вообще
-        case move:
-            QGraphicsScene::mousePressEvent(event);
-            if ( selectedItems().count() && !items( event->scenePos()).isEmpty()) {
-                QList<QGraphicsItem*> devs = selectedItems();
-                foreach ( QGraphicsItem* i , devs) {
+        case move: // если режим перемещения
+            QGraphicsScene::mousePressEvent(event); // Сначала событие предка
+            // Если есть выделенные элементы и мы щелкаем на одном из них
+            if ( selectedItems().count() && items( event->scenePos()).count() ) {
+                // То нужно сохранить все их координаты на случай если начнется перемещение.
+                foreach ( QGraphicsItem* i , selectedItems() ) {
                     if ( i->type() != cableDev::Type )
                         coordMap.insert( qgraphicsitem_cast<device*>(i) , i->scenePos());
                 }
-            }
+            } // Иначе создаем прямоугольник выделения.
             else {
-                if ( !items( event->scenePos() ).isEmpty() ) break;
+                if ( items( event->scenePos() ).count() ) break;
                 selectRect = new QGraphicsRectItem;
                 selectRect->setPos( 0,0 );
                 p2Rect = QPointF( event->scenePos() );
-                selectRect->setPen(QPen(Qt::blue));
-                selectRect->setBrush( QBrush( QColor( 0 , 0 ,128 , 64)));
+                setShapeView( selectRect , QPen(Qt::blue) , QBrush( QColor( 0 , 0 ,128 , 64)) );
                 selectRect->setZValue(1000);
                 addItem(selectRect);
             }
@@ -145,44 +141,52 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
             if ( sendEllipse->collidingItems().count() ) {
                 QGraphicsItem *tempItem = sendEllipse->collidingItems().first();
                 if (tempItem->type() != computer::Type) break;
-                device* tempDev = qgraphicsitem_cast<device*>(tempItem);
-                if ( !tempDev->isConnect() ) {
+                device *t = qgraphicsitem_cast<device*>(tempItem);
+                if ( !t->isConnect() ) {
                 QMessageBox::warning(NULL,trUtf8("Ошибка"),trUtf8("Устройство не имеет соединений"),
                                      QMessageBox::Ok , QMessageBox::Ok);
                     break;
                 }
                 if ( myState == noSendItem ) {
-                    sendDialog temp(sendDialog::sender,tempDev);
-                    temp.move(400,400);
-                    if (temp.exec() ) {
-                        messageSize = temp.messageSize();
-                        broadcast = temp.broadcast();
-                        protocol = temp.protocol();
-                        senderDevice = temp.senderDevice();
+                    sendDialog *temp = new sendDialog(sendDialog::sender,t);
+                    if (temp->exec() ) {
+                        messageSize = temp->messageSize();
+                        broadcast = temp->broadcast();
+                        protocol = temp->protocol();
+                        senderDevice = temp->senderDevice();
                         if ( broadcast ) {
                             emit uncheck();
                             setMode( myCanvas::move , myCanvas::noDev);
                         } else myState = oneSendItem;
                     }
+                    delete temp;
                 } else {
-                    sendDialog temp(sendDialog::receiver,tempDev);
-                    temp.move(400,400);
-                    if (temp.exec() ) {
-                        receiverIp = temp.ip();
+                    sendDialog *temp = new sendDialog(sendDialog::receiver,t);
+                    if (temp->exec() ) {
+                        receiverIp = temp->ip();
                         smartDevice *s = senderDevice->toT<smartDevice>() ;
                         s->sendMessage(receiverIp,messageSize,protocol);
                         emit uncheck();
                         setMode( myCanvas::move , myCanvas::noDev);
                     }
+                    delete temp;
                 }
             }
             break;
     }
 }
-
+//-----------------------------------------------------------------------
+/*!
+  Создает соединение между устройствами.
+  @param s - Указатель на первое устройство.
+  @param e - Указатель на второе устройство.
+  @param sp - Имя порта первого устройства.
+  @param ep - Имя порта второго устройства.
+  @return указатель на кабель соединяющий устройства.
+*/
 cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString ep)
 {
-    if ( !s || !e ) return NULL;
+    if ( !s || !e ) return NULL; // Если хотя бы одного устройства нет, то выходим.
     devicePort *ts = s->socket(sp);
     devicePort *te = e->socket(ep);
     cableDev *cable = new cableDev(s, e, ts, te); // Создаем между ними кабель
@@ -198,7 +202,7 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     cable->updatePosition(); // Обновляем его положение
     return cable;
 }
-
+//-------------------------------------------------------------------------
 void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->button() != Qt::LeftButton ) {
@@ -545,7 +549,6 @@ void myCanvas::timerEvent(QTimerEvent *e)
         if ( i->type() == routerDevice::Type || i->type() == computer::Type ) {
             smartDevice *t = i->toT<smartDevice>();
             t->updateArp(myTtlArp);
-            t->sendRip(myRip);
         } else if ( i->type() == switchDevice::Type ) {
             switchDevice *t = i->toT<switchDevice>();
             t->updateMac(myTtlMac);
@@ -667,6 +670,18 @@ device* myCanvas::deviceWithId(int id)
     return NULL; // Иначе возвращаем NULL.
 }
 //-------------------------------------------------------------------
+/*!
+  Задает указанному объекту внешний вид.
+  @param i - указатель на объект.
+  @param p - перо для объекта.
+  @param b - кисть для объекта.
+*/
+void myCanvas::setShapeView(QAbstractGraphicsShapeItem *i , QPen p , QBrush b)
+{
+    i->setPen(p);
+    i->setBrush(b);
+}
+//--------------------------------------------------------------------
 
 
 

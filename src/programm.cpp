@@ -1,6 +1,5 @@
 #include "programm.h"
 
-programm::programm(device *d)
+programm::programm()
 {
-    Q_UNUSED(d)
 }

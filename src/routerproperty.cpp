@@ -2,23 +2,30 @@
 #include "routerdevice.h"
 #include "routeeditor.h"
 #include "adapterproperty.h"
-#include <QRadioButton>
+#include <QCheckBox>
+#include <QComboBox>
 #include <QGroupBox>
+#include <QLabel>
 
+/*!
+  Создает интерфейс диалога.
+*/
 routerProperty::routerProperty()
 {
     QVBoxLayout *all = new QVBoxLayout;
-    QVBoxLayout *box = new QVBoxLayout;
-    createButtons();
-    for ( int i = 0 ; i < 3 ; i++) {
-        box->addWidget(rtn_route[i]);
-        connect( rtn_route[i] , SIGNAL(toggled(bool)) , SLOT(applyEnable()) );
-    }
-    box_group = new QGroupBox(trUtf8("Режим маршрутизации:"));
-    box_group->setLayout(box);
-    all->addWidget(box_group);
-    all->addStretch(1);
     QHBoxLayout *temp = new QHBoxLayout;
+    temp->addWidget( new QLabel(trUtf8("Количество портов: ") ) );
+    cb_count = new QComboBox;
+    QStringList t;
+    t << "2" << "4" << "5"<< "7" << "8" << "9";
+    cb_count->addItems(t);
+    temp->addWidget(cb_count);
+    all->addLayout(temp);
+    cb_route = new QCheckBox( trUtf8("Включить маршрутизацию.") );
+    connect( cb_route , SIGNAL(toggled(bool)) , SLOT(applyEnable()) );
+    all->addWidget( cb_route);
+    all->addStretch(1);
+    temp = new QHBoxLayout;
     btn_adapter = new QPushButton(trUtf8("Интерфейсы"));
     connect(btn_adapter, SIGNAL(clicked()), SLOT(adapterDialog()));
     btn_table = new QPushButton(trUtf8("Таблица маршрутизации"));
@@ -33,18 +40,22 @@ routerProperty::routerProperty()
     all->addLayout(lay);
     setLayout(all);
 }
-
+//----------------------------------------------------------------
+/*!
+ Задает диалогу устройство для работы.
+ @param r - указатель на роутер.
+*/
 void routerProperty::setRouter(routerDevice *r)
 {
     rt = r;
-    rtn_route[r->routeMode()]->setChecked(true);
+    cb_route->setChecked(r->routeMode());
+    cb_count->setCurrentIndex( cb_count->findText( QString::number( rt->sockets().count() ) ) );
     btn_apply->setEnabled(false);
 }
-
+//-----------------------------------------------------------------
 void routerProperty::apply()
 {
-    for ( int i = 0 ; i < 3 ; i++ )
-        if ( rtn_route[i]->isChecked() ) rt->setRouteMode(i);
+    rt->setRouteMode( cb_route->isChecked() );
     if ( sender() == btn_ok ) accept();
 }
 
@@ -69,10 +80,4 @@ void routerProperty::arpDialog()
     rt->arpShow();
 }
 
-void routerProperty::createButtons()
-{
-    QStringList l;
-    l << trUtf8("Маршрутизация отключена") << trUtf8("Статическая маршрутизация") << trUtf8("Протокол RIP") ;
-    for ( int i = 0; i < 3 ; i++ )
-        rtn_route[i] = new QRadioButton(l.at(i));
-}
+

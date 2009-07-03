@@ -2,7 +2,8 @@
 #define IPPACKET_H
 
 #include "ipaddress.h"
-#include <QVariant>
+#include "udppacket.h"
+#include "tcppacket.h"
 
 class ipPacket
 {
@@ -25,10 +26,15 @@ public:
     void setUpProtocol(qint8 u) { myUpProtocol = u; }
     /*!  @return идентификатор протокола верхнего уровня. */
     qint8 upProtocol() const { return myUpProtocol; }
+    void operator<<(tcpPacket &p);
+    void operator>>(tcpPacket &p) const;
+    void operator<<(udpPacket &p);
+    void operator>>(udpPacket &p) const;
 private:
     ipAddress mySender; //!< Адрес отправителя.
     ipAddress myReceiver; //!< Адрес получателя.
     qint8 myUpProtocol; //!< Протокол верхнего уровня
+    QByteArray data; //!< Данные протокола более высокого уровня.
 protected:
     friend QDataStream& operator<<(QDataStream &stream,const ipPacket &p);
     friend QDataStream& operator>>(QDataStream &stream,ipPacket &p);

@@ -6,8 +6,7 @@
 
 smartDevice::smartDevice()
 {
-    myRouteMode = noRoute;
-    time = qrand()%30;
+    myRouteMode = false;
 }
 
 smartDevice::~smartDevice()
@@ -66,7 +65,7 @@ void smartDevice::arpShow()
     delete d;
 }
 
-routeRecord* smartDevice::addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,int time,int metr,int mode)
+routeRecord* smartDevice::addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,int time,qint8 metr,int mode)
 {
     routeRecord *r = new routeRecord;
     r->out = NULL;
@@ -118,7 +117,7 @@ void smartDevice::receivePacket(ipPacket *p, interface *f)
 
 void smartDevice::routePacket(ipPacket *p)
 {
-    if ( myRouteMode == noRoute ) return;
+    if ( !myRouteMode ) return;
     ipAddress dest = p->receiver();
     foreach ( routeRecord *i ,myRouteTable )
         if ( i->dest == ( dest & i->mask )) {
@@ -134,9 +133,9 @@ void smartDevice::routePacket(ipPacket *p)
 QString routeRecord::modeString() const
 {
     switch ( mode ) {
-        case smartDevice::staticMode : return QObject::trUtf8("Статическая");
-        case smartDevice::ripMode : return QObject::trUtf8("RIP");
-        case smartDevice::connectMode : return QObject::trUtf8("Подключена");
+        case smartDevice::staticMode : return trUtf8("Статическая");
+        case smartDevice::ripMode : return trUtf8("RIP");
+        case smartDevice::connectMode : return trUtf8("Подключена");
     }
     return QString();
 }
@@ -269,12 +268,6 @@ void smartDevice::updateArp(int u)
 {
     foreach ( devicePort *i , mySockets )
         i->parentDev()->updateArp(u);
-}
-
-void smartDevice::sendRip(int u)
-{
-    if ( myRouteMode != ripRoute || ++time < u ) return;
-    time = 0;
 }
 
 QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)

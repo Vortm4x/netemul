@@ -6,12 +6,14 @@
 #include <QGraphicsScene>
 
 struct routeRecord {
+    Q_DECLARE_TR_FUNCTIONS(routeRecord)
+public:
     ipAddress dest;
     ipAddress mask;
     ipAddress gateway;
     interface *out;
     int time;
-    int metric;
+    qint8 metric;
     int mode;
     QString modeString() const;
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
@@ -22,7 +24,6 @@ class smartDevice : public device
 {
 public:
     enum {  connectMode = 3 , staticMode = 4 , ripMode = 5 };
-    enum { noRoute = 0 , staticRoute = 1 , ripRoute = 2 };
     enum { UDP = 25 ,TCP = 26 };
     smartDevice();
     ~smartDevice();
@@ -37,21 +38,20 @@ public:
     void routePacket(ipPacket *p);
     void connectedNet(devicePort *p);
     void updateArp(int u);
-    void sendRip(int u);
-    QList<routeRecord*> routeTable() { return myRouteTable; }
+    QList<routeRecord*>& routeTable() { return myRouteTable; }
     routeRecord* addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,
-                            int time,int metr = 0 ,int mode = staticMode);
+                            int time,qint8 metr = 0 ,int mode = staticMode);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r);
     void addConnection(cableDev *cable);
     void deleteConnection(cableDev *cable);
     void setGateway(const QString str);
-    void setRouteMode(int n) { myRouteMode = n; }
-    int routeMode() const { return myRouteMode; }
+    void setRouteMode(bool n) { myRouteMode = n; }
+    bool routeMode() const { return myRouteMode; }
     ipAddress gateway() const;
+    friend class ripProgramm;
 protected:
-    int time;
-    int myRouteMode;
+    bool myRouteMode;
     QList<routeRecord*> myRouteTable;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

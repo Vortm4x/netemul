@@ -4,8 +4,9 @@
 #include "dialogtemplate.h"
 
 class routerDevice;
-class QRadioButton;
+class QCheckBox;
 class QGroupBox;
+class QComboBox;
 
 class routerProperty : public dialogTemplate
 {
@@ -15,13 +16,12 @@ public:
     routerProperty();
     void setRouter(routerDevice *r);
 private:
-    void createButtons();
     routerDevice *rt;
     QPushButton *btn_adapter;
     QPushButton *btn_table;
     QPushButton *btn_arp;
-    QRadioButton *rtn_route[3];
-    QGroupBox *box_group;
+    QCheckBox *cb_route;
+    QComboBox *cb_count;
 public slots:
     void apply();
     void tableDialog();

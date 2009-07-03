@@ -31,9 +31,9 @@ public:
     void setColor(QBrush b) { myColor = b; }
     int type() const { return myType; }
     void setType(int t) { myType = t; }
-    void operator<<(arpPacket p);
+    void operator<<(arpPacket &p);
     void operator>>(arpPacket &p) const;
-    void operator<<(ipPacket p);
+    void operator<<(ipPacket &p);
     void operator>>(ipPacket &p) const;
 private:
     macAddress mySender;

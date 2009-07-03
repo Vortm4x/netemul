@@ -13,16 +13,15 @@ class programm : public QObject
 {
     Q_OBJECT
 public:
-    programm(device *d);
-    /*! Задает номер порта
-        @param i - номер порта */
+    programm();
     void setSocket(quint16 i) { mySocket = i; }
-    /*! @return Номер порта */
     quint16 socket() const { return mySocket; }
+
     /*! Обрабатывает входящее сообщение, должна быть переопределена во
       всех потомках этого класса.
       @param b - ссылка на данные пришедшие программе. */
     virtual void execute(QByteArray &b) = 0 ;
+    virtual void incTime() { }
 protected:
     quint16 mySocket; //!< Номер порта на котором программа ждет сообщения.
 };

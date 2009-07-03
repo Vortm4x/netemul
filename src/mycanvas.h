@@ -63,6 +63,7 @@ public:
     void setRip(int i) { myRip = i; }
     void motionFrame();
     void whileMotion();
+    void setShapeView(QAbstractGraphicsShapeItem *i , QPen p ,QBrush b);
     bool isEnd() const;
     template<class T> T* createDev(short x,short y,int c = 1) {
         T *temp = new T(c);

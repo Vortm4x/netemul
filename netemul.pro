@@ -58,7 +58,10 @@ HEADERS += src/abstractchip.h \
     src/tableswitch.h \
     src/testdialog.h \
     src/tablearp.h \
-    src/programm.h
+    src/programm.h \
+    src/udppacket.h \
+    src/tcppacket.h \
+    src/ripprogramm.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui
@@ -97,5 +100,8 @@ SOURCES += src/abstractchip.cpp \
     src/tableswitch.cpp \
     src/testdialog.cpp \
     src/tablearp.cpp \
-    src/programm.cpp
+    src/programm.cpp \
+    src/udppacket.cpp \
+    src/tcppacket.cpp \
+    src/ripprogramm.cpp
 RESOURCES += netemul.qrc

@@ -42,12 +42,12 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
     view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-//#ifndef QT_NO_OPENGL
-//#if USER != frost
-//    view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-//#endif
-//#else
-//#endif
+#ifndef QT_NO_OPENGL
+#if USER != frost
+    view->setViewport(new QGLWidget(QGLFormat(QGL::DoubleBuffer)));
+#endif
+#else
+#endif
     view->installEventFilter(this);
     statusBar()->showMessage(tr("")); // Активизируем статус бар
     readSetting();

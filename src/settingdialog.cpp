@@ -154,7 +154,7 @@ void settingDialog::createRouter()
     widgetLayouts[4]->addWidget(label);
     routerComboBox = new QComboBox;
     unsigned int i;
-    int arrayPort[] = {1,2,4,5,7,8,9};
+    int arrayPort[] = {2,4,5,7,8,9};
     for ( i = 0; i < sizeof(arrayPort)/sizeof(arrayPort[0]) ; i++){
         routerComboBox->addItem(QString("%1").arg(arrayPort[i]));
     }
