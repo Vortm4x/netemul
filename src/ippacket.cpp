@@ -8,6 +8,7 @@ ipPacket ipPacket::operator=(ipPacket other)
 {
     mySender = other.mySender;
     myReceiver = other.myReceiver;
+    data = other.data;
     return *this;
 }
 /*!
@@ -42,6 +43,7 @@ QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
     stream << p.mySender;
     stream << p.myReceiver;
     stream << p.myUpProtocol;
+    stream << p.data;
     return stream;
 }
 //--------------------------------------------------
@@ -56,6 +58,7 @@ QDataStream& operator>>(QDataStream &stream,ipPacket &p)
     stream >> p.mySender;
     stream >> p.myReceiver;
     stream >> p.myUpProtocol;
+    stream >> p.data;
     return stream;
 }
 //-------------------------------------------------------------

@@ -1,16 +1,18 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
+#include <QtDebug>
 
 ripProgramm::ripProgramm(smartDevice *d)
 {
     myName = trUtf8("RIP");
     sd = d;
     mySocket = 520;
-    inter = 30;
+    inter = defaultTtl;
     t = qrand()%30;
 }
 
-/*! Отсчитывает интервалы, по истечении которых
+/*!
+  Отсчитывает интервалы, по истечении которых
   происходит отправка rip-сообщений.
 */
 void ripProgramm::incTime()
@@ -20,7 +22,8 @@ void ripProgramm::incTime()
     t = 0;
 }
 //--------------------------------------------------
-/*! Обрабатывает rip-сообщения от соседних
+/*!
+  Обрабатывает rip-сообщения от соседних
   маршрутизаторов
   @param b - Полученное сообщение.
 */
@@ -33,8 +36,10 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
+        qDebug() << t->dest.ipString() << " " << t->mask.ipString() << " " << t->metric+1;
         t->metric++;
-        t->out = sd->ipToAdapter(p->receiver());
+        qDebug() << "Prishlo ot: "<<  p->sender();
+        t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
         checkTable(t);
@@ -56,6 +61,7 @@ void ripProgramm::sendRip()
             ipPacket *p = new ipPacket; // Создаем новый пакет.
             p->setSender( i->parentDev()->ip() );
             p->setBroadcast( i->parentDev()->mask() );
+            p->setUpProtocol( ipPacket::udp );
             udpPacket u; // И новую дейтаграмму
             u.setSender(mySocket);
             u.setReceiver(mySocket);
@@ -71,12 +77,15 @@ void ripProgramm::sendRip()
 */
 void ripProgramm::checkTable(routeRecord *r)
 {
-    foreach (routeRecord *i , sd->myRouteTable )
-        if ( (i->dest == r->dest) && (i->mask == r->mask) && (i->metric > r->metric) ) {
+    foreach (routeRecord *i , sd->myRouteTable ) {
+        if ( i->mode == smartDevice::staticMode ) continue;
+        if ( i->dest == r->dest && i->mask == r->mask) {
+            if (i->metric <= r->metric) return;
             sd->deleteFromTable(i);
             sd->addToTable(r);
             return;
         }
+    }
     sd->addToTable(r);
 }
 //---------------------------------------------------

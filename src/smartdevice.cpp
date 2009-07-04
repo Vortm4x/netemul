@@ -221,13 +221,9 @@ void smartDevice::setGateway(const QString str)
             deleteFromTable(i); // Удаляем его
             break;
         }
-    foreach ( devicePort *i , mySockets ) { // Ищем интерфейс с которого будем отправлять на шлюз
-        if ( (i->parentDev()->ip() & i->parentDev()->mask()) == ( t & i->parentDev()->mask() ) && i->isConnect() ) {
-            // Добавляем запись в таблицу.
-            addToTable(ipAddress("0.0.0.0"),ipAddress("0.0.0.0"),t,i->parentDev()->ip(),0,0,staticMode);
-            break;
-        }
-    }
+    ipAddress a = findInterfaceIp(t);
+    if ( a.isEmpty() ) return;
+    addToTable(ipAddress("0.0.0.0"),ipAddress("0.0.0.0"),t,a,0,0,staticMode);
 }
 //--------------------------------------------------------------
 ipAddress smartDevice::gateway() const
@@ -341,10 +337,27 @@ void smartDevice::removeProgramm(programm *p)
 }
 //------------------------------------------------------
 /*!
+  Вызывает тик таймера у всех работающих на устройстве программ.
 */
 void smartDevice::incTime()
 {
     foreach ( programm *i , myProgramms )
         if ( i->isEnable() ) i->incTime();
+}
+//------------------------------------------------------
+/*!
+  Узнает ip-адрес интерфейса лежащего в той же сети что и указанный адрес.
+  @param a - Адрес для поиска.
+  @return ip-адрес интерфейса.
+*/
+ipAddress smartDevice::findInterfaceIp(ipAddress a)
+{
+    foreach ( devicePort *i , mySockets ) {
+        if ( !i->isConnect() ) continue;
+    qDebug() << "search " << a.ipString() << " " << i->parentDev()->ip() << " mask " << i->parentDev()->mask();
+        if ( (i->parentDev()->ip() & i->parentDev()->mask() ) == ( a & i->parentDev()->mask() ) )
+            return i->parentDev()->ip();
+    }
+    return ipAddress("0.0.0.0");
 }
 //------------------------------------------------------

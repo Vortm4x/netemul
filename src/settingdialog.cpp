@@ -167,6 +167,7 @@ void settingDialog::createRouter()
     sp_rip->setRange(10,30);
     sp_rip->setValue(30);
     sp_rip->setSuffix(trUtf8(" сек"));
+    sp_rip->setEnabled(false);
     QHBoxLayout *ttl = new QHBoxLayout;
     ttl->addWidget(label);
     ttl->addWidget(sp_rip,0 ,Qt::AlignLeft);

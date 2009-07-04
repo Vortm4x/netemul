@@ -11,6 +11,7 @@ class ipPacket;
 class ripProgramm : public programm
 {
 public:
+    static const int defaultTtl = 30;
     ripProgramm(smartDevice *d);
     void execute(ipPacket *p);
     void checkTable( routeRecord *r );
