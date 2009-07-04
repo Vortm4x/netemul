@@ -29,10 +29,7 @@ void shareBus::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     else {
         painter->setPen(QPen(Qt::black,5)); // А иначе черный
         painter->setBrush(Qt::black);
-    } // А иначе черный
-    // (!ВНИМАНИЕ!) далее будет необходимо создать более красивое оформление
-    // так что все строки сейчас здесь написанные будут еще не один раз переписаны
-    // Следи за этим
+    }
     painter->drawLine(QLineF(-widthDev/2 , 0 , widthDev/2, 0 ));
     painter->setPen(QPen(Qt::black,3));
     painter->drawLine(QLineF(-widthDev/2 , 5 , -widthDev/2, -5 ));

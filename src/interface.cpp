@@ -133,6 +133,8 @@ void interface::updateArp(int u)
 
 void interface::clearArp()
 {
+    myIp = ipAddress("0.0.0.0");
+    myMask = ipAddress("0.0.0.0");
     qDeleteAll(myArpTable);
     myArpTable.clear();
 }

@@ -77,4 +77,16 @@ protected:
     void read(QDataStream &stream);
 };
 
+inline bool operator<(const routeRecord &e1 , const routeRecord &e2)
+{
+    if ( e1.mask != e2.mask ) return e1.mask < e2.mask;
+    return e1.dest < e2.dest;
+}
+inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
+{
+    if ( e1.mask != e2.mask ) return e1.mask > e2.mask;
+    return e1.dest < e2.dest;
+}
+inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2) { return *e1 > *e2; }
+
 #endif // SMARTDEVICE_H

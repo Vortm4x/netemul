@@ -48,6 +48,7 @@ private:
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     int myId; //!< Подобие указателя для QtScript
 protected:
+    int myReady;
     QList<devicePort*> mySockets; //!< Список всех сокетов устройства.
     QList<cableDev*> cableList; //!< Список всех подключеных проводов.
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);

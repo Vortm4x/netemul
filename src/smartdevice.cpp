@@ -13,25 +13,6 @@ smartDevice::~smartDevice()
     myRouteTable.clear();
 }
 
-inline bool operator<(const routeRecord &e1 , const routeRecord &e2)
-{
-    if ( e1.mask != e2.mask )
-        return e1.mask < e2.mask;
-    return e1.dest < e2.dest;
-}
-
-inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
-{
-    if ( e1.mask != e2.mask )
-        return e1.mask > e2.mask;
-    return e1.dest < e2.dest;
-}
-
-inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2)
-{
-    return *e1 > *e2;
-}
-
 interface* smartDevice::adapter(QString s)
 {
     foreach ( devicePort *i , mySockets )
@@ -70,6 +51,7 @@ void smartDevice::deleteFromTable(int n)
     int v = 0;
     foreach ( routeRecord *i , myRouteTable )
         if ( v++ == n ) {
+            if ( i->mode == connectMode ) return;
             myRouteTable.removeOne(i);
             delete i;
             qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
@@ -149,8 +131,9 @@ void smartDevice::connectedNet(devicePort *p)
         if ( i->dest == dest && i->mask == mask ) {
             if ( i->gateway == ip && add) return;
             deleteFromTable(i);
-            if ( add ) break ; else return;
+            if ( add ) break ; else { myReady--; return; }
         }
+    myReady++;
     addToTable( dest , mask , ip , ip , 0 , 0 , connectMode );
 }
 
@@ -354,7 +337,6 @@ ipAddress smartDevice::findInterfaceIp(ipAddress a)
 {
     foreach ( devicePort *i , mySockets ) {
         if ( !i->isConnect() ) continue;
-    qDebug() << "search " << a.ipString() << " " << i->parentDev()->ip() << " mask " << i->parentDev()->mask();
         if ( (i->parentDev()->ip() & i->parentDev()->mask() ) == ( a & i->parentDev()->mask() ) )
             return i->parentDev()->ip();
     }

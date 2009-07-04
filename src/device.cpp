@@ -5,6 +5,7 @@
 
 device::device()
 {
+    myReady = 0;
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
 }

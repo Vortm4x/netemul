@@ -40,7 +40,8 @@ void computer::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->drawRoundedRect(temp,5,5); //Рисуем край нашего компьютера
     painter->drawPixmap(temp,QPixmap(":/im/images/laptop.png")); // Потом картинку
     if ( isConnect() ) {
-        painter->setBrush(Qt::green);
+        if ( myReady ) painter->setBrush(Qt::green);
+        else painter->setBrush(Qt::yellow);
     }
     else painter->setBrush(Qt::red);
     painter->drawEllipse(-17,-17,6,6);

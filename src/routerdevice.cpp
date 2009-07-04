@@ -53,7 +53,11 @@ void routerDevice::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(temp,5,5); // Вывести край
     painter->drawPixmap(temp,QPixmap(":/im/images/router.png")); // И рисунок =)
-    if ( isConnect() ) painter->setBrush(Qt::green) ; else painter->setBrush(Qt::red);
+    if ( isConnect() ) {
+        if ( myReady ) painter->setBrush(Qt::green) ;
+        else painter->setBrush(Qt::yellow);
+    }
+    else painter->setBrush(Qt::red);
     painter->drawEllipse(-17,-17,6,6);
 }
 

@@ -2,6 +2,10 @@
 #include "smartdevice.h"
 #include <QtDebug>
 
+/*!
+  Инициализирует программу стандартными настройками.
+  @param d - устройство на которое устанавливается программа.
+*/
 ripProgramm::ripProgramm(smartDevice *d)
 {
     myName = trUtf8("RIP");
@@ -10,7 +14,7 @@ ripProgramm::ripProgramm(smartDevice *d)
     inter = defaultTtl;
     t = qrand()%30;
 }
-
+//--------------------------------------------------------------
 /*!
   Отсчитывает интервалы, по истечении которых
   происходит отправка rip-сообщений.
