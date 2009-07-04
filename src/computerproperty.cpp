@@ -1,7 +1,5 @@
 #include "computerproperty.h"
 #include "computer.h"
-#include "routeeditor.h"
-#include "adapterproperty.h"
 #include "ipedit.h"
 #include <QCheckBox>
 #include <QLabel>
@@ -55,16 +53,16 @@ void computerProperty::apply()
 
 void computerProperty::tableDialog()
 {
-    comp->editorShow();
+    comp->showDialog<routeEditor>();
 }
 
 void computerProperty::adapterDialog()
 {
-    comp->adapterShow();
+    comp->showDialog<adapterProperty>();
 }
 
 void computerProperty::arpDialog()
 {
-    comp->arpShow();
+    comp->showDialog<tableArp>();
 }
 

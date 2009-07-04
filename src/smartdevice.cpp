@@ -1,7 +1,5 @@
 #include "smartdevice.h"
-#include "routeeditor.h"
-#include "adapterproperty.h"
-#include "tablearp.h"
+#include "programm.h"
 #include <QtDebug>
 
 smartDevice::smartDevice()
@@ -41,30 +39,6 @@ interface* smartDevice::adapter(QString s)
     return NULL;
 }
 
-void smartDevice::editorShow()
-{
-    routeEditor *d = new routeEditor;
-    d->setDevice(this);
-    d->exec();
-    delete d;
-}
-
-void smartDevice::adapterShow()
-{
-    adapterProperty *d = new adapterProperty;
-    d->setSmart(this);
-    d->exec();
-    delete d;
-}
-
-void smartDevice::arpShow()
-{
-    tableArp *d = new tableArp;
-    d->setSmart(this);
-    d->exec();
-    delete d;
-}
-
 routeRecord* smartDevice::addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,int time,qint8 metr,int mode)
 {
     routeRecord *r = new routeRecord;
@@ -79,6 +53,13 @@ routeRecord* smartDevice::addToTable(ipAddress dest,ipAddress mask,ipAddress gat
         r->out = ipToAdapter(out);
         if ( !r->out ) {delete r; return NULL; }
     }
+    myRouteTable << r;
+    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
+    return r;
+}
+
+routeRecord* smartDevice::addToTable(routeRecord *r)
+{
     myRouteTable << r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
     return r;
@@ -99,6 +80,7 @@ void smartDevice::deleteFromTable(int n)
 void smartDevice::deleteFromTable(routeRecord *r)
 {
     myRouteTable.removeOne(r);
+    delete r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
 }
 
@@ -114,22 +96,35 @@ void smartDevice::receivePacket(ipPacket *p, interface *f)
     if ( p->receiver() == f->ip() || p->isBroadcast(f->mask()) ) treatPacket(p);
     else routePacket(p);
 }
-
+/*!
+  Маршрутизирует пакет.
+  @param p - указатель на пакет.
+*/
 void smartDevice::routePacket(ipPacket *p)
 {
-    if ( !myRouteMode ) return;
-    ipAddress dest = p->receiver();
-    foreach ( routeRecord *i ,myRouteTable )
-        if ( i->dest == ( dest & i->mask )) {
-            ipPacket *temp = new ipPacket;
-            *temp = *p;
-            if ( i->out->ip() != i->gateway ) i->out->sendPacket(temp,i->gateway);
-            else i->out->sendPacket(temp);
-            return;
-        }
-    delete p;
+    if ( !myRouteMode ) return; // Выходим если нет маршрутизации.
+    routeRecord *t = recordAt(p->receiver());
+    if ( !t ) {
+        delete p;
+        return;
+    }
+    ipAddress gw("0.0.0.0");
+    if ( t->out->ip() != t->gateway ) gw = t->gateway;
+    t->out->sendPacket(p,gw);
 }
-
+//---------------------------------------------
+/*!
+  Находит в таблице маршрутизации.
+  @param a - адрес назначения.
+  @return указатель на запись, если такой записи нет то NULL.
+*/
+routeRecord* smartDevice::recordAt(const ipAddress a) const
+{
+    foreach ( routeRecord *i , myRouteTable )
+        if ( i->dest == ( a & i->mask ) ) return i;
+    return NULL;
+}
+//---------------------------------------------
 QString routeRecord::modeString() const
 {
     switch ( mode ) {
@@ -241,34 +236,37 @@ ipAddress smartDevice::gateway() const
         if ( i->mask.isEmpty() && i->dest.isEmpty() ) return i->gateway;
     return ipAddress("0.0.0.0");
 }
-
+/*!
+  Отправляет сообщение посланное из интерфейса программы.
+  @param dest - Адрес назначения.
+  @param size - Размер сообщения в кб(на деле сколько пакетов).
+  @param pr - Протокол с помощью которого происходит отправка.
+*/
 void smartDevice::sendMessage(ipAddress dest , int size , int pr)
 {
     Q_UNUSED(pr);
     ipAddress gw("0.0.0.0");
-    interface *o = NULL;
-    foreach ( routeRecord *i ,myRouteTable )
-        if ( (i->mask & dest) == i->dest ) {
-            if ( i->gateway == i->out->ip() ) gw = ipAddress("0.0.0.0");
-            else gw = i->gateway;
-            o = i->out;
-            break;
-        }
-    if ( !o ) return;
-    qDebug() << "Send " << size << " KB " << " from " << o->ip() << " to " << dest << " with gw= " << gw;
+    routeRecord *r = recordAt(dest);
+    if ( !r ) return;
+    if ( r->gateway != r->out->ip() ) gw = r->gateway;
     for ( int i = 0 ; i < size ; i++) {
         ipPacket *t = new ipPacket;
-        t->setSender(o->ip());
+        t->setSender(r->out->ip());
         t->setReceiver(dest);
-        o->sendPacket(t,gw);
+        r->out->sendPacket(t,gw);
     }
 }
-
+//---------------------------------------------------------------
+/*!
+  Обновляет arp таблицу всех интерфейсов у данного устройства.
+  @param u - максимальное время жизни.
+*/
 void smartDevice::updateArp(int u)
 {
     foreach ( devicePort *i , mySockets )
         i->parentDev()->updateArp(u);
 }
+//---------------------------------------------------------------
 
 QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)
 {
@@ -283,3 +281,70 @@ QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
     stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric;
     return stream;
 }
+/*!
+  Обрабатывает входящий пакет.
+  @param p - указатель на пакет.
+*/
+void smartDevice::treatPacket(ipPacket *p)
+{
+    int v;
+    if ( p->upProtocol() == ipPacket::udp ) {
+        udpPacket u;
+        *p >> u;
+        v = u.receiver();
+    }
+    else {
+        tcpPacket t;
+        *p >> t;
+        v = t.receiver();
+    }
+    programm *t = programmAt( v );
+    if ( t && t->isEnable() ) {
+        t->execute(p);
+        return;
+    }
+    delete p;
+}
+//--------------------------------------------------
+/*!
+  Ищет программу по номеру её порта.
+  @param p - номер порта.
+  @return Указатель на программу, либо NULL если такой программы нет.
+*/
+programm* smartDevice::programmAt(const quint16 p) const
+{
+    foreach ( programm *i , myProgramms )
+        if ( i->socket() == p ) return i;
+    return NULL;
+}
+//----------------------------------------------------
+/*!
+  Ищет программу по ее названию.
+  @param n - название программы.
+  @return Указатель на программу, либо NULL если такой программы нет.
+*/
+programm* smartDevice::programmAt(const QString n) const
+{
+    foreach ( programm *i , myProgramms )
+        if ( i->name() == n ) return i;
+    return NULL;
+}
+//----------------------------------------------------
+/*!
+  Удаляет программу.
+  @param p - указатель на программу.
+*/
+void smartDevice::removeProgramm(programm *p)
+{
+    myProgramms.removeOne(p);
+    delete p;
+}
+//------------------------------------------------------
+/*!
+*/
+void smartDevice::incTime()
+{
+    foreach ( programm *i , myProgramms )
+        if ( i->isEnable() ) i->incTime();
+}
+//------------------------------------------------------

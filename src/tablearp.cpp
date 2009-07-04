@@ -58,7 +58,7 @@ tableArp::tableArp(QWidget *parent) : QDialog(parent)
   Назначает диалогу устройство класса smartDevice, именно с этим устройством,
   диалог и будет работать.
 */
-void tableArp::setSmart(smartDevice *dev)
+void tableArp::setDevice(smartDevice *dev)
 {
     d = dev;
     updateTable();

@@ -17,7 +17,7 @@ class tableArp : public QDialog
     Q_DISABLE_COPY(tableArp)
 public:
     tableArp(QWidget *parent = 0);
-    void setSmart(smartDevice *dev);
+    void setDevice(smartDevice *dev);
     void correctSize();
     void updateTable();
 private:

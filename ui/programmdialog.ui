@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>programmDialog</class>
+ <widget class="QDialog" name="programmDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>299</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>250</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Программы</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="lb_prog">
+         <property name="text">
+          <string>Установленные программы:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="list"/>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_add">
+         <property name="text">
+          <string>Добавить</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../netemul.qrc">
+           <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_remove">
+         <property name="text">
+          <string>Удалить</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../netemul.qrc">
+           <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_ok">
+       <property name="text">
+        <string>Ok</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../netemul.qrc">
+         <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_cancel">
+       <property name="text">
+        <string>Отмена</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../netemul.qrc">
+         <normaloff>:/im/images/minus2.png</normaloff>:/im/images/minus2.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../netemul.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btn_cancel</sender>
+   <signal>clicked()</signal>
+   <receiver>programmDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>341</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>188</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_ok</sender>
+   <signal>clicked()</signal>
+   <receiver>programmDialog</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>252</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_add</sender>
+   <signal>clicked()</signal>
+   <receiver>programmDialog</receiver>
+   <slot>add()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>343</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>313</x>
+     <y>18</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_remove</sender>
+   <signal>clicked()</signal>
+   <receiver>programmDialog</receiver>
+   <slot>remove()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>310</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>315</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>apply()</slot>
+  <slot>add()</slot>
+  <slot>remove()</slot>
+ </slots>
+</ui>

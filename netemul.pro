@@ -61,10 +61,14 @@ HEADERS += src/abstractchip.h \
     src/programm.h \
     src/udppacket.h \
     src/tcppacket.h \
-    src/ripprogramm.h
+    src/ripprogramm.h \
+    src/programmdialog.h \
+    src/installdialog.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
-    ui/tableswitch.ui
+    ui/tableswitch.ui \
+    ui/programmdialog.ui \
+    ui/installdialog.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \
@@ -103,5 +107,7 @@ SOURCES += src/abstractchip.cpp \
     src/programm.cpp \
     src/udppacket.cpp \
     src/tcppacket.cpp \
-    src/ripprogramm.cpp
+    src/ripprogramm.cpp \
+    src/programmdialog.cpp \
+    src/installdialog.cpp
 RESOURCES += netemul.qrc

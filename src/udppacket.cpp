@@ -14,7 +14,7 @@ QDataStream& operator<<( QDataStream &stream, const udpPacket &p )
 {
     stream << p.myReceiver;
     stream << p.mySender;
-    stream << p.data;
+    stream << p.myData;
     return stream;
 }
 //-------------------------------------------------------
@@ -28,7 +28,7 @@ QDataStream& operator>>( QDataStream &stream, udpPacket &p )
 {
     stream >> p.myReceiver;
     stream >> p.mySender;
-    stream >> p.data;
+    stream >> p.myData;
     return stream;
 }
 //-------------------------------------------------------

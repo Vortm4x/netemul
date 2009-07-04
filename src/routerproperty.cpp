@@ -1,7 +1,5 @@
 #include "routerproperty.h"
 #include "routerdevice.h"
-#include "routeeditor.h"
-#include "adapterproperty.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QGroupBox>
@@ -61,23 +59,17 @@ void routerProperty::apply()
 
 void routerProperty::tableDialog()
 {
-    routeEditor *d = new routeEditor;
-    d->setDevice(rt);
-    d->exec();
-    delete d;
+    rt->showDialog<routeEditor>();
 }
 
 void routerProperty::adapterDialog()
 {
-    adapterProperty *d = new adapterProperty;
-    d->setSmart(rt);
-    d->exec();
-    delete d;
+    rt->showDialog<adapterProperty>();
 }
 
 void routerProperty::arpDialog()
 {
-    rt->arpShow();
+    rt->showDialog<tableArp>();
 }
 
 

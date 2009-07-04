@@ -2,8 +2,6 @@
 #include "switchproperty.h"
 #include "tableswitch.h"
 #include "frame.h"
-#include <QPainter>
-#include <QtDebug>
 
 switchDevice::switchDevice(int c)
 {
@@ -69,7 +67,6 @@ void switchDevice::receiveEvent(frame *fr,devicePort *sender)
             }
             return;
         }
-
     foreach ( devicePort *item , mySockets ) {
         if ( item != sender && item->isConnect() ) {
             frame *temp = new frame;

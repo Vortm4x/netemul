@@ -22,7 +22,7 @@ class adapterProperty : public dialogTemplate
 public:
     adapterProperty();
     ~adapterProperty();
-    void setSmart(smartDevice *r);
+    void setDevice(smartDevice *r);
     void updateTab(devicePort *d);
 private:
     smartDevice *sd;

@@ -3,7 +3,13 @@
 
 #include "device.h"
 #include "interface.h"
+#include "routeeditor.h"
+#include "adapterproperty.h"
+#include "tablearp.h"
+#include "programmdialog.h"
 #include <QGraphicsScene>
+
+class programm;
 
 struct routeRecord {
     Q_DECLARE_TR_FUNCTIONS(routeRecord)
@@ -29,18 +35,22 @@ public:
     ~smartDevice();
     interface* adapter(QString s);
     interface* ipToAdapter(ipAddress a);
-    void editorShow();
-    void adapterShow();
-    void arpShow();
     void sendMessage(ipAddress dest, int size , int pr);
     void receivePacket(ipPacket *p,interface *f);
-    virtual void treatPacket(ipPacket *p) { Q_UNUSED(p) }
+    void treatPacket(ipPacket *p);
     void routePacket(ipPacket *p);
     void connectedNet(devicePort *p);
+    routeRecord* recordAt(const ipAddress a) const;
+    programm* programmAt(const quint16 p) const;
+    programm* programmAt(const QString n) const;
+    void removeProgramm(programm *p);
+    void installProgramm( programm *p) { myProgramms << p; }
     void updateArp(int u);
     QList<routeRecord*>& routeTable() { return myRouteTable; }
+    QList<programm*>& programms() { return myProgramms; }
     routeRecord* addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,
                             int time,qint8 metr = 0 ,int mode = staticMode);
+    routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r);
     void addConnection(cableDev *cable);
@@ -48,11 +58,20 @@ public:
     void setGateway(const QString str);
     void setRouteMode(bool n) { myRouteMode = n; }
     bool routeMode() const { return myRouteMode; }
+    void incTime();
     ipAddress gateway() const;
+    template<class T>
+    void showDialog() {
+        T *d = new T();
+        d->setDevice( this );
+        d->exec();
+        delete d;
+    }
     friend class ripProgramm;
 protected:
     bool myRouteMode;
-    QList<routeRecord*> myRouteTable;
+    QList<programm*> myProgramms; //!< Программы установленные на устройстве.
+    QList<routeRecord*> myRouteTable; //!< Таблица маршрутизации.
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 };

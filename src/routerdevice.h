@@ -12,7 +12,6 @@ public:
     routerDevice(int c);
     devicePort* addInterface(QString str,int t);
     void receiveEvent(frame *fr , devicePort *sender);
-    void treatPacket(ipPacket *p);
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     QPointF getPointCable(QPointF otherDev) { Q_UNUSED(otherDev); return pos(); }
     void dialog();

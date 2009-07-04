@@ -22,7 +22,6 @@ public:
 
     devicePort* addInterface(QString str,int t);
 
-    void treatPacket(ipPacket *p);
     void dialog();
     QString hasTable() const { return trUtf8("Таблица маршрутизации"); }
 protected:

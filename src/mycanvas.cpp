@@ -371,6 +371,7 @@ void myCanvas::newFile()
     setSceneRect(0,0,myCanvas::width,myCanvas::height);
     setMode(myCanvas::move,myCanvas::noDev);
     myOpen = true;
+    play();
     emit fileOpened();
 }
 //-------------------------------------------------
@@ -549,6 +550,7 @@ void myCanvas::timerEvent(QTimerEvent *e)
         if ( i->type() == routerDevice::Type || i->type() == computer::Type ) {
             smartDevice *t = i->toT<smartDevice>();
             t->updateArp(myTtlArp);
+            t->incTime();
         } else if ( i->type() == switchDevice::Type ) {
             switchDevice *t = i->toT<switchDevice>();
             t->updateMac(myTtlMac);

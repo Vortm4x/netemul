@@ -2,15 +2,18 @@
 #define RIPPROGRAMM_H
 
 #include "programm.h"
+#include "ipaddress.h"
 
 class smartDevice;
-class QByteArray;
+class routeRecord;
+class ipPacket;
 
 class ripProgramm : public programm
 {
 public:
     ripProgramm(smartDevice *d);
-    void execute(QByteArray &b);
+    void execute(ipPacket *p);
+    void checkTable( routeRecord *r );
     void incTime();
     void sendRip();
 private:

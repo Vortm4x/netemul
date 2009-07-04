@@ -76,7 +76,4 @@ void routerDevice::read(QDataStream &stream)
    smartDevice::read(stream);
 }
 
-void routerDevice::treatPacket(ipPacket *p)
-{
-    delete p;
-}
+

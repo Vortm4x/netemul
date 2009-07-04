@@ -5,7 +5,6 @@
 #include <QIcon>
 #include <QApplication>
 #include <QStyle>
-#include <QtDebug>
 
 devicePort::devicePort()
 {

@@ -41,7 +41,7 @@ void interface::sendBroadcast(ipPacket *p)
     mySocket->addToQueue(f);
 }
 
-void interface::sendPacket(ipPacket *p,ipAddress gw)
+void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */ )
 {
     if ( p->isBroadcast( myMask ) ) {
         sendBroadcast(p);

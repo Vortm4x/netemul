@@ -76,7 +76,7 @@ adapterProperty::~adapterProperty()
   в диалог.
   @param r , указатель на устройво.
 */
-void adapterProperty::setSmart(smartDevice *r)
+void adapterProperty::setDevice(smartDevice *r)
 {
     sd = r;
     QList<devicePort*> ports = sd->sockets();

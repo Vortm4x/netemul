@@ -82,14 +82,6 @@ void computer::dialog()
     d->exec();
     delete d;
 }
-/*!
-  Обрабатывает входящий пакет.
-  @param p - указатель на пакет.
-*/
-void computer::treatPacket(ipPacket *p)
-{
-    delete p;
-}
-//------------------------------------------
+
 
 

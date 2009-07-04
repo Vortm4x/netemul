@@ -193,10 +193,12 @@ void MainWindow::createAction()
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы") );
     connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
 
-    // Изначально сеть остановлена
-    playAct = createOneAction( trUtf8("Запустить") , trUtf8("Запустить симуляцию сцены") ,
-                               QIcon(":/im/images/play.png") );
+    playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
+                               QIcon(":/im/images/pause.png") );
     connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
+
+    progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"));
+    connect( progAct , SIGNAL(triggered()), SLOT(programmShow()));
 }
 
 //Создаем меню
@@ -222,6 +224,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(editPortAct);
     itemMenu->addAction(tableAct);
     itemMenu->addAction(adapterAct);
+    itemMenu->addAction(progAct);
     itemMenu->setEnabled(false);
 
     settingMenu = menuBar()->addMenu( trUtf8("Сервис") );
@@ -314,37 +317,27 @@ void MainWindow::setEnabledFileItems(bool cur)
     saveAsAct->setEnabled(cur);
     showGridAct->setEnabled(cur);
 }
-
-//Слот вызываемый при изменении выделения на сцене
+/*!
+    Слот вызываемый при изменении выделения на сцене.
+*/
 void MainWindow::selectionChange()
 {
-    cb_ports->clear();
-    if ( canva->oneSelectedDevice() ) {
-        device *t = canva->oneSelectedDevice();
-        QList<devicePort*> d = t->sockets();
-        controlBar->setEnabled(true);
-        tableAct->setVisible( !t->hasTable().isEmpty() );
-        tableAct->setText( t->hasTable() );
-        tableAct->setToolTip( t->hasTable() );
-        adapterAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
-        foreach ( devicePort *i , d ) cb_ports->addItem( i->connectIcon() , i->name() );
-        addPortAct->setEnabled(false);
-        editPortAct->setEnabled(true);
-        removePortAct->setEnabled(false);
-        switch (t->type() ) {
-            case computer::Type:
-                addPortAct->setEnabled(true);
-                editPortAct->setEnabled( !t->sockets().isEmpty() );
-                removePortAct->setEnabled( !t->sockets().isEmpty() );
-                break;
-        }
-    }
-    else {
-        controlBar->setEnabled(false);
-    }
-    itemMenu->setEnabled( canva->selectedItems().count() );
+    cb_ports->clear(); // Очищаем комбобокс с портами.
+    // Меню устройств включено если выбрано одно устройство.
+    itemMenu->setEnabled( canva->selectedItems().count() == 1 );
+    controlBar->setEnabled( canva->selectedItems().count() == 1 );
+    if ( !canva->oneSelectedDevice() ) return; // Если не одно устройство выходим
+    device *t = canva->oneSelectedDevice();
+    tableAct->setVisible( !t->hasTable().isEmpty() );
+    tableAct->setText( t->hasTable() );
+    tableAct->setToolTip( t->hasTable() );
+    adapterAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
+    foreach ( devicePort *i , t->sockets() ) cb_ports->addItem( i->connectIcon() , i->name() );
+    addPortAct->setEnabled( t->type() == computer::Type );
+    removePortAct->setEnabled( t->type() == computer::Type && !t->sockets().isEmpty() );
+    progAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
 }
-
+//------------------------------------------------------------
 // Слот окна настроек
 void MainWindow::setting()
 {
@@ -530,7 +523,7 @@ void MainWindow::tableShow()
     device *d = canva->oneSelectedDevice();
     if ( d->type() == computer::Type || d->type() == routerDevice::Type ) {
         smartDevice *u = qgraphicsitem_cast<smartDevice*>(d);
-        u->editorShow();
+        u->showDialog<routeEditor>();
         return;
     }
     if ( d->type() == switchDevice::Type ) {
@@ -542,7 +535,7 @@ void MainWindow::tableShow()
 void MainWindow::adapterShow()
 {
     smartDevice *d = qgraphicsitem_cast<smartDevice*>(canva->oneSelectedDevice());
-    d->adapterShow();
+    d->showDialog<adapterProperty>();
 }
 
 
@@ -552,9 +545,9 @@ void MainWindow::showHelp()
 
 }
 
-/**
+/*!
     Слот включает или выключает симуляцю сцены, меняет картинки и подсказки.
- */
+*/
 void MainWindow::playBack()
 {
     if ( canva->isPlayed() ) {
@@ -570,5 +563,14 @@ void MainWindow::playBack()
     }
 }
 //--------------------------------------------------
-
+/*!
+  Слот открывает диалог установленных программ
+*/
+void MainWindow::programmShow()
+{
+    device *d = canva->oneSelectedDevice();
+    smartDevice *u = d->toT<smartDevice>();
+    u->showDialog<programmDialog>();
+}
+//--------------------------------------------------
 
