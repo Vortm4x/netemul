@@ -38,6 +38,7 @@ public:
     void receiveFrame(frame *temp);
     void queueEvent();
     void setChecked(bool c) { myCable->setChecked(c); }
+    bool accupant(int u);
 private:
     QQueue<frame*> myQueue;
     cableDev *myCable;

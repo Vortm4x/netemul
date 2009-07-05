@@ -24,12 +24,12 @@ public:
         return QRectF(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
     }
     void setMenu(QMenu *context) { popUpMenu = context; }
-    bool isConnect() { return cableList.count(); }
-    virtual void addConnection(cableDev *cable) { cableList << cable;}
-    virtual void deleteConnection(cableDev *cable) { cableList.removeOne(cable); }
+    bool isConnect() { return myCableList.count(); }
+    virtual void addConnection(cableDev *cable) { myCableList << cable;}
+    virtual void deleteConnection(cableDev *cable) { myCableList.removeOne(cable); }
     void addSocket( devicePort* inter) { mySockets << inter; }
     void removeSocket( devicePort* inter) { mySockets.removeOne(inter); delete inter; }
-    QList<cableDev*> cables() const { return cableList; }
+    QList<cableDev*> cables() const { return myCableList; }
     QList<devicePort*> sockets() const { return mySockets; }
     QString nextName() { return QString("eth%1").arg(count++); }
     devicePort* socket(const QString name);
@@ -44,13 +44,14 @@ public:
     virtual void read(QDataStream &stream) = 0 ;
     virtual void dialog() = 0;
     virtual QString hasTable() const = 0;
+    bool accupant(int u);
 private:
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     int myId; //!< Подобие указателя для QtScript
 protected:
     int myReady;
     QList<devicePort*> mySockets; //!< Список всех сокетов устройства.
-    QList<cableDev*> cableList; //!< Список всех подключеных проводов.
+    QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);
     friend QDataStream& operator>>(QDataStream &stream,device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню

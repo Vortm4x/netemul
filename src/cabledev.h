@@ -30,17 +30,18 @@ public:
     void addFrame(frame *fr) {  myFrames << fr;  }
     void removeFrame(frame *fr) { myFrames.removeOne(fr); }
     QList<frame*> frames() { return myFrames; }
-    int model() { return myModel; }
+    int model() const { return myModel; }
     void input(frame *fr,devicePort *cur);
     void output(frame *fr);
     void setChecked(bool c) { myChecked = c; update(boundingRect()); }
     bool isChecked() const { return myChecked; }
+    bool accupant(int u, devicePort *d);
 private:
     bool myChecked;
     int myModel;
     QList<frame*> myFrames;
-    device *myStartDev; // Указатель на объект начала
-    device *myEndDev; // и конца этого кабеля
+    device *myStartDev; //!< Указатель на устройтсво начала.
+    device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;
     devicePort *myEndPort;
     int mySpeed;

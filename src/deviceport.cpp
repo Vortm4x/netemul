@@ -38,7 +38,13 @@ bool devicePort::isCompability(devicePort *one , devicePort *two)
 */
 void devicePort::queueEvent()
 {
-    if ( myQueue.isEmpty() ) return;
+    // BUILDING !!!
+    if ( !myCable->model() && !myBusy ) {
+        if ( !accupant(1) ) return;
+    }
+    // REFAKTORING LATER
+    if ( myQueue.isEmpty() ) { myBusy = false; return; }
+    myBusy = true;
     frame *t = myQueue.dequeue();
     sendFrame(t);
 }
@@ -67,6 +73,13 @@ void devicePort::setConnect(bool cur,cableDev *cable)
         qDeleteAll(myQueue);
         myQueue.clear();
     }
+}
+//-----------------------------------------------------------------
+/*!
+*/
+bool devicePort::accupant(int u)
+{
+    return myCable->accupant( u, this );
 }
 //----------------------------------------------------------------
 QDataStream& operator<<(QDataStream &stream,const devicePort &port)

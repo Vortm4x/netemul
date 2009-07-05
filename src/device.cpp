@@ -54,4 +54,16 @@ void device::sendEvent()
     foreach ( devicePort *i , mySockets)
         if ( i->isConnect() ) i->queueEvent();
 }
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------
+/*!
+
+*/
+bool device::accupant(int u)
+{
+    foreach ( devicePort *i, mySockets )
+        if ( !i->isConnect() || i->isBusy()) return false;
+    foreach ( devicePort *i, mySockets )
+        if ( !i->accupant(u) ) return false;
+    return true;
+}
+//-----------------------------------------------------------------
