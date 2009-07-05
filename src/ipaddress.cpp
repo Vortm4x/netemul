@@ -18,6 +18,12 @@ ipAddress::ipAddress(const QString str)
         myIp[i] = s.at(i).toInt();
 }
 
+ipAddress::ipAddress(const ipAddress &other)
+{
+    for ( int i = 0; i < 4 ; i++)
+        myIp[i] = other.myIp[i];
+}
+
 QString ipAddress::ipString() const
 {
     QString temp = QString().setNum(myIp[0]);
@@ -32,7 +38,7 @@ void ipAddress::setIp(const quint8 *cur)
         myIp[i] = cur[i];
 }
 
-ipAddress ipAddress::operator=(ipAddress other)
+ipAddress& ipAddress::operator=(const ipAddress &other)
 {
     for ( int i = 0; i < 4 ; i++)
         myIp[i] = other.myIp[i];
@@ -44,22 +50,6 @@ void ipAddress::setIp(const QString str)
     QStringList s = str.split(".");
     for (int i = 0 ; i < 4 ; i++)
         myIp[i] = s.at(i).toInt();
-}
-
-QDataStream& operator<<(QDataStream &stream, const ipAddress &address)
-{
-    int i;
-    for ( i = 0 ; i < 4 ; i++ ) stream << address.myIp[i];
-    return stream;
-}
-
-QDataStream& operator>>(QDataStream &stream, ipAddress &address)
-{
-    int i;
-    quint8 t[4];
-    for ( i = 0 ; i < 4 ; i++ ) stream >> t[i];
-    address.setIp(t);
-    return stream;
 }
 
 ipAddress ipAddress::operator&(const ipAddress &e1) const
@@ -93,15 +83,6 @@ bool ipAddress::isEmpty() const
     int i,d = 0;
     for ( i = 0 ; i < 4 ; i++ ) d += myIp[i];
     return !d;
-}
-
-QDebug operator<<(QDebug dbg, const ipAddress &c)
-{
-    for (int i = 0 ; i < 4 ; i++ ) {
-     dbg.nospace() << c.myIp[i];
-     if ( i < 3 ) dbg.nospace() << '.';
-    }
-    return dbg.space();
 }
 
 ipAddress ipAddress::operator ~() const

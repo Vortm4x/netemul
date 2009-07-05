@@ -21,7 +21,7 @@ public:
     void setDirection(qint8 t) { myDirect = t; }
     frame();
     ~frame();
-    frame operator=(frame other);
+    frame operator=(frame &other);
     macAddress sender() const { return mySender; }
     void setSender(macAddress temp) { mySender = temp; }
     macAddress receiver() const { return myReceiver; }
@@ -44,6 +44,47 @@ private:
     qint8 myType; //!< Показывает несет ли в себе кадр ip-пакет или arp сообщение.
     QByteArray data; //!< Данные протокола более высокого уровня.
 };
+
+/*!
+    Упаковывает arp-сообщение в кадр.
+    @param p - arp-сообщение.
+*/
+inline void frame::operator<<(arpPacket &p)
+{
+    QDataStream in(&data,QIODevice::WriteOnly);
+    in << p;
+}
+//--------------------------------------------
+/*!
+    Извлекает arp-сообщение из кадра.
+    @param p - arp-сообщение в которое извлекаем.
+*/
+inline void frame::operator>>(arpPacket &p) const
+{
+    QDataStream out(data);
+    out >> p;
+}
+//--------------------------------------------
+/*!
+    Упаковывает ip-пакет в кадр.
+    @param p - ip-пакет.
+*/
+inline void frame::operator<<(ipPacket &p)
+{
+    QDataStream in(&data,QIODevice::WriteOnly);
+    in << p;
+}
+//-----------------------------------------------
+/*!
+    Извлекает ip-пакет из кадра.
+    @param p - ip-пакет в который извлекаем.
+*/
+inline void frame::operator>>(ipPacket &p) const
+{
+    QDataStream out(data);
+    out >> p;
+}
+//------------------------------------------------
 
 
 

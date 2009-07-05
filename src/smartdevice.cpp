@@ -1,5 +1,5 @@
 #include "smartdevice.h"
-#include "programm.h"
+#include "ripprogramm.h"
 #include <QtDebug>
 
 smartDevice::smartDevice()
@@ -150,23 +150,29 @@ void smartDevice::deleteConnection(cableDev *cable)
     else connectedNet(cable->endPort() );
     device::deleteConnection(cable);
 }
-
+/*!
+  Записывает устройство в поток данных.
+  @param stream - ссылка на поток.
+*/
 void smartDevice::write(QDataStream &stream) const
 {
-    stream << pos() << mySockets.count();
+    stream << pos() << mySockets.count(); // Количество сокетов
     foreach( devicePort *i, mySockets) {
-        stream << *(i->parentDev());
+        stream << *(i->parentDev()); // Их адаптеры
         stream << *i;
     }
-    int c = 0;
+    int c = 0; // Количество статических записей в таблице маршрутизации.
     foreach (routeRecord *i, myRouteTable) 
         if (i->mode == staticMode) c++;
     stream << c;
     foreach (routeRecord *i, myRouteTable) 
         if (i->mode == staticMode) stream << *i;
-    stream << myRouteMode;
+    stream << myRouteMode; // Включена или нет маршрутизация.
+    stream << myProgramms.count(); // Количество программ.
+    foreach ( programm *i , myProgramms )  // И сами программы.
+        stream << *i;
 }
-
+//-------------------------------------------------
 void smartDevice::read(QDataStream &stream)
 {
     QPointF p;
@@ -191,6 +197,19 @@ void smartDevice::read(QDataStream &stream)
         myRouteTable.append(rec);
     }
     stream >> myRouteMode;
+    stream >> n;
+    int t;
+    programm *r;
+    for ( i = 0; i < n; i++ ) {
+        stream >> t;
+        switch (t) {
+            case RIP:
+                r = new ripProgramm(this);
+                break;
+        }
+        stream >> *r;
+        installProgramm(r);
+    }
 }
 /*!
   Задает устройству шлюз по умолчанию.
@@ -246,20 +265,6 @@ void smartDevice::updateArp(int u)
         i->parentDev()->updateArp(u);
 }
 //---------------------------------------------------------------
-
-QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)
-{
-    stream << rec.dest;
-    stream << rec.mask << rec.gateway;
-    stream << rec.time << rec.metric << rec.out->ip();
-    return stream;
-}
-
-QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
-{
-    stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric;
-    return stream;
-}
 /*!
   Обрабатывает входящий пакет.
   @param p - указатель на пакет.

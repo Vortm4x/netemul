@@ -33,12 +33,13 @@ void installDialog::updateList()
 */
 void installDialog::install()
 {
-    programm *p;
+    programm *p = NULL;
     switch (list->currentRow() ) {
         case 0:
             p = new ripProgramm( s );
+            break;
     }
-    s->installProgramm(p);
+    if (p) s->installProgramm(p);
     accept();
 }
 //-----------------------------------------------

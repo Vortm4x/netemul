@@ -30,6 +30,7 @@ class smartDevice : public device
 {
 public:
     enum {  connectMode = 3 , staticMode = 4 , ripMode = 5 };
+    enum { RIP = 50 };
     enum { UDP = 25 ,TCP = 26 };
     smartDevice();
     ~smartDevice();
@@ -69,6 +70,7 @@ public:
         delete d;
     }
     friend class ripProgramm;
+    friend void routeEditor::updateTable();
 protected:
     bool myRouteMode;
     QList<programm*> myProgramms; //!< Программы установленные на устройстве.
@@ -88,5 +90,17 @@ inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
     return e1.dest < e2.dest;
 }
 inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2) { return *e1 > *e2; }
+inline QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)
+{
+    stream << rec.dest;
+    stream << rec.mask << rec.gateway;
+    stream << rec.time << rec.metric << rec.out->ip();
+    return stream;
+}
+inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
+{
+    stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric;
+    return stream;
+}
 
 #endif // SMARTDEVICE_H

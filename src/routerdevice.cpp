@@ -1,5 +1,6 @@
 #include "routerdevice.h"
 #include "routerproperty.h"
+#include "ripprogramm.h"
 
 routerDevice::routerDevice(int c)
 {
@@ -8,6 +9,9 @@ routerDevice::routerDevice(int c)
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
+    ripProgramm *p = new ripProgramm(this);
+    p->setEnable(false);
+    installProgramm(p);
 }
 
 devicePort* routerDevice::addInterface(QString str,int t)

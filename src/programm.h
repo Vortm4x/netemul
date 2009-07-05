@@ -1,7 +1,7 @@
 #ifndef PROGRAMM_H
 #define PROGRAMM_H
 
-#include <QObject>
+#include <QDataStream>
 class device;
 class ipPacket;
 
@@ -25,10 +25,32 @@ public:
       @param b - ссылка на данные пришедшие программе. */
     virtual void execute(ipPacket *p) = 0 ;
     virtual void incTime() { }
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
 protected:
+    friend QDataStream& operator<<(QDataStream &stream,const programm &p);
+    friend QDataStream& operator>>(QDataStream &stream,programm &p);
     bool myEnable; //!< Запущена программа или нет.
     quint16 mySocket; //!< Номер порта на котором программа ждет сообщения.
     QString myName; //!< Имя программы.
 };
+/*!
+  Записывает программу в поток.
+*/
+inline QDataStream& operator<<(QDataStream &stream,const programm &p)
+{
+    p.write(stream);
+    return stream;
+}
+//--------------------------------------------------------------------
+/*!
+  Считывает программу из потока.
+*/
+inline QDataStream& operator>>(QDataStream &stream,programm &p)
+{
+    p.read(stream);
+    return stream;
+}
+//--------------------------------------------------------------------
 
 #endif // PROGRAMM_H

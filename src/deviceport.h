@@ -5,9 +5,9 @@
 #include <QQueue>
 
 #include "cabledev.h"
+#include "abstractchip.h"
 
 class macAddress;
-class abstractChip;
 class QIcon;
 class frame;
 
@@ -51,4 +51,17 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream,devicePort &port);
 };
 //------------------------------------------------------
+
+inline macAddress devicePort::parentMac() const { return myParentDev->mac(); }
+inline void devicePort::sendFrame(frame *temp)
+{
+    myParentDev->addSend(1,0);
+    if ( !isConnect() ) delete temp;
+    myCable->input(temp,this);
+}
+inline void devicePort::receiveFrame(frame *temp)
+{
+    myParentDev->addRec(1,0);
+    myParentDev->receiveEvent(temp,this);
+}
 #endif // DEVICEPORT_H

@@ -75,9 +75,8 @@ void routeEditor::updateTable()
     head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
             << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
     table->setHorizontalHeaderLabels(head);
-    QList<routeRecord*> l = dev->routeTable();
-    table->setRowCount(l.count());
-    foreach ( routeRecord *i , l ) {
+    table->setRowCount( dev->myRouteTable.count() );
+    foreach ( routeRecord *i , dev->myRouteTable ) {
         QTableWidgetItem *temp = new QTableWidgetItem( i->dest.ipString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,0,temp);

@@ -1,8 +1,11 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include <QMultiMap>
+
 #include "abstractchip.h"
 #include "ippacket.h"
+
 
 class smartDevice;
 class frame;

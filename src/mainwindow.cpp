@@ -33,6 +33,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    QCoreApplication::setApplicationVersion("0.7.2");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -239,15 +240,16 @@ void MainWindow::createMenu()
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
 }
-
-// Создаем
+/*!
+  Создает панели инструментов.
+*/
 void MainWindow::createTools()
 {
     deviceBar = addToolBar(trUtf8("Устройства"));
     deviceBar->setIconSize(QSize(32,32));
     deviceBar->addAction( moveAct);
     deviceBar->addAction( cableAct);
-    deviceBar->addAction( shareBusAct);
+    //deviceBar->addAction( shareBusAct);
     deviceBar->addAction( computerAct);
     deviceBar->addAction( hubAct);
     deviceBar->addAction( switchAct);
@@ -269,6 +271,7 @@ void MainWindow::createTools()
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }
+//------------------------------------------------------
 /*!
   Создает сцену и проводит сигнально-слотовые соединения с ней.
 */
@@ -292,7 +295,6 @@ void MainWindow::createScene()
 */
 void MainWindow::newFile()
 {
-    setWindowTitle( myFile = trUtf8("new.net") );
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
 }
@@ -377,7 +379,7 @@ void MainWindow::applySetting()
 //Слот сохранить
 void MainWindow::saveFile()
 {
-    if ( myFile == trUtf8("new.net") ) {
+    if ( myFile.isEmpty() ) {
        QString t = QFileDialog::getSaveFileName(this,trUtf8("Сохранить файл как ..."),
                                                 QDir::currentPath(),
                                                 trUtf8("Сети(*.net)"));
@@ -394,10 +396,10 @@ void MainWindow::openFile()
                                              QDir::currentPath(),trUtf8("Сети(*.net)"));
     if ( t.isEmpty() ) return;
     myFile = t;
-    setWindowTitle( myFile );
+    setWindowTitle( t );
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
-    canva->openScene(myFile);
+    canva->openScene(t);
 }
 
 //Слот сохранить как =)

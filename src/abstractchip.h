@@ -5,8 +5,8 @@
 #include "macaddress.h"
 #include "ipaddress.h"
 #include "frame.h"
-#include "deviceport.h"
 
+class devicePort;
 class ipPacket;
 
 /*!

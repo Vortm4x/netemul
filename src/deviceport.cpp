@@ -1,5 +1,4 @@
 #include "deviceport.h"
-#include "abstractchip.h"
 #include "boxdevice.h"
 #include "frame.h"
 #include <QIcon>
@@ -34,25 +33,7 @@ bool devicePort::isCompability(devicePort *one , devicePort *two)
     if ( one->isConnect() || two->isConnect() ) return false;
     return true;
 }
-
-macAddress devicePort::parentMac() const
-{
-    return myParentDev->mac();
-}
-
-void devicePort::sendFrame(frame *temp)
-{
-    myParentDev->addSend(1,0);
-    if ( !isConnect() ) delete temp;
-    myCable->input(temp,this);
-}
-
-void devicePort::receiveFrame(frame *temp)
-{
-    myParentDev->addRec(1,0);
-    myParentDev->receiveEvent(temp,this);
-}
-/**
+/*!
   Достает кадр из очереди и отправляет его.
 */
 void devicePort::queueEvent()
@@ -62,7 +43,7 @@ void devicePort::queueEvent()
     sendFrame(t);
 }
 //-----------------------------------------
-/**
+/*!
     Добавляет кадр в очередь на отправку.
     @param f - указатель на кадр подлежащий отправке.
 */
@@ -71,7 +52,7 @@ void devicePort::addToQueue(frame *f)
     myQueue.enqueue(f);
 }
 //----------------------------------------------------------------
-/**
+/*!
    Устанавливает статус соединения устройства. если устройство включено
    необходимо обязательно задать кабель вставленный в это устройство.
    @param cur - true если соединяем , false если отключаем.

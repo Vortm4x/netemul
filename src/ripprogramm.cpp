@@ -42,7 +42,6 @@ void ripProgramm::execute(ipPacket *p)
         d >> t->dest >> t->mask >> t->metric;
         qDebug() << t->dest.ipString() << " " << t->mask.ipString() << " " << t->metric+1;
         t->metric++;
-        qDebug() << "Prishlo ot: "<<  p->sender();
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
@@ -91,5 +90,24 @@ void ripProgramm::checkTable(routeRecord *r)
         }
     }
     sd->addToTable(r);
+}
+//---------------------------------------------------
+/*!
+  Записывает отличительные черты RIP в поток.
+  @param stream - поток для записи.
+*/
+void ripProgramm::write(QDataStream &stream) const
+{
+    stream << RIP;
+    programm::write(stream); // и вызываем функцию предка.
+}
+//---------------------------------------------------
+/*!
+  Считывает отличительные черты RIP из потока.
+  @param stream - поток для чтения.
+*/
+void ripProgramm::read(QDataStream &stream)
+{
+    programm::read(stream);
 }
 //---------------------------------------------------

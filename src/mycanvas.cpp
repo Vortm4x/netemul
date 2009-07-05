@@ -471,6 +471,13 @@ void myCanvas::openScene(QString fileName)
     int tp;
     QPointF p;
     QString str;
+    s >> str;
+    if ( str != QCoreApplication::applicationVersion() ) {
+        QMessageBox::critical(NULL,trUtf8("Ошибка"),trUtf8("Устаревшая версия файла сохранения. Файл не может быть открыт."),
+                              QMessageBox::Ok , QMessageBox::Ok );
+        closeFile();
+        return;
+    }
     device *item;
     int n,i;
     while ( !file.atEnd() && endDev ) {
@@ -512,6 +519,7 @@ void myCanvas::saveScene(QString fileName)
     }
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_2);
+    s << QCoreApplication::applicationVersion();
     foreach(device *i, myDevices)
         s << *i;
     s << noDev;

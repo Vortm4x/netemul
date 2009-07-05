@@ -4,7 +4,11 @@
 #include "ipaddress.h"
 #include "udppacket.h"
 #include "tcppacket.h"
-
+/*!
+  Реализует ip-пакет, так же как и в реальной сети содержит адрес отправителя, получателя,
+  тип протокола верхнего уровня и поле данных. Остальные папраметры реального пакета пока
+  не используются.
+*/
 class ipPacket
 {
 public:
@@ -20,11 +24,8 @@ public:
     bool isBroadcast(const QString str) const { return isBroadcast(ipAddress(str)); }
     void setBroadcast(const ipAddress mask);
     void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
-    ipPacket operator=(ipPacket other);
-    /*! Задать протокол верхнего уровня
-        @param u - идентификатор протокола(константы tcp или udp) */
+    ipPacket operator=(ipPacket &other);
     void setUpProtocol(qint8 u) { myUpProtocol = u; }
-    /*!  @return идентификатор протокола верхнего уровня. */
     qint8 upProtocol() const { return myUpProtocol; }
     void operator<<(tcpPacket &p);
     void operator>>(tcpPacket &p) const;
@@ -39,5 +40,85 @@ protected:
     friend QDataStream& operator<<(QDataStream &stream,const ipPacket &p);
     friend QDataStream& operator>>(QDataStream &stream,ipPacket &p);
 };
+//---------------------------------------------------------------------------
+/*!
+  Записывает ip-пакет в поток.
+  @param stream - поток для записи.
+  @param p - записываемый пакет.
+  @return ссылку на результирующий поток.
+*/
+inline QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
+{
+    stream << p.mySender;
+    stream << p.myReceiver;
+    stream << p.myUpProtocol;
+    stream << p.data;
+    return stream;
+}
+//--------------------------------------------------
+/*!
+  Извлекает ip-пакет из потока.
+  @param stream - поток для чтения.
+  @param p - извлекаемый пакет.
+  @return ссылку на результирующий поток.
+*/
+inline QDataStream& operator>>(QDataStream &stream,ipPacket &p)
+{
+    stream >> p.mySender;
+    stream >> p.myReceiver;
+    stream >> p.myUpProtocol;
+    stream >> p.data;
+    return stream;
+}
+//-------------------------------------------------------------
+/*!
+  Упаковывает в ip-пакет tcp-сегмент
+  @param p - tcp-сегмент.
+*/
+inline void ipPacket::operator<<( tcpPacket &p )
+{
+    QDataStream in( &data, QIODevice::WriteOnly );
+    in << p;
+}
+//------------------------------------------------------------
+/*!
+  Извлекает из ip-пакета tcp-сегмент
+  @param p - tcp-сегмент.
+*/
+inline void ipPacket::operator>>( tcpPacket &p ) const
+{
+    QDataStream out( data );
+    out >> p;
+}
+//-------------------------------------------------------------
+/*!
+  Упаковывает в ip-пакет udp-дейтаграмму
+  @param p - udp-дейтаграмма.
+*/
+inline void ipPacket::operator<<( udpPacket &p )
+{
+    QDataStream in( &data, QIODevice::WriteOnly );
+    in << p;
+}
+//-------------------------------------------------------------
+/*!
+  Извлекает из ip-пакета udp-дейтаграмму
+  @param p - udp-дейтаграмма.
+*/
+inline void ipPacket::operator>>( udpPacket &p ) const
+{
+    QDataStream out( data );
+    out >> p;
+}
+//------------------------------------------------------------
+/*!
+  Назначает пакету широковещательный адрес исходя из маски.
+  @param mask - Маска.
+*/
+inline void ipPacket::setBroadcast(const ipAddress mask)
+{
+    myReceiver = mySender | ~mask;
+}
+//---------------------------------------------------
 
 #endif // IPPACKET_H
