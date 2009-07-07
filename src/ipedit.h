@@ -15,7 +15,7 @@ Q_OBJECT
 public:
     ipEdit(QString str,QWidget *parent = 0);
     void setText(QString str);
-    ipAddress ipText() const;
+    ipAddress ipText() const { return ipAddress(text()); }
     QString text() const;
     void clear();
 public slots:

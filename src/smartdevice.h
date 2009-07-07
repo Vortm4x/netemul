@@ -10,7 +10,9 @@
 #include <QGraphicsScene>
 
 class programm;
-
+/*!
+  Запись таблицы маршрутизации.
+*/
 struct routeRecord {
     Q_DECLARE_TR_FUNCTIONS(routeRecord)
 public:
@@ -25,14 +27,19 @@ public:
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
 };
-
+//-----------------------------------------------------------------------
+/*!
+  Интелектуальное устройство, абстрактный класс объединяющий в себе
+  свойства компьютера и роутера.
+*/
 class smartDevice : public device
 {
 public:
     enum {  connectMode = 3 , staticMode = 4 , ripMode = 5 };
+    enum { addNet = 100 , delNet = 101 };
     enum { RIP = 50 };
     enum { UDP = 25 ,TCP = 26 };
-    smartDevice();
+    smartDevice() { myRouteMode = false; }
     ~smartDevice();
     interface* adapter(QString s);
     interface* ipToAdapter(ipAddress a);
@@ -43,11 +50,13 @@ public:
     void connectedNet(devicePort *p);
     ipAddress findInterfaceIp(ipAddress a);
     routeRecord* recordAt(const ipAddress a) const;
+    routeRecord* recordAt(const interface *p);
     programm* programmAt(const quint16 p) const;
     programm* programmAt(const QString n) const;
     void removeProgramm(programm *p);
     void installProgramm( programm *p) { myProgramms << p; }
     void updateArp(int u);
+    void sendInterrupt(int u);
     QList<routeRecord*>& routeTable() { return myRouteTable; }
     QList<programm*>& programms() { return myProgramms; }
     routeRecord* addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,
@@ -78,7 +87,7 @@ protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 };
-
+//-------------------------------------------------------------------
 inline bool operator<(const routeRecord &e1 , const routeRecord &e2)
 {
     if ( e1.mask != e2.mask ) return e1.mask < e2.mask;

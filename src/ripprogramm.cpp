@@ -40,11 +40,11 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        qDebug() << t->dest.ipString() << " " << t->mask.ipString() << " " << t->metric+1;
         t->metric++;
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
+        t->mode = smartDevice::ripMode;
         checkTable(t);
     }
     delete p;
@@ -57,8 +57,15 @@ void ripProgramm::sendRip()
 {
     QByteArray t;
     QDataStream d(&t , QIODevice::WriteOnly);
-    foreach ( routeRecord *i , sd->myRouteTable ) // Перебираем таблицу
-        d << i->dest << i->mask << i->metric; // Записываем нужное.
+    foreach ( routeRecord *i , sd->myRouteTable ) { // Перебираем таблицу
+        d << i->dest << i->mask;
+        if ( i->mode == smartDevice::ripMode ) i->time++;
+        if ( i->time == 6 ) {
+            sd->deleteFromTable(i);
+            d << qint8(15);
+        }
+        else d << i->metric;
+    }
     foreach ( devicePort *i , sd->mySockets )
         if ( i->isConnect() ) {
             ipPacket *p = new ipPacket; // Создаем новый пакет.
@@ -80,34 +87,38 @@ void ripProgramm::sendRip()
 */
 void ripProgramm::checkTable(routeRecord *r)
 {
-    foreach (routeRecord *i , sd->myRouteTable ) {
-        if ( i->mode == smartDevice::staticMode ) continue;
-        if ( i->dest == r->dest && i->mask == r->mask) {
-            if (i->metric <= r->metric) return;
-            sd->deleteFromTable(i);
-            sd->addToTable(r);
-            return;
-        }
+    routeRecord *i = sd->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
+    if ( !i ) { // Если её нет, добавляем эту и выходим.
+        sd->addToTable(r);
+        return;
     }
-    sd->addToTable(r);
+    if ( i->mode != smartDevice::ripMode ) return; // Если это не RIP запись выходим.
+    if ( i->metric > r->metric ) { // Если метрика этой записи меньше прищедшей
+        sd->deleteFromTable(i); // Добавляем лучшую.
+        sd->addToTable(r);
+        return;
+    }
+    if ( i->metric == r->metric ) { // Если равны значит сеть еще жива на том же расстоянии.
+        i->time = 0;
+        return;
+    }
+    if ( r->metric >= 16 ) sd->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
 }
 //---------------------------------------------------
 /*!
-  Записывает отличительные черты RIP в поток.
-  @param stream - поток для записи.
+  Обработчик программных прерываний от устройства.
+  @param u - номер прерывания.
 */
-void ripProgramm::write(QDataStream &stream) const
+void ripProgramm::interrupt(int u)
 {
-    stream << RIP;
-    programm::write(stream); // и вызываем функцию предка.
+    switch (u) {
+        case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
+        case smartDevice::delNet : // И когда удаляется тоже.
+            sendRip();
+            break;
+        default:
+            break;
+    }
 }
 //---------------------------------------------------
-/*!
-  Считывает отличительные черты RIP из потока.
-  @param stream - поток для чтения.
-*/
-void ripProgramm::read(QDataStream &stream)
-{
-    programm::read(stream);
-}
-//---------------------------------------------------
+

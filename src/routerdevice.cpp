@@ -9,9 +9,6 @@ routerDevice::routerDevice(int c)
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
-    ripProgramm *p = new ripProgramm(this);
-    p->setEnable(false);
-    installProgramm(p);
 }
 
 devicePort* routerDevice::addInterface(QString str,int t)
@@ -58,7 +55,7 @@ void routerDevice::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     painter->drawRoundedRect(temp,5,5); // Вывести край
     painter->drawPixmap(temp,QPixmap(":/im/images/router.png")); // И рисунок =)
     if ( isConnect() ) {
-        if ( myReady ) painter->setBrush(Qt::green) ;
+        if ( myReady == myCableList.count() ) painter->setBrush(Qt::green) ;
         else painter->setBrush(Qt::yellow);
     }
     else painter->setBrush(Qt::red);

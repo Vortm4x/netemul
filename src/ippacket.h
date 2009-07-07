@@ -15,6 +15,8 @@ public:
     /*! Используется для обозначения протокола верхнего уровня. */
     enum { udp = 0 , tcp = 1 };
     ipPacket();
+    ~ipPacket() { }
+    ipPacket(const ipPacket &other);
     ipPacket(ipAddress s,ipAddress r) { mySender = s ; myReceiver = r; }
     ipAddress sender() const { return mySender; }
     ipAddress receiver() const { return myReceiver; }
@@ -24,7 +26,7 @@ public:
     bool isBroadcast(const QString str) const { return isBroadcast(ipAddress(str)); }
     void setBroadcast(const ipAddress mask);
     void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
-    ipPacket operator=(ipPacket &other);
+    ipPacket& operator=(ipPacket &other);
     void setUpProtocol(qint8 u) { myUpProtocol = u; }
     qint8 upProtocol() const { return myUpProtocol; }
     void operator<<(tcpPacket &p);

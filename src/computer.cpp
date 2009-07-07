@@ -40,17 +40,11 @@ void computer::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->drawRoundedRect(temp,5,5); //Рисуем край нашего компьютера
     painter->drawPixmap(temp,QPixmap(":/im/images/laptop.png")); // Потом картинку
     if ( isConnect() ) {
-        if ( myReady ) painter->setBrush(Qt::green);
+        if ( myReady == myCableList.count() ) painter->setBrush(Qt::green);
         else painter->setBrush(Qt::yellow);
     }
     else painter->setBrush(Qt::red);
     painter->drawEllipse(-17,-17,6,6);
-}
-
-QPointF computer::getPointCable(QPointF otherDev)
-{
-    Q_UNUSED(otherDev);
-    return pos();
 }
 
 devicePort* computer::addInterface(QString str,int t)
@@ -63,17 +57,6 @@ devicePort* computer::addInterface(QString str,int t)
     tempPort->setName(str);
     addSocket(tempPort);
     return tempPort;
-}
-
-void computer::write(QDataStream &stream) const
-{
-    stream << compDev;
-    smartDevice::write(stream);
-}
-
-void computer::read(QDataStream &stream)
-{
-    smartDevice::read(stream);
 }
 
 void computer::dialog()

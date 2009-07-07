@@ -6,7 +6,9 @@
 #include <QDataStream>
 
 class devicePort;
-
+/*!
+  Реализует компьютер.
+*/
 class computer : public smartDevice
 {
     Q_DECLARE_TR_FUNCTIONS(computer)
@@ -18,15 +20,16 @@ public:
     computer(int c);
 
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
-    QPointF getPointCable(QPointF otherDev);
+    QPointF getPointCable(QPointF otherDev) {   Q_UNUSED(otherDev);
+                                                return pos(); }
 
     devicePort* addInterface(QString str,int t);
 
     void dialog();
     QString hasTable() const { return trUtf8("Таблица маршрутизации"); }
 protected:
-    void write(QDataStream &stream) const;
-    void read(QDataStream &stream);
+    void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}
+    void read(QDataStream &stream) { smartDevice::read(stream); }
 };
-
+//---------------------------------------------
 #endif // COMPUTER_H

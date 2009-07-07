@@ -9,7 +9,9 @@ class QComboBox;
 
 class ipEdit;
 class smartDevice;
-
+/*!
+  Реализует отображение таблицы маршрутизации.
+*/
 class routeEditor : public QDialog
 {
     Q_OBJECT
@@ -34,6 +36,8 @@ protected:
 public slots:
     void addRecord();
     void deleteRecord();
+    void checkSelection();
 };
+//--------------------------------------------------
 
 #endif // ROUTEEDITOR_H

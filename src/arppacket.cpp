@@ -1,6 +1,6 @@
 #include "arppacket.h"
 
-arpPacket::arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , int t)
+arpPacket::arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , quint8 t)
 {
     myReceiverMac = rm;
     mySenderMac = sm;
@@ -9,7 +9,7 @@ arpPacket::arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si
     myType = t;
 }
 
-arpPacket arpPacket::operator=(arpPacket other)
+arpPacket& arpPacket::operator=(arpPacket &other)
 {
     mySenderMac = other.mySenderMac;
     myReceiverMac = other.myReceiverMac;
@@ -18,35 +18,13 @@ arpPacket arpPacket::operator=(arpPacket other)
     myType = other.myType;
     return *this;
 }
-/*!
-  Записывает arp-пакет в поток.
-  @param stream - поток для записи.
-  @param p - пакет для записи.
-  @return обновленный поток.
-*/
-QDataStream& operator<<(QDataStream &stream,const arpPacket &p)
+
+arpPacket::arpPacket(const arpPacket &other)
 {
-    stream << p.myType;
-    stream << p.mySenderMac;
-    stream << p.myReceiverMac;
-    stream << p.mySenderIp;
-    stream << p.myReceiverIp;
-    return stream;
+    mySenderMac = other.mySenderMac;
+    myReceiverMac = other.myReceiverMac;
+    mySenderIp = other.mySenderIp;
+    myReceiverIp = other.myReceiverIp;
+    myType = other.myType;
 }
-//------------------------------------------------------------
-/*!
-  Извлекает arp-пакет из потока.
-  @param stream - поток для извлечения.
-  @param p - пакет в который извлекаем.
-  @return обновленный поток.
-*/
-QDataStream& operator>>(QDataStream &stream,arpPacket &p)
-{
-    stream >> p.myType;
-    stream >> p.mySenderMac;
-    stream >> p.myReceiverMac;
-    stream >> p.mySenderIp;
-    stream >> p.myReceiverIp;
-    return stream;
-}
-//--------------------------------------------------------------
+

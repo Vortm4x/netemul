@@ -4,13 +4,23 @@ ipPacket::ipPacket()
 {
 }
 
-ipPacket ipPacket::operator=(ipPacket &other)
+ipPacket& ipPacket::operator=(ipPacket &other)
 {
     mySender = other.mySender;
     myReceiver = other.myReceiver;
     data = other.data;
     return *this;
 }
+/*!
+  Копирующий конструктор класса.
+*/
+ipPacket::ipPacket(const ipPacket &other)
+{
+    mySender = other.mySender;
+    myReceiver = other.myReceiver;
+    data = other.data;
+}
+//--------------------------------------------------
 /*!
   Проверяет является ли пакет широковещательным.
   @param mask - маска сети, по которой идет проверка.

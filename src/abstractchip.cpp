@@ -10,32 +10,7 @@ abstractChip::abstractChip()
     myMask.setIp("0.0.0.0");
     resetStatics();
 }
-
-QDataStream& operator<<(QDataStream &stream,const abstractChip &chip)
-{
-    stream << chip.myType;
-    stream << chip.myMac;
-    stream << chip.myIp;
-    stream << chip.myMask;
-    stream << chip.myReceiveFrame;
-    stream << chip.mySendFrame;
-    stream << chip.myReceivePacket;
-    stream << chip.mySendPacket;
-    return stream;
-}
-
-QDataStream& operator>>(QDataStream &stream,abstractChip &chip)
-{
-    stream >> chip.myType;
-    stream >> chip.myMac;
-    stream >> chip.myIp;
-    stream >> chip.myMask;
-    stream >> chip.myReceiveFrame;
-    stream >> chip.mySendFrame;
-    stream >> chip.myReceivePacket;
-    stream >> chip.mySendPacket;
-    return stream;
-}
+//--------------------------------------------------------------
 /*!
   Сбрасывает всю статистику, накопленную этим устройством.
 */

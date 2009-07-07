@@ -5,21 +5,15 @@ macAddress::macAddress()
 {
 }
 
-macAddress::macAddress(const quint8 *cur)
-{
-    setMac(cur);
-}
-
 macAddress::macAddress(QString str)
 {
     setMac(str);
 }
 
-void macAddress::setMac(const quint8 *cur)
+macAddress::macAddress(const macAddress &other)
 {
-    int i;
-    for ( i = 0 ; i < 6 ; i++)
-        myMac[i] = cur[i];
+    for (int i = 0 ; i < 6 ; i ++)
+        myMac[i] = other.myMac[i];
 }
 
 QString macAddress::macString() const
@@ -33,11 +27,10 @@ QString macAddress::macString() const
     return temp.toUpper();
 }
 
-macAddress macAddress::operator=(macAddress other)
+macAddress& macAddress::operator=(const macAddress &other)
 {
-    int i;
-    for ( i = 0 ; i < 6 ; i ++)
-        this->myMac[i] = other.myMac[i];
+    for (int i = 0 ; i < 6 ; i ++)
+        myMac[i] = other.myMac[i];
     return (*this);
 }
 
@@ -55,8 +48,7 @@ macAddress macAddress::operator++()
 macAddress macAddress::operator++(int notused)
 {
     Q_UNUSED(notused);
-    macAddress temp;
-    temp.setMac(myMac);
+    macAddress temp = *this;
     int i = 5;
     while ( i >= 0 && myMac[i] == 255) {
         myMac[i] = 0;
@@ -96,20 +88,5 @@ void macAddress::setMac(QString str)
         myMac[i] = s.at(i).toInt(0,16);
 }
 
-QDataStream& operator<<(QDataStream &stream, const macAddress &address)
-{
-    int i;
-    for ( i = 0 ; i < 6 ; i++ ) stream << address.at(i);
-    return stream;
-}
-
-QDataStream& operator>>(QDataStream &stream, macAddress &address)
-{
-    int i;
-    quint8 t[6];
-    for ( i = 0 ; i < 6 ; i++ ) stream >> t[i];
-    address.setMac(t);
-    return stream;
-}
 
 

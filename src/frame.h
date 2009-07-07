@@ -15,11 +15,10 @@ public:
     enum { startToEnd = 0 , endToStart = 1 , arp = 100 , ip = 101 };
     void setPos(qreal temp) { myPos = temp; }
     qreal pos() { return myPos; }
-    /*! Возвращает направление движения пакета. */
     qint8 direct() const { return myDirect; }
-    /*! Задает напрваление движения пакета. */
     void setDirection(qint8 t) { myDirect = t; }
     frame();
+    frame(const frame &other);
     ~frame();
     frame operator=(frame &other);
     macAddress sender() const { return mySender; }

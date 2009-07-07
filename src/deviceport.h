@@ -33,12 +33,12 @@ public:
     void setParentDev(abstractChip *temp) { myParentDev = temp; }
     abstractChip* parentDev() const { return myParentDev; }
     macAddress parentMac() const;
-    void addToQueue(frame *f);
+    void addToQueue(frame *f) { myQueue.enqueue(f); }
     void sendFrame(frame *temp);
     void receiveFrame(frame *temp);
     void queueEvent();
     void setChecked(bool c) { myCable->setChecked(c); }
-    bool accupant(int u);
+    bool accupant(int u) { return myCable->accupant( u, this ); }
 private:
     QQueue<frame*> myQueue;
     cableDev *myCable;
@@ -64,5 +64,15 @@ inline void devicePort::receiveFrame(frame *temp)
 {
     myParentDev->addRec(1,0);
     myParentDev->receiveEvent(temp,this);
+}
+inline QDataStream& operator<<(QDataStream &stream,const devicePort &port)
+{
+    stream << port.name();
+    return stream;
+}
+inline QDataStream& operator>>(QDataStream &stream,devicePort &port)
+{
+    stream >> port.myName;
+    return stream;
 }
 #endif // DEVICEPORT_H

@@ -132,3 +132,15 @@ void routeEditor::correctSize()
         table->setColumnWidth(i,2*n/11);
     table->setColumnWidth(4,n/11);
 }
+/*!
+  Проверяет выделенное и при необходимости делает недоступной кнопку удалить.
+*/
+void routeEditor::checkSelection()
+{
+    if ( !table->selectedItems().isEmpty() && table->item( table->currentRow() , 5 )->text() != trUtf8("Подключена") ) {
+        btn_remove->setEnabled(true);
+        return;
+    }
+    btn_remove->setEnabled(false);
+}
+//------------------------------------------

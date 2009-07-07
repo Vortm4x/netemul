@@ -50,19 +50,10 @@ void devicePort::queueEvent()
 }
 //-----------------------------------------
 /*!
-    Добавляет кадр в очередь на отправку.
-    @param f - указатель на кадр подлежащий отправке.
-*/
-void devicePort::addToQueue(frame *f)
-{
-    myQueue.enqueue(f);
-}
-//----------------------------------------------------------------
-/*!
    Устанавливает статус соединения устройства. если устройство включено
    необходимо обязательно задать кабель вставленный в это устройство.
    @param cur - true если соединяем , false если отключаем.
-   @param cable - указатель на подсоединяемый кабельь.
+   @param cable - указатель на подсоединяемый кабель.
 */
 void devicePort::setConnect(bool cur,cableDev *cable)
 {
@@ -74,24 +65,6 @@ void devicePort::setConnect(bool cur,cableDev *cable)
         myQueue.clear();
     }
 }
-//-----------------------------------------------------------------
-/*!
-*/
-bool devicePort::accupant(int u)
-{
-    return myCable->accupant( u, this );
-}
-//----------------------------------------------------------------
-QDataStream& operator<<(QDataStream &stream,const devicePort &port)
-{
-    stream << port.name();
-    return stream;
-}
 
-QDataStream& operator>>(QDataStream &stream,devicePort &port)
-{
-    stream >> port.myName;
-    return stream;
-}
 
 

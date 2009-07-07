@@ -2,11 +2,6 @@
 #include "ripprogramm.h"
 #include <QtDebug>
 
-smartDevice::smartDevice()
-{
-    myRouteMode = false;
-}
-
 smartDevice::~smartDevice()
 {
     qDeleteAll(myRouteTable);
@@ -51,16 +46,15 @@ void smartDevice::deleteFromTable(int n)
     int v = 0;
     foreach ( routeRecord *i , myRouteTable )
         if ( v++ == n ) {
-            if ( i->mode == connectMode ) return;
-            myRouteTable.removeOne(i);
-            delete i;
-            qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
+            deleteFromTable(i);
             return;
         }
 }
 
 void smartDevice::deleteFromTable(routeRecord *r)
 {
+    r->metric = 16;
+    if ( r->mode == connectMode ) sendInterrupt(delNet);
     myRouteTable.removeOne(r);
     delete r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
@@ -107,6 +101,21 @@ routeRecord* smartDevice::recordAt(const ipAddress a) const
     return NULL;
 }
 //---------------------------------------------
+/*!
+  Находит запись в таблице с указанным портом.
+  @param p - указатель на порт.
+  @return указатель на запись или NULL если такой записи нет.
+*/
+routeRecord* smartDevice::recordAt(const interface *p)
+{
+    foreach ( routeRecord *i , myRouteTable )
+        if ( i->out == p ) return i;
+    return 0;
+}
+//-------------------------------------------------------
+/*!
+  @return строчка описывающая источник записи.
+*/
 QString routeRecord::modeString() const
 {
     switch ( mode ) {
@@ -116,16 +125,22 @@ QString routeRecord::modeString() const
     }
     return QString();
 }
-
-
+//----------------------------------------------------------------
+/*!
+  Вызывается при подключении или отключении сети от устройства, а также
+  при смене ip-адреса или маски подсети.
+  @param p - порт на котором произошло событие;
+*/
 void smartDevice::connectedNet(devicePort *p)
 {
-    bool add = true;
-    if ( !p->isConnect() ) add = false;
-    ipAddress o("0.0.0.0");
+    bool add = true; // Показывает происходит ли добавление.
+    if ( !p->isConnect() ) add = false; // Если порт отключают тогда удаление.
     ipAddress ip = p->parentDev()->ip();
     ipAddress mask = p->parentDev()->mask();
-    if ( ip == o || mask == o ) return;
+    if ( ip.isEmpty() || mask.isEmpty() ) { // Если ip и маска пустые
+        if ( routeRecord *t = recordAt(qobject_cast<interface*>(p->parentDev()) )) deleteFromTable(t);
+        return;
+    }
     ipAddress dest = mask & ip;
     foreach ( routeRecord *i , myRouteTable )
         if ( i->dest == dest && i->mask == mask ) {
@@ -136,7 +151,7 @@ void smartDevice::connectedNet(devicePort *p)
     myReady++;
     addToTable( dest , mask , ip , ip , 0 , 0 , connectMode );
 }
-
+//------------------------------------------------------------
 void smartDevice::addConnection(cableDev *cable)
 {
     device::addConnection(cable);
@@ -315,16 +330,6 @@ programm* smartDevice::programmAt(const QString n) const
 }
 //----------------------------------------------------
 /*!
-  Удаляет программу.
-  @param p - указатель на программу.
-*/
-void smartDevice::removeProgramm(programm *p)
-{
-    myProgramms.removeOne(p);
-    delete p;
-}
-//------------------------------------------------------
-/*!
   Вызывает тик таймера у всех работающих на устройстве программ.
 */
 void smartDevice::incTime()
@@ -348,3 +353,24 @@ ipAddress smartDevice::findInterfaceIp(ipAddress a)
     return ipAddress("0.0.0.0");
 }
 //------------------------------------------------------
+/*!
+  Удаляет программу.
+  @param p - указатель на программу.
+*/
+void smartDevice::removeProgramm(programm *p)
+{
+    myProgramms.removeOne(p);
+    delete p;
+}
+//------------------------------------------------------
+/*!
+  Посылает всем программам установленым на компьютере прерывание.
+  @param u - номер прерывания.
+*/
+void smartDevice::sendInterrupt(int u)
+{
+    foreach ( programm *i ,myProgramms )
+        if ( i->isEnable() ) i->interrupt(u);
+}
+//-------------------------------------------------------
+

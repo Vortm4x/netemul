@@ -58,23 +58,19 @@ QString ipEdit::text() const
     return s;
 }
 
-ipAddress ipEdit::ipText() const
-{
-    return ipAddress(text());
-}
-/**
+/*!
   Сбрасывает значения всех полей в 0.
-  */
+*/
 void ipEdit::clear()
 {
     for (int i = 0 ; i < 4 ; i++)
         part[i]->setText("0");
 }
 //---------------------------------------
-/**
+/*!
   Исходя из первого байта ip адреса выставляет маску по умолчанию для этого класса сетей.
   @param u- первый байт ip адреса.
-  */
+*/
 void ipEdit::setDefaultMask(quint8 u)
 {
     int n;
@@ -87,11 +83,11 @@ void ipEdit::setDefaultMask(quint8 u)
         part[i]->setText("255"); // И выствавим нужные нам в 255.
 }
 //----------------------------------------
-/**
+/*!
   Слот посылает сигнал о том что изменился первый октет ip адреса
   сигнал может быть перехвачен другим ipEdit и использован для задания маски через
   слот setDefaultMask.
- */
+*/
 void ipEdit::changeMask(QString s)
 {
     quint8 u = s.toInt();

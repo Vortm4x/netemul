@@ -24,7 +24,7 @@ public:
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
     ipAddress mask() const { return myMask; }
-    void setMac(const macAddress m) { myMac = m; }
+    void setMac(const macAddress &m) { myMac = m; }
     void setIp(const QString str) { myIp.setIp(str); }
     void setMask(const QString str) { myMask.setIp(str); }
 
@@ -59,5 +59,31 @@ protected:
     friend QDataStream& operator<<(QDataStream &stream,const abstractChip &chip);
     friend QDataStream& operator>>(QDataStream &stream,abstractChip &chip);
 };
+
+inline QDataStream& operator<<(QDataStream &stream,const abstractChip &chip)
+{
+    stream << chip.myType;
+    stream << chip.myMac;
+    stream << chip.myIp;
+    stream << chip.myMask;
+    stream << chip.myReceiveFrame;
+    stream << chip.mySendFrame;
+    stream << chip.myReceivePacket;
+    stream << chip.mySendPacket;
+    return stream;
+}
+
+inline QDataStream& operator>>(QDataStream &stream,abstractChip &chip)
+{
+    stream >> chip.myType;
+    stream >> chip.myMac;
+    stream >> chip.myIp;
+    stream >> chip.myMask;
+    stream >> chip.myReceiveFrame;
+    stream >> chip.mySendFrame;
+    stream >> chip.myReceivePacket;
+    stream >> chip.mySendPacket;
+    return stream;
+}
 
 #endif // ABSTRACTCHIP_H
