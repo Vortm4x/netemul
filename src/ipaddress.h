@@ -27,7 +27,13 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream, ipAddress &address);
     friend QDataStream& operator<<(QDataStream &stream, const ipAddress &address);
 };
-
+inline unsigned int ipAddress::toInt() const
+{
+    unsigned int d = 0;
+    for ( int i = 0 ; i < 4 ; i++ )
+        d += myIp[i] << (8*(3-i));
+    return d;
+}
 inline bool operator<(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() < e2.toInt(); }
 inline bool operator>(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() > e2.toInt(); }
 inline bool operator<=(const ipAddress &e1 , const ipAddress &e2) { return !(e1.toInt() > e2.toInt()); }

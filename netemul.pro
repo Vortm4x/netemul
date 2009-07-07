@@ -111,3 +111,7 @@ SOURCES += src/abstractchip.cpp \
     src/programmdialog.cpp \
     src/installdialog.cpp
 RESOURCES += netemul.qrc
+QMAKE_CXXFLAGS_DEBUG = -pg
+QMAKE_CXXFLAGS_RELEASE = -pg
+QMAKE_LFLAGS_RELEASE += -pg
+QMAKE_LFLAGS_DEBUG += -pg

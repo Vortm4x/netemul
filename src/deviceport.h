@@ -44,7 +44,7 @@ private:
     cableDev *myCable;
     bool myConnect;
     bool myBusy;
-    int myTimer;
+   // int myTimer;
     QString myName;
     abstractChip *myParentDev;
 protected:
@@ -57,7 +57,6 @@ inline macAddress devicePort::parentMac() const { return myParentDev->mac(); }
 inline void devicePort::sendFrame(frame *temp)
 {
     myParentDev->addSend(1,0);
-    if ( !isConnect() ) delete temp;
     myCable->input(temp,this);
 }
 inline void devicePort::receiveFrame(frame *temp)

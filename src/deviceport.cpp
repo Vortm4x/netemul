@@ -10,12 +10,12 @@ devicePort::devicePort()
     myConnect = false;
     myBusy = false;
     myCable = 0;
-    myTimer = 0;
+    //myTimer = 0;
 }
 
 devicePort::~devicePort()
 {
-    if ( myTimer ) { killTimer(myTimer); myTimer = 0; }
+    //if ( myTimer ) { killTimer(myTimer); myTimer = 0; }
     qDeleteAll(myQueue);
     myQueue.clear();
 }

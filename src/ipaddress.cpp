@@ -70,14 +70,6 @@ ipAddress ipAddress::operator |(const ipAddress &e1) const
     return e3;
 }
 
-unsigned int ipAddress::toInt() const
-{
-    unsigned int d = 0;
-    for ( int i = 0 ; i < 4 ; i++ )
-        d += myIp[i] << (8*(3-i));
-    return d;
-}
-
 bool ipAddress::isEmpty() const
 {
     int i,d = 0;
