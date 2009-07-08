@@ -63,12 +63,14 @@ HEADERS += src/abstractchip.h \
     src/tcppacket.h \
     src/ripprogramm.h \
     src/programmdialog.h \
-    src/installdialog.h
+    src/installdialog.h \
+    src/mainproperty.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui \
     ui/programmdialog.ui \
-    ui/installdialog.ui
+    ui/installdialog.ui \
+    src/mainproperty.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \
@@ -109,9 +111,8 @@ SOURCES += src/abstractchip.cpp \
     src/tcppacket.cpp \
     src/ripprogramm.cpp \
     src/programmdialog.cpp \
-    src/installdialog.cpp
+    src/installdialog.cpp \
+    src/mainproperty.cpp
 RESOURCES += netemul.qrc
-QMAKE_CXXFLAGS_DEBUG = -pg
-QMAKE_CXXFLAGS_RELEASE = -pg
-QMAKE_LFLAGS_RELEASE += -pg
+QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg

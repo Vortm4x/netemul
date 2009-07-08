@@ -29,10 +29,7 @@ protected:
 };
 inline unsigned int ipAddress::toInt() const
 {
-    unsigned int d = 0;
-    for ( int i = 0 ; i < 4 ; i++ )
-        d += myIp[i] << (8*(3-i));
-    return d;
+    return ( (myIp[0] << 24) + (myIp[1] << 16) + (myIp[2] << 8) +myIp[3]);
 }
 inline bool operator<(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() < e2.toInt(); }
 inline bool operator>(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() > e2.toInt(); }
