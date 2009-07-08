@@ -63,6 +63,7 @@ void switchDevice::receiveEvent(frame *fr,devicePort *sender)
     foreach ( macRecord *i , mySwitchTable )
         if ( i->mac == fr->receiver() ) {
             if ( i->port->isConnect() && i->port != sender ) {
+                    i->time = 0;
                     i->port->addToQueue(fr);
             }
             return;

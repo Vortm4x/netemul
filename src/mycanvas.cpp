@@ -190,8 +190,8 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     devicePort *ts = s->socket(sp);
     devicePort *te = e->socket(ep);
     cableDev *cable = new cableDev(s, e, ts, te); // Создаем между ними кабель
-    s->update(s->boundingRect());
-    e->update(e->boundingRect());
+    s->update();
+    e->update();
     cable->setZValue(-1000.0); // Кидаем его на самый-самый задний план
     addItem(cable); // И добавляем его на сцену =)
     ts->setConnect(true,cable);

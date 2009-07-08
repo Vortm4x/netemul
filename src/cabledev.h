@@ -7,9 +7,6 @@ class device;
 class devicePort;
 class frame;
 
-//
-// Этот класс содержит кабеля которыми мы соединяем устройства
-//
 class cableDev : public QObject, public QGraphicsLineItem
 {
 public:

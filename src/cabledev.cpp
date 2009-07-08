@@ -78,13 +78,10 @@ void cableDev::motion()
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
        foreach ( frame *temp , myFrames ) {
-            if ( temp->direct() == frame::startToEnd ) {
-                temp->setPos( temp->pos() + speed);
-                if ( temp->pos() >= 1 ) output(temp);
-            } else {
-                temp->setPos( temp->pos() - speed);
-                if ( temp->pos() <= 0 ) output(temp);
-            }
+            temp->setPos( temp->pos() + temp->direct()*speed);
+            qreal p = temp->pos();
+            if ( p >= 1 ) output(temp);
+            else if ( p <= 0 ) output(temp);
         }
        update();
 }

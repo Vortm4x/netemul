@@ -84,7 +84,7 @@ void smartDevice::routePacket(ipPacket *p)
         delete p;
         return;
     }
-    ipAddress gw("0.0.0.0");
+    ipAddress gw;
     if ( t->out->ip() != t->gateway ) gw = t->gateway;
     t->out->sendPacket(p,gw);
 }
@@ -94,7 +94,7 @@ void smartDevice::routePacket(ipPacket *p)
   @param a - адрес назначения.
   @return указатель на запись, если такой записи нет то NULL.
 */
-routeRecord* smartDevice::recordAt(const ipAddress a) const
+routeRecord* smartDevice::recordAt(const ipAddress &a) const
 {
     foreach ( routeRecord *i , myRouteTable )
         if ( i->dest == ( a & i->mask ) ) return i;
@@ -240,14 +240,14 @@ void smartDevice::setGateway(const QString str)
         }
     ipAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) return;
-    addToTable(ipAddress("0.0.0.0"),ipAddress("0.0.0.0"),t,a,0,0,staticMode);
+    addToTable(ipAddress(),ipAddress(),t,a,0,0,staticMode);
 }
 //--------------------------------------------------------------
 ipAddress smartDevice::gateway() const
 {
     foreach ( routeRecord *i , myRouteTable )
         if ( i->mask.isEmpty() && i->dest.isEmpty() ) return i->gateway;
-    return ipAddress("0.0.0.0");
+    return ipAddress();
 }
 /*!
   Отправляет сообщение посланное из интерфейса программы.
@@ -258,7 +258,7 @@ ipAddress smartDevice::gateway() const
 void smartDevice::sendMessage(ipAddress dest , int size , int pr)
 {
     Q_UNUSED(pr);
-    ipAddress gw("0.0.0.0");
+    ipAddress gw;
     routeRecord *r = recordAt(dest);
     if ( !r ) return;
     if ( r->gateway != r->out->ip() ) gw = r->gateway;

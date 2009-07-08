@@ -3,6 +3,7 @@
 
 ipAddress::ipAddress()
 {
+    for ( int i = 0 ; i < 4 ; i++ ) myIp[i] = 0;
 }
 
 ipAddress::ipAddress(const quint8 *cur)

@@ -19,6 +19,7 @@ public:
     macAddress& operator=(const macAddress &other);
     void setBroadcast();
     bool isBroadcast();
+    qulonglong toInt() const;
 private:
     quint8 myMac[6];
 protected:
@@ -26,10 +27,15 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream, macAddress &address);
 };
 
-inline bool operator<(const macAddress &e1 , const macAddress &e2) { return e1.macString() < e2.macString(); }
-inline bool operator>(const macAddress &e1 , const macAddress &e2) { return e1.macString() > e2.macString(); }
-inline bool operator==(const macAddress &e1 , const macAddress &e2) { return e1.macString() == e2.macString(); }
-inline bool operator!=(const macAddress &e1, const macAddress &e2) { return !(e1 == e2) ; }
+inline qulonglong macAddress::toInt() const
+{
+    return ((qulonglong)myMac[0]<<40)+((qulonglong)myMac[1]<<32)+((qulonglong)myMac[2]<<24)+
+            ((qulonglong)myMac[3]<<16)+((qulonglong)myMac[4]<<8)+(qulonglong)myMac[5];
+}
+inline bool operator<(const macAddress &e1 , const macAddress &e2) { return e1.toInt() < e2.toInt(); }
+inline bool operator>(const macAddress &e1 , const macAddress &e2) { return e1.toInt() > e2.toInt(); }
+inline bool operator==(const macAddress &e1 , const macAddress &e2) { return e1.toInt() == e2.toInt(); }
+inline bool operator!=(const macAddress &e1, const macAddress &e2) { return !(e1 == e2); }
 inline bool operator>=(const macAddress &e1 , const macAddress &e2) { return !(e1 < e2); }
 inline bool operator<=(const macAddress &e1 , const macAddress &e2) { return !(e1 > e2); }
 

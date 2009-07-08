@@ -10,12 +10,10 @@ devicePort::devicePort()
     myConnect = false;
     myBusy = false;
     myCable = 0;
-    //myTimer = 0;
 }
 
 devicePort::~devicePort()
 {
-    //if ( myTimer ) { killTimer(myTimer); myTimer = 0; }
     qDeleteAll(myQueue);
     myQueue.clear();
 }
@@ -38,13 +36,12 @@ bool devicePort::isCompability(devicePort *one , devicePort *two)
 */
 void devicePort::queueEvent()
 {
+    if ( myQueue.isEmpty() ) { myBusy = false; return; }
     // BUILDING !!!
-    if ( !myCable->model() && !myBusy ) {
-        if ( !accupant(1) ) return;
+    if ( !myBusy && !myCable->model() ) {
+        if ( !(myBusy = accupant(1)) ) return;
     }
     // REFAKTORING LATER
-    if ( myQueue.isEmpty() ) { myBusy = false; return; }
-    myBusy = true;
     frame *t = myQueue.dequeue();
     sendFrame(t);
 }

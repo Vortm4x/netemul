@@ -52,7 +52,7 @@ void device::setCheckedSocket(const QString s)
 void device::sendEvent()
 {
     foreach ( devicePort *i , mySockets)
-        if ( i->isConnect() ) i->queueEvent();
+         i->queueEvent();
 }
 //----------------------------------------------------------------
 /*!

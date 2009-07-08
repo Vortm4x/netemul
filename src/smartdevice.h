@@ -49,7 +49,7 @@ public:
     void routePacket(ipPacket *p);
     void connectedNet(devicePort *p);
     ipAddress findInterfaceIp(ipAddress a);
-    routeRecord* recordAt(const ipAddress a) const;
+    routeRecord* recordAt(const ipAddress &a) const;
     routeRecord* recordAt(const interface *p);
     programm* programmAt(const quint16 p) const;
     programm* programmAt(const QString n) const;
