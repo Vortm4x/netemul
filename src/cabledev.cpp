@@ -1,9 +1,5 @@
 #include "cabledev.h"
 #include "device.h"
-#include "frame.h"
-#include <QPainter>
-#include <QtDebug>
-#include <QTextItem>
 
 cableDev::cableDev(device *start,device *end,devicePort* startInter, devicePort* endInter,int s)
 {
@@ -21,10 +17,12 @@ cableDev::cableDev(device *start,device *end,devicePort* startInter, devicePort*
 
 cableDev::~cableDev()
 {
-    qDeleteAll(myFrames);
-    myFrames.clear();
+    qDeleteAll(myStreams);
+    myStreams.clear();
 }
-
+/*!
+  Отрисовывает кабель.
+*/
 void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
 {
     Q_UNUSED(option);
@@ -36,12 +34,12 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
                  myEndDev->getPointCable(myStartDev->pos()));
     setLine(centerLine); // И мы её и ставим
     painter->drawLine(line()); // А потом рисуем заново
-    foreach ( frame *temp , myFrames ) {
-        painter->setPen(QPen(temp->color(),4));
-        painter->drawPoint( line().pointAt( temp->pos() ) );
+    foreach ( bitStream *i , myStreams ) {
+        painter->setPen(QPen( i->color ,4));
+        painter->drawPoint( line().pointAt( i->pos ) );
     }
 }
-
+//--------------------------------------------------------------------
 void cableDev::updatePosition()
 {
     QLineF line(myStartDev->getPointCable(myEndDev->pos()),
@@ -49,42 +47,54 @@ void cableDev::updatePosition()
     setLine(line);
     update(boundingRect());
 }
-
-void cableDev::input(frame *fr,devicePort *cur)
+/*!
+  Принимает кадр от устройства отправителя и начинает его транспартировку.
+  @param b - поток байт(уже в таком виде нам передается кадр).
+  @param cur - устройство отправитель( для определения откуда начинаем рисовать ).
+*/
+void cableDev::input(QByteArray &b,devicePort *cur )
 {
+    bitStream *t = new bitStream;
+    t->color = Qt::red;
+    t->data = b;
     if ( cur == myStartPort ) {
-        fr->setDirection(frame::startToEnd);
-        fr->setPos(0);
+        t->direct = startToEnd;
+        t->pos = 0;
     } else {
-        fr->setDirection(frame::endToStart);
-        fr->setPos(1);
+        t->direct = endToStart;
+        t->pos = 1;
     }
-    addFrame(fr);
+    myStreams << t;
 }
-
-void cableDev::output(frame *fr)
+//---------------------------------------------------------
+/*!
+  Передает поток бит устройству получателю.
+  @param t - указатель на поток.
+*/
+void cableDev::output(bitStream *t)
 {
-    if ( fr->direct() == frame::startToEnd ) {
-        endPort()->receiveFrame(fr);
-    } else {
-        startPort()->receiveFrame(fr);
-    }
-    removeFrame(fr);
+    if ( t->direct == startToEnd )
+        endPort()->receiveFrame( t->data );
+    else
+        startPort()->receiveFrame( t->data );
+    myStreams.removeOne(t);
+    delete t;
 }
-
+//------------------------------------------------------------
+/*!
+  Перемещает все кадры на проводе на один шаг в нужном направлении.
+*/
 void cableDev::motion()
 {
-       if ( myFrames.isEmpty() ) return;
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
-       foreach ( frame *temp , myFrames ) {
-            temp->setPos( temp->pos() + temp->direct()*speed);
-            qreal p = temp->pos();
-            if ( p >= 1 ) output(temp);
-            else if ( p <= 0 ) output(temp);
+       foreach ( bitStream *i , myStreams ) {
+            i->pos = i->pos + i->direct*speed;
+            if ( i->pos >= 1 || i->pos <= 0) output(i);
         }
        update();
 }
+//-----------------------------------------------------------
 /*!
 
 */

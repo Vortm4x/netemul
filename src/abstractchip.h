@@ -30,7 +30,7 @@ public:
 
     QString macString() { return myMac.macString(); }
 
-    virtual void receiveEvent( frame *fr ,devicePort *sender) = 0;
+    virtual void receiveEvent( frame *f ,devicePort *sender) = 0;
 
     quint64 countRecFrame() { return myReceiveFrame; }
     quint64 countRecPacket() { return myReceivePacket; }

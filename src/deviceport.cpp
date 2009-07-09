@@ -62,6 +62,19 @@ void devicePort::setConnect(bool cur,cableDev *cable)
         myQueue.clear();
     }
 }
+/*!
+  Отправляет кадр в сеть.
+  @param t - указатель на кадр.
+*/
+void devicePort::sendFrame(frame *t )
+{
+    myParentDev->addSend(1,0);
+    QByteArray b;
+    QDataStream s( &b , QIODevice::WriteOnly );
+    s << *t;
+    myCable->input(b,this);
+}
+//-----------------------------------------------
 
 
 

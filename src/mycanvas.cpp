@@ -533,6 +533,9 @@ void myCanvas::saveScene(QString fileName)
     qDebug() << QString("Scene was been saved in %1").arg(fileName) ;
 }
 //-------------------------------------------------------------------------
+/*!
+  Нажатие клавиши. / Пока только пробела.
+*/
 void myCanvas::keyPressEvent(QKeyEvent *event)
 {
     if ( sceneRect().size().width() < 1000 ) return;
@@ -541,7 +544,8 @@ void myCanvas::keyPressEvent(QKeyEvent *event)
     }
     event->accept();
 }
-/**
+//-------------------------------------------------------------------------
+/*!
   Событие таймера сцены выполняет очень много функций, так много что необходимо
   разнести из по разным потокам, но не сейчас. Происходят следующие действия:
   обновление arp,mac, rip таблиц и сдвиг пакетов на кабелях.
@@ -570,7 +574,7 @@ void myCanvas::timerEvent(QTimerEvent *e)
 void myCanvas::motionFrame()
 {
     foreach ( cableDev *t , connections)
-            t->motion();     
+            if ( t->isBusy() ) t->motion();
 }
 
 void myCanvas::whileMotion()

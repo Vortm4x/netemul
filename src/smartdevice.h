@@ -37,14 +37,14 @@ class smartDevice : public device
 {
 public:
     /*! Источники записи таблицы маршрутизации. */
-    enum {  connectMode = 3 , staticMode = 4 , ripMode = 5 };
+    enum { connectMode = 3 , staticMode = 4 , ripMode = 5 };
     enum { addNet = 100 , delNet = 101 };
     enum { RIP = 50 };
     enum { UDP = 25 ,TCP = 26 };
     /*! Значения для флага записи из таблицы маршрутизации. */
     enum { changed = 0 , noChanged = 1 };
     smartDevice() { myRouteMode = false; }
-    ~smartDevice();
+    virtual ~smartDevice();
     interface* adapter(QString s);
     interface* ipToAdapter(ipAddress a);
     void sendMessage(ipAddress dest, int size , int pr);

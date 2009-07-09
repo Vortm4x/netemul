@@ -2,15 +2,23 @@
 #define CABLEDEV_H
 
 #include <QGraphicsLineItem>
+#include <QPainter>
 
 class device;
 class devicePort;
-class frame;
+
+struct bitStream {
+    QByteArray data;
+    QBrush color;
+    qreal pos;
+    qint8 direct;
+};
 
 class cableDev : public QObject, public QGraphicsLineItem
 {
 public:
     enum { Type = UserType + 1 , hub = UserType + 7 };
+    enum { startToEnd = 1 , endToStart = -1 };
     int type() const { return Type; }
     QRectF boundingRect() const {
         return QRectF(line().p1(),line().p2()).normalized().adjusted(-5,-5,5,5);
@@ -19,24 +27,21 @@ public:
     ~cableDev();
     void updatePosition(); // Обновление прорисовки
     void motion();
-    bool isBusy() const { return myFrames.count() > 0 ; }
+    bool isBusy() const { return myStreams.count(); }
     device* start() { return myStartDev; }
     device* end() { return myEndDev; }
     devicePort* startPort() { return myStartPort; }
     devicePort* endPort() { return myEndPort; }
-    void addFrame(frame *fr) {  myFrames << fr;  }
-    void removeFrame(frame *fr) { myFrames.removeOne(fr); }
-    QList<frame*> frames() { return myFrames; }
     int model() const { return myModel; }
-    void input(frame *fr,devicePort *cur);
-    void output(frame *fr);
+    void input(QByteArray &b,devicePort *cur);
+    void output(bitStream *t);
     void setChecked(bool c) { myChecked = c; update(boundingRect()); }
     bool isChecked() const { return myChecked; }
     bool accupant(int u, devicePort *d);
 private:
     bool myChecked;
     int myModel;
-    QList<frame*> myFrames;
+    QList<bitStream*> myStreams;
     device *myStartDev; //!< Указатель на устройтсво начала.
     device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;

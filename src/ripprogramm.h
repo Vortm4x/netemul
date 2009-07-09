@@ -13,7 +13,7 @@ class ipPacket;
 class ripProgramm : public programm
 {
 public:
-    enum { defaultTtl = 30 , RIP = 50 };
+    enum { defaultTtl = 30 , RIP = 50 , infinity = 16 };
     ripProgramm(smartDevice *d);
     void execute(ipPacket *p);
     void checkTable( routeRecord *r );

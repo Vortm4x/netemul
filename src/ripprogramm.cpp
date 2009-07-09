@@ -40,11 +40,17 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        if (t->metric < 16) t->metric++;
+        if ( t->metric < 0 || t->metric > 16 ) {
+            qDebug() << "1";
+            delete t;
+            continue;
+        }
+        t->metric = qMin( t->metric+1 , 16 );
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
         t->mode = smartDevice::ripMode;
+        t->change = smartDevice::noChanged;
         checkTable(t);
     }
     delete p;

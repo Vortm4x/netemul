@@ -32,10 +32,10 @@ public:
     QString name() const  { return myName; }
     void setParentDev(abstractChip *temp) { myParentDev = temp; }
     abstractChip* parentDev() const { return myParentDev; }
-    macAddress parentMac() const;
+    macAddress parentMac() const { return myParentDev->mac(); }
     void addToQueue(frame *f) { myQueue.enqueue(f); }
-    void sendFrame(frame *temp);
-    void receiveFrame(frame *temp);
+    void sendFrame(frame *t);
+    void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c) { myCable->setChecked(c); }
     bool accupant(int u) { return myCable->accupant( u, this ); }
@@ -52,17 +52,13 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream,devicePort &port);
 };
 //------------------------------------------------------
-
-inline macAddress devicePort::parentMac() const { return myParentDev->mac(); }
-inline void devicePort::sendFrame(frame *temp)
+inline void devicePort::receiveFrame(QByteArray &b)
 {
-    myParentDev->addSend(1,0);
-    myCable->input(temp,this);
-}
-inline void devicePort::receiveFrame(frame *temp)
-{
+    QDataStream s(b);
+    frame *f = new frame;
+    s >> *f;
     myParentDev->addRec(1,0);
-    myParentDev->receiveEvent(temp,this);
+    myParentDev->receiveEvent(f,this);
 }
 inline QDataStream& operator<<(QDataStream &stream,const devicePort &port)
 {

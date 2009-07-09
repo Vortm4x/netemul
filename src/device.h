@@ -19,7 +19,7 @@ class device : public QGraphicsItem
 public:
     enum sizeDevices { rectDevX = -20 , rectDevY = -20 , rectDevWidth = 40 , rectDevHeight = 40 };
     device();
-    ~device();
+    virtual ~device();
     QRectF boundingRect() const {
         return QRectF(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
     }
