@@ -10,8 +10,7 @@ computer::computer(int c)
     count = 0;
     for ( int i = 0 ; i < c ; i++)
         addInterface(QString("eth%1").arg(count++) , interface::ethernet100 );
-    addToTable(ipAddress("127.0.0.0"),ipAddress("255.0.0.0"),ipAddress("127.0.0.1"),ipAddress("127.0.0.1"),0,0,
-               connectMode);
+    addToTable(tr("127.0.0.0"),tr("255.0.0.0"),tr("127.0.0.1"),tr("127.0.0.1"),0,connectMode);
 }
 
 void computer::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)

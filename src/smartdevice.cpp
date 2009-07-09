@@ -14,26 +14,36 @@ interface* smartDevice::adapter(QString s)
         if ( i->name() == s ) return qobject_cast<interface*>(i->parentDev());
     return NULL;
 }
-
-routeRecord* smartDevice::addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,int time,qint8 metr,int mode)
+/*!
+  Добавляет в таблицу маршрутизации новую запись.
+  @param d - сеть назначения.
+  @param m - маска сети.
+  @param g - адрес следующего маршрутизатора.
+  @param o - интерфейс с которого отправляем.
+  @param metr - метрика
+  @param mode - источник записи.
+  @return указатель на новую запись
+*/
+routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode)
 {
     routeRecord *r = new routeRecord;
     r->out = NULL;
-    r->dest = dest;
-    r->mask = mask;
+    r->dest = d;
+    r->mask = m;
     r->metric = metr;
-    r->gateway = gateway;
+    r->gateway = g;
     r->mode = mode;
-    r->time = time;
-    if ( out != ipAddress("127.0.0.1") ) {
-        r->out = ipToAdapter(out);
+    r->time = 0;
+    r->change = noChanged;
+    if ( o != ipAddress("127.0.0.1") ) {
+        r->out = ipToAdapter(o);
         if ( !r->out ) {delete r; return NULL; }
     }
     myRouteTable << r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
     return r;
 }
-
+//----------------------------------------------------------------
 routeRecord* smartDevice::addToTable(routeRecord *r)
 {
     myRouteTable << r;
@@ -81,6 +91,10 @@ void smartDevice::routePacket(ipPacket *p)
     if ( !myRouteMode ) return; // Выходим если нет маршрутизации.
     routeRecord *t = recordAt(p->receiver());
     if ( !t ) {
+        delete p;
+        return;
+    }
+    if ( t->change == changed )  {
         delete p;
         return;
     }
@@ -149,7 +163,7 @@ void smartDevice::connectedNet(devicePort *p)
             if ( add ) break ; else { myReady--; return; }
         }
     myReady++;
-    addToTable( dest , mask , ip , ip , 0 , 0 , connectMode );
+    addToTable( dest , mask , ip , ip , 0 , connectMode );
 }
 //------------------------------------------------------------
 void smartDevice::addConnection(cableDev *cable)
@@ -240,7 +254,7 @@ void smartDevice::setGateway(const QString str)
         }
     ipAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) return;
-    addToTable(ipAddress(),ipAddress(),t,a,0,0,staticMode);
+    addToTable(ipAddress(),ipAddress(),t,a,0,staticMode);
 }
 //--------------------------------------------------------------
 ipAddress smartDevice::gateway() const

@@ -40,7 +40,7 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        t->metric++;
+        if (t->metric < 16) t->metric++;
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
@@ -62,7 +62,7 @@ void ripProgramm::sendRip()
         if ( i->mode == smartDevice::ripMode ) i->time++;
         if ( i->time == 6 ) {
             sd->deleteFromTable(i);
-            d << qint8(15);
+            d << qint8(16);
         }
         else d << i->metric;
     }

@@ -23,6 +23,7 @@ public:
     int time;
     qint8 metric;
     int mode;
+    quint8 change; //!< Флаг показывающий изменена запись или нет.
     QString modeString() const;
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
@@ -35,10 +36,13 @@ public:
 class smartDevice : public device
 {
 public:
+    /*! Источники записи таблицы маршрутизации. */
     enum {  connectMode = 3 , staticMode = 4 , ripMode = 5 };
     enum { addNet = 100 , delNet = 101 };
     enum { RIP = 50 };
     enum { UDP = 25 ,TCP = 26 };
+    /*! Значения для флага записи из таблицы маршрутизации. */
+    enum { changed = 0 , noChanged = 1 };
     smartDevice() { myRouteMode = false; }
     ~smartDevice();
     interface* adapter(QString s);
@@ -59,8 +63,7 @@ public:
     void sendInterrupt(int u);
     QList<routeRecord*>& routeTable() { return myRouteTable; }
     QList<programm*>& programms() { return myProgramms; }
-    routeRecord* addToTable(ipAddress dest,ipAddress mask,ipAddress gateway,ipAddress out,
-                            int time,qint8 metr = 0 ,int mode = staticMode);
+    routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r);

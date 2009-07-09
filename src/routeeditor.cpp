@@ -12,6 +12,10 @@ routeEditor::routeEditor()
 {
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableWidget(1,6);
+    QStringList head;
+    head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
+            << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
+    table->setHorizontalHeaderLabels(head);
     table->setSelectionBehavior( QAbstractItemView::SelectRows );
     table->setMinimumSize( QSize(700,200) );
     all->addWidget(table);
@@ -55,7 +59,7 @@ routeEditor::routeEditor()
     all->addLayout(lay);
 
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
-
+    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()) );
     setLayout(all);
 }
 
@@ -70,13 +74,11 @@ void routeEditor::setDevice(smartDevice *s)
 void routeEditor::updateTable()
 {
     int n = 1;
-    table->clear();
-    QStringList head;
-    head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
-            << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
-    table->setHorizontalHeaderLabels(head);
-    table->setRowCount( dev->myRouteTable.count() );
+    table->clearContents();
+    table->setRowCount(0);
     foreach ( routeRecord *i , dev->myRouteTable ) {
+        if ( i->change == smartDevice::changed ) continue;
+        table->insertRow(n-1);
         QTableWidgetItem *temp = new QTableWidgetItem( i->dest.ipString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,0,temp);
@@ -109,7 +111,8 @@ void routeEditor::resizeEvent(QResizeEvent *e)
 
 void routeEditor::addRecord()
 {
-    dev->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() ,0 , sp_metr->value() );
+    dev->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() , sp_metr->value(),
+                     smartDevice::staticMode );
     ip_dest->clear();
     ip_mask->clear();
     ip_gateway->clear();
