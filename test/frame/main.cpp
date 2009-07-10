@@ -1,6 +1,5 @@
 #include "../../src/frame.h"
 #include <QtTest>
-#include <QBrush>
 
 class TestFrame : public QObject
 {

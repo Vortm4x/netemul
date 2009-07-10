@@ -16,3 +16,4 @@ HEADERS += ../../src/frame.h \
 TARGET = frame
 TEMPLATE = app
 QT += testlib
+QT -= gui

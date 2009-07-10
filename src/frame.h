@@ -28,8 +28,8 @@ public:
     void operator<<(ipPacket &p);
     void operator>>(ipPacket &p) const;
 private:
-    macAddress mySender;
-    macAddress myReceiver;
+    macAddress mySender; //!< Mac-адрес отправителя
+    macAddress myReceiver; //!< Mac-адрес получателя
     qint8 myType; //!< Показывает несет ли в себе кадр ip-пакет или arp сообщение.
     QByteArray data; //!< Данные протокола более высокого уровня.
 protected:

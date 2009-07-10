@@ -35,7 +35,7 @@ public:
     int model() const { return myModel; }
     void input(QByteArray &b,devicePort *cur);
     void output(bitStream *t);
-    void setChecked(bool c) { myChecked = c; update(boundingRect()); }
+    void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
     bool accupant(int u, devicePort *d);
 private:
