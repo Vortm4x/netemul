@@ -1,5 +1,6 @@
 if ( open ) closeFile();
 newFile();
+print("go");
 var net1 = new Array();
 var net2 = new Array();
 var s1 = createSwitch(4,5,8);
