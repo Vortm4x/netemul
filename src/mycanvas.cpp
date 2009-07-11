@@ -1,7 +1,6 @@
 #include "mycanvas.h"
 #include "connectdialog.h"
 #include "deviceport.h"
-#include "frame.h"
 #include "device.h"
 #include "cabledev.h"
 #include "senddialog.h"
@@ -14,7 +13,7 @@
 #include <QFile>
 #include <QDataStream>
 #include <QMessageBox>
-#include <QTime>
+#include <QTextCursor>
 
 /*!
   Конструктор проводит начальную инициализацию сцены.
@@ -43,7 +42,10 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 */ 
 myCanvas::~myCanvas()
 {
-
+    clear();
+    myDevices.clear();
+    connections.clear();
+    myTextItems.clear();
 }
 //------------------------------------------------------------------
 /*!
@@ -107,7 +109,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 // То нужно сохранить все их координаты на случай если начнется перемещение.
                 foreach ( QGraphicsItem* i , selectedItems() ) {
                     if ( i->type() != cableDev::Type )
-                        coordMap.insert( qgraphicsitem_cast<device*>(i) , i->scenePos());
+                        coordMap.insert( i , i->scenePos());
                 }
             } // Иначе создаем прямоугольник выделения.
             else {
@@ -120,6 +122,12 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 addItem(selectRect);
             }
             break;
+        case text:
+             textRect = createTextItem();
+             textRect->setPos(event->scenePos());
+             setMode( move , noDev );
+             uncheck();
+             break;
         case insert: // Если режим вставки
             if ( insertRect->pos().y() < 0 ) break;
             isCorrect = insertRect->collidingItems().isEmpty();
@@ -235,8 +243,7 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                                    cabledev->end() == qgraphicsitem_cast<device*>(startItems.first()) )
                                 ) { canCreate = false; }
                     } else canCreate = false;
-                    if (canCreate && startItems.first() != endItems.first() &&
-                        startItems.first()->type() != cableDev::Type ) {
+                    if (canCreate && startItems.first() != endItems.first() && isDevice(startItems.first() ) ) {
                         startItem = qgraphicsitem_cast<device *>(startItems.first());
                         endItem = qgraphicsitem_cast<device *>(endItems.first());
                         connectDialog *conDialog = new connectDialog(startItem,endItem);
@@ -261,13 +268,11 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             case move:
                 if ( coordMap.count() ) {
                     bool needReturn = false;
-                    QMapIterator<device*,QPointF> i(coordMap);
+                    QMapIterator<QGraphicsItem*,QPointF> i(coordMap);
                     i.toFront();
                     while (i.hasNext()) {
                          i.next();
                          QList<QGraphicsItem*> underItems = i.key()->collidingItems();
-                         foreach ( QGraphicsItem* item , underItems)
-                             if ( item->type() == cableDev::Type ) underItems.removeOne(item);
                          if ( i.key()->pos().x() < 0  || i.key()->pos().y() < 0 ||
                                i.key()->pos().x() > myCanvas::width || i.key()->pos().y() >  myCanvas::height
                                  || underItems.count() > 0) { needReturn = true; break; }
@@ -283,9 +288,12 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     i.toFront();
                     while (i.hasNext()) {
                         i.next();
-                        i.key()->setPos( calibrate(i.key()->scenePos()) );
-                        foreach ( cableDev* itemka, i.key()->cables() )
-                                itemka->updatePosition();
+                        if (i.key()->type() != textItem::Type ) i.key()->setPos( calibrate(i.key()->scenePos()) );
+                        if ( isDevice(i.key()) ) {
+                            device *d = qgraphicsitem_cast<device*>(i.key());
+                            foreach ( cableDev* itemka, d->cables() )
+                                    itemka->updatePosition();
+                        }
                     }
                     coordMap.clear();
                 }
@@ -303,6 +311,9 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                 QGraphicsScene::mouseReleaseEvent(event); // передаем событие предку
                 break; 
             case insert:
+                break;
+            case text:
+                QGraphicsScene::mouseReleaseEvent(event); // передаем событие предку
                 break;
     }
 }
@@ -347,7 +358,7 @@ void myCanvas::removeDevice()
 {
     QList<QGraphicsItem*> l = selectedItems(); // Получаем список выделенных элементов.
     foreach (QGraphicsItem *item, l ) {
-        if ( item->type() != cableDev::Type ) { // Если не кабель
+        if ( isDevice(item) ) { // Если не кабель
             device *t = qgraphicsitem_cast<device*>(item);
             QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
             foreach ( cableDev* i , lostCables) {
@@ -356,7 +367,10 @@ void myCanvas::removeDevice()
             }
             myDevices.removeOne(t);
         }
-        else deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
+        else if ( item->type() == cableDev::Type ) 
+            deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
+        else if ( item->type() == textItem::Type )
+            myTextItems.removeOne(qgraphicsitem_cast<textItem*>(item));
         removeItem(item); // Удаляем этот элемент со сцены
     }
 }
@@ -386,6 +400,7 @@ void myCanvas::closeFile()
     setBackgroundBrush(QBrush(Qt::lightGray));
     setSceneRect(0,0,1,1);
     connections.clear();
+    myTextItems.clear();
     if ( myTimer ) stop();
     myOpen = false;
     emit fileClosed();
@@ -500,6 +515,12 @@ void myCanvas::openScene(QString fileName)
         QString endP = str;
         createConnection( start , end , startP , endP );
     }
+    s >> n;
+    for ( i = 0 ; i < n ; i++ ) {
+        textItem *t = createTextItem();
+        s >> p; t->setPos(p);
+        s >> str; t->setPlainText(str);
+    }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
     emit fileOpened();
@@ -524,25 +545,18 @@ void myCanvas::saveScene(QString fileName)
         s << *i;
     s << noDev;
     s << connections.count();
-    foreach (cableDev *tempCable, connections) {
-        s << tempCable->line().p1() << tempCable->line().p2();
-        s << tempCable->startPort()->name() << tempCable->endPort()->name() ;
+    foreach (cableDev *i, connections) {
+        s << i->line().p1() << i->line().p2();
+        s << i->startPort()->name() << i->endPort()->name() ;
+    }
+    s << myTextItems.count();
+    foreach ( textItem *i, myTextItems ) {
+        s << i->pos();
+        s << i->toPlainText();
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
     qDebug() << QString("Scene was been saved in %1").arg(fileName) ;
-}
-//-------------------------------------------------------------------------
-/*!
-  Нажатие клавиши. / Пока только пробела.
-*/
-void myCanvas::keyPressEvent(QKeyEvent *event)
-{
-    if ( sceneRect().size().width() < 1000 ) return;
-    if ( event->nativeVirtualKey() == 32 ) {
-        setMode( prevMode , prevType );
-    }
-    event->accept();
 }
 //-------------------------------------------------------------------------
 /*!
@@ -592,14 +606,14 @@ bool myCanvas::isEnd() const
 
 device* myCanvas::oneSelectedDevice()
 {
-    if ( selectedItems().count() == 1 && selectedItems().first()->type() != cableDev::Type )
+    if ( selectedItems().count() == 1 && isDevice( selectedItems().first() ) )
         return qgraphicsitem_cast<device*>(selectedItems().first());
     return NULL;
 }
 
 device* myCanvas::deviceInPoint(QPointF p)
 {
-    if ( !itemAt(p) || itemAt(p)->type() == cableDev::Type ) return NULL;
+    if ( !itemAt(p) || !isDevice(itemAt(p)) ) return NULL;
     return qgraphicsitem_cast<device*>(items(p).first());
 }
 
@@ -694,6 +708,39 @@ void myCanvas::setShapeView(QAbstractGraphicsShapeItem *i , QPen p , QBrush b)
 {
     i->setPen(p);
     i->setBrush(b);
+}
+//--------------------------------------------------------------------
+/*!
+  Происходит при потере текстовой надписью фокуса, служит для уничтожения надписи,
+  в случае если она пуста.
+  @param t - указатель на надпись.
+*/
+void myCanvas::editorLostFocus(textItem *t)
+{
+     QTextCursor cursor = t->textCursor();
+     cursor.clearSelection();
+     t->setTextCursor(cursor);
+     t->adjustSize();
+     if ( t->toPlainText().isEmpty()) {
+         removeItem(t);
+         myTextItems.removeOne(t);
+         t->deleteLater();
+     }
+}
+//--------------------------------------------------------------------
+/*!
+  Создает на сцене новый комментарий.
+  @return указатель на созданный комментарий.
+*/
+textItem* myCanvas::createTextItem()
+{
+    textItem *t = new textItem;
+    t->setTextInteractionFlags(Qt::TextEditorInteraction);
+    t->setZValue(1000.0);
+    connect(t,SIGNAL(lostFocus(textItem*)),SLOT(editorLostFocus(textItem*)));
+    addItem(t);
+    myTextItems << t;
+    return t;
 }
 //--------------------------------------------------------------------
 

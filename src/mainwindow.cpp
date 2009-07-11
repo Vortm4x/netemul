@@ -3,9 +3,6 @@
 #include "settingdialog.h"
 #include "testdialog.h"
 #include "interfacedialog.h"
-#include "computer.h"
-#include "routerdevice.h"
-#include "switchdevice.h"
 #include <QGraphicsView>
 #include <QApplication>
 #include <QDockWidget>
@@ -33,7 +30,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.7.2");
+    QCoreApplication::setApplicationVersion("0.7.3");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -125,7 +122,7 @@ void MainWindow::createAction()
     showGridAct->setChecked(true);
 
     deleteAct = createOneAction(trUtf8("Удалить"),trUtf8("Удалить объект") , QIcon(":/im/images/minus2.png"));
-    deleteAct->setShortcut(QKeySequence::Delete);
+    deleteAct->setShortcut(tr("Ctrl+D"));
 
     settingAct = createOneAction( trUtf8("Настройки") , trUtf8("Настройки"));
     connect( settingAct , SIGNAL(triggered()) , SLOT(setting()));
@@ -140,6 +137,10 @@ void MainWindow::createAction()
     cableAct = createOneAction( trUtf8("Кабель"),trUtf8("Создать соединение"),
                             QIcon(":/im/images/cable.png"),true);
     cableAct->setData( myCanvas::cable*10 + myCanvas::noDev );
+
+    textAct = createOneAction( trUtf8("Текст") , trUtf8("Вставить текстовый комментарий") ,
+                               QIcon(":/im/images/edit.png"), true);
+    textAct->setData( myCanvas::text*10 + myCanvas::noDev );
 
     shareBusAct = createOneAction( trUtf8("Общая шина"),trUtf8("Добавить общую шину"),
                                     QIcon(":/im/images/sharebus.png"),true);
@@ -249,6 +250,7 @@ void MainWindow::createTools()
     deviceBar = addToolBar(trUtf8("Устройства"));
     deviceBar->setIconSize(QSize(32,32));
     deviceBar->addAction( moveAct);
+    deviceBar->addAction(textAct);
     deviceBar->addAction( cableAct);
     //deviceBar->addAction( shareBusAct);
     deviceBar->addAction( computerAct);
@@ -327,8 +329,8 @@ void MainWindow::selectionChange()
 {
     cb_ports->clear(); // Очищаем комбобокс с портами.
     // Меню устройств включено если выбрано одно устройство.
-    itemMenu->setEnabled( canva->selectedItems().count() == 1 );
-    controlBar->setEnabled( canva->selectedItems().count() == 1 );
+    itemMenu->setEnabled( canva->oneSelectedDevice() );
+    controlBar->setEnabled( canva->oneSelectedDevice() );
     if ( !canva->oneSelectedDevice() ) return; // Если не одно устройство выходим
     device *t = canva->oneSelectedDevice();
     tableAct->setVisible( !t->hasTable().isEmpty() );
@@ -470,13 +472,17 @@ void MainWindow::readSetting()
     canva->setRip(setting.value("ttl/Rip",30).toInt());
 }
 //----------------------------------------------------
+/*!
+  Устанавливает режим сцены в зависимости от активированного действия.
+  @param clk - указатель на действие.
+*/
 void MainWindow::groupClicked(QAction *clk)
 {
     int m = clk->data().toInt() / 10;
     int t = clk->data().toInt() % 10;
     canva->setMode(m,t);
 }
-
+//----------------------------------------------------
 void MainWindow::uncheck()
 {
     moveAct->setChecked(true);

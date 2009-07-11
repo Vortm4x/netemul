@@ -30,6 +30,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     if ( isSelected() ) painter->setPen(QPen(Qt::blue,3)); // Если выделен рисуем синим
     else if ( myChecked ) painter->setPen(QPen(Qt::magenta,3));
     else painter->setPen(QPen(Qt::black,3)); // Иначе черным
+    painter->setBrush(Qt::yellow);
     QLineF centerLine(myStartDev->getPointCable(myEndDev->pos()),
                  myEndDev->getPointCable(myStartDev->pos()));
     setLine(centerLine); // И мы её и ставим

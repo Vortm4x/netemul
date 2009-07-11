@@ -99,7 +99,7 @@ void ripProgramm::checkTable(routeRecord *r)
         return;
     }
     if ( i->mode != smartDevice::ripMode ) return; // Если это не RIP запись выходим.
-    if ( i->metric > r->metric ) { // Если метрика этой записи меньше прищедшей
+    if ( i->metric != r->metric ) { // Если метрика этой записи меньше прищедшей
         sd->deleteFromTable(i); // Добавляем лучшую.
         sd->addToTable(r);
         return;

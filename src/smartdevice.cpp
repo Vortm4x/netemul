@@ -63,7 +63,6 @@ void smartDevice::deleteFromTable(int n)
 
 void smartDevice::deleteFromTable(routeRecord *r)
 {
-    r->metric = 16;
     if ( r->mode == connectMode ) sendInterrupt(delNet);
     myRouteTable.removeOne(r);
     delete r;
@@ -364,7 +363,7 @@ ipAddress smartDevice::findInterfaceIp(ipAddress a)
         if ( (i->parentDev()->ip() & i->parentDev()->mask() ) == ( a & i->parentDev()->mask() ) )
             return i->parentDev()->ip();
     }
-    return ipAddress("0.0.0.0");
+    return ipAddress();
 }
 //------------------------------------------------------
 /*!

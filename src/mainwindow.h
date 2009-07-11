@@ -16,10 +16,9 @@ class QMenu;
 class QAction;
 class QGraphicsView;
 
-//
-// Этот класс реализует главное окно программы
-//
-
+/*!
+    Реализует главное окно программы.
+*/
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -93,6 +92,7 @@ private:
         QAction *computerAct;
         QAction *moveAct;
         QAction *cableAct;
+        QAction *textAct;
         QAction *switchAct;
         QAction *routerAct;
         QAction *hubAct;

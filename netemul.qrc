@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/im">
+    <qresource prefix="/im" >
         <file>images/arrow.png</file>
         <file>images/laptop.png</file>
         <file>images/modem.png</file>
@@ -20,5 +20,6 @@
         <file>images/router.png</file>
         <file>images/pause.png</file>
         <file>images/play.png</file>
+        <file>images/edit.png</file>
     </qresource>
 </RCC>

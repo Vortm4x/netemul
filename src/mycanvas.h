@@ -12,12 +12,14 @@
 #include "routerdevice.h"
 #include "computer.h"
 #include "sharebus.h"
+#include "textitem.h"
 
 class QMenu;
 class QAction;
 class cableDev;
 class connectDialog;
 class devicePort;
+class textItem;
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -30,7 +32,7 @@ class myCanvas : public QGraphicsScene
     Q_PROPERTY(bool open READ isOpen WRITE setOpen)
 public:
     // режимы : нет файла , перемещение , вставка провода , вставка устройства
-    enum { noFile = -1 , move = 0 ,cable = 1 , insert = 2 , send = 6};
+    enum { noFile = -1 , move = 0 , cable = 1 , insert = 2 , send = 6 , text = 8};
     enum { width = 2000 , height = 2000 };
     enum sendState { noSendItem = 0 , oneSendItem = 1 };
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
@@ -41,6 +43,7 @@ public:
     void hideInsertRect();
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
+    textItem* createTextItem();
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     int hubSockets() const { return myHubSockets; }
@@ -65,6 +68,7 @@ public:
     void whileMotion();
     void setShapeView(QAbstractGraphicsShapeItem *i , QPen p ,QBrush b);
     bool isEnd() const;
+    bool isDevice(QGraphicsItem *t) const;
     template<class T> T* createDev(short x,short y,int c = 1) {
         T *temp = new T(c);
         temp->setMenu(itemMenu);
@@ -85,6 +89,7 @@ signals:
     void fileClosed(); //!< Сообщает главному окну о закрытии файла
 public slots:
     void createConnection(int x,int y,QString strS ,QString strE);
+    void editorLostFocus(textItem *t);
     void setIp(int x,QString p,QString a);
     void setMask(int x,QString p,QString a);
     void setGateway(int x,QString a);
@@ -112,9 +117,11 @@ private:
     QPointF p2Rect; // Точка начала выделения
     QGraphicsRectItem *insertRect; // Прямоугольныник для вставки
     QGraphicsEllipseItem *sendEllipse; // Кружочек для выделения отправителя и получателя
+    textItem *textRect; // Временный указатель на текст.
 
-    QMap<device*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
+    QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
     QList<device*> myDevices; //!< Список всех устройств на сцене.
+    QList<textItem*> myTextItems; //!< Список всех надписей на сцене.
 
     // All temp transport varios
     int messageSize;
@@ -144,8 +151,17 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
     void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // и отпускания кнопки мыши
-    void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *e);
 };
 //------------------------------------------------------------------
+/*!
+  Проверяет устройство ли данный объект или нет.
+  @return true если устройство, false в противном случае.
+*/
+inline bool myCanvas::isDevice(QGraphicsItem *t) const
+{
+    if ( t->type() != cableDev::Type && t->type() != textItem::Type ) return true;
+    return false;
+}
+//------------------------------------------------------------------------
 #endif // MYCANVAS_H

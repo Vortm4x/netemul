@@ -3,6 +3,7 @@
 #include <QFile>
 #include "mycanvas.h"
 
+
 testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
@@ -81,6 +82,8 @@ void testDialog::selectAll(bool c)
 {
     if ( c )
         listWidget->selectAll();
-    else listWidget->setCurrentRow(0);
+    else {
+        if (listWidget->count() ) listWidget->setCurrentRow(0);
+    }
 }
 
