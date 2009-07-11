@@ -199,11 +199,13 @@ void smartDevice::write(QDataStream &stream) const
     stream << myProgramms.count(); // Количество программ.
     foreach ( programm *i , myProgramms )  // И сами программы.
         stream << *i;
+    stream << toolTip();
 }
 //-------------------------------------------------
 void smartDevice::read(QDataStream &stream)
 {
     QPointF p;
+    QString str;
     int n,i;
     stream >> p >> n;
     setPos(p);
@@ -238,6 +240,8 @@ void smartDevice::read(QDataStream &stream)
         stream >> *r;
         installProgramm(r);
     }
+    stream >> str;
+    setToolTip(str);
 }
 /*!
   Задает устройству шлюз по умолчанию.

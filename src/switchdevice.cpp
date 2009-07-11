@@ -11,6 +11,7 @@ switchDevice::switchDevice(int c)
         addInterface(t,0);
     }
     mySwitchTable.clear();
+    setToolTip(trUtf8("Коммутатор"));
 }
 
 switchDevice::~switchDevice()
@@ -143,7 +144,7 @@ void switchDevice::dialog()
     delete d;
 }
 
-void switchDevice::dialogTable()
+void switchDevice::showTable()
 {
     tableSwitch *d = new tableSwitch;
     d->setSwitch(this);

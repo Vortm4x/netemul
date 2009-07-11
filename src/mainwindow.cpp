@@ -30,7 +30,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.7.3");
+    QCoreApplication::setApplicationVersion("0.7.4");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -516,7 +516,7 @@ void MainWindow::editInterface()
 
 void MainWindow::removeInterface()
 {
-    computer *t = qgraphicsitem_cast<computer*>(canva->oneSelectedDevice());
+    device *t = canva->oneSelectedDevice();
     devicePort* temp = t->socket( cb_ports->currentText() );
     if ( temp->isConnect() ) {
         QMessageBox::warning(this,trUtf8("Error"),
@@ -530,15 +530,7 @@ void MainWindow::removeInterface()
 void MainWindow::tableShow()
 {
     device *d = canva->oneSelectedDevice();
-    if ( d->type() == computer::Type || d->type() == routerDevice::Type ) {
-        smartDevice *u = qgraphicsitem_cast<smartDevice*>(d);
-        u->showDialog<routeEditor>();
-        return;
-    }
-    if ( d->type() == switchDevice::Type ) {
-        switchDevice *u = qgraphicsitem_cast<switchDevice*>(d);
-        u->dialogTable();
-    }
+    d->showTable();
 }
 
 void MainWindow::adapterShow()

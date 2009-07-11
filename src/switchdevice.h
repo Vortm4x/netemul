@@ -35,7 +35,7 @@ public:
     void deleteFromTable( macAddress mac );
     void updateMac(int u);
     void dialog();
-    void dialogTable();
+    void showTable();
     QString hasTable() const { return trUtf8("Таблица коммутации"); }
 private:
     QList<macRecord*> mySwitchTable;

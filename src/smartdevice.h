@@ -73,6 +73,7 @@ public:
     void setRouteMode(bool n) { myRouteMode = n; }
     bool routeMode() const { return myRouteMode; }
     void incTime();
+    void showTable() { showDialog<routeEditor>(); }
     ipAddress gateway() const;
     template<class T>
     void showDialog() {

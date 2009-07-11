@@ -11,6 +11,7 @@ class devicePort;
 //
 class shareBus : public device
 {
+    Q_DECLARE_TR_FUNCTIONS(shareBus)
 public:
     enum { Type = UserType + 8 , busDev = 2};
     enum { defaultWidth = 200 };

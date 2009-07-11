@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QLabel>
+#include <QPlainTextEdit>
 
 /*!
   Создает интерфейс диалога.
@@ -22,6 +23,12 @@ routerProperty::routerProperty()
     cb_route = new QCheckBox( trUtf8("Включить маршрутизацию.") );
     connect( cb_route , SIGNAL(toggled(bool)) , SLOT(applyEnable()) );
     all->addWidget( cb_route);
+    te_text = new QPlainTextEdit;
+    connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
+    te_text->setFixedHeight(100);
+    te_text->setMaximumBlockCount(5);
+    all->addWidget( new QLabel(trUtf8("Пояснения:")));
+    all->addWidget(te_text);
     all->addStretch(1);
     temp = new QHBoxLayout;
     btn_adapter = new QPushButton(trUtf8("Интерфейсы"));
@@ -48,12 +55,14 @@ void routerProperty::setRouter(routerDevice *r)
     rt = r;
     cb_route->setChecked(r->routeMode());
     cb_count->setCurrentIndex( cb_count->findText( QString::number( rt->sockets().count() ) ) );
+    te_text->setPlainText( rt->toolTip() );
     btn_apply->setEnabled(false);
 }
 //-----------------------------------------------------------------
 void routerProperty::apply()
 {
     rt->setRouteMode( cb_route->isChecked() );
+    rt->setToolTip( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

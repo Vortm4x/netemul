@@ -7,6 +7,7 @@ class QCheckBox;
 
 class computer;
 class ipEdit;
+class QPlainTextEdit;
 
 class computerProperty : public dialogTemplate
 {
@@ -21,6 +22,7 @@ private:
     QPushButton *btn_table;
     QPushButton *btn_arp;
     QCheckBox *cb_route;
+    QPlainTextEdit *te_text;
     ipEdit *gateway;
 public slots:
     void apply();

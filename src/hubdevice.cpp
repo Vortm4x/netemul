@@ -9,6 +9,7 @@ hubDevice::hubDevice(int c)
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
+    setToolTip( trUtf8( "Концентратор" ) );
 }
 // Пока смотреть свитч =)
 void hubDevice::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)

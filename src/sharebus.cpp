@@ -5,6 +5,7 @@ shareBus::shareBus(int c)
 {
     Q_UNUSED(c);
     widthDev = defaultWidth;
+    setToolTip(trUtf8("Общая шина"));
 }
 
 QRectF shareBus::boundingRect() const

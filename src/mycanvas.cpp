@@ -235,7 +235,7 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                         endItems.removeFirst();
                         // Удаляем временную линию и освобождаем её память
                     removeItem(line);
-                    if ( startItems.count() > 0 && endItems.count() > 0) {
+                    if ( startItems.count()  && endItems.count() ) {
                         foreach ( cableDev* cabledev, connections )
                             if ( (cabledev->start() == qgraphicsitem_cast<device*>(startItems.first()) &&
                                   cabledev->end() == qgraphicsitem_cast<device*>(endItems.first()) ) ||
@@ -273,9 +273,11 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     while (i.hasNext()) {
                          i.next();
                          QList<QGraphicsItem*> underItems = i.key()->collidingItems();
+                         foreach ( QGraphicsItem *j , underItems )
+                             if ( j->type() == cableDev::Type ) underItems.removeOne(j);
                          if ( i.key()->pos().x() < 0  || i.key()->pos().y() < 0 ||
                                i.key()->pos().x() > myCanvas::width || i.key()->pos().y() >  myCanvas::height
-                                 || underItems.count() > 0) { needReturn = true; break; }
+                                 || underItems.count() ) { needReturn = true; break; }
                     }
                     if ( needReturn ) {
                         //qDebug() << "Nado iz" << i.key()->scenePos() << " v " << i.value() << endl;
@@ -326,25 +328,20 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
     switch (myType) {
         case compDev:
             item = createDev<computer>(x,y,myComputerSockets);
-            item->setToolTip(trUtf8("Компьютер"));
             break;
         case hubDev: // Для остальных устройств все тоже самое =)
             item = createDev<hubDevice>(x,y,myHubSockets);
-            item->setToolTip( trUtf8( "Концентратор" ) );
             item->toT<hubDevice>()->setManual(myHubManual);
             break;
         case switchDev:
             item = createDev<switchDevice>(x,y,mySwitchSockets); // Создаем конкретное устройство коммутатор
-            item->setToolTip(trUtf8("Коммутатор"));
             item->toT<switchDevice>()->setManual(mySwitchManual);
             break;
         case routerDev:
             item = createDev<routerDevice>(x,y,myRouterSockets);
-            item->setToolTip(trUtf8("Маршрутизатор"));
             break;
         case busDev:
             item = createDev<shareBus>(x,y,0); // Общая шина
-            item->setToolTip(trUtf8("Общая шина"));
             break;
         case noDev: return NULL;
             break;
@@ -439,8 +436,7 @@ void myCanvas::setMode(int modScene,int curDev)
         case insert:
             insertRect = new QGraphicsRectItem;
             insertRect->setPos( 0, -50 );
-            insertRect->setPen(QPen(Qt::red));
-            insertRect->setBrush( QBrush( QColor( 128 , 0 , 0 , 64)));
+            setShapeView(insertRect,QPen(Qt::red),QBrush( QColor( 128 , 0 , 0 , 64)));
             insertRect->setZValue(1000);
             addItem(insertRect);
             if ( nowType == compDev || nowType == switchDev || nowType == hubDev || nowType == routerDev) {
@@ -452,8 +448,7 @@ void myCanvas::setMode(int modScene,int curDev)
         case send:
             sendEllipse = new QGraphicsEllipseItem;
             sendEllipse->setPos( 0 , -100);
-            sendEllipse->setPen(QPen(Qt::blue));
-            sendEllipse->setBrush(QBrush( QColor( 0 , 0 ,128 ,64)));
+            setShapeView(sendEllipse,QPen(Qt::blue),QBrush( QColor( 0 , 0 ,128 ,64)));
             sendEllipse->setZValue(1000);
             addItem(sendEllipse);
             sendEllipse->setRect(-10,-10,20,20);
@@ -493,6 +488,7 @@ void myCanvas::openScene(QString fileName)
         closeFile();
         return;
     }
+    QApplication::changeOverrideCursor(Qt::WaitCursor);
     device *item;
     int n,i;
     while ( !file.atEnd() && endDev ) {
@@ -520,9 +516,11 @@ void myCanvas::openScene(QString fileName)
         textItem *t = createTextItem();
         s >> p; t->setPos(p);
         s >> str; t->setPlainText(str);
+        t->adjustSize();
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
+    QApplication::restoreOverrideCursor();
     emit fileOpened();
     qDebug() << QString("Scene was been open from %1").arg(fileName) ;
 }
@@ -538,6 +536,7 @@ void myCanvas::saveScene(QString fileName)
         qDebug() << "Невозможно открыть файл для записи";
         return;
     }
+    QApplication::changeOverrideCursor(Qt::WaitCursor);
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_2);
     s << QCoreApplication::applicationVersion();
@@ -556,6 +555,7 @@ void myCanvas::saveScene(QString fileName)
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
+    QApplication::restoreOverrideCursor();
     qDebug() << QString("Scene was been saved in %1").arg(fileName) ;
 }
 //-------------------------------------------------------------------------

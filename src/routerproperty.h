@@ -7,6 +7,7 @@ class routerDevice;
 class QCheckBox;
 class QGroupBox;
 class QComboBox;
+class QPlainTextEdit;
 
 class routerProperty : public dialogTemplate
 {
@@ -20,6 +21,7 @@ private:
     QPushButton *btn_adapter;
     QPushButton *btn_table;
     QPushButton *btn_arp;
+    QPlainTextEdit *te_text;
     QCheckBox *cb_route;
     QComboBox *cb_count;
 public slots:

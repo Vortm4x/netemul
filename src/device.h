@@ -39,6 +39,7 @@ public:
     void sendEvent();
     void setId(int i) { myId = i; }
     int id() const { return myId; }
+    virtual void showTable() { }
     virtual QPointF getPointCable(QPointF otherDev) = 0;
     virtual devicePort* addInterface(QString str,int t) = 0;
     virtual void write(QDataStream &stream) const = 0;

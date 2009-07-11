@@ -9,6 +9,7 @@ routerDevice::routerDevice(int c)
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
+    setToolTip(trUtf8("Маршрутизатор"));
 }
 
 devicePort* routerDevice::addInterface(QString str,int t)
