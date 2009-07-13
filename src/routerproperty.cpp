@@ -30,18 +30,6 @@ routerProperty::routerProperty()
     all->addWidget( new QLabel(trUtf8("Пояснения:")));
     all->addWidget(te_text);
     all->addStretch(1);
-    temp = new QHBoxLayout;
-    btn_adapter = new QPushButton(trUtf8("Интерфейсы"));
-    connect(btn_adapter, SIGNAL(clicked()), SLOT(adapterDialog()));
-    btn_table = new QPushButton(trUtf8("Таблица маршрутизации"));
-    connect(btn_table, SIGNAL(clicked()), SLOT(tableDialog()));
-    btn_arp = new QPushButton(trUtf8("Arp-таблица"));
-    connect(btn_arp, SIGNAL(clicked()), SLOT(arpDialog()));
-    temp->addWidget(btn_adapter);
-    temp->addWidget(btn_table);
-    temp->addWidget(btn_arp);
-    temp->setAlignment(Qt::AlignRight);
-    all->addLayout(temp);
     all->addLayout(lay);
     setLayout(all);
 }
@@ -65,20 +53,3 @@ void routerProperty::apply()
     rt->setToolTip( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
-
-void routerProperty::tableDialog()
-{
-    rt->showDialog<routeEditor>();
-}
-
-void routerProperty::adapterDialog()
-{
-    rt->showDialog<adapterProperty>();
-}
-
-void routerProperty::arpDialog()
-{
-    rt->showDialog<tableArp>();
-}
-
-

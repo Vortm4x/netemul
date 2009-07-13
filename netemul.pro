@@ -22,6 +22,7 @@ contains(QT_CONFIG, opengl) {
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = src
+
 # Input
 HEADERS += src/abstractchip.h \
     src/adapterproperty.h \
@@ -63,14 +64,12 @@ HEADERS += src/abstractchip.h \
     src/ripprogramm.h \
     src/programmdialog.h \
     src/installdialog.h \
-    src/mainproperty.h \
     src/textitem.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui \
     ui/programmdialog.ui \
-    ui/installdialog.ui \
-    src/mainproperty.ui
+    ui/installdialog.ui
 SOURCES += src/abstractchip.cpp \
     src/adapterproperty.cpp \
     src/arppacket.cpp \
@@ -112,10 +111,5 @@ SOURCES += src/abstractchip.cpp \
     src/ripprogramm.cpp \
     src/programmdialog.cpp \
     src/installdialog.cpp \
-    src/mainproperty.cpp \
     src/textitem.cpp
 RESOURCES += netemul.qrc
-# Please uncommented this code for profiling =)
-#MAKE_CXXFLAGS_DEBUG += -pg
-#QMAKE_LFLAGS_DEBUG += -pg
-#OTHER_FILES +=

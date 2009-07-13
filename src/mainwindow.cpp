@@ -181,7 +181,8 @@ void MainWindow::createAction()
                                   QIcon(":/im/images/edit_remove.png") );
     connect( removePortAct , SIGNAL(triggered()) , SLOT(removeInterface()) );
 
-    tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"));
+    tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
+                                QIcon(":/im/images/table.png"));
     connect( tableAct , SIGNAL(triggered()) , SLOT(tableShow()) );
 
     aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
@@ -193,14 +194,17 @@ void MainWindow::createAction()
     helpAct->setShortcut(QKeySequence::HelpContents);
     connect(helpAct,SIGNAL(triggered()) , SLOT(showHelp()));
 
-    adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы") );
+    adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
+                                  QIcon(":/im/images/interface.png"));
     connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
 
     playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
                                QIcon(":/im/images/pause.png") );
     connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
 
-    progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"));
+    progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
+                              QIcon(":/im/images/program.png"));
+    progAct->setShortcut(tr("Ctrl+P"));
     connect( progAct , SIGNAL(triggered()), SLOT(programmShow()));
 }
 
@@ -271,6 +275,9 @@ void MainWindow::createTools()
     controlBar->addAction(removePortAct);
     controlBar->addSeparator();
     controlBar->addAction(editPortAct);
+    controlBar->addAction(adapterAct);
+    controlBar->addAction(progAct);
+    controlBar->addAction(tableAct);
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }

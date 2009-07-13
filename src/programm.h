@@ -20,7 +20,7 @@ public:
     void setEnable(bool b) { myEnable = b; }
     bool isEnable() const  { return myEnable; }
     QString name() const { return myName; }
-    virtual void interrupt(int u) = 0;
+    virtual bool interrupt(int u) = 0;
     /*! Обрабатывает входящее сообщение, должна быть переопределена во
       всех потомках этого класса.
       @param b - ссылка на данные пришедшие программе. */

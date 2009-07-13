@@ -46,7 +46,7 @@ public:
     smartDevice() { myRouteMode = false; }
     virtual ~smartDevice();
     interface* adapter(QString s);
-    interface* ipToAdapter(ipAddress a);
+    interface* ipToAdapter(const ipAddress a);
     void sendMessage(ipAddress dest, int size , int pr);
     void receivePacket(ipPacket *p,interface *f);
     void treatPacket(ipPacket *p);
@@ -60,7 +60,7 @@ public:
     void removeProgramm(programm *p);
     void installProgramm( programm *p) { myProgramms << p; }
     void updateArp(int u);
-    void sendInterrupt(int u);
+    bool sendInterrupt(int u);
     QList<routeRecord*>& routeTable() { return myRouteTable; }
     QList<programm*>& programms() { return myProgramms; }
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);

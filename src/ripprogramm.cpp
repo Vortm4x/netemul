@@ -22,7 +22,7 @@ ripProgramm::ripProgramm(smartDevice *d)
 void ripProgramm::incTime()
 {
     if ( ++t < inter || !sd->myRouteMode) return;
-    sendRip();
+    sendUpdate(true);
     t = 0;
 }
 //--------------------------------------------------
@@ -59,21 +59,32 @@ void ripProgramm::execute(ipPacket *p)
 /*!
     Посылает rip-сообщение.
 */
-void ripProgramm::sendRip()
+void ripProgramm::sendUpdate(bool isAll)
 {
-    QByteArray t;
-    QDataStream d(&t , QIODevice::WriteOnly);
-    foreach ( routeRecord *i , sd->myRouteTable ) { // Перебираем таблицу
-        d << i->dest << i->mask;
-        if ( i->mode == smartDevice::ripMode ) i->time++;
-        if ( i->time == 6 ) {
-            sd->deleteFromTable(i);
-            d << qint8(16);
-        }
-        else d << i->metric;
-    }
+//    foreach ( routeRecord *i , sd->myRouteTable ) { // Перебираем таблицу
+//        d << i->dest << i->mask;
+//        if ( i->mode == smartDevice::ripMode ) i->time++;
+//        if ( i->time == 6 ) {
+//            sd->deleteFromTable(i);
+//            d << qint8(16);
+//        }
+//        else d << i->metric;
+//    }
     foreach ( devicePort *i , sd->mySockets )
         if ( i->isConnect() ) {
+            QByteArray t;
+            QDataStream d(&t , QIODevice::WriteOnly);
+            if ( isAll ) {
+                foreach ( routeRecord *j , sd->myRouteTable ) {
+                    if ( (j->gateway & j->mask) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
+                    d << j->dest << j->mask;
+                    // SLEEP =)
+                    //gfhjfh
+                }
+            } else {
+
+            }
+
             ipPacket *p = new ipPacket; // Создаем новый пакет.
             p->setSender( i->parentDev()->ip() );
             p->setBroadcast( i->parentDev()->mask() );
@@ -115,16 +126,34 @@ void ripProgramm::checkTable(routeRecord *r)
   Обработчик программных прерываний от устройства.
   @param u - номер прерывания.
 */
-void ripProgramm::interrupt(int u)
+bool ripProgramm::interrupt(int u)
 {
+    routeRecord *t = findChanged();
+    if ( !t ) return false;
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
+            t->change =smartDevice::noChanged;
+            return true;
         case smartDevice::delNet : // И когда удаляется тоже.
-            sendRip();
-            break;
+            t->metric = 16;
+            return true;
         default:
             break;
     }
+    //!!!!!!!!CHECK IT!!!!!!!!!!!!!!!
+    return false;
 }
 //---------------------------------------------------
+/*!
+  Находит последнюю измененую запись.
+  @return указатель на запись.
+*/
+routeRecord* ripProgramm::findChanged() const
+{
+    foreach ( routeRecord *i , sd->myRouteTable )
+        if ( i->change == smartDevice::changed && i->metric != 16 ) return i;
+    return NULL;
+}
+//---------------------------------------------------
+
 

@@ -60,16 +60,20 @@ void smartDevice::deleteFromTable(int n)
             return;
         }
 }
-
+/*!
+  Удаляет запись из таблицы маршрутизации.
+  @param r - указатель на запись.
+*/
 void smartDevice::deleteFromTable(routeRecord *r)
 {
-    if ( r->mode == connectMode ) sendInterrupt(delNet);
+    r->change = changed;
+    if ( sendInterrupt(delNet) ) return;
     myRouteTable.removeOne(r);
     delete r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
 }
-
-interface* smartDevice::ipToAdapter(ipAddress a)
+//--------------------------------------------------------------
+interface* smartDevice::ipToAdapter(const ipAddress a)
 {
     foreach ( devicePort *i , mySockets )
         if ( i->parentDev()->ip() == a ) return qobject_cast<interface*>(i->parentDev());
@@ -384,10 +388,12 @@ void smartDevice::removeProgramm(programm *p)
   Посылает всем программам установленым на компьютере прерывание.
   @param u - номер прерывания.
 */
-void smartDevice::sendInterrupt(int u)
+bool smartDevice::sendInterrupt(int u)
 {
+    bool b = false;
     foreach ( programm *i ,myProgramms )
-        if ( i->isEnable() ) i->interrupt(u);
+        if ( i->isEnable() && i->interrupt(u) ) b = true;
+    return b;
 }
 //-------------------------------------------------------
 
