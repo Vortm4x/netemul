@@ -360,16 +360,12 @@ void myCanvas::removeDevice()
             QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
             foreach ( cableDev* i , lostCables) {
                 removeItem(i);
-                qDebug() << "Delete cable with device!";
-                l.removeOne(i);
                 deleteConnection(i);
             }
-            qDebug() << "Delete device!";
             myDevices.removeOne(t);
         }
         else if ( item->type() == cableDev::Type ) {
             deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
-            qDebug() << "Delete cable!";
         }
         else if ( item->type() == textItem::Type )
             myTextItems.removeOne(qgraphicsitem_cast<textItem*>(item));

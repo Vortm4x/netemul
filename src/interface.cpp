@@ -36,6 +36,7 @@ void interface::receiveEvent(frame *fr,devicePort *sender)
 void interface::sendBroadcast(ipPacket *p)
 {
     frame *f = createFrame( myMac , macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
+    f->setDifferent( frame::broadcast );
     *f << *p;
     addSend(0,1);
     mySocket->addToQueue(f);
@@ -68,6 +69,7 @@ void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */
     m.setBroadcast();
     arpPacket a(  macAddress() , myMac , t , myIp , arpPacket::request );
     frame *f = createFrame( myMac , m ,frame::arp);
+    f->setDifferent(frame::broadcast);
     *f << a;
     mySocket->addToQueue(f);
     myWaits.insert(t,p);

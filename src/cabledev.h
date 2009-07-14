@@ -19,6 +19,7 @@ class cableDev : public QObject, public QGraphicsLineItem
 public:
     enum { Type = UserType + 1 , hub = UserType + 7 };
     enum { startToEnd = 1 , endToStart = -1 };
+    enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
         return QRectF(line().p1(),line().p2()).normalized().adjusted(-5,-5,5,5);

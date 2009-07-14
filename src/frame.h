@@ -13,6 +13,7 @@ class frame
 {
 public:
     enum { arp = 100 , ip = 101 };
+    enum { normal = 3 , broadcast = 4 };
     frame();
     frame(const frame &other);
     ~frame();
@@ -21,6 +22,7 @@ public:
     void setSender(macAddress temp) { mySender = temp; }
     macAddress receiver() const { return myReceiver; }
     void setReceiver(macAddress temp) { myReceiver = temp;  }
+    void setDifferent(qint8 d) { myDifferent = d; }
     int type() const { return myType; }
     void setType(int t) { myType = t; }
     void operator<<(arpPacket &p);
@@ -31,6 +33,7 @@ private:
     macAddress mySender; //!< Mac-адрес отправителя
     macAddress myReceiver; //!< Mac-адрес получателя
     qint8 myType; //!< Показывает несет ли в себе кадр ip-пакет или arp сообщение.
+    qint8 myDifferent; //!< Разновидность фрэйма, влияет на его цвет и отображение
     QByteArray data; //!< Данные протокола более высокого уровня.
 protected:
     friend QDataStream& operator<<(QDataStream &stream, const frame &f);
@@ -85,7 +88,7 @@ inline void frame::operator>>(ipPacket &p) const
 */
 inline QDataStream& operator<<(QDataStream &stream, const frame &f)
 {
-    stream << f.mySender << f.myReceiver << f.myType << f.data;
+    stream << f.myDifferent << f.mySender << f.myReceiver << f.myType << f.data;
     return stream;
 }
 //----------------------------------------------------
@@ -97,7 +100,7 @@ inline QDataStream& operator<<(QDataStream &stream, const frame &f)
 */
 inline QDataStream& operator>>(QDataStream &stream,frame &f)
 {
-    stream >> f.mySender >> f.myReceiver >> f.myType >> f.data;
+    stream >> f.myDifferent >> f.mySender >> f.myReceiver >> f.myType  >> f.data;
     return stream;
 }
 //----------------------------------------------------

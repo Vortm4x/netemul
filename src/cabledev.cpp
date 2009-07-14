@@ -27,19 +27,19 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    if ( isSelected() ) painter->setPen(QPen(Qt::blue,3)); // Если выделен рисуем синим
-    else if ( myChecked ) painter->setPen(QPen(Qt::magenta,3));
-    else painter->setPen(QPen(Qt::black,3)); // Иначе черным
+    painter->setPen(QPen(Qt::gray,5));
     QLineF centerLine(myStartDev->getPointCable(myEndDev->pos()),
                  myEndDev->getPointCable(myStartDev->pos()));
     setLine(centerLine); // И мы её и ставим
     painter->drawLine(line()); // А потом рисуем заново
-    painter->setPen(QPen(Qt::white,2));
+    if ( isSelected() ) painter->setPen(QPen(Qt::blue,1.7)); // Если выделен рисуем синим
+    else if ( myChecked ) painter->setPen(QPen(Qt::magenta,1.7));
+    else painter->setPen(QPen(Qt::black,1.7)); // Иначе черным
     painter->drawLine(line());
     painter->setPen(Qt::black);
     foreach ( bitStream *i , myStreams ) {
         painter->setBrush(i->color);
-        painter->drawEllipse( line().pointAt( i->pos ) ,2 ,2 );
+        painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
     }
 }
 //--------------------------------------------------------------------
@@ -58,7 +58,12 @@ void cableDev::updatePosition()
 void cableDev::input(QByteArray &b,devicePort *cur )
 {
     bitStream *t = new bitStream;
-    t->color = Qt::red;
+    qint8 v = b.at(0);
+    switch (v) {
+        case normal: t->color = Qt::red; break;
+        case broadcast: t->color = Qt::yellow; break;
+        default: t->color = Qt::green; break;
+    }
     t->data = b;
     if ( cur == myStartPort ) {
         t->direct = startToEnd;
