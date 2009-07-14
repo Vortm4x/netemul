@@ -7,13 +7,15 @@ class smartDevice;
 class routeRecord;
 class ipPacket;
 
+static const qint8 infinity = 16;
+
 /*!
   Реализует Rip-программу.
 */
 class ripProgramm : public programm
 {
 public:
-    enum { defaultTtl = 30 , RIP = 50 , infinity = 16 };
+    enum { defaultTtl = 30 , RIP = 50 };
     ripProgramm(smartDevice *d);
     void execute(ipPacket *p);
     void checkTable( routeRecord *r );

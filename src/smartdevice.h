@@ -66,7 +66,7 @@ public:
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
-    void deleteFromTable(routeRecord *r);
+    void deleteFromTable(routeRecord *r,bool tr = true);
     void addConnection(cableDev *cable);
     void deleteConnection(cableDev *cable);
     void setGateway(const QString str);

@@ -40,12 +40,12 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        if ( t->metric < 0 || t->metric > 16 ) {
+        if ( t->metric < 0 || t->metric > infinity ) {
             qDebug() << "1";
             delete t;
             continue;
         }
-        t->metric = qMin( t->metric+1 , 16 );
+        t->metric++;
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
         t->time = 0;
@@ -61,15 +61,8 @@ void ripProgramm::execute(ipPacket *p)
 */
 void ripProgramm::sendUpdate(bool isAll)
 {
-//    foreach ( routeRecord *i , sd->myRouteTable ) { // Перебираем таблицу
-//        d << i->dest << i->mask;
-//        if ( i->mode == smartDevice::ripMode ) i->time++;
-//        if ( i->time == 6 ) {
-//            sd->deleteFromTable(i);
-//            d << qint8(16);
-//        }
-//        else d << i->metric;
-//    }
+    foreach ( routeRecord *i, sd->myRouteTable )
+        i->time++;
     foreach ( devicePort *i , sd->mySockets )
         if ( i->isConnect() ) {
             QByteArray t;
@@ -78,13 +71,15 @@ void ripProgramm::sendUpdate(bool isAll)
                 foreach ( routeRecord *j , sd->myRouteTable ) {
                     if ( (j->gateway & j->mask) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
                     d << j->dest << j->mask;
-                    // SLEEP =)
-                    //gfhjfh
+                    if ( j->time == 6 ) d << infinity;
+                    else d << j->metric;
                 }
-            } else {
-
             }
-
+            else {
+                routeRecord *r = findChanged();
+                if ( !r ) return;
+                d << r->dest << r->mask << r->metric;
+            }
             ipPacket *p = new ipPacket; // Создаем новый пакет.
             p->setSender( i->parentDev()->ip() );
             p->setBroadcast( i->parentDev()->mask() );
@@ -96,6 +91,8 @@ void ripProgramm::sendUpdate(bool isAll)
             *p << u; // Её в пакет.
             i->parentDev()->sendPacket(p); // Пакет отправляем.
         }
+    foreach ( routeRecord *i, sd->myRouteTable )
+        if ( i->time == 6 ) sd->deleteFromTable(i,false);
 }
 //---------------------------------------------------
 /*!
@@ -105,21 +102,30 @@ void ripProgramm::sendUpdate(bool isAll)
 void ripProgramm::checkTable(routeRecord *r)
 {
     routeRecord *i = sd->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
-    if ( !i ) { // Если её нет, добавляем эту и выходим.
+    if ( !i && r->metric < 16 ) { // Если её нет, добавляем эту и выходим.
         sd->addToTable(r);
         return;
     }
+    if ( !i ) return;
     if ( i->mode != smartDevice::ripMode ) return; // Если это не RIP запись выходим.
-    if ( i->metric != r->metric ) { // Если метрика этой записи меньше прищедшей
-        sd->deleteFromTable(i); // Добавляем лучшую.
-        sd->addToTable(r);
+    if ( r->metric >= 16 ) {
+        sd->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
+        delete r;
+        return;
+    }
+    if ( i->metric > r->metric || ( i->gateway == r->gateway &&
+                                    i->metric != r->metric ) ) { // Если метрика этой записи меньше прищедшей
+        i->metric = r->metric;
+        i->gateway = r->gateway;
+        i->time = 0;
+        i->out = r->out;
         return;
     }
     if ( i->metric == r->metric ) { // Если равны значит сеть еще жива на том же расстоянии.
         i->time = 0;
         return;
     }
-    if ( r->metric >= 16 ) sd->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
+    delete r;
 }
 //---------------------------------------------------
 /*!
@@ -130,17 +136,19 @@ bool ripProgramm::interrupt(int u)
 {
     routeRecord *t = findChanged();
     if ( !t ) return false;
+    qDebug() << "123";
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
-            t->change =smartDevice::noChanged;
+            sendUpdate(false);
+            t->change =smartDevice::noChanged;            
             return true;
         case smartDevice::delNet : // И когда удаляется тоже.
             t->metric = 16;
+            sendUpdate(false);
             return true;
         default:
             break;
     }
-    //!!!!!!!!CHECK IT!!!!!!!!!!!!!!!
     return false;
 }
 //---------------------------------------------------
@@ -151,7 +159,7 @@ bool ripProgramm::interrupt(int u)
 routeRecord* ripProgramm::findChanged() const
 {
     foreach ( routeRecord *i , sd->myRouteTable )
-        if ( i->change == smartDevice::changed && i->metric != 16 ) return i;
+        if ( i->change == smartDevice::changed ) return i;
     return NULL;
 }
 //---------------------------------------------------

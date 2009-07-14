@@ -64,10 +64,10 @@ void smartDevice::deleteFromTable(int n)
   Удаляет запись из таблицы маршрутизации.
   @param r - указатель на запись.
 */
-void smartDevice::deleteFromTable(routeRecord *r)
+void smartDevice::deleteFromTable(routeRecord *r,bool tr /* !!!!!!!!!!!!!!!!*/)
 {
     r->change = changed;
-    if ( sendInterrupt(delNet) ) return;
+    if ( tr ) sendInterrupt(delNet);
     myRouteTable.removeOne(r);
     delete r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
