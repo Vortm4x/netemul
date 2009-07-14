@@ -27,8 +27,8 @@ public:
     void read(QDataStream &stream);
 private:
     smartDevice *sd;
-    int t;
-    int inter;
+    int timer;
+    int interval;
 };
 //----------------------------------------------
 /*!

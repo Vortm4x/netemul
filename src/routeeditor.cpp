@@ -19,7 +19,6 @@ routeEditor::routeEditor()
     table->setSelectionBehavior( QAbstractItemView::SelectRows );
     table->setMinimumSize( QSize(700,200) );
     all->addWidget(table);
-
     ip_dest = new ipEdit(trUtf8("Адрес назначения: "));
     all->addWidget(ip_dest);
     ip_mask = new ipEdit(trUtf8("Маска: "));
@@ -60,7 +59,13 @@ routeEditor::routeEditor()
 
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
     connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()) );
+    readSetting();
     setLayout(all);
+}
+
+routeEditor::~routeEditor()
+{
+    writeSetting();
 }
 
 void routeEditor::setDevice(smartDevice *s)
@@ -77,7 +82,6 @@ void routeEditor::updateTable()
     table->clearContents();
     table->setRowCount(0);
     foreach ( routeRecord *i , dev->myRouteTable ) {
-        if ( i->change == smartDevice::changed ) continue;
         table->insertRow(n-1);
         QTableWidgetItem *temp = new QTableWidgetItem( i->dest.ipString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
@@ -147,3 +151,31 @@ void routeEditor::checkSelection()
     btn_remove->setEnabled(false);
 }
 //------------------------------------------
+/*!
+  Читает размеры окна из файла.
+*/
+void routeEditor::readSetting()
+{
+    QSettings s("FROST","netemul");
+    s.beginGroup("routeeditor");
+    resize( s.value( "width", 800 ).toInt() ,
+            s.value( "height", 600 ).toInt() );
+    move( s.value( "left" , 100 ).toInt() ,
+          s.value( "top" , 100 ).toInt() );
+    s.endGroup();
+}
+//--------------------------------------------
+/*!
+  Записывает размеры окна в файл.
+*/
+void routeEditor::writeSetting() const
+{
+    QSettings s("FROST","netemul");
+    s.beginGroup("routeeditor");
+    s.setValue("width", width() );
+    s.setValue("height", height() );
+    s.setValue("left" , pos().x() );
+    s.setValue("top" , pos().y() );
+    s.endGroup();
+}
+//--------------------------------------------

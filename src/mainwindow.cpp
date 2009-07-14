@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar()->showMessage(tr("")); // Активизируем статус бар
     readSetting();
     setCentralWidget(view);
-    view->resize(400,300);
 }
 
 MainWindow::~MainWindow()

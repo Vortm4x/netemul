@@ -11,8 +11,8 @@ ripProgramm::ripProgramm(smartDevice *d)
     myName = trUtf8("RIP");
     sd = d;
     mySocket = 520;
-    inter = defaultTtl;
-    t = qrand()%30;
+    interval = defaultTtl;
+    timer = qrand()%30;
 }
 //--------------------------------------------------------------
 /*!
@@ -21,9 +21,9 @@ ripProgramm::ripProgramm(smartDevice *d)
 */
 void ripProgramm::incTime()
 {
-    if ( ++t < inter || !sd->myRouteMode) return;
+    if ( ++timer < interval || !sd->myRouteMode) return;
     sendUpdate(true);
-    t = 0;
+    timer = 0;
 }
 //--------------------------------------------------
 /*!
@@ -40,11 +40,7 @@ void ripProgramm::execute(ipPacket *p)
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        if ( t->metric < 0 || t->metric > infinity ) {
-            qDebug() << "1";
-            delete t;
-            continue;
-        }
+        Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
         t->metric++;
         t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
         t->gateway = p->sender();
@@ -62,7 +58,7 @@ void ripProgramm::execute(ipPacket *p)
 void ripProgramm::sendUpdate(bool isAll)
 {
     foreach ( routeRecord *i, sd->myRouteTable )
-        i->time++;
+        if ( i->mode == smartDevice::ripMode ) i->time++;
     foreach ( devicePort *i , sd->mySockets )
         if ( i->isConnect() ) {
             QByteArray t;
@@ -136,15 +132,14 @@ bool ripProgramm::interrupt(int u)
 {
     routeRecord *t = findChanged();
     if ( !t ) return false;
-    qDebug() << "123";
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
-            sendUpdate(false);
-            t->change =smartDevice::noChanged;            
+            if ( interval - timer > 3 ) sendUpdate(false);
+            t->change = smartDevice::noChanged;
             return true;
         case smartDevice::delNet : // И когда удаляется тоже.
             t->metric = 16;
-            sendUpdate(false);
+            if ( interval - timer > 3 ) sendUpdate(false);
             return true;
         default:
             break;

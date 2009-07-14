@@ -115,5 +115,16 @@ inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
     stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric;
     return stream;
 }
-
+/*!
+  Добавляет запись в таблицу маршрутизации.
+  @param r - указатель на запись.
+  @return указатель добавленную на запись.
+*/
+inline routeRecord* smartDevice::addToTable(routeRecord *r)
+{
+    myRouteTable << r;
+    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
+    return r;
+}
+//------------------------------------------------------------
 #endif // SMARTDEVICE_H

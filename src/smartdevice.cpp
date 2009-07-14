@@ -39,17 +39,9 @@ routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddre
         r->out = ipToAdapter(o);
         if ( !r->out ) {delete r; return NULL; }
     }
-    myRouteTable << r;
-    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
-    return r;
+    return addToTable(r);
 }
-//----------------------------------------------------------------
-routeRecord* smartDevice::addToTable(routeRecord *r)
-{
-    myRouteTable << r;
-    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
-    return r;
-}
+//---------------------------------------------------------------
 
 void smartDevice::deleteFromTable(int n)
 {
@@ -63,8 +55,9 @@ void smartDevice::deleteFromTable(int n)
 /*!
   Удаляет запись из таблицы маршрутизации.
   @param r - указатель на запись.
+  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
 */
-void smartDevice::deleteFromTable(routeRecord *r,bool tr /* !!!!!!!!!!!!!!!!*/)
+void smartDevice::deleteFromTable(routeRecord *r,bool tr /* = true*/)
 {
     r->change = changed;
     if ( tr ) sendInterrupt(delNet);
@@ -94,10 +87,6 @@ void smartDevice::routePacket(ipPacket *p)
     if ( !myRouteMode ) return; // Выходим если нет маршрутизации.
     routeRecord *t = recordAt(p->receiver());
     if ( !t ) {
-        delete p;
-        return;
-    }
-    if ( t->change == changed )  {
         delete p;
         return;
     }

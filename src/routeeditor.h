@@ -17,10 +17,13 @@ class routeEditor : public QDialog
     Q_OBJECT
 public:
     routeEditor();
+    ~routeEditor();
     void updateTable();
     void correctSize();
     void setDevice(smartDevice *s);
 private:
+    void readSetting();
+    void writeSetting() const;
     ipEdit *ip_dest;
     ipEdit *ip_mask;
     ipEdit *ip_gateway;
