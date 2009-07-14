@@ -57,15 +57,16 @@ void ripProgramm::execute(ipPacket *p)
 */
 void ripProgramm::sendUpdate(bool isAll)
 {
-    foreach ( routeRecord *i, sd->myRouteTable )
-        if ( i->mode == smartDevice::ripMode ) i->time++;
+    if ( !isAll) foreach ( routeRecord *i, sd->myRouteTable )
+                    if ( i->mode == smartDevice::ripMode ) i->time++;
     foreach ( devicePort *i , sd->mySockets )
         if ( i->isConnect() ) {
             QByteArray t;
-            QDataStream d(&t , QIODevice::WriteOnly);
+            QDataStream d(&t , QIODevice::WriteOnly);            
             if ( isAll ) {
                 foreach ( routeRecord *j , sd->myRouteTable ) {
-                    if ( (j->gateway & j->mask) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
+                    if ( j->out == NULL ) continue;
+                    if ( (j->gateway & i->parentDev()->mask()) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
                     d << j->dest << j->mask;
                     if ( j->time == 6 ) d << infinity;
                     else d << j->metric;
@@ -74,6 +75,7 @@ void ripProgramm::sendUpdate(bool isAll)
             else {
                 routeRecord *r = findChanged();
                 if ( !r ) return;
+                if ( (r->gateway & i->parentDev()->mask()) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
                 d << r->dest << r->mask << r->metric;
             }
             ipPacket *p = new ipPacket; // Создаем новый пакет.
@@ -158,5 +160,4 @@ routeRecord* ripProgramm::findChanged() const
     return NULL;
 }
 //---------------------------------------------------
-
 

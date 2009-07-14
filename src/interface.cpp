@@ -4,6 +4,7 @@
 #include "smartdevice.h"
 #include <QtDebug>
 #include <QList>
+#include <QMessageBox>
 
 interface::interface(devicePort *parent, int t )
 {
@@ -144,6 +145,10 @@ void interface::clearArp()
 void interface::receiveArp(arpPacket arp, devicePort *sender)
 {
     if ( arp.type() == arpPacket::answer ) {
+        if ( arp.receiverIp() == arp.senderIp() ) {
+            QMessageBox::warning(0, trUtf8("Некорректная работа сети"),
+                                 trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
+        }
         addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
         QMultiMap<ipAddress,ipPacket*>::iterator i;
         for ( i = myWaits.begin() ; i != myWaits.end() ; ++i ) {

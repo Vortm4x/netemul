@@ -85,3 +85,4 @@ ipAddress ipAddress::operator ~() const
         ip.myIp[i] = ~myIp[i];
     return ip;
 }
+

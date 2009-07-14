@@ -64,7 +64,7 @@ public:
     QList<routeRecord*>& routeTable() { return myRouteTable; }
     QList<programm*>& programms() { return myProgramms; }
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
-    routeRecord* addToTable(routeRecord *r);
+    routeRecord* addToTable(routeRecord *r,bool tr = true);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r,bool tr = true);
     void addConnection(cableDev *cable);
@@ -118,12 +118,15 @@ inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
 /*!
   Добавляет запись в таблицу маршрутизации.
   @param r - указатель на запись.
+  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
   @return указатель добавленную на запись.
 */
-inline routeRecord* smartDevice::addToTable(routeRecord *r)
+inline routeRecord* smartDevice::addToTable(routeRecord *r,bool tr /* = true */)
 {
     myRouteTable << r;
     qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
+    r->change = changed;
+    if ( tr ) sendInterrupt(addNet);
     return r;
 }
 //------------------------------------------------------------

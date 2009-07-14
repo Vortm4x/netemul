@@ -139,8 +139,7 @@ QString routeRecord::modeString() const
 */
 void smartDevice::connectedNet(devicePort *p)
 {
-    bool add = true; // Показывает происходит ли добавление.
-    if ( !p->isConnect() ) add = false; // Если порт отключают тогда удаление.
+    bool add = p->isConnect(); // Показывает происходит ли добавление.
     ipAddress ip = p->parentDev()->ip();
     ipAddress mask = p->parentDev()->mask();
     if ( ip.isEmpty() || mask.isEmpty() ) { // Если ip и маска пустые
@@ -152,7 +151,8 @@ void smartDevice::connectedNet(devicePort *p)
         if ( i->dest == dest && i->mask == mask ) {
             if ( i->gateway == ip && add) return;
             deleteFromTable(i);
-            if ( add ) break ; else { myReady--; return; }
+            myReady--;
+            if ( add ) break; else return;
         }
     myReady++;
     addToTable( dest , mask , ip , ip , 0 , connectMode );

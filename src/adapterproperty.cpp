@@ -130,6 +130,18 @@ void adapterProperty::apply()
     foreach ( devicePort *i , ports ) {
         if (tab_interfaces->tabText(tab_interfaces->currentIndex()) == i->name()) {
             i->setName(le_name->text());
+            arpPacket *p = new arpPacket;
+            frame *f = new frame;
+            p->setReceiverIp(le_ip->text());
+            p->setSenderIp(le_ip->text());
+            p->setSenderMac(le_mac->text());
+            p->setType(arpPacket::request);
+            f->setReceiver(trUtf8("FF:FF:FF:FF:FF:FF"));
+            f->setSender(le_mac->text());
+            f->setType(frame::arp);
+            *f << *p;
+            f->setDifferent(frame::broadcast);
+            i->sendFrame(f);
             i->parentDev()->setMac(le_mac->text());
             i->parentDev()->setIp(le_ip->text());
             i->parentDev()->setMask(le_mask->text());
