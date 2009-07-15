@@ -38,7 +38,7 @@ public:
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c) { myCable->setChecked(c); }
-    bool accupant(int u) { return myCable->accupant( u, this ); }
+    bool accupant() { return myCable->accupant(this); }
 private:
     QQueue<frame*> myQueue;
     cableDev *myCable;

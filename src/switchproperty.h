@@ -7,6 +7,7 @@ class QComboBox;
 class QCheckBox;
 class QLineEdit;
 class QLabel;
+class QPlainTextEdit;
 
 class switchDevice;
 class ipEdit;
@@ -28,6 +29,7 @@ private:
     QLabel *lb_sendPacket;
     QLabel *lb_mac;
     QLineEdit *le_mac;
+    QPlainTextEdit *te_text;
     ipEdit *le_ip;
     ipEdit *le_mask;
 public slots:

@@ -39,7 +39,7 @@ void devicePort::queueEvent()
     if ( myQueue.isEmpty() ) { myBusy = false; return; }
     // BUILDING !!!
     if ( !myBusy && !myCable->model() ) {
-        if ( !(myBusy = accupant(1)) ) return;
+        if ( !(myBusy = accupant()) ) return;
     }
     // REFAKTORING LATER
     frame *t = myQueue.dequeue();

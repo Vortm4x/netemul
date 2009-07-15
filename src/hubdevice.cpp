@@ -96,6 +96,7 @@ void hubDevice::write(QDataStream &stream) const
 void hubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
+    if ( !d ) return;
     d->setHub(this);
     d->exec();
     delete d;

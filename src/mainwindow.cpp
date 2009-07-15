@@ -124,6 +124,7 @@ void MainWindow::createAction()
     deleteAct->setShortcut(tr("Ctrl+D"));
 
     settingAct = createOneAction( trUtf8("Настройки") , trUtf8("Настройки"));
+    settingAct->setShortcut( tr("Ctrl+Alt+S"));
     connect( settingAct , SIGNAL(triggered()) , SLOT(setting()));
 
     staticsAct = createOneAction( trUtf8("Статистика") , trUtf8("Посмотреть статистику сцены") );
@@ -174,6 +175,7 @@ void MainWindow::createAction()
 
     editPortAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
                                   QIcon(":/im/images/refresh.png") );
+    editPortAct->setShortcut(tr("Ctrl+Alt+P"));
     connect( editPortAct , SIGNAL(triggered()) , SLOT(editInterface()) );
 
     removePortAct = createOneAction( trUtf8("Удалить адаптер") , trUtf8("Удалить адаптер") ,
@@ -182,6 +184,7 @@ void MainWindow::createAction()
 
     tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
                                 QIcon(":/im/images/table.png"));
+    tableAct->setShortcut( tr("Ctrl+T"));
     connect( tableAct , SIGNAL(triggered()) , SLOT(tableShow()) );
 
     aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
@@ -195,6 +198,7 @@ void MainWindow::createAction()
 
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
                                   QIcon(":/im/images/interface.png"));
+    adapterAct->setShortcut(tr("Ctrl+I"));
     connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
 
     playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
@@ -516,6 +520,7 @@ void MainWindow::addInterface()
 void MainWindow::editInterface()
 {
     device *d = canva->oneSelectedDevice() ;
+    if ( !d ) return;
     d->dialog();
     selectionChange();
 }
@@ -536,12 +541,14 @@ void MainWindow::removeInterface()
 void MainWindow::tableShow()
 {
     device *d = canva->oneSelectedDevice();
+    if ( !d ) return;
     d->showTable();
 }
 
 void MainWindow::adapterShow()
 {
     smartDevice *d = qgraphicsitem_cast<smartDevice*>(canva->oneSelectedDevice());
+    if ( !d ) return;
     d->showDialog<adapterProperty>();
 }
 
@@ -576,6 +583,7 @@ void MainWindow::playBack()
 void MainWindow::programmShow()
 {
     device *d = canva->oneSelectedDevice();
+    if ( !d ) return;
     smartDevice *u = d->toT<smartDevice>();
     u->showDialog<programmDialog>();
 }

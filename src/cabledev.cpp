@@ -106,14 +106,13 @@ void cableDev::motion()
 /*!
 
 */
-bool cableDev::accupant(int u, devicePort *d)
+bool cableDev::accupant(devicePort *d)
 {
-    if ( u == 0 ) return !isBusy();
-    device *p;
+    device *p = NULL;
     if ( d == myStartPort ) p = myEndDev;
     else p = myStartDev;
-    if ( p->type() == hub ) return p->accupant(u-1);
-    return true;
+    if ( p->type() == hub ) return p->accupant();
+    return !isBusy();
 }
 //---------------------------------------------------------
 

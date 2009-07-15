@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPlainTextEdit>
 
 
 switchProperty::switchProperty()
@@ -51,6 +52,13 @@ switchProperty::switchProperty()
     all->addWidget(lb_recPacket);
     all->addWidget(lb_sendPacket);
     all->addStretch(1);
+    te_text = new QPlainTextEdit;
+    connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
+    te_text->setFixedHeight(100);
+    te_text->setMaximumBlockCount(5);
+    all->addWidget( new QLabel(trUtf8("Пояснения:")));
+    all->addWidget(te_text);
+    all->addStretch(1);
     all->addLayout(lay);
     setLayout(all);
 }
@@ -69,6 +77,7 @@ void switchProperty::setSwitch(switchDevice *d)
     lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( d->countSendPacket() ) );
     chk_manual->setChecked( d->isManual() );
     check( d->isManual() );
+    te_text->setPlainText( sw->toolTip() );
     btn_apply->setEnabled(false);
 }
 
@@ -87,6 +96,7 @@ void switchProperty::apply()
     sw->setMac(le_mac->text());
     sw->setIp(le_ip->text());
     sw->setIp(le_mask->text());
+    sw->setToolTip( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

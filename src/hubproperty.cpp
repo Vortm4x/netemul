@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPlainTextEdit>
 
 hubProperty::hubProperty()
 {
@@ -49,6 +50,13 @@ hubProperty::hubProperty()
     all->addWidget(lb_recPacket);
     all->addWidget(lb_sendPacket);
     all->addStretch(1);
+    te_text = new QPlainTextEdit;
+    connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
+    te_text->setFixedHeight(100);
+    te_text->setMaximumBlockCount(5);
+    all->addWidget( new QLabel(trUtf8("Пояснения:")));
+    all->addWidget(te_text);
+    all->addStretch(1);
     all->addLayout(lay);
     setLayout(all);
 }
@@ -80,6 +88,7 @@ void hubProperty::setHub(hubDevice *h)
     lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( h->countSendPacket() ) );
     chk_manual->setChecked( h->isManual() );
     check( h->isManual() );
+    te_text->setPlainText( hub->toolTip() );
     btn_apply->setEnabled(false);
 }
 
@@ -98,6 +107,7 @@ void hubProperty::apply()
     hub->setMac(le_mac->text());
     hub->setIp(le_ip->text());
     hub->setIp(le_mask->text());
+    hub->setToolTip( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

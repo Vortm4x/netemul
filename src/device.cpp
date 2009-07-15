@@ -57,17 +57,16 @@ void device::sendEvent()
 }
 //----------------------------------------------------------------
 /*!
-    Определяет идет возможна ли передача через это устройство, т.к. оно является
+    Определяет возможна ли передача через это устройство, т.к. оно является
     разделяемой средой передачи.
-    @param u - на сколько устройств далее следует проверять.
     @return true - если передача возможна, false - в противном случае.
 */
-bool device::accupant(int u)
+bool device::accupant()
 {
     foreach ( devicePort *i, mySockets )
-        if ( !i->isConnect() || i->isBusy()) return false;
+        if ( i->isConnect() || i->isBusy()) return false;
     foreach ( devicePort *i, mySockets )
-        if ( !i->accupant(u) ) return false;
+        if ( !i->accupant() ) return false;
     return true;
 }
 //-----------------------------------------------------------------

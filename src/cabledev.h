@@ -38,7 +38,7 @@ public:
     void output(bitStream *t);
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
-    bool accupant(int u, devicePort *d);
+    bool accupant(devicePort *d);
 private:
     bool myChecked;
     int myModel;

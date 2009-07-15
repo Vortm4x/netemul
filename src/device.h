@@ -46,7 +46,7 @@ public:
     virtual void read(QDataStream &stream) = 0 ;
     virtual void dialog() = 0;
     virtual QString hasTable() const = 0;
-    bool accupant(int u);
+    bool accupant();
 private:
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     int myId; //!< Подобие указателя для QtScript
