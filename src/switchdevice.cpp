@@ -107,6 +107,7 @@ void switchDevice::write(QDataStream &stream) const
         foreach (macRecord *i, mySwitchTable)
             stream << i->mac << i->port->name() << i->mode << i->time;
      }
+    stream << toolTip();
 }
 
 void switchDevice::read(QDataStream &stream)
@@ -134,6 +135,8 @@ void switchDevice::read(QDataStream &stream)
         r->port = socket(value);
         mySwitchTable << r;
     }
+    stream >> value;
+    setToolTip(value);
 }
 
 void switchDevice::dialog()

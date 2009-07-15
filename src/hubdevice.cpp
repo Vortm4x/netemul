@@ -67,6 +67,7 @@ void hubDevice::read(QDataStream &stream)
 {
     QPointF p;
     int n;
+    QString s;
     stream >> p >> n;
     setPos(p);
     setSocketCount(n);
@@ -78,6 +79,8 @@ void hubDevice::read(QDataStream &stream)
     stream >> mySendFrame;
     stream >> myReceivePacket;
     stream >> mySendPacket;
+    stream >> s;
+    setToolTip(s);
 }
 
 void hubDevice::write(QDataStream &stream) const
@@ -91,6 +94,7 @@ void hubDevice::write(QDataStream &stream) const
     stream << mySendFrame;
     stream << myReceivePacket;
     stream << mySendPacket;
+    stream << toolTip();
 }
 
 void hubDevice::dialog()

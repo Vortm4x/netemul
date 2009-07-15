@@ -36,7 +36,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     else if ( myChecked ) painter->setPen(QPen(Qt::magenta,1.7));
     else painter->setPen(QPen(Qt::black,1.7)); // Иначе черным
     painter->drawLine(line());
-    painter->setPen(Qt::black);
+    painter->setPen(QPen(Qt::black,1));
     foreach ( bitStream *i , myStreams ) {
         painter->setBrush(i->color);
         painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
