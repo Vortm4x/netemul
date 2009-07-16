@@ -4,7 +4,7 @@
 #include "device.h"
 #include "abstractchip.h"
 
-class boxDevice : public deviceImpl , public abstractChip
+class boxDevice : public deviceImpl
 {
     Q_DECLARE_TR_FUNCTIONS(boxDevice)
 public:

@@ -1,6 +1,6 @@
 #include "hubdevice.h"
 #include "hubproperty.h"
-#include <QtDebug>
+#include "hubchip.h"
 
 hubDevice::hubDevice(int c)
 {
@@ -9,92 +9,31 @@ hubDevice::hubDevice(int c)
         QString t = trUtf8("LAN%1").arg(i);
         addInterface(t,0);
     }
-    setToolTip( trUtf8( "Концентратор" ) );
-}
-// Пока смотреть свитч =)
-void hubDevice::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
-{
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-    QRect temp(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
-    QList<QGraphicsItem*> collides = collidingItems();
-    foreach ( QGraphicsItem* item , collides) {
-        if ( item->type() == cableDev::Type || item->type() == QGraphicsLineItem::Type) collides.removeOne(item);
-    }
-    QLinearGradient tempGrad(device::rectDevX , device::rectDevY ,-device::rectDevX,-device::rectDevY);
-    tempGrad.setColorAt(0,Qt::white);
-    if (isSelected()) {
-        if (!collides.isEmpty())
-            tempGrad.setColorAt(1,Qt::red);
-        else
-            tempGrad.setColorAt(1,Qt::blue);
-        painter->setPen(QPen(Qt::darkBlue,0.3));
-    }
-    else {
-        painter->setPen(QPen(Qt::black,0.3)); // А иначе черный
-        tempGrad.setColorAt(1,Qt::white);
-    }
-    painter->setBrush(QBrush(tempGrad));
-    painter->drawRoundedRect(temp,5,5);
-    painter->drawPixmap(temp,QPixmap(":/im/images/modem.png"));
-    if ( isConnect() ) painter->setBrush(Qt::green) ; else painter->setBrush(Qt::red);
-    painter->drawEllipse(-17,-17,6,6);
+    setNote( trUtf8( "Концентратор" ) );
 }
 
-void hubDevice::receiveEvent(frame *fr,devicePort *sender)
+hubDevice::~hubDevice()
 {
-    foreach ( devicePort *item , mySockets ) {
-        if ( item != sender && item->isConnect() ) {
-            frame *temp = new frame;
-            *temp = *fr;
-            item->addToQueue(temp);
-        }
-    }
-    delete fr;
+    delete chip;
 }
 
-devicePort* hubDevice::addInterface(QString str,int t)
-{
-        Q_UNUSED(t);
-        devicePort *temp = new devicePort;
-        temp->setParentDev(this);
-        temp->setName(str);
-        addSocket(temp);
-        return temp;
-}
 
 void hubDevice::read(QDataStream &stream)
 {
-    QPointF p;
     int n;
     QString s;
-    stream >> p >> n;
-    setPos(p);
+    stream >> n;
     setSocketCount(n);
-    stream >> myType;
-    stream >> myMac;
-    stream >> myIp;
-    stream >> myMask;
-    stream >> myReceiveFrame;
-    stream >> mySendFrame;
-    stream >> myReceivePacket;
-    stream >> mySendPacket;
+    stream >> *chip;
     stream >> s;
-    setToolTip(s);
+    setNote(s);
 }
 
 void hubDevice::write(QDataStream &stream) const
 {
-    stream << hubDev << pos() << sockets().count();
-    stream << myType;
-    stream << myMac;
-    stream << myIp;
-    stream << myMask;
-    stream << myReceiveFrame;
-    stream << mySendFrame;
-    stream << myReceivePacket;
-    stream << mySendPacket;
-    stream << toolTip();
+    stream << hubDev << sockets().count();
+    stream << *chip;
+    stream << note();
 }
 
 void hubDevice::dialog()

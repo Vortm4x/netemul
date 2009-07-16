@@ -6,7 +6,7 @@
 #include <QList>
 #include <QMessageBox>
 
-interface::interface(devicePort *parent, int t )
+interface::interface(int t )
 {
     myType = t;
     mySocket = parent;

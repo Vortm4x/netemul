@@ -1,13 +1,13 @@
 #ifndef ABSTRACTCHIP_H
 #define ABSTRACTCHIP_H
 
-#include <QObject>
 #include "macaddress.h"
 #include "ipaddress.h"
 #include "frame.h"
 
 class devicePort;
 class ipPacket;
+class deviceImpl;
 
 /*!
   Класс являеться абстрактным устройством приема и обработки кадров.
@@ -17,7 +17,6 @@ class ipPacket;
 class abstractChip
 {
 public:
-    enum { normal = 0 , test = 1 };
     abstractChip();
 
     macAddress mac() const { return myMac; }
@@ -38,16 +37,13 @@ public:
     void addSend(int f, int p) { mySendFrame += f ; mySendPacket += p; }
     void addRec(int f, int p) { myReceiveFrame += f ; myReceivePacket += p; }
 
-    void setType(int inter) { myType = inter; }
-    int type() { return myType; }
     void resetStatics();
     virtual void sendPacket(ipPacket *p, ipAddress gw = ipAddress("0.0.0.0") )
                             { Q_UNUSED(p); Q_UNUSED(gw); }
     virtual void updateArp(int u) { Q_UNUSED(u); }
     virtual void clearArp() { }
 protected:
-    int myType;
-    devicePort *mySocket;
+    deviceImpl *myOwner;
     ipAddress myIp;
     ipAddress myMask;
     quint64 myReceiveFrame;
@@ -61,7 +57,6 @@ protected:
 
 inline QDataStream& operator<<(QDataStream &stream,const abstractChip &chip)
 {
-    stream << chip.myType;
     stream << chip.myMac;
     stream << chip.myIp;
     stream << chip.myMask;
@@ -74,7 +69,6 @@ inline QDataStream& operator<<(QDataStream &stream,const abstractChip &chip)
 
 inline QDataStream& operator>>(QDataStream &stream,abstractChip &chip)
 {
-    stream >> chip.myType;
     stream >> chip.myMac;
     stream >> chip.myIp;
     stream >> chip.myMask;

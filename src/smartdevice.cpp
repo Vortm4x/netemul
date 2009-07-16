@@ -15,6 +15,24 @@ interface* smartDevice::adapter(QString s)
     return NULL;
 }
 /*!
+  Добавляет интерфейс к устройству.
+  @param str - Имя интерфейса.
+  @param t - Тип интерфейса.
+  @return указатель на созданный интерфейс.
+*/
+interface* smartDevice::addInterface(QString str,int t)
+{
+    devicePort *tp = new devicePort;
+    interface *ti = new interface(t);
+    ti->setSmart(this);
+    tp->setParentDev(ti);
+    tp->setConnect(false, NULL);
+    tp->setName(str);
+    addSocket(tp);
+    return ti;
+}
+//----------------------------------------------------
+/*!
   Добавляет в таблицу маршрутизации новую запись.
   @param d - сеть назначения.
   @param m - маска сети.

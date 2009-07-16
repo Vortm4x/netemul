@@ -36,7 +36,7 @@ void computerProperty::setComputer(computer *c)
     cb_route->setChecked( comp->routeMode() );
     btn_apply->setEnabled(false);
     cb_route->setEnabled( comp->sockets().count() > 1 );
-    te_text->setPlainText( comp->toolTip() );
+    te_text->setPlainText( comp->note() );
 }
 
 void computerProperty::apply()
@@ -44,7 +44,7 @@ void computerProperty::apply()
     if (gateway->text() != "0.0.0.0" )
         comp->setGateway(gateway->text());
     comp->setRouteMode( cb_route->isChecked() );
-    comp->setToolTip( te_text->toPlainText() );
+    comp->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

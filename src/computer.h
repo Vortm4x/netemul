@@ -13,12 +13,13 @@ class computer : public smartDevice
 {
     Q_DECLARE_TR_FUNCTIONS(computer)
 public:
+    enum { compDev = 3 };
     computer(int c = 1);
     ~computer() { }
     devicePort* addInterface(QString str,int t);
 
     void dialog();
-    QString hasTable() const { return trUtf8("Таблица маршрутизации"); }
+    bool hasTable() const { return true; }
 protected:
     void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}
     void read(QDataStream &stream) { smartDevice::read(stream); }

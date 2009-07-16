@@ -20,7 +20,7 @@ void deviceImpl::setCheckedSocket(const QString &s)
   @param name - имя искомого порта.
   @return указатель на порт или NULL если такого порта нет.
 */
-devicePort* device::socket(const QString name)
+devicePort* deviceImpl::socket(const QString name)
 {
     foreach ( devicePort *i, mySockets) {
         if ( i->name() == name )
@@ -28,3 +28,13 @@ devicePort* device::socket(const QString name)
     }
     return 0;
 }
+//-----------------------------------------------------------
+/*!
+  Посылает пакеты лежащие в очереди на портах устройства.
+*/
+void deviceImpl::sendEvent()
+{
+    foreach ( devicePort *i, mySockets )
+
+}
+//------------------------------------------------------------

@@ -77,8 +77,7 @@ void hubProperty::check(bool p)
 void hubProperty::setHub(hubDevice *h)
 {
     hub = h;
-    QString c = QString().setNum( h->sockets().count() );
-    cb_count->setCurrentIndex( cb_count->findText(c) );
+    cb_count->setCurrentIndex( cb_count->findText( QString::number(h->sockets().count()) ) );
     le_mac->setText( h->macString() );
     le_ip->setText( h->ip().ipString() );
     le_mask->setText( h->mask().ipString() );

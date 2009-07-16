@@ -7,56 +7,10 @@
 
 computer::computer(int c)
 {
-    count = 0;
     for ( int i = 0 ; i < c ; i++)
-        addInterface(QString("eth%1").arg(count++) , interface::ethernet100 );
+        addInterface(QString("eth%1").arg(i+1),interface::ethernet100);
     addToTable(tr("127.0.0.0"),tr("255.0.0.0"),tr("127.0.0.1"),tr("127.0.0.1"),0,connectMode);
-    setToolTip(trUtf8("Компьютер"));
-}
-
-void computer::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
-{
-    Q_UNUSED(option); // Пока не используем
-    Q_UNUSED(widget); // Эти параметры
-    QRect temp(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight); // Временный прямоугольник
-    QList<QGraphicsItem*> collides = collidingItems();
-    foreach ( QGraphicsItem* item , collides) {
-        if ( item->type() == cableDev::Type || item->type() == QGraphicsLineItem::Type) collides.removeOne(item);
-    }
-    QLinearGradient tempGrad(device::rectDevX , device::rectDevY ,-device::rectDevX,-device::rectDevY);
-    tempGrad.setColorAt(0,Qt::white);
-    if (isSelected()) {
-        if (!collides.isEmpty())
-            tempGrad.setColorAt(1,Qt::red);
-        else
-            tempGrad.setColorAt(1,Qt::blue);
-        painter->setPen(Qt::darkBlue);
-    }
-    else {
-        painter->setPen(Qt::black); // А иначе черный
-        tempGrad.setColorAt(1,Qt::lightGray);
-    }
-    painter->setBrush(QBrush(tempGrad));
-    painter->drawRoundedRect(temp,5,5); //Рисуем край нашего компьютера
-    painter->drawPixmap(temp,QPixmap(":/im/images/laptop.png")); // Потом картинку
-    if ( isConnect() ) {
-        if ( myReady == myCableList.count() ) painter->setBrush(Qt::green);
-        else painter->setBrush(Qt::yellow);
-    }
-    else painter->setBrush(Qt::red);
-    painter->drawEllipse(-17,-17,6,6);
-}
-
-devicePort* computer::addInterface(QString str,int t)
-{
-    devicePort *tempPort = new devicePort;
-    interface *tempInter = new interface(tempPort, t);
-    tempInter->setSmart(this);
-    tempPort->setParentDev(tempInter);
-    tempPort->setConnect(false, NULL);
-    tempPort->setName(str);
-    addSocket(tempPort);
-    return tempPort;
+    setNote(trUtf8("Компьютер"));
 }
 
 void computer::dialog()
