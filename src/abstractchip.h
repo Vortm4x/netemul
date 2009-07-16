@@ -14,9 +14,8 @@ class ipPacket;
   Являеться предком для interface и boxDevice этот класс уже дает возможность вести статистику
   входящих кадров и пакетов, поддерживает обработку и передачу кадров на уровень выше.
 */
-class abstractChip : public QObject
+class abstractChip
 {
-    Q_OBJECT
 public:
     enum { normal = 0 , test = 1 };
     abstractChip();

@@ -9,7 +9,7 @@ class devicePort;
 // который унаследован от device , так как у общей шины будет отличаться
 // реализация и отображение от остальных устройств
 //
-class shareBus : public device
+class shareBus : public deviceImpl
 {
     Q_DECLARE_TR_FUNCTIONS(shareBus)
 public:

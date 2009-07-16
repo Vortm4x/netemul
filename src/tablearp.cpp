@@ -86,7 +86,7 @@ void tableArp::updateTable()
     foreach ( devicePort *p, list ) {
         if ( !p->isConnect() ) continue;
         cb_port->addItem(QIcon(":im/images/ok.png"), p->name() );
-        QList<arpRecord*> rec = qobject_cast<interface*>(p->parentDev())->arpTable();
+        QList<arpRecord*> rec = static_cast<interface*>(p->parentDev())->arpTable();
         foreach ( arpRecord *r, rec ){
             table->insertRow(table->rowCount());
             QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.macString());

@@ -7,11 +7,6 @@
 #include "macaddress.h"
 #include "ipaddress.h"
 #include "interface.h"
-#include "hubdevice.h"
-#include "switchdevice.h"
-#include "routerdevice.h"
-#include "computer.h"
-#include "sharebus.h"
 #include "textitem.h"
 
 class QMenu;

@@ -4,8 +4,9 @@
 #include "device.h"
 #include "abstractchip.h"
 
-class boxDevice : public device , public abstractChip
+class boxDevice : public deviceImpl , public abstractChip
 {
+    Q_DECLARE_TR_FUNCTIONS(boxDevice)
 public:
     boxDevice();
     virtual ~boxDevice();

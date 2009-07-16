@@ -64,7 +64,8 @@ HEADERS += src/abstractchip.h \
     src/ripprogramm.h \
     src/programmdialog.h \
     src/installdialog.h \
-    src/textitem.h
+    src/textitem.h \
+    src/deviceimpl.h
 FORMS += ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui \
@@ -111,5 +112,6 @@ SOURCES += src/abstractchip.cpp \
     src/ripprogramm.cpp \
     src/programmdialog.cpp \
     src/installdialog.cpp \
-    src/textitem.cpp
+    src/textitem.cpp \
+    src/deviceimpl.cpp
 RESOURCES += netemul.qrc

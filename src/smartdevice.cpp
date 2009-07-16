@@ -11,7 +11,7 @@ smartDevice::~smartDevice()
 interface* smartDevice::adapter(QString s)
 {
     foreach ( devicePort *i , mySockets )
-        if ( i->name() == s ) return qobject_cast<interface*>(i->parentDev());
+        if ( i->name() == s ) return static_cast<interface*>(i->parentDev());
     return NULL;
 }
 /*!
@@ -69,7 +69,7 @@ void smartDevice::deleteFromTable(routeRecord *r,bool tr /* = true*/)
 interface* smartDevice::ipToAdapter(const ipAddress a)
 {
     foreach ( devicePort *i , mySockets )
-        if ( i->parentDev()->ip() == a ) return qobject_cast<interface*>(i->parentDev());
+        if ( i->parentDev()->ip() == a ) return static_cast<interface*>(i->parentDev());
     return NULL;
 }
 
@@ -143,7 +143,7 @@ void smartDevice::connectedNet(devicePort *p)
     ipAddress ip = p->parentDev()->ip();
     ipAddress mask = p->parentDev()->mask();
     if ( ip.isEmpty() || mask.isEmpty() ) { // Если ip и маска пустые
-        if ( routeRecord *t = recordAt(qobject_cast<interface*>(p->parentDev()) )) deleteFromTable(t);
+        if ( routeRecord *t = recordAt(static_cast<interface*>(p->parentDev()) )) deleteFromTable(t);
         return;
     }
     ipAddress dest = mask & ip;

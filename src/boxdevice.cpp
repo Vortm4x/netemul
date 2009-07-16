@@ -11,20 +11,19 @@ boxDevice::~boxDevice()
 
 bool boxDevice::setSocketCount(int n)
 {
-    QList<devicePort*> l = sockets();
-    foreach( devicePort *i , l )
+    foreach( devicePort *i , mySockets )
         if ( i->isConnect() ) return false;
     int i,t = sockets().count();
     if ( t == n ) return false;
     if ( t < n ) {
         for ( i = t+1 ; i <= n; i++)
-            addInterface( trUtf8("LAN%1").arg(i),0);
+            addSocket( trUtf8("LAN%1").arg(i));
     }
     else {
-        foreach( devicePort *i , l)
-            removeSocket(i);
+        qDeleteAll(mySockets);
+        mySockets.clear();
         for (i = 1 ; i <=n ; i++)
-            addInterface( trUtf8("LAN%1").arg(i),0);
+            addSocket( trUtf8("LAN%1").arg(i));
     }
     return true;
 }

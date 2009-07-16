@@ -103,7 +103,7 @@ void adapterProperty::changeTab()
   */
 void adapterProperty::updateTab(devicePort *d)
 {
-    interface *t = qobject_cast<interface*>(d->parentDev());
+    interface *t = static_cast<interface*>(d->parentDev());
     le_name->setText(d->name());
     le_mac->setText( t->macString() );
     le_ip->setText( t->ip().ipString() );

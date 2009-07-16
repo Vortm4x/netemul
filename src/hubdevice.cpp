@@ -28,11 +28,11 @@ void hubDevice::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,Q
             tempGrad.setColorAt(1,Qt::red);
         else
             tempGrad.setColorAt(1,Qt::blue);
-        painter->setPen(Qt::darkBlue);
+        painter->setPen(QPen(Qt::darkBlue,0.3));
     }
     else {
-        painter->setPen(Qt::black); // А иначе черный
-        tempGrad.setColorAt(1,Qt::yellow);
+        painter->setPen(QPen(Qt::black,0.3)); // А иначе черный
+        tempGrad.setColorAt(1,Qt::white);
     }
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(temp,5,5);

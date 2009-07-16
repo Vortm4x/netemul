@@ -9,7 +9,6 @@
 interface::interface(devicePort *parent, int t )
 {
     myType = t;
-    setParent(parent);
     mySocket = parent;
     myReceiveFrame  = 0;
 }
@@ -146,8 +145,8 @@ void interface::receiveArp(arpPacket arp, devicePort *sender)
 {
     if ( arp.type() == arpPacket::answer ) {
         if ( arp.receiverIp() == arp.senderIp() ) {
-            QMessageBox::warning(0, trUtf8("Некорректная работа сети"),
-                                 trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::warning(0, QObject::trUtf8("Некорректная работа сети"),
+                                 QObject::trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
         }
         addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
         QMultiMap<ipAddress,ipPacket*>::iterator i;

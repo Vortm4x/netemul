@@ -5,10 +5,11 @@
 #include <QDataStream>
 #include <QtScript>
 #include <QPainter>
-#include "deviceport.h"
+#include "deviceimpl.h"
 
 class cableDev;
 class QMenu;
+
 /*!
   Устройство, это основная единица с которой мы имеем дело в программе,
   хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
@@ -17,10 +18,10 @@ class QMenu;
 class device : public QGraphicsItem
 {
 public:
-    enum sizeDevices { rectDevX = -20 , rectDevY = -20 , rectDevWidth = 40 , rectDevHeight = 40 };
+    enum sizeDevices { rectDevX = -23 , rectDevY = -23 , rectDevWidth = 46 , rectDevHeight = 46 };
     QRect devRect;
     device();
-    virtual ~device();
+    ~device();
     QRectF boundingRect() const {
         return devRect;
     }
@@ -28,26 +29,21 @@ public:
     bool isConnect() { return myCableList.count(); }
     virtual void addConnection(cableDev *cable) { myCableList << cable;}
     virtual void deleteConnection(cableDev *cable) { myCableList.removeOne(cable); }
-    void addSocket( devicePort* inter) { mySockets << inter; }
-    void removeSocket( devicePort* inter) { mySockets.removeOne(inter); delete inter; }
     QList<cableDev*> cables() const { return myCableList; }
-    QList<devicePort*> sockets() const { return mySockets; }
     QString nextName() { return QString("eth%1").arg(count++); }
-    devicePort* socket(const QString name);
     template<class T>T* toT() { return qgraphicsitem_cast<T*>(this); }
-    void setCheckedSocket(const QString s);
     void sendEvent();
     void setId(int i) { myId = i; }
     int id() const { return myId; }
     virtual void showTable() { }
     virtual QPointF getPointCable(QPointF otherDev) = 0;
-    virtual devicePort* addInterface(QString str,int t) = 0;
     virtual void write(QDataStream &stream) const = 0;
     virtual void read(QDataStream &stream) = 0 ;
     virtual void dialog() = 0;
     virtual QString hasTable() const = 0;
     bool accupant();
 private:
+    deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     int myId; //!< Подобие указателя для QtScript
 protected:

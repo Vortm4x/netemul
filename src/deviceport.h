@@ -1,7 +1,6 @@
 #ifndef DEVICEPORT_H
 #define DEVICEPORT_H
 
-#include <QObject>
 #include <QQueue>
 
 #include "cabledev.h"
@@ -17,7 +16,7 @@ class frame;
   но обработка у всех отличается, для того что бы оставить общее и разграничить разное,
   был сделан этот класс.
 */
-class devicePort : public QObject
+class devicePort
 {
 public:
     static bool isCompability(devicePort* one , devicePort *two);

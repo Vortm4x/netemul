@@ -33,7 +33,7 @@ public:
   Интелектуальное устройство, абстрактный класс объединяющий в себе
   свойства компьютера и роутера.
 */
-class smartDevice : public device
+class smartDevice : public deviceImpl
 {
 public:
     /*! Источники записи таблицы маршрутизации. */

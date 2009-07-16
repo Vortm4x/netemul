@@ -17,7 +17,6 @@ const QString names[] = { QObject::trUtf8("Ethernet(10/100 Мбит/с)") , QObj
 
 class interface : public abstractChip
 {
-    Q_OBJECT
 public:
     enum { ethernet100 = 0 , ethernet1000 = 1 , staticMode = 100 , dinamicMode = 101 };
     interface(devicePort *parent,  int t = 0 );
