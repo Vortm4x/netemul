@@ -5,24 +5,24 @@ class TestMacAddress : public QObject
 {
     Q_OBJECT
 private slots:
-    void macString();
+    void toString();
     void setBroadcast();
     void saveAndLoad();
     void operators();
 };
 
-void TestMacAddress::macString()
+void TestMacAddress::toString()
 {
     macAddress m;
     m.setMac("01:03:00:00:00:00");
-    QCOMPARE(m.macString(), tr("01:03:00:00:00:00"));
+    QCOMPARE(m.toString(), tr("01:03:00:00:00:00"));
 }
 
 void TestMacAddress::setBroadcast()
 {
     macAddress m;
     m.setBroadcast();
-    QCOMPARE( m.macString() , tr("FF:FF:FF:FF:FF:FF"));
+    QCOMPARE( m.toString() , tr("FF:FF:FF:FF:FF:FF"));
     QCOMPARE( m.isBroadcast() , true );
 }
 

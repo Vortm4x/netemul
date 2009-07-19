@@ -15,10 +15,7 @@ computer::computer(int c)
 
 void computer::dialog()
 {
-    computerProperty *d = new computerProperty;
-    d->setComputer(this);
-    d->exec();
-    delete d;
+    SHOW_DIALOG(computerProperty)
 }
 
 

@@ -1,45 +1,43 @@
 #include "interface.h"
 #include "frame.h"
 #include "arppacket.h"
-#include "smartdevice.h"
 #include <QtDebug>
 #include <QList>
 #include <QMessageBox>
 
-interface::interface(int t )
+interface::interface()
 {
-    myType = t;
-    mySocket = parent;
-    myReceiveFrame  = 0;
+    mySocket = new devicePort;
 }
 
 interface::~interface()
 {
+    delete mySocket;
     clearArp();
 }
 
 void interface::receiveEvent(frame *fr,devicePort *sender)
 {
+    Q_UNUSED(sender)
     if ( fr->type() == frame::ip ) {
-        ipPacket *p = new ipPacket;
-        *fr >> *p;
-        receiveIp( p , sender );
+        ipPacket p;
+        *fr >> p;
+        receiveIp(p);
     }
     if ( fr->type() == frame::arp ) {
         arpPacket p;
         *fr >> p;
-        receiveArp( p , sender);
+        receiveArp(p);
     }
     delete fr;
 }
 
 void interface::sendBroadcast(ipPacket *p)
 {
-    frame *f = createFrame( myMac , macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
-    f->setDifferent( frame::broadcast );
-    *f << *p;
-    addSend(0,1);
-    mySocket->addToQueue(f);
+    frame f = createFrame( myMac , macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
+    f.setDifferent( frame::broadcast );
+    f << *p;
+    mySocket->pushToSend(f);
 }
 
 void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */ )
@@ -53,11 +51,10 @@ void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */
     else t = gw;
     foreach ( arpRecord *i , myArpTable )
         if ( i->ip == t ) {
-            frame *f = createFrame( myMac , i->mac , frame::ip );
+            frame f = createFrame( myMac , i->mac , frame::ip );
             i->time = 0; // Стартуем заново время жизни arp записи
-            *f << *p;
-            addSend(0,1);
-            mySocket->addToQueue(f);
+            f << *p;
+            mySocket->pushToSend(f);
             delete p;
             return;
         }
@@ -68,10 +65,10 @@ void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */
     macAddress m;
     m.setBroadcast();
     arpPacket a(  macAddress() , myMac , t , myIp , arpPacket::request );
-    frame *f = createFrame( myMac , m ,frame::arp);
-    f->setDifferent(frame::broadcast);
-    *f << a;
-    mySocket->addToQueue(f);
+    frame f = createFrame( myMac , m ,frame::arp);
+    f.setDifferent(frame::broadcast);
+    f << a;
+    mySocket->pushToSend(f);
     myWaits.insert(t,p);
     return;
 }
@@ -106,20 +103,18 @@ arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
     return t;
 }
 
-frame* interface::createFrame( macAddress senderMac, macAddress receiverMac, int t)
+frame interface::createFrame( macAddress senderMac, macAddress receiverMac, int t)
 {
-    frame *f = new frame;
-    f->setSender(senderMac);
-    f->setReceiver(receiverMac);
-    f->setType(t);
+    frame f;
+    f.setSender(senderMac);
+    f.setReceiver(receiverMac);
+    f.setType(t);
     return f;
 }
 
-void interface::receiveIp(ipPacket *ip , devicePort *sender)
+void interface::receiveIp(const ipPacket &ip)
 {
-    Q_UNUSED(sender);
-    addRec(0,1);
-    mySmart->receivePacket(ip,this);
+    buffer.enqueue(ip);
 }
 
 void interface::updateArp(int u)
@@ -141,7 +136,7 @@ void interface::clearArp()
     myArpTable.clear();
 }
 
-void interface::receiveArp(arpPacket arp, devicePort *sender)
+void interface::receiveArp(const arpPacket &arp)
 {
     if ( arp.type() == arpPacket::answer ) {
         if ( arp.receiverIp() == arp.senderIp() ) {
@@ -161,9 +156,9 @@ void interface::receiveArp(arpPacket arp, devicePort *sender)
         arpRecord *t = addToTable(arp.senderIp() , arp.senderMac() , dinamicMode );
         if ( arp.receiverIp() == myIp ) {
             arpPacket a( t->mac , myMac , t->ip ,myIp, arpPacket::answer );
-            frame *fr = createFrame( myMac, t->mac, frame::arp);
-            *fr << a;
-            sender->addToQueue(fr);
+            frame fr = createFrame( myMac, t->mac, frame::arp);
+            fr << a;
+            mySocket->pushToSend(fr);
         }
     }
 }

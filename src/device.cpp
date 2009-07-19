@@ -1,14 +1,51 @@
 #include "device.h"
+#include "computer.h"
+#include "hubdevice.h"
+#include "switchdevice.h"
+#include "routerdevice.h"
 #include <QMenu>
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
 
-device::device()
+device::device(int t)
 {
     myReady = 0;
     devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
+    switch (t) {
+        case compDev : impl = new computer; break;
+        case hubDev : impl = new hubDevice; break;
+        case switchDev : impl = new switchDevice; break;
+        case routerDev : impl = new routerDevice; break;
+        default: break;
+    }
+}
+
+device::device(QDataStream &stream)
+{
+    myReady = 0;
+    devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
+    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
+    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
+    QPointF p;
+    int tp;
+    stream >> p;
+    setPos(p);
+    stream >> tp;
+    switch (tp) {
+        case compDev : impl = new computer; break;
+        case hubDev : impl = new hubDevice; break;
+        case switchDev : impl = new switchDevice; break;
+        case routerDev : impl = new routerDevice; break;
+        default: break;
+    }
+    impl->read(stream);
+}
+
+device::~device()
+{
+    delete impl;
 }
 
 void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
@@ -49,11 +86,6 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     painter->drawEllipse(-17,-17,6,6);
 }
 
-device::~device()
-{
-    delete impl;
-}
-
 void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     scene()->clearSelection(); // Снять все выделения на сцене
@@ -68,18 +100,5 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     scene()->clearSelection();
 }
 //----------------------------------------------------------------
-/*!
-    Определяет возможна ли передача через это устройство, т.к. оно является
-    разделяемой средой передачи.
-    @return true - если передача возможна, false - в противном случае.
-*/
-bool device::accupant()
-{
-    foreach ( devicePort *i, mySockets )
-        if ( i->isConnect() || i->isBusy()) return false;
-    foreach ( devicePort *i, mySockets )
-        if ( !i->accupant() ) return false;
-    return true;
-}
-//-----------------------------------------------------------------
+
 

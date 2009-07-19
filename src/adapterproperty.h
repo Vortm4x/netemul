@@ -8,9 +8,9 @@ class QLineEdit;
 class QCheckBox;
 class QLabel;
 
-class smartDevice;
 class devicePort;
 class ipEdit;
+class adapterSetting;
 
 /**
   Класс диалога настройки адаптеров.
@@ -22,10 +22,11 @@ class adapterProperty : public dialogTemplate
 public:
     adapterProperty();
     ~adapterProperty();
-    void setDevice(smartDevice *r);
-    void updateTab(devicePort *d);
+    void setDevice(adapterSetting *s);
 private:
-    smartDevice *sd;
+    QIcon connectIcon(bool b);
+    void updateTab(int n);
+    adapterSetting *sd;
     QLabel *lb_recFrame;
     QLabel *lb_recPacket;
     QLabel *lb_sendFrame;
@@ -35,9 +36,10 @@ private:
     QLineEdit *le_mac;
     ipEdit *le_ip;
     ipEdit *le_mask;
-public slots:
-    void changeTab();
+private slots:
     void reset();
+    void changeTab(int n);
+public slots:
     void apply();
 };
 

@@ -11,13 +11,11 @@ connectDialog::connectDialog(device *s, device *e)
     connect( startList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
     connect( endList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
 
-    QList<devicePort*> l = start->sockets();
-    foreach ( devicePort* i , l)
-         new QListWidgetItem( i->connectIcon() , i->name() , startList ,i->isConnect() );
+    foreach ( QString i , start->sockets() )
+         new QListWidgetItem( connectIcon( start->isConnectSocket(i) ) , i , startList );
 
-    l = end->sockets();
-    foreach ( devicePort* i , l )
-        new QListWidgetItem(  i->connectIcon() , i->name() , endList , i->isConnect() );
+    foreach ( QString i , end->sockets() )
+        new QListWidgetItem( connectIcon( end->isConnectSocket(i) ) , i , endList );
 
     for ( int i = 0 ; i < startList->count() ; i++ )
         if ( !startList->item(i)->type() ) {
@@ -43,16 +41,6 @@ void connectDialog::changeSelect()
                           !end->socket( endList->currentItem()->text() )->isConnect() );
 }
 
-QString connectDialog::getStart()
-{
-    return startList->currentItem()->text() ;
-}
-
-QString connectDialog::getEnd()
-{
-    return  endList->currentItem()->text() ;
-}
-
 void connectDialog::changeEvent(QEvent *e)
 {
     switch (e->type()) {
@@ -62,6 +50,12 @@ void connectDialog::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+QIcon connectDialog::connectIcon(bool b) const
+{
+    if (b) return QIcon(":/im/images/ok.png");
+    else return QIcon(":/im/images/minus2.png");
 }
 
 

@@ -23,4 +23,14 @@ void abstractChip::resetStatics()
 }
 //------------------------------------------------
 
+QString abstractChip::staticsString() const
+{
+    QString t;
+    t += QObject::trUtf8("Получено кадров: %1\n").arg( myReceiveFrame ) +
+    QObject::trUtf8("Получено пакетов: %1\n").arg( myReceivePacket ) +
+    QObject::trUtf8("Отправлено кадров: %1\n").arg( mySendFrame ) +
+    QObject::trUtf8("Отправлено пакетов: %1\n").arg( mySendPacket ) ;
+    return t;
+}
+
 

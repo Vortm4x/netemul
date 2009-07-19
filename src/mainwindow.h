@@ -8,6 +8,7 @@
 
 class myCanvas;
 class settingDialog;
+class sceneControl;
 
 class QActionGroup;
 class QToolBar;
@@ -44,22 +45,18 @@ public slots:
     void applySetting();
     void groupClicked(QAction *clk);
     void uncheck();
-    void addInterface();
-    void editInterface();
-    void removeInterface();
-    void tableShow();
-    void adapterShow();
-    void showHelp();
+    void adapterDialog();
+    void helpDialog();
     void playBack();
-    void programmShow();
+    void programmDialog();
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);
 private:
         QString myFile; // Имя текущего файла
         myCanvas *canva;
+        sceneControl *sceneControler;
         QGraphicsView *view; // Графическое представление нашей сцены
-        QComboBox *cb_ports;
 
         void createMenu(); // Функция создания меню
         void createAction(); // -- событий
@@ -98,9 +95,7 @@ private:
         QAction *hubAct;
         QAction *shareBusAct;
         QAction *sendAct;
-        QAction *addPortAct;
-        QAction *editPortAct;
-        QAction *removePortAct;
+        QAction *propertyAct;
         QAction *aboutQtAct;
         QAction *aboutAct;
         QAction *helpAct;

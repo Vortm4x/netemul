@@ -6,5 +6,6 @@ TEMPLATE = subdirs
 SUBDIRS = mac \ 
 	ippacket \
 	ipaddress \
-	frame 
+	frame \
+	boxchip
 # Input

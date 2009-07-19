@@ -10,7 +10,7 @@ class textItem : public QGraphicsTextItem
 {
     Q_OBJECT
 public:
-    enum { Type = UserType + 9 };
+    enum { Type = UserType + 3 };
     int type() const { return Type; }
     textItem(QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
 signals:

@@ -9,11 +9,9 @@ public:
     macAddress();
     macAddress(QString str);
     macAddress(const macAddress &other);
-    static QString random() { macAddress m; m.setRandom(); return m.macString(); }
     void setMac(QString str);
     void setRandom();
-    quint8 at(int i) const { return myMac[i]; }
-    QString macString() const ;
+    QString toString() const ;
     macAddress operator++();
     macAddress operator++(int notused);
     macAddress& operator=(const macAddress &other);

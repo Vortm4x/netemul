@@ -1,19 +1,21 @@
 #include "hubchip.h"
 #include "deviceimpl.h"
 
-hubChip::hubChip()
+hubChip::hubChip(int n /* = 4 */) : boxChip(n)
 {
 
 }
 
-void hubChip::receiveEvent(frame *fr,devicePort *sender)
+hubChip::~hubChip()
 {
-    foreach ( devicePort *i , myOwner->sockets() ) {
-        if ( i != sender && i->isConnect() ) {
-            frame *t = new frame;
-            *t = *fr;
-            i->addToQueue(t);
-        }
-    }
-    delete fr;
+    qDeleteAll(mySockets);
+    mySockets.clear();
 }
+
+void hubChip::receiveEvent(frame fr,devicePort *sender)
+{
+    foreach ( devicePort *i , mySockets )
+        if ( i != sender && i->isConnect() )
+            i->pushToSend(fr);
+}
+

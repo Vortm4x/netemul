@@ -17,7 +17,7 @@ public:
     frame();
     frame(const frame &other);
     ~frame();
-    frame operator=(frame &other);
+    frame& operator=(const frame &other);
     macAddress sender() const { return mySender; }
     void setSender(macAddress temp) { mySender = temp; }
     macAddress receiver() const { return myReceiver; }

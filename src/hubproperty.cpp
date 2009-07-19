@@ -41,14 +41,8 @@ hubProperty::hubProperty()
     all->addWidget(le_mask);
     connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
-    lb_recFrame = new QLabel;
-    lb_sendFrame = new QLabel;
-    lb_recPacket = new QLabel;
-    lb_sendPacket = new QLabel;
-    all->addWidget(lb_recFrame);
-    all->addWidget(lb_sendFrame);
-    all->addWidget(lb_recPacket);
-    all->addWidget(lb_sendPacket);
+    lb_statics= new QLabel;
+    all->addWidget(lb_statics);
     all->addStretch(1);
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
@@ -61,52 +55,49 @@ hubProperty::hubProperty()
     setLayout(all);
 }
 
+hubProperty::~hubProperty()
+{
+
+}
+
 void hubProperty::check(bool p)
 {
     lb_mac->setVisible(p);
     le_mac->setVisible(p);
     le_ip->setVisible(p);
     le_mask->setVisible(p);
-    lb_recFrame->setVisible(p);
-    lb_sendFrame->setVisible(p);
-    lb_recPacket->setVisible(p);
-    lb_sendPacket->setVisible(p);
+    lb_statics->setVisible(p);
     applyEnable();
 }
 
-void hubProperty::setHub(hubDevice *h)
+void hubProperty::setHub(hubSetting *s)
 {
-    hub = h;
-    cb_count->setCurrentIndex( cb_count->findText( QString::number(h->sockets().count()) ) );
-    le_mac->setText( h->macString() );
-    le_ip->setText( h->ip().ipString() );
-    le_mask->setText( h->mask().ipString() );
-    lb_recFrame->setText( trUtf8("Получено кадров: %1").arg( h->countRecFrame() ) );
-    lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( h->countRecPacket() ) );
-    lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( h->countSendFrame() ) );
-    lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( h->countSendPacket() ) );
-    chk_manual->setChecked( h->isManual() );
-    check( h->isManual() );
-    te_text->setPlainText( hub->toolTip() );
+    st = s;
+    cb_count->setCurrentIndex( cb_count->findText( QString::number(st->socketsCount() ) ));
+    le_mac->setText( st->snmpMac() );
+    le_ip->setText( st->snmpIp() );
+    le_mask->setText( st->snmpMask() );
+    lb_statics->setText( st->statics() );
+    chk_manual->setChecked( st->isManual() );
+    te_text->setPlainText( st->note() );
     btn_apply->setEnabled(false);
 }
 
 void hubProperty::apply()
 {
-    int t = hub->sockets().count();
-    if ( hub->sockets().count() != cb_count->currentText().toInt() )
-        if ( !hub->setSocketCount( cb_count->currentText().toInt() ) ) {
+    int t = st->socketsCount();
+    if ( t != cb_count->currentText().toInt() )
+        if ( !st->setSocketsCount( cb_count->currentText().toInt() ) ) {
             QMessageBox::warning(this,trUtf8("Error"),
             trUtf8("Для изменения количества портов отсоедините все провода.") , QMessageBox::Ok , QMessageBox::Ok);
-            QString c = QString().setNum( t );
-            cb_count->setCurrentIndex( cb_count->findText(c) );
+            cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }
-    hub->setManual( chk_manual->isChecked() );
-    hub->setMac(le_mac->text());
-    hub->setIp(le_ip->text());
-    hub->setIp(le_mask->text());
-    hub->setToolTip( te_text->toPlainText() );
+    st->setManual( chk_manual->isChecked() );
+    st->setMac(le_mac->text());
+    st->setIp(le_ip->text());
+    st->setIp(le_mask->text());
+    st->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

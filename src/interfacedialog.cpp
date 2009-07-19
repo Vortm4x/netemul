@@ -25,8 +25,8 @@ interfaceDialog::interfaceDialog()
     temp = new QVBoxLayout;
     standarts = new QListWidget;
     temp->addWidget(standarts);
-    for ( int i = 0 ; i < 2 ; i++)
-            standarts->addItem( names[i] );
+    standarts->addItem( trUtf8("ethernet 10/100") );
+    standarts->addItem( trUtf8("ethernet 10/100/1000") );
 
     addEditButton = new QPushButton(trUtf8("Добавить"));
     addEditButton->setIcon(QIcon(":/im/images/edit_add.png"));

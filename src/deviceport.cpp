@@ -1,9 +1,4 @@
 #include "deviceport.h"
-#include "boxdevice.h"
-#include "frame.h"
-#include <QIcon>
-#include <QApplication>
-#include <QStyle>
 
 devicePort::devicePort()
 {
@@ -14,36 +9,17 @@ devicePort::devicePort()
 
 devicePort::~devicePort()
 {
-    qDeleteAll(myQueue);
-    myQueue.clear();
-}
-
-QIcon devicePort::connectIcon() const
-{
-    QIcon conIcon = qApp->style()->standardIcon( QStyle::SP_DialogApplyButton);
-    QIcon badIcon = qApp->style()->standardIcon( QStyle::SP_DialogCancelButton);
-    if (isConnect()) return conIcon;
-    else return badIcon;
-}
-
-bool devicePort::isCompability(devicePort *one , devicePort *two)
-{
-    if ( one->isConnect() || two->isConnect() ) return false;
-    return true;
+    senderQueue.clear();
+    receiveQueue.clear();
 }
 /*!
   Достает кадр из очереди и отправляет его.
 */
 void devicePort::queueEvent()
 {
-    if ( myQueue.isEmpty() ) { myBusy = false; return; }
-    // BUILDING !!!
-    if ( !myBusy && !myCable->model() ) {
-        if ( !(myBusy = accupant()) ) return;
-    }
-    // REFAKTORING LATER
-    frame *t = myQueue.dequeue();
-    sendFrame(t);
+    if ( senderQueue.isEmpty() ) { myBusy = false; return; }
+    myBusy = true;
+    sendFrame( senderQueue.dequeue() );
 }
 //---------------------------------------------------
 /*!
@@ -56,23 +32,19 @@ void devicePort::setConnect(bool cur,cableDev *cable)
 {
     myConnect = cur;
     myCable = cable;
-    if ( !cur && !cable) {
-        myParentDev->clearArp();
-        qDeleteAll(myQueue);
-        myQueue.clear();
-    }
+    if ( !cur && !cable)
+        senderQueue.clear();
 }
 //---------------------------------------------------
 /*!
   Отправляет кадр в сеть.
   @param t - указатель на кадр.
 */
-void devicePort::sendFrame(frame *t )
+void devicePort::sendFrame(frame t)
 {
-    myParentDev->addSend(1,0);
     QByteArray b;
     QDataStream s( &b , QIODevice::WriteOnly );
-    s << *t;
+    s << t;
     myCable->input(b,this);
 }
 //-----------------------------------------------------

@@ -13,9 +13,10 @@ public:
     explicit connectDialog(device *start,device *end);
 public slots:
     void changeSelect();
-    QString getStart();
-    QString getEnd();
+    QString getStart() { return startList->currentItem()->text(); }
+    QString getEnd() { return  endList->currentItem()->text(); }
 private:
+    QIcon connectIcon(bool b) const;
     device *start;
     device *end;
 protected:

@@ -42,7 +42,7 @@ void ripProgramm::execute(ipPacket *p)
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
         t->metric++;
-        t->out = sd->ipToAdapter( sd->findInterfaceIp( p->sender() ) );
+        t->out = sd->findInterfaceIp( p->sender() );
         t->gateway = p->sender();
         t->time = 0;
         t->mode = smartDevice::ripMode;
@@ -59,14 +59,14 @@ void ripProgramm::sendUpdate(bool isAll)
 {
     if ( !isAll) foreach ( routeRecord *i, sd->myRouteTable )
                     if ( i->mode == smartDevice::ripMode ) i->time++;
-    foreach ( devicePort *i , sd->mySockets )
+    foreach ( interface *i , sd->myInterfaces )
         if ( i->isConnect() ) {
             QByteArray t;
             QDataStream d(&t , QIODevice::WriteOnly);            
             if ( isAll ) {
                 foreach ( routeRecord *j , sd->myRouteTable ) {
-                    if ( j->out == NULL ) continue;
-                    if ( (j->gateway & i->parentDev()->mask()) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
+                    if ( j->out.isLoopBack() ) continue;
+                    if ( (j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
                     d << j->dest << j->mask;
                     if ( j->time == 6 ) d << infinity;
                     else d << j->metric;
@@ -75,19 +75,19 @@ void ripProgramm::sendUpdate(bool isAll)
             else {
                 routeRecord *r = findChanged();
                 if ( !r ) return;
-                if ( (r->gateway & i->parentDev()->mask()) == ( i->parentDev()->ip() & i->parentDev()->mask() ) ) continue;
+                if ( (r->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
                 d << r->dest << r->mask << r->metric;
             }
             ipPacket *p = new ipPacket; // Создаем новый пакет.
-            p->setSender( i->parentDev()->ip() );
-            p->setBroadcast( i->parentDev()->mask() );
+            p->setSender( i->ip() );
+            p->setBroadcast( i->mask() );
             p->setUpProtocol( ipPacket::udp );
             udpPacket u; // И новую дейтаграмму
             u.setSender(mySocket);
             u.setReceiver(mySocket);
             u.setData(t); // В нее вектор
             *p << u; // Её в пакет.
-            i->parentDev()->sendPacket(p); // Пакет отправляем.
+            i->sendPacket(p); // Пакет отправляем.
         }
     foreach ( routeRecord *i, sd->myRouteTable )
         if ( i->time == 6 ) sd->deleteFromTable(i,false);

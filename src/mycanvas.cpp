@@ -148,8 +148,9 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         case send:
             if ( sendEllipse->collidingItems().count() ) {
                 QGraphicsItem *tempItem = sendEllipse->collidingItems().first();
-                if (tempItem->type() != computer::Type) break;
                 device *t = qgraphicsitem_cast<device*>(tempItem);
+                if ( !t ) break;
+                if ( !t->isCanSend() ) break;
                 if ( !t->isConnect() ) {
                 QMessageBox::warning(NULL,trUtf8("Ошибка"),trUtf8("Устройство не имеет соединений"),
                                      QMessageBox::Ok , QMessageBox::Ok);
@@ -172,8 +173,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                     sendDialog *temp = new sendDialog(sendDialog::receiver,t);
                     if (temp->exec() ) {
                         receiverIp = temp->ip();
-                        smartDevice *s = senderDevice->toT<smartDevice>() ;
-                        s->sendMessage(receiverIp,messageSize,protocol);
+                        senderDevice->sendMessage(receiverIp,messageSize,protocol);
                         emit uncheck();
                         setMode( myCanvas::move , myCanvas::noDev);
                     }
@@ -194,7 +194,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 */
 cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString ep)
 {
-    if ( !s || !e ) return NULL; // Если хотя бы одного устройства нет, то выходим.
+    if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
     devicePort *ts = s->socket(sp);
     devicePort *te = e->socket(ep);
     cableDev *cable = new cableDev(s, e, ts, te); // Создаем между ними кабель
@@ -244,8 +244,8 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                                 ) { canCreate = false; }
                     } else canCreate = false;
                     if (canCreate && startItems.first() != endItems.first() && isDevice(startItems.first() ) ) {
-                        startItem = qgraphicsitem_cast<device *>(startItems.first());
-                        endItem = qgraphicsitem_cast<device *>(endItems.first());
+                        startItem = qgraphicsitem_cast<device*>(startItems.first());
+                        endItem = qgraphicsitem_cast<device*>(endItems.first());
                         connectDialog *conDialog = new connectDialog(startItem,endItem);
                         conDialog->move(400,400);
                         canCreate = conDialog->exec() ;
@@ -322,31 +322,12 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
 {
-    device *item = 0; // Указатель на абстрактное устройств
-    int x = qRound(coor.x())/50;
-    int y = qRound(coor.y())/50;
-    switch (myType) {
-        case compDev:
-            item = createDev<computer>(x,y,myComputerSockets);
-            break;
-        case hubDev: // Для остальных устройств все тоже самое =)
-            item = createDev<hubDevice>(x,y,myHubSockets);
-            item->toT<hubDevice>()->setManual(myHubManual);
-            break;
-        case switchDev:
-            item = createDev<switchDevice>(x,y,mySwitchSockets); // Создаем конкретное устройство коммутатор
-            item->toT<switchDevice>()->setManual(mySwitchManual);
-            break;
-        case routerDev:
-            item = createDev<routerDevice>(x,y,myRouterSockets);
-            break;
-        case busDev:
-            item = createDev<shareBus>(x,y,0); // Общая шина
-            break;
-        case noDev: return NULL;
-            break;
-    }
-    return item;
+    device *t = new device(myType);
+    t->setPos( calibrate(coor) );
+    t->setMenu(itemMenu);
+    addItem(t);
+    myDevices << t;
+    return t;
 }
 /*!
   Функция удаляет со сцены выделенные устройства и провода.
@@ -440,11 +421,7 @@ void myCanvas::setMode(int modScene,int curDev)
             setShapeView(insertRect,QPen(Qt::red),QBrush( QColor( 128 , 0 , 0 , 64)));
             insertRect->setZValue(1000);
             addItem(insertRect);
-            if ( nowType == compDev || nowType == switchDev || nowType == hubDev || nowType == routerDev) {
-                insertRect->setRect( -20 , -20 , 40 ,40);
-            } else if ( nowType == busDev ) {
-                insertRect->setRect( -shareBus::defaultWidth/2 -10 , -20 , shareBus::defaultWidth+20 , 40);
-            }
+            insertRect->setRect( -20 , -20 , 40 ,40);
             break;
         case send:
             sendEllipse = new QGraphicsEllipseItem;
@@ -478,7 +455,7 @@ void myCanvas::openScene(QString fileName)
         return;
     }
     QDataStream s(&file);
-    s.setVersion(QDataStream::Qt_4_2);
+    s.setVersion(QDataStream::Qt_4_3);
     int tp;
     QPointF p;
     QString str;
@@ -495,8 +472,10 @@ void myCanvas::openScene(QString fileName)
     while ( !file.atEnd() && endDev ) {
         s >> tp;
         if ( tp != noDev ) {
-            item = addDeviceOnScene(QPointF(),tp);
-            s >> *item;
+            item = new device(s);
+            item->setMenu(itemMenu);
+            addItem(item);
+            myDevices << item;
         }
         else endDev = false;
     }
@@ -539,7 +518,7 @@ void myCanvas::saveScene(QString fileName)
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
     QDataStream s(&file);
-    s.setVersion(QDataStream::Qt_4_2);
+    s.setVersion(QDataStream::Qt_4_3);
     s << QCoreApplication::applicationVersion();
     foreach(device *i, myDevices)
         s << *i;
@@ -547,7 +526,7 @@ void myCanvas::saveScene(QString fileName)
     s << connections.count();
     foreach (cableDev *i, connections) {
         s << i->line().p1() << i->line().p2();
-        s << i->startPort()->name() << i->endPort()->name() ;
+        s << i->startSocketName() << i->endSocketName() ;
     }
     s << myTextItems.count();
     foreach ( textItem *i, myTextItems ) {
@@ -572,16 +551,8 @@ void myCanvas::timerEvent(QTimerEvent *e)
     motionFrame();
     n--;
     foreach ( device *i, myDevices ) {
-        i->sendEvent();
-        if ( n ) continue;
-        if ( i->type() == routerDevice::Type || i->type() == computer::Type ) {
-            smartDevice *t = i->toT<smartDevice>();
-            t->updateArp(myTtlArp);
-            t->incTime();
-        } else if ( i->type() == switchDevice::Type ) {
-            switchDevice *t = i->toT<switchDevice>();
-            t->updateMac(myTtlMac);
-        }
+        i->deciSecondTimerEvent();
+        if ( !n ) i->secondTimerEvent();
     }
     if ( !n ) n = 10;
 }
@@ -635,70 +606,6 @@ QPointF myCanvas::calibrate(QPointF c)
     c.setY( (qRound(c.y()) / 50)*50+25 );
     return c;
 }
-//-----------------------------------------------------------------
-/*!
-  Используеться в QtScript, создает соединение.
-  @param x - id первого устройства.
-  @param y - id второго устройства.
-  @param s - Название порта первого устройства.
-  @param e - Название порта второго устройства.
-*/
-void myCanvas::createConnection(int x,int y,QString s ,QString e)
-{
-    device *start = deviceWithId(x);
-    device *end = deviceWithId(y);
-    createConnection(start,end,s,e);
-}
-//-------------------------------------------------------------------
-/*!
-  Используеться в QtScript для задания ip адреса.
-  @param x - id устройства
-  @param p - Имя порта
-  @param a - Новый адрес
-*/
-void myCanvas::setIp(int x,QString p,QString a)
-{
-    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
-    t->adapter(p)->setIp(a);
-    t->connectedNet(t->socket(p)); // Обновляем таблицу маршрутизации для подключенных сетей.
-}
-//-------------------------------------------------------------------
-/*!
-  Используеться в QtScript для задания маски.
-  @param x - id устройства
-  @param p - Имя порта
-  @param a - Новая маска
-*/
-void myCanvas::setMask(int x,QString p,QString a)
-{
-    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
-    t->adapter(p)->setMask(a);
-    t->connectedNet(t->socket(p)); // Обновляем таблицу маршрутизации для подключенных сетей.
-}
-//-------------------------------------------------------------------
-/*!
-  Используеться в QtScript для задания шлюза.
-  @param x - id устройства
-  @param a - Адрес шлюза
-*/
-void myCanvas::setGateway(int x,QString a)
-{
-    smartDevice *t = deviceWithId(x)->toT<smartDevice>();
-    t->setGateway(a);
-}
-//-------------------------------------------------------------------
-/*!
-  Возвращает указатель на устройство с нужным id иначе NULL.
-  @param id - искомый id.
-  @return указатель на устройство.
-*/
-device* myCanvas::deviceWithId(int id)
-{
-    foreach ( device *i , myDevices ) // Перебираем устройство в поисках id
-        if ( i->id() == id ) return i; 
-    return NULL; // Иначе возвращаем NULL.
-}
-//-------------------------------------------------------------------
 /*!
   Задает указанному объекту внешний вид.
   @param i - указатель на объект.

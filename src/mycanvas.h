@@ -64,18 +64,8 @@ public:
     void setShapeView(QAbstractGraphicsShapeItem *i , QPen p ,QBrush b);
     bool isEnd() const;
     bool isDevice(QGraphicsItem *t) const;
-    template<class T> T* createDev(short x,short y,int c = 1) {
-        T *temp = new T(c);
-        temp->setMenu(itemMenu);
-        addItem(temp);
-        temp->setPos(x*50+25,y*50+25);
-        temp->setId(++lastId);
-        myDevices << temp;
-        return temp;
-    }
     device* oneSelectedDevice();
     device* deviceInPoint(QPointF p);
-    device* deviceWithId(int id);
     QPointF calibrate(QPointF c);
     ~myCanvas();
 signals:
@@ -83,11 +73,7 @@ signals:
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
     void fileClosed(); //!< Сообщает главному окну о закрытии файла
 public slots:
-    void createConnection(int x,int y,QString strS ,QString strE);
     void editorLostFocus(textItem *t);
-    void setIp(int x,QString p,QString a);
-    void setMask(int x,QString p,QString a);
-    void setGateway(int x,QString a);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
     void removeDevice();
@@ -98,11 +84,6 @@ public slots:
     bool isPlayed() const { return myTimer; }
     void saveScene(QString fileName);
     void openScene(QString fileName);
-    int createHub(short x,short y,int c) { createDev<hubDevice>(x,y,c);return lastId; }
-    int createRouter(short x,short y,int c) { createDev<routerDevice>(x,y,c);return lastId; }
-    int createComputer(short x,short y,int c) { createDev<computer>(x,y,c);return lastId; }
-    int createSwitch(short x,short y,int c) { createDev<switchDevice>(x,y,c);return lastId; }
-    int createBus(short x,short y,int c) { createDev<shareBus>(x,y,c);return lastId; }
 private:
     bool myOpen;
     int lastId;

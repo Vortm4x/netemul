@@ -6,7 +6,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 
-/**
+/*!
   Конструктор создает основной интерфейс диалога.
 */
 adapterProperty::adapterProperty()
@@ -71,94 +71,75 @@ adapterProperty::~adapterProperty()
     sd->setCheckedSocket("");
 }
 //--------------------------------------------------
-/**
-  Задает диалогу устройство которое он будет отображать, так же эта функция, загружает первый адаптер устройства
-  в диалог.
-  @param r , указатель на устройво.
+/*!
+  Задает диалогу настройки которое он будет отображать.
+  @param s указатель на настройки.
 */
-void adapterProperty::setDevice(smartDevice *r)
+void adapterProperty::setDevice(adapterSetting *s)
 {
-    sd = r;
-    QList<devicePort*> ports = sd->sockets();
-    foreach ( devicePort *i , ports ) {
-        tab_interfaces->addTab( i->connectIcon() , i->name() );
-        if ( tab_interfaces->count() == 1 ) updateTab(i);
+    sd = s;
+    for ( int i = 0 ; i < sd->socketsCount() ; i++ ) {
+        sd->setCurrent(i);
+        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
     }
+    updateTab(0);
     btn_apply->setEnabled(false);
 }
 //-----------------------------------------------------
-void adapterProperty::changeTab()
+/*!
+  При смене вкладки вызывает обновление содержимого.
+  @param n - Номер выбранной вкладки.
+*/
+void adapterProperty::changeTab(int n)
 {
-    QList<devicePort*> ports = sd->sockets();
-    foreach ( devicePort *i , ports ) {
-        if ( i->name() == tab_interfaces->tabText(tab_interfaces->currentIndex()) ) {
-            updateTab(i);
-            break;
-        }
-    }
+    updateTab(n);
 }
-/**
+//--------------------------------------------------------
+/*!
   Обновляет содержимое диалога в зависимости от выбранного адапетра.
   @param d указатель на сокет выбранного интерфейса.
-  */
-void adapterProperty::updateTab(devicePort *d)
+*/
+void adapterProperty::updateTab(int n)
 {
-    interface *t = static_cast<interface*>(d->parentDev());
-    le_name->setText(d->name());
-    le_mac->setText( t->macString() );
-    le_ip->setText( t->ip().ipString() );
-    le_mask->setText( t->mask().ipString() );
-    lb_recFrame->setText( trUtf8("Получено кадров: %1").arg( t->countRecFrame() ) );
-    lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( t->countRecPacket() ) );
-    lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( t->countSendFrame() ) );
-    lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( t->countSendPacket() ) );
-    if (sd) sd->setCheckedSocket( d->name() );
+    sd->setCurrent(n);
+    le_name->setText( sd->name() );
+    le_mac->setText( sd->mac() );
+    le_ip->setText( sd->ip() );
+    le_mask->setText( sd->mask() );
+    lb_recFrame->setText( sd->receiveFrame() );
+    lb_recPacket->setText( sd->receivePacket() );
+    lb_sendFrame->setText( sd->sendFrame() );
+    lb_sendPacket->setText( sd->sendPacket() );
+    if (sd) sd->setCheckedSocket( sd->name() );
 }
 //-----------------------------------------------------
 void adapterProperty::apply()
 {
-    QList<devicePort*> ports = sd->sockets();
-    foreach(devicePort *i, ports) {
-        if (i->name() != tab_interfaces->tabText(tab_interfaces->currentIndex())) {
-            if (le_name->text() == i->name()) {
-                le_name->setText(tab_interfaces->tabText(tab_interfaces->currentIndex()));
-                le_name->setSelection(0, le_name->text().length());
-                break;
-            }
-        }
-    }
-    foreach ( devicePort *i , ports ) {
-        if (tab_interfaces->tabText(tab_interfaces->currentIndex()) == i->name()) {
-            i->setName(le_name->text());
-            arpPacket *p = new arpPacket;
-            frame *f = new frame;
-            p->setReceiverIp(le_ip->text());
-            p->setSenderIp(le_ip->text());
-            p->setSenderMac(le_mac->text());
-            p->setType(arpPacket::request);
-            f->setReceiver(trUtf8("FF:FF:FF:FF:FF:FF"));
-            f->setSender(le_mac->text());
-            f->setType(frame::arp);
-            *f << *p;
-            f->setDifferent(frame::broadcast);
-            i->sendFrame(f);
-            i->parentDev()->setMac(le_mac->text());
-            i->parentDev()->setIp(le_ip->text());
-            i->parentDev()->setMask(le_mask->text());
-            sd->connectedNet(i);
+    for ( int i = 0 ; i < tab_interfaces->count(); i++ )
+        if ( i != tab_interfaces->currentIndex() && le_name->text() == tab_interfaces->tabText(i) ) {
+            le_name->setText(tab_interfaces->tabText(tab_interfaces->currentIndex()));
+            le_name->setSelection(0, le_name->text().length());
             break;
         }
-    }
+    sd->setName( le_name->text() );
+    sd->setMac( le_mac->text() );
+    sd->setIp( le_ip->text() );
+    sd->setMask( le_mask->text() );
+    sd->connectedNet();
     if ( sender() == btn_ok ) accept();
 }
 //------------------------------------------------------------
-/**
+/*!
     Слот сбрасывает всю статистику у адаптера.
 */
 void adapterProperty::reset()
 {
-    QString t = tab_interfaces->tabText( tab_interfaces->currentIndex() );
-    sd->adapter(t)->resetStatics();
-    updateTab(sd->socket(t));
+    sd->resetStatics();
+    updateTab(tab_interfaces->currentIndex());
 }
 //------------------------------------------------------------
+QIcon adapterProperty::connectIcon(bool b)
+{
+    if ( b) return QIcon(":/im/images/ok.png");
+    else return QIcon(":/im/images/minus2.png");
+}

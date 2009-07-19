@@ -11,7 +11,6 @@ cableDev::cableDev(device *start,device *end,devicePort* startInter, devicePort*
     else myModel = 1;
     myStartPort = startInter;
     myEndPort = endInter;
-    setToolTip(trUtf8("Соединяет порты:<br>%1 - %2").arg(myStartPort->name()).arg(myEndPort->name()));
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
 }
 
@@ -28,8 +27,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->setPen(QPen(Qt::gray,5));
-    QLineF centerLine(myStartDev->getPointCable(myEndDev->pos()),
-                 myEndDev->getPointCable(myStartDev->pos()));
+    QLineF centerLine(myStartDev->pos(), myEndDev->pos());
     setLine(centerLine); // И мы её и ставим
     painter->drawLine(line()); // А потом рисуем заново
     if ( isSelected() ) painter->setPen(QPen(Qt::blue,1.7)); // Если выделен рисуем синим
@@ -45,8 +43,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 //--------------------------------------------------------------------
 void cableDev::updatePosition()
 {
-    QLineF line(myStartDev->getPointCable(myEndDev->pos()),
-                 myEndDev->getPointCable(myStartDev->pos()));
+    QLineF line(myStartDev->pos(), myEndDev->pos());
     setLine(line);
     update(boundingRect());
 }
@@ -103,16 +100,14 @@ void cableDev::motion()
        update();
 }
 //-----------------------------------------------------------
-/*!
-
-*/
-bool cableDev::accupant(devicePort *d)
+QString cableDev::startSocketName() const
 {
-    device *p = NULL;
-    if ( d == myStartPort ) p = myEndDev;
-    else p = myStartDev;
-    if ( p->type() == hub ) return p->accupant();
-    return !isBusy();
+    return myStartDev->socketName(myStartPort);
 }
-//---------------------------------------------------------
+
+QString cableDev::endSocketName() const
+{
+    return myEndDev->socketName(myEndPort);
+}
+
 

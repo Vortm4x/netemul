@@ -26,7 +26,7 @@ public:
     bool isBroadcast(const QString str) const { return isBroadcast(ipAddress(str)); }
     void setBroadcast(const ipAddress mask);
     void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
-    ipPacket& operator=(ipPacket &other);
+    ipPacket& operator=(const ipPacket &other);
     void setUpProtocol(qint8 u) { myUpProtocol = u; }
     qint8 upProtocol() const { return myUpProtocol; }
     void operator<<(tcpPacket &p);

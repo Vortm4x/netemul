@@ -12,8 +12,9 @@ public:
     ipAddress(const ipAddress &other);
     void setIp(const quint8 *cur);
     void setIp(const QString str);
-    QString ipString() const;
+    QString toString() const;
     bool isEmpty() const;
+    bool isLoopBack() const { return myIp[0] == 127; }
     unsigned int toInt() const;
     quint8 at(int i) const { return myIp[i]; }
     ipAddress& operator=(const ipAddress &other);

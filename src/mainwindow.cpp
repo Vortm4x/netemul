@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "mycanvas.h"
+#include "scenecontrol.h"
 #include "settingdialog.h"
 #include "testdialog.h"
 #include "interfacedialog.h"
@@ -30,7 +30,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.7.4");
+    QCoreApplication::setApplicationVersion("0.7.9");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -39,7 +39,10 @@ MainWindow::MainWindow(QWidget *parent)
     view = new QGraphicsView(canva,this);
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
-    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+//    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState |
+                                QGraphicsView::DontAdjustForAntialiasing );
+    view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
 #if USER != frost
     view->setViewport(new QGLWidget(QGLFormat(QGL::DoubleBuffer)));
@@ -47,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent)
 #else
 #endif
     view->installEventFilter(this);
-    statusBar()->showMessage(tr("")); // Активизируем статус бар
+    statusBar()->showMessage(""); // Активизируем статус бар
     readSetting();
     setCentralWidget(view);
 }
@@ -169,23 +172,15 @@ void MainWindow::createAction()
     testAct = createOneAction( trUtf8("Выполнить сценарий") , trUtf8("Запустить сценарий") );
     connect( testAct , SIGNAL(triggered()) , SLOT(test()));
 
-    addPortAct = createOneAction( trUtf8("Добавить адаптер") , trUtf8("Добавить адаптер") ,
-                                  QIcon(":/im/images/edit_add.png") );
-    connect( addPortAct , SIGNAL(triggered()) , SLOT(addInterface()) );
-
-    editPortAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
+    propertyAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
                                   QIcon(":/im/images/refresh.png") );
-    editPortAct->setShortcut(tr("Ctrl+Alt+P"));
-    connect( editPortAct , SIGNAL(triggered()) , SLOT(editInterface()) );
-
-    removePortAct = createOneAction( trUtf8("Удалить адаптер") , trUtf8("Удалить адаптер") ,
-                                  QIcon(":/im/images/edit_remove.png") );
-    connect( removePortAct , SIGNAL(triggered()) , SLOT(removeInterface()) );
+    propertyAct->setShortcut(tr("Ctrl+Alt+P"));
+    connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
 
     tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
                                 QIcon(":/im/images/table.png"));
     tableAct->setShortcut( tr("Ctrl+T"));
-    connect( tableAct , SIGNAL(triggered()) , SLOT(tableShow()) );
+    connect( tableAct , SIGNAL(triggered()) ,sceneControler ,  SLOT(tableDialog()) );
 
     aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
     connect( aboutQtAct , SIGNAL(triggered()) , qApp ,SLOT(aboutQt()) );
@@ -194,12 +189,12 @@ void MainWindow::createAction()
 
     helpAct = createOneAction( trUtf8("Помощь") , trUtf8("Полная справочная система программы") );
     helpAct->setShortcut(QKeySequence::HelpContents);
-    connect(helpAct,SIGNAL(triggered()) , SLOT(showHelp()));
+    connect(helpAct,SIGNAL(triggered()) , SLOT(helpDialog()));
 
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
                                   QIcon(":/im/images/interface.png"));
     adapterAct->setShortcut(tr("Ctrl+I"));
-    connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterShow()) );
+    connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterDialog()) );
 
     playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
                                QIcon(":/im/images/pause.png") );
@@ -208,7 +203,7 @@ void MainWindow::createAction()
     progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
                               QIcon(":/im/images/program.png"));
     progAct->setShortcut(tr("Ctrl+P"));
-    connect( progAct , SIGNAL(triggered()), SLOT(programmShow()));
+    connect( progAct , SIGNAL(triggered()), SLOT(programmDialog()));
 }
 
 //Создаем меню
@@ -231,7 +226,7 @@ void MainWindow::createMenu()
 
     itemMenu = menuBar()->addMenu(trUtf8("Объект"));
     itemMenu->addAction(deleteAct);
-    itemMenu->addAction(editPortAct);
+    itemMenu->addAction(propertyAct);
     itemMenu->addAction(tableAct);
     itemMenu->addAction(adapterAct);
     itemMenu->addAction(progAct);
@@ -269,15 +264,9 @@ void MainWindow::createTools()
     deviceBar->addAction( playAct);
     //deviceBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     deviceBar->setEnabled(false);
-    cb_ports = new QComboBox(this);
-    cb_ports->setFixedWidth(100);
     controlBar = addToolBar(trUtf8("Управление"));
     controlBar->setIconSize(QSize(24,24));
-    controlBar->addWidget(cb_ports);
-    controlBar->addAction(addPortAct);
-    controlBar->addAction(removePortAct);
-    controlBar->addSeparator();
-    controlBar->addAction(editPortAct);
+    controlBar->addAction(propertyAct);
     controlBar->addAction(adapterAct);
     controlBar->addAction(progAct);
     controlBar->addAction(tableAct);
@@ -301,6 +290,14 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
+    sceneControler = new sceneControl(this,canva);
+    connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
+    connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
+    connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setEnabled(bool)) );
+    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setEnabled(bool)) );
+    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setEnabled(bool)) );
+    connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
+    connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
 }
 //------------------------------------------------------------------
 /*!
@@ -337,20 +334,10 @@ void MainWindow::setEnabledFileItems(bool cur)
 */
 void MainWindow::selectionChange()
 {
-    cb_ports->clear(); // Очищаем комбобокс с портами.
-    // Меню устройств включено если выбрано одно устройство.
-    itemMenu->setEnabled( canva->oneSelectedDevice() );
-    controlBar->setEnabled( canva->oneSelectedDevice() );
-    if ( !canva->oneSelectedDevice() ) return; // Если не одно устройство выходим
-    device *t = canva->oneSelectedDevice();
-    tableAct->setVisible( !t->hasTable().isEmpty() );
-    tableAct->setText( t->hasTable() );
-    tableAct->setToolTip( t->hasTable() );
-    adapterAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
-    foreach ( devicePort *i , t->sockets() ) cb_ports->addItem( i->connectIcon() , i->name() );
-    addPortAct->setEnabled( t->type() == computer::Type );
-    removePortAct->setEnabled( t->type() == computer::Type && !t->sockets().isEmpty() );
-    progAct->setVisible( t->type() == computer::Type || t->type() == routerDevice::Type );
+    if ( sceneControler->isSelect() ) {
+        tableAct->setText( sceneControler->tableName() );
+        tableAct->setToolTip( sceneControler->tableName() );
+    }
 }
 //------------------------------------------------------------
 // Слот окна настроек
@@ -371,7 +358,6 @@ void MainWindow::setting()
     if ( d->exec() ) {
         d->apply();
     }
-    disconnect( d ,SIGNAL(sendApply()) , this ,  SLOT(applySetting()));
     delete d ;
 }
 
@@ -505,56 +491,8 @@ void MainWindow::test()
     delete t;
 }
 
-void MainWindow::addInterface()
-{
-    interfaceDialog *d = new interfaceDialog;
-    d->move(400,400);
-    if ( d->exec() ) {
-        computer *t = qgraphicsitem_cast<computer*>(canva->oneSelectedDevice());
-        t->addInterface( t->nextName() , d->result() );
-        selectionChange();
-    }
-    delete d;
-}
-
-void MainWindow::editInterface()
-{
-    device *d = canva->oneSelectedDevice() ;
-    if ( !d ) return;
-    d->dialog();
-    selectionChange();
-}
-
-void MainWindow::removeInterface()
-{
-    device *t = canva->oneSelectedDevice();
-    devicePort* temp = t->socket( cb_ports->currentText() );
-    if ( temp->isConnect() ) {
-        QMessageBox::warning(this,trUtf8("Error"),
-                             trUtf8("Сначала необходимо отсоединить кабель.") , QMessageBox::Ok , QMessageBox::Ok);
-    } else {
-        t->removeSocket(temp);
-        selectionChange();
-    }
-}
-
-void MainWindow::tableShow()
-{
-    device *d = canva->oneSelectedDevice();
-    if ( !d ) return;
-    d->showTable();
-}
-
-void MainWindow::adapterShow()
-{
-    smartDevice *d = qgraphicsitem_cast<smartDevice*>(canva->oneSelectedDevice());
-    if ( !d ) return;
-    d->showDialog<adapterProperty>();
-}
-
-
 //Help=)
-void MainWindow::showHelp()
+void MainWindow::helpDialog()
 {
 
 }
@@ -575,17 +513,6 @@ void MainWindow::playBack()
         playAct->setToolTip(trUtf8("Остановить"));
         playAct->setStatusTip(trUtf8("Остановить симуляцию"));
     }
-}
-//--------------------------------------------------
-/*!
-  Слот открывает диалог установленных программ
-*/
-void MainWindow::programmShow()
-{
-    device *d = canva->oneSelectedDevice();
-    if ( !d ) return;
-    smartDevice *u = d->toT<smartDevice>();
-    u->showDialog<programmDialog>();
 }
 //--------------------------------------------------
 

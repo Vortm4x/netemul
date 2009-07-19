@@ -16,7 +16,7 @@ macAddress::macAddress(const macAddress &other)
         myMac[i] = other.myMac[i];
 }
 
-QString macAddress::macString() const
+QString macAddress::toString() const
 {
     QString temp = QString("%1").arg( QString().setNum(myMac[0],16), 2 , QChar('0'));
     int i;

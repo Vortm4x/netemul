@@ -2,6 +2,7 @@
 #define HUBPROPERTY_H
 
 #include "dialogtemplate.h"
+
 class QComboBox;
 class QCheckBox;
 class QLineEdit;
@@ -9,22 +10,20 @@ class QLabel;
 class QPlainTextEdit;
 
 class ipEdit;
-class hubDevice;
+class hubSetting;
 
 class hubProperty : public dialogTemplate
 {
 Q_OBJECT
 public:
     hubProperty();
-    void setHub(hubDevice *h);
+    ~hubProperty();
+    void setHub(hubSetting *s);
 private:
-    hubDevice *hub;
+    hubSetting *st;
     QComboBox *cb_count;
     QCheckBox *chk_manual;
-    QLabel *lb_recFrame;
-    QLabel *lb_sendFrame;
-    QLabel *lb_recPacket;
-    QLabel *lb_sendPacket;
+    QLabel *lb_statics;
     QLabel *lb_mac;
     QLineEdit *le_mac;
     QPlainTextEdit *te_text;

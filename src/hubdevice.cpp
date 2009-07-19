@@ -1,15 +1,10 @@
-#include "hubdevice.h"
 #include "hubproperty.h"
-#include "hubchip.h"
+#include "hubdevice.h"
 
 hubDevice::hubDevice(int c)
 {
-    int i;
-    for ( i = 1 ; i <=  c ; i++ ) {
-        QString t = trUtf8("LAN%1").arg(i);
-        addInterface(t,0);
-    }
-    setNote( trUtf8( "Концентратор" ) );
+    chip = new hubChip(c);
+    setNote( QObject::trUtf8( "Концентратор" ) );
 }
 
 hubDevice::~hubDevice()
@@ -23,7 +18,7 @@ void hubDevice::read(QDataStream &stream)
     int n;
     QString s;
     stream >> n;
-    setSocketCount(n);
+    chip->setSocketsCount(n);
     stream >> *chip;
     stream >> s;
     setNote(s);
@@ -40,7 +35,7 @@ void hubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
     if ( !d ) return;
-    d->setHub(this);
+    d->setHub(new hubSetting(this));
     d->exec();
     delete d;
 }

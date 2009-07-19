@@ -38,7 +38,8 @@ public:
     void output(bitStream *t);
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
-    bool accupant(devicePort *d);
+    QString startSocketName() const;
+    QString endSocketName() const;
 private:
     bool myChecked;
     int myModel;

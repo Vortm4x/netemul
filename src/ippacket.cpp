@@ -4,7 +4,7 @@ ipPacket::ipPacket()
 {
 }
 
-ipPacket& ipPacket::operator=(ipPacket &other)
+ipPacket& ipPacket::operator=(const ipPacket &other)
 {
     mySender = other.mySender;
     myReceiver = other.myReceiver;

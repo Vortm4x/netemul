@@ -1,5 +1,7 @@
 #include "smartdevice.h"
 #include "ripprogramm.h"
+#include "routeeditor.h"
+#include "adapterproperty.h"
 #include <QtDebug>
 
 smartDevice::~smartDevice()
@@ -60,7 +62,21 @@ routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddre
     return addToTable(r);
 }
 //---------------------------------------------------------------
-
+/*!
+  Добавляет запись в таблицу маршрутизации.
+  @param r - указатель на запись.
+  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
+  @return указатель добавленную на запись.
+*/
+routeRecord* smartDevice::addToTable(routeRecord *r,bool tr /* = true */)
+{
+    myRouteTable << r;
+    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
+    r->change = changed;
+    if ( tr ) sendInterrupt(addNet);
+    return r;
+}
+//------------------------------------------------------------
 void smartDevice::deleteFromTable(int n)
 {
     int v = 0;
@@ -403,4 +419,41 @@ bool smartDevice::sendInterrupt(int u)
     return b;
 }
 //-------------------------------------------------------
+void smartDevice::tableDialog() const
+{
+    SHOW_DIALOG(routeEditor)
+}
+
+void smartDevice::adapterDialog() const
+{
+    SHOW_DIALOG(adapterProperty)
+}
+void smartDevice::programmsDialog() const
+{
+    SHOW_DIALOG(programmDialog)
+}
+
+QStringList smartDevice::sockets() const
+{
+    QStringList t;
+    for ( i = 0 ; i < myInterfaces.size() ; i++ )
+        t << myInterfaces.at(i)->name();
+    return t;
+}
+
+QStringList smartDevice::interfacesIp() const
+{
+    QStringList t;
+    for ( i = 0 ; i < myInterfaces.size() ; i++ )
+        t << myInterfaces.at(i)->ip().toString();
+    return t;
+}
+
+QString smartDevice::socketName(devicePort *p) const
+{
+    QVector<interface*>::iterator i = myInterfaces.constBegin();
+    for ( ; i != myInterfaces.constEnd() ; ++i )
+        if ( *i.socket() == p ) return *i.name();
+    return QString();
+}
 

@@ -7,6 +7,7 @@
 #include <QBoxLayout>
 #include <QLabel>
 #include <QComboBox>
+#include <QSettings>
 
 routeEditor::routeEditor()
 {
@@ -71,8 +72,7 @@ routeEditor::~routeEditor()
 void routeEditor::setDevice(smartDevice *s)
 {
     dev = s;
-    foreach ( devicePort *i , s->sockets() )
-        if ( i->isConnect() ) cb_out->addItem( i->parentDev()->ip().ipString() );
+    cb_out->addItems( s->interfacesIp() );
     updateTable();
 }
 
@@ -81,19 +81,18 @@ void routeEditor::updateTable()
     int n = 1;
     table->clearContents();
     table->setRowCount(0);
-    foreach ( routeRecord *i , dev->myRouteTable ) {
+    foreach ( routeRecord *i , dev->routeTable() ) {
         table->insertRow(n-1);
-        QTableWidgetItem *temp = new QTableWidgetItem( i->dest.ipString() );
+        QTableWidgetItem *temp = new QTableWidgetItem( i->dest.toString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,0,temp);
-        temp = new QTableWidgetItem( i->mask.ipString() );
+        temp = new QTableWidgetItem( i->mask.toString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,1,temp);
-        temp = new QTableWidgetItem( i->gateway.ipString() );
+        temp = new QTableWidgetItem( i->gateway.toString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,2,temp);
-        if ( !i->out ) temp = new QTableWidgetItem(tr("127.0.0.1"));
-        else temp = new QTableWidgetItem( i->out->ip().ipString() );
+        temp = new QTableWidgetItem( i->out.toString() );
         temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         table->setItem(n-1,3,temp);
         temp = new QTableWidgetItem( trUtf8("%1").arg(i->metric) );

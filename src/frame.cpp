@@ -19,7 +19,7 @@ frame::frame(const frame &other)
     data = other.data;
 }
 
-frame frame::operator=(frame &other)
+frame& frame::operator=(const frame &other)
 {
     mySender = other.mySender;
     myReceiver = other.myReceiver;

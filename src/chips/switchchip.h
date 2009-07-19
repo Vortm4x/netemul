@@ -1,9 +1,9 @@
 #ifndef SWITCHCHIP_H
 #define SWITCHCHIP_H
 
-#include "abstractchip.h"
+#include "boxchip.h"
 
-class switchchip : public abstractChip
+class switchchip : public boxChip
 {
 public:
     switchchip();

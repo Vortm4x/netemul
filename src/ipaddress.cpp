@@ -25,7 +25,7 @@ ipAddress::ipAddress(const ipAddress &other)
         myIp[i] = other.myIp[i];
 }
 
-QString ipAddress::ipString() const
+QString ipAddress::toString() const
 {
     QString temp = QString().setNum(myIp[0]);
     for ( int i = 1 ; i <= 3 ; i++ )

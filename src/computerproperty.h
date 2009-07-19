@@ -15,7 +15,7 @@ class computerProperty : public dialogTemplate
     Q_DISABLE_COPY(computerProperty)
 public:
     computerProperty();
-    void setComputer(computer *c);
+    void setDevice(computer *c);
 private:
     computer *comp;
     QCheckBox *cb_route;

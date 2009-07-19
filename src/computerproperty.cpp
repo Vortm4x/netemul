@@ -29,13 +29,12 @@ computerProperty::computerProperty()
     setLayout(all);
 }
 
-void computerProperty::setComputer(computer *c)
+void computerProperty::setDevice(computer *c)
 {
     comp = c;
-    gateway->setText(c->gateway().ipString());
+    gateway->setText(c->gateway().toString());
     cb_route->setChecked( comp->routeMode() );
     btn_apply->setEnabled(false);
-    cb_route->setEnabled( comp->sockets().count() > 1 );
     te_text->setPlainText( comp->note() );
 }
 
