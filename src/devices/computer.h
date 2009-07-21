@@ -17,7 +17,6 @@ public:
     int type() const { return compDev; }
     computer(int c = 1);
     ~computer() { }
-    devicePort* addInterface(QString str,int t);
 
     void dialog();
     bool hasTable() const { return true; }
@@ -28,4 +27,13 @@ protected:
     void read(QDataStream &stream) { smartDevice::read(stream); }
 };
 //---------------------------------------------
+
+class computerSetting : public smartSetting {
+public:
+    computerSetting( computer *c ) : smartSetting(c) , cp(c) { }
+    QString gateway() const { return cp->gateway().toString(); }
+    void setGateway(const QString &str) { cp->setGateway(str); }
+private:
+    computer *cp;
+};
 #endif // COMPUTER_H

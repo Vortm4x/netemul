@@ -21,7 +21,7 @@ ripProgramm::ripProgramm(smartDevice *d)
 */
 void ripProgramm::incTime()
 {
-    if ( ++timer < interval || !sd->myRouteMode) return;
+    if ( ++timer < interval || !sd->isRouter() ) return;
     sendUpdate(true);
     timer = 0;
 }

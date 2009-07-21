@@ -43,14 +43,9 @@ switchProperty::switchProperty()
     all->addWidget(le_mask);
     connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
-    lb_recFrame = new QLabel;
-    lb_sendFrame = new QLabel;
-    lb_recPacket = new QLabel;
-    lb_sendPacket = new QLabel;
-    all->addWidget(lb_recFrame);
-    all->addWidget(lb_sendFrame);
-    all->addWidget(lb_recPacket);
-    all->addWidget(lb_sendPacket);
+    lb_statics = new QLabel;
+    all->addWidget(lb_statics);
+
     all->addStretch(1);
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
@@ -63,40 +58,34 @@ switchProperty::switchProperty()
     setLayout(all);
 }
 
-void switchProperty::setSwitch(switchDevice *d)
+void switchProperty::setSwitch(boxSetting *d)
 {
     sw = d;
-    QString c = QString().setNum( d->sockets().count() );
-    cb_count->setCurrentIndex( cb_count->findText(c) );
-    le_mac->setText( d->macString() );
-    le_ip->setText( d->ip().ipString() );
-    le_mask->setText( d->mask().ipString() );
-    lb_recFrame->setText( trUtf8("Получено кадров: %1").arg( d->countRecFrame() ) );
-    lb_recPacket->setText( trUtf8("Получено пакетов: %1").arg( d->countRecPacket() ) );
-    lb_sendFrame->setText( trUtf8("Отправлено кадров: %1").arg( d->countSendFrame() ) );
-    lb_sendPacket->setText( trUtf8("Отправлено пакетов: %1").arg( d->countSendPacket() ) );
+    cb_count->setCurrentIndex( cb_count->findText( QString::number( d->socketsCount() ) ) );
+    le_mac->setText( d->snmpMac() );
+    le_ip->setText( d->snmpIp() );
+    le_mask->setText( d->snmpMask() );
+    lb_statics->setText( d->statics() );
     chk_manual->setChecked( d->isManual() );
-    check( d->isManual() );
-    te_text->setPlainText( sw->toolTip() );
+    te_text->setPlainText(  d->note() );
     btn_apply->setEnabled(false);
 }
 
 void switchProperty::apply()
 {
-    int t = sw->sockets().count();
-    if ( sw->sockets().count() != cb_count->currentText().toInt() )
-        if ( !sw->setSocketCount( cb_count->currentText().toInt() ) ) {
+    int t = sw->socketsCount();
+    if ( t != cb_count->currentText().toInt() )
+        if ( !sw->setSocketsCount( cb_count->currentText().toInt() ) ) {
             QMessageBox::warning(this,trUtf8("Error"),
             trUtf8("Для изменения количества портов отсоедините все провода.") , QMessageBox::Ok , QMessageBox::Ok);
-            QString c = QString().setNum( t );
-            cb_count->setCurrentIndex( cb_count->findText(c) );
+            cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }
     sw->setManual( chk_manual->isChecked() );
     sw->setMac(le_mac->text());
     sw->setIp(le_ip->text());
-    sw->setIp(le_mask->text());
-    sw->setToolTip( te_text->toPlainText() );
+    sw->setMask(le_mask->text());
+    sw->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 
@@ -106,10 +95,7 @@ void switchProperty::check(bool p)
     le_mac->setVisible(p);
     le_ip->setVisible(p);
     le_mask->setVisible(p);
-    lb_recFrame->setVisible(p);
-    lb_sendFrame->setVisible(p);
-    lb_recPacket->setVisible(p);
-    lb_sendPacket->setVisible(p);
+    lb_statics->setVisible(p);
     applyEnable();
 }
 

@@ -70,7 +70,7 @@ void hubProperty::check(bool p)
     applyEnable();
 }
 
-void hubProperty::setHub(hubSetting *s)
+void hubProperty::setHub(boxSetting *s)
 {
     st = s;
     cb_count->setCurrentIndex( cb_count->findText( QString::number(st->socketsCount() ) ));

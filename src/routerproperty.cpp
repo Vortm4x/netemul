@@ -38,18 +38,18 @@ routerProperty::routerProperty()
  Задает диалогу устройство для работы.
  @param r - указатель на роутер.
 */
-void routerProperty::setRouter(routerDevice *r)
+void routerProperty::setRouter(smartSetting *r)
 {
     rt = r;
-    cb_route->setChecked(r->routeMode());
-    cb_count->setCurrentIndex( cb_count->findText( QString::number( rt->sockets().count() ) ) );
-    te_text->setPlainText( rt->toolTip() );
+    cb_route->setChecked(r->isRouter());
+    cb_count->setCurrentIndex( cb_count->findText( QString::number( rt->socketsCount() ) ) );
+    te_text->setPlainText( rt->note() );
     btn_apply->setEnabled(false);
 }
 //-----------------------------------------------------------------
 void routerProperty::apply()
 {
-    rt->setRouteMode( cb_route->isChecked() );
-    rt->setToolTip( te_text->toPlainText() );
+    rt->setRouter( cb_route->isChecked() );
+    rt->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }

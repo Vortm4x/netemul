@@ -29,11 +29,11 @@ computerProperty::computerProperty()
     setLayout(all);
 }
 
-void computerProperty::setDevice(computer *c)
+void computerProperty::setDevice(computerSetting *c)
 {
     comp = c;
-    gateway->setText(c->gateway().toString());
-    cb_route->setChecked( comp->routeMode() );
+    gateway->setText( c->gateway() );
+    cb_route->setChecked( comp->isRouter() );
     btn_apply->setEnabled(false);
     te_text->setPlainText( comp->note() );
 }
@@ -41,8 +41,8 @@ void computerProperty::setDevice(computer *c)
 void computerProperty::apply()
 {
     if (gateway->text() != "0.0.0.0" )
-        comp->setGateway(gateway->text());
-    comp->setRouteMode( cb_route->isChecked() );
+    comp->setGateway(gateway->text());
+    comp->setRouter( cb_route->isChecked() );
     comp->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }

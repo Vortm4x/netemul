@@ -79,28 +79,28 @@ void tableArp::correctSize()
 */
 void tableArp::updateTable()
 {
-    table->clearContents();
-    cb_port->clear();
-    table->setRowCount(0);
-    QList<devicePort*> list = d->sockets();
-    foreach ( devicePort *p, list ) {
-        if ( !p->isConnect() ) continue;
-        cb_port->addItem(QIcon(":im/images/ok.png"), p->name() );
-        QList<arpRecord*> rec = static_cast<interface*>(p->parentDev())->arpTable();
-        foreach ( arpRecord *r, rec ){
-            table->insertRow(table->rowCount());
-            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.macString());
-            QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.ipString());
-            QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
-            QTableWidgetItem *ti_name = new QTableWidgetItem(p->name());
-            QTableWidgetItem *ti_time = new QTableWidgetItem( tr("%1").arg(r->time) );
-            table->setItem( table->rowCount()-1, 0, ti_mac);
-            table->setItem( table->rowCount()-1, 1, ti_ip);
-            table->setItem( table->rowCount()-1, 2, ti_mode);
-            table->setItem( table->rowCount()-1, 3, ti_name);
-            table->setItem( table->rowCount()-1, 4, ti_time);
-        }
-    }
+//    table->clearContents();
+//    cb_port->clear();
+//    table->setRowCount(0);
+//    QList<devicePort*> list = d->sockets();
+//    foreach ( devicePort *p, list ) {
+//        if ( !p->isConnect() ) continue;
+//        cb_port->addItem(QIcon(":im/images/ok.png"), p->name() );
+//        QList<arpRecord*> rec = static_cast<interface*>(p->parentDev())->arpTable();
+//        foreach ( arpRecord *r, rec ){
+//            table->insertRow(table->rowCount());
+//            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.macString());
+//            QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.ipString());
+//            QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
+//            QTableWidgetItem *ti_name = new QTableWidgetItem(p->name());
+//            QTableWidgetItem *ti_time = new QTableWidgetItem( tr("%1").arg(r->time) );
+//            table->setItem( table->rowCount()-1, 0, ti_mac);
+//            table->setItem( table->rowCount()-1, 1, ti_ip);
+//            table->setItem( table->rowCount()-1, 2, ti_mode);
+//            table->setItem( table->rowCount()-1, 3, ti_name);
+//            table->setItem( table->rowCount()-1, 4, ti_time);
+//        }
+//    }
     correctSize();
 }
 //---------------------------------------------------------------
@@ -112,7 +112,7 @@ void tableArp::updateTable()
 void tableArp::addRecord()
 {
     if ( le_mac->text() == "00:00:00:00:00:00" || ip->text() == "0.0.0.0" ) return;
-    d->adapter( cb_port->currentText() )->addToTable( ip->text(), le_mac->text(), interface::staticMode );
+//    d->adapter( cb_port->currentText() )->addToTable( ip->text(), le_mac->text(), interface::staticMode );
     updateTable();
     ip->setText("0.0.0.0");
     le_mac->setText("00:00:00:00:00:00");
@@ -124,8 +124,8 @@ void tableArp::addRecord()
 void tableArp::deleteRecord()
 {    
     if ( table->selectedItems().isEmpty() ) return;
-    int n = table->currentRow();
-    d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
+    //int n = table->currentRow();
+    //d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
     updateTable();
 }
 //------------------------------------------------------------------------

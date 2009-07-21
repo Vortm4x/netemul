@@ -27,7 +27,8 @@ void tableSwitch::setSwitch(switchDevice *d)
 
 void tableSwitch::addRecord()
 {
-    sw->addToTable( macAddress( le_macAddress->text() ) , cb_port->currentText() , switchDevice::staticMode , 0);
+    Q_ASSERT( false );
+    //sw->addToTable( macAddress( le_macAddress->text() ) , cb_port->currentText() , switchDevice::staticMode , 0);
     updateTable();
 }
 /*!
@@ -35,22 +36,22 @@ void tableSwitch::addRecord()
 */
 void tableSwitch::updateTable()
 {
-    int n = 1;
-    table->clearContents(); // Очищаем таблицу
-    QList<macRecord*> l = sw->switchTable();
-    table->setRowCount(l.count());
-    foreach ( macRecord *i , l ) { // Перебираем все записи у свитча
-        QTableWidgetItem *temp = new QTableWidgetItem( i->mac.macString() );
-        table->setItem(n-1,0,temp);
-        temp = new QTableWidgetItem( i->port->name() );
-        table->setItem(n-1,1,temp);
-        temp = new QTableWidgetItem( i->modeString() );
-        table->setItem(n-1,2,temp);
-        temp = new QTableWidgetItem( QString::number(i->time) );
-        table->setItem(n-1,3,temp);
-        n++;
-    }
-    correctSize(); // Корректируем размер
+//    int n = 1;
+//    table->clearContents(); // Очищаем таблицу
+//    QList<macRecord*> l = sw->switchTable();
+//    table->setRowCount(l.count());
+//    foreach ( macRecord *i , l ) { // Перебираем все записи у свитча
+//        QTableWidgetItem *temp = new QTableWidgetItem( i->mac.macString() );
+//        table->setItem(n-1,0,temp);
+//        temp = new QTableWidgetItem( i->port->name() );
+//        table->setItem(n-1,1,temp);
+//        temp = new QTableWidgetItem( i->modeString() );
+//        table->setItem(n-1,2,temp);
+//        temp = new QTableWidgetItem( QString::number(i->time) );
+//        table->setItem(n-1,3,temp);
+//        n++;
+//    }
+//    correctSize(); // Корректируем размер
 }
 //---------------------------------------------------------------------
 /*!
@@ -67,8 +68,8 @@ void tableSwitch::correctSize()
 void tableSwitch::deleteRecord()
 {
     if ( table->selectedItems().isEmpty() ) return;
-    int n = table->currentRow();
-    sw->deleteFromTable( macAddress( table->item(n,0)->text() ) );
+    //int n = table->currentRow();
+    //sw->deleteFromTable( macAddress( table->item(n,0)->text() ) );
     updateTable();
 }
 

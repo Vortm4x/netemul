@@ -10,30 +10,27 @@ smartDevice::~smartDevice()
     myRouteTable.clear();
 }
 
-interface* smartDevice::adapter(QString s)
+const interface* smartDevice::adapter(const QString &s) const
 {
-    foreach ( devicePort *i , mySockets )
-        if ( i->name() == s ) return static_cast<interface*>(i->parentDev());
-    return NULL;
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        if ( myInterfaces.at(i)->name() == s ) return myInterfaces.at(i);
+    return 0;
 }
-/*!
-  Добавляет интерфейс к устройству.
-  @param str - Имя интерфейса.
-  @param t - Тип интерфейса.
-  @return указатель на созданный интерфейс.
-*/
-interface* smartDevice::addInterface(QString str,int t)
+
+interface* smartDevice::adapter(const QString &name)
 {
-    devicePort *tp = new devicePort;
-    interface *ti = new interface(t);
-    ti->setSmart(this);
-    tp->setParentDev(ti);
-    tp->setConnect(false, NULL);
-    tp->setName(str);
-    addSocket(tp);
-    return ti;
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        if ( myInterfaces.at(i)->name() == name ) return myInterfaces[i];
+    return 0;
 }
-//----------------------------------------------------
+
+interface* smartDevice::addInterface(const QString &name)
+{
+    interface *t = new interface(name);
+    myInterfaces << t;
+    return t;
+}
+
 /*!
   Добавляет в таблицу маршрутизации новую запись.
   @param d - сеть назначения.
@@ -47,7 +44,6 @@ interface* smartDevice::addInterface(QString str,int t)
 routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode)
 {
     routeRecord *r = new routeRecord;
-    r->out = NULL;
     r->dest = d;
     r->mask = m;
     r->metric = metr;
@@ -55,10 +51,7 @@ routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddre
     r->mode = mode;
     r->time = 0;
     r->change = noChanged;
-    if ( o != ipAddress("127.0.0.1") ) {
-        r->out = ipToAdapter(o);
-        if ( !r->out ) {delete r; return NULL; }
-    }
+    r->out = o;
     return addToTable(r);
 }
 //---------------------------------------------------------------
@@ -102,8 +95,8 @@ void smartDevice::deleteFromTable(routeRecord *r,bool tr /* = true*/)
 //--------------------------------------------------------------
 interface* smartDevice::ipToAdapter(const ipAddress a)
 {
-    foreach ( devicePort *i , mySockets )
-        if ( i->parentDev()->ip() == a ) return static_cast<interface*>(i->parentDev());
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        if ( myInterfaces.at(i)->ip() == a ) return myInterfaces[i];
     return NULL;
 }
 
@@ -118,15 +111,15 @@ void smartDevice::receivePacket(ipPacket *p, interface *f)
 */
 void smartDevice::routePacket(ipPacket *p)
 {
-    if ( !myRouteMode ) return; // Выходим если нет маршрутизации.
+    if ( !myRouter ) return; // Выходим если нет маршрутизации.
     routeRecord *t = recordAt(p->receiver());
     if ( !t ) {
         delete p;
         return;
     }
     ipAddress gw;
-    if ( t->out->ip() != t->gateway ) gw = t->gateway;
-    t->out->sendPacket(p,gw);
+    if ( t->out != t->gateway ) gw = t->gateway;
+    ipToAdapter(t->out)->sendPacket(p,gw);
 }
 //---------------------------------------------
 /*!
@@ -149,7 +142,7 @@ routeRecord* smartDevice::recordAt(const ipAddress &a) const
 routeRecord* smartDevice::recordAt(const interface *p)
 {
     foreach ( routeRecord *i , myRouteTable )
-        if ( i->out == p ) return i;
+        if ( ipToAdapter(i->out) == p ) return i;
     return 0;
 }
 //-------------------------------------------------------
@@ -171,13 +164,13 @@ QString routeRecord::modeString() const
   при смене ip-адреса или маски подсети.
   @param p - порт на котором произошло событие;
 */
-void smartDevice::connectedNet(devicePort *p)
+void smartDevice::connectedNet(interface *p)
 {
     bool add = p->isConnect(); // Показывает происходит ли добавление.
-    ipAddress ip = p->parentDev()->ip();
-    ipAddress mask = p->parentDev()->mask();
+    ipAddress ip = p->ip();
+    ipAddress mask = p->mask();
     if ( ip.isEmpty() || mask.isEmpty() ) { // Если ip и маска пустые
-        if ( routeRecord *t = recordAt(static_cast<interface*>(p->parentDev()) )) deleteFromTable(t);
+        if ( routeRecord *t = recordAt(p) ) deleteFromTable(t);
         return;
     }
     ipAddress dest = mask & ip;
@@ -192,41 +185,32 @@ void smartDevice::connectedNet(devicePort *p)
     addToTable( dest , mask , ip , ip , 0 , connectMode );
 }
 //------------------------------------------------------------
-void smartDevice::addConnection(cableDev *cable)
+
+void smartDevice::addConnection(const QString &port,cableDev *c)
 {
-    device::addConnection(cable);
-    if ( cable->start() == this ) connectedNet(cable->startPort() );
-    else connectedNet(cable->endPort() );
+    adapter(port)->setConnect(true,c);
 }
 
-void smartDevice::deleteConnection(cableDev *cable)
-{
-    if ( cable->start() == this ) connectedNet(cable->startPort() );
-    else connectedNet(cable->endPort() );
-    device::deleteConnection(cable);
-}
 /*!
   Записывает устройство в поток данных.
   @param stream - ссылка на поток.
 */
 void smartDevice::write(QDataStream &stream) const
 {
-    stream << pos() << mySockets.count(); // Количество сокетов
-    foreach( devicePort *i, mySockets) {
-        stream << *(i->parentDev()); // Их адаптеры
-        stream << *i;
-    }
+    stream << myInterfaces.size(); // Количество сокетов
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        stream << *myInterfaces[i];
     int c = 0; // Количество статических записей в таблице маршрутизации.
     foreach (routeRecord *i, myRouteTable) 
         if (i->mode == staticMode) c++;
     stream << c;
     foreach (routeRecord *i, myRouteTable) 
         if (i->mode == staticMode) stream << *i;
-    stream << myRouteMode; // Включена или нет маршрутизация.
+    stream << myRouter; // Включена или нет маршрутизация.
     stream << myProgramms.count(); // Количество программ.
     foreach ( programm *i , myProgramms )  // И сами программы.
         stream << *i;
-    stream << toolTip();
+    stream << note();
 }
 //-------------------------------------------------
 void smartDevice::read(QDataStream &stream)
@@ -234,26 +218,19 @@ void smartDevice::read(QDataStream &stream)
     QPointF p;
     QString str;
     int n,i;
-    stream >> p >> n;
-    setPos(p);
-    foreach ( devicePort *i , mySockets )
-        removeSocket(i);
+    stream >> n;
     for (i = 0; i < n ; i++) {
-        devicePort *p = addInterface(QString(),0);
-        stream >> *(p->parentDev());
+        interface *p = addInterface(QString());
         stream >> *p;
     }
     stream >> n;
     for ( i = 0; i < n ; i++) {
         routeRecord *rec = new routeRecord;
         stream >> *rec;
-        ipAddress ip;
-        stream >> ip;
-        rec->out = ipToAdapter(ip);
         rec->mode = staticMode;
         myRouteTable.append(rec);
     }
-    stream >> myRouteMode;
+    stream >> myRouter;
     stream >> n;
     int t;
     programm *r;
@@ -268,7 +245,7 @@ void smartDevice::read(QDataStream &stream)
         installProgramm(r);
     }
     stream >> str;
-    setToolTip(str);
+    setNote(str);
 }
 /*!
   Задает устройству шлюз по умолчанию.
@@ -299,18 +276,19 @@ ipAddress smartDevice::gateway() const
   @param size - Размер сообщения в кб(на деле сколько пакетов).
   @param pr - Протокол с помощью которого происходит отправка.
 */
-void smartDevice::sendMessage(ipAddress dest , int size , int pr)
+void smartDevice::sendMessage( const QString &a , int size , int pr)
 {
     Q_UNUSED(pr);
     ipAddress gw;
-    routeRecord *r = recordAt(dest);
+    routeRecord *r = recordAt(a);
     if ( !r ) return;
-    if ( r->gateway != r->out->ip() ) gw = r->gateway;
+    qDebug() << "smartik want to send";
+    if ( r->gateway != r->out ) gw = r->gateway;
     for ( int i = 0 ; i < size ; i++) {
         ipPacket *t = new ipPacket;
-        t->setSender(r->out->ip());
-        t->setReceiver(dest);
-        r->out->sendPacket(t,gw);
+        t->setSender(r->out);
+        t->setReceiver(a);
+        ipToAdapter(r->out)->sendPacket(t,gw);
     }
 }
 //---------------------------------------------------------------
@@ -318,10 +296,10 @@ void smartDevice::sendMessage(ipAddress dest , int size , int pr)
   Обновляет arp таблицу всех интерфейсов у данного устройства.
   @param u - максимальное время жизни.
 */
-void smartDevice::updateArp(int u)
+void smartDevice::updateArp()
 {
-    foreach ( devicePort *i , mySockets )
-        i->parentDev()->updateArp(u);
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        myInterfaces[i]->updateArp();
 }
 //---------------------------------------------------------------
 /*!
@@ -389,10 +367,10 @@ void smartDevice::incTime()
 */
 ipAddress smartDevice::findInterfaceIp(ipAddress a)
 {
-    foreach ( devicePort *i , mySockets ) {
-        if ( !i->isConnect() ) continue;
-        if ( (i->parentDev()->ip() & i->parentDev()->mask() ) == ( a & i->parentDev()->mask() ) )
-            return i->parentDev()->ip();
+    for ( int i = 0 ; i < myInterfaces.size() ; ++i ) {
+        if ( myInterfaces[i]->isConnect() ) continue;
+        if ( (myInterfaces[i]->ip() & myInterfaces[i]->mask() ) == ( a & myInterfaces[i]->mask() ) )
+            return myInterfaces[i]->ip();
     }
     return ipAddress();
 }
@@ -419,16 +397,22 @@ bool smartDevice::sendInterrupt(int u)
     return b;
 }
 //-------------------------------------------------------
-void smartDevice::tableDialog() const
+void smartDevice::tableDialog()
 {
     SHOW_DIALOG(routeEditor)
 }
 
-void smartDevice::adapterDialog() const
+void smartDevice::adapterDialog()
 {
-    SHOW_DIALOG(adapterProperty)
+    adapterProperty *d = new adapterProperty;
+    adapterSetting *set = new adapterSetting(this);
+    d->setDevice(set);
+    d->exec();
+    delete set;
+    delete d;
 }
-void smartDevice::programmsDialog() const
+
+void smartDevice::programmsDialog()
 {
     SHOW_DIALOG(programmDialog)
 }
@@ -436,7 +420,7 @@ void smartDevice::programmsDialog() const
 QStringList smartDevice::sockets() const
 {
     QStringList t;
-    for ( i = 0 ; i < myInterfaces.size() ; i++ )
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         t << myInterfaces.at(i)->name();
     return t;
 }
@@ -444,16 +428,22 @@ QStringList smartDevice::sockets() const
 QStringList smartDevice::interfacesIp() const
 {
     QStringList t;
-    for ( i = 0 ; i < myInterfaces.size() ; i++ )
+    for ( int  i = 0 ; i < myInterfaces.size() ; i++ )
         t << myInterfaces.at(i)->ip().toString();
     return t;
 }
 
-QString smartDevice::socketName(devicePort *p) const
+QString smartDevice::socketName(const cableDev *c) const
 {
-    QVector<interface*>::iterator i = myInterfaces.constBegin();
-    for ( ; i != myInterfaces.constEnd() ; ++i )
-        if ( *i.socket() == p ) return *i.name();
+    for ( int i = 0 ; i < myInterfaces.size(); i++ )
+        if ( myInterfaces.at(i)->isCableConnect(c) ) return myInterfaces.at(i)->name();
     return QString();
 }
+
+void smartDevice::deciSecondTimerEvent()
+{
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        myInterfaces[i]->deciSecondEvent();
+}
+
 

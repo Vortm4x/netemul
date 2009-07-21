@@ -1,16 +1,17 @@
 #include "cabledev.h"
 #include "device.h"
+#include "deviceport.h"
 
-cableDev::cableDev(device *start,device *end,devicePort* startInter, devicePort* endInter,int s)
+cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
 {
     mySpeed = s;
+    myStartPort = NULL;
+    myEndPort = NULL;
     myChecked = false;
-    myStartDev = start; // Выставляем наши указатели
-    myEndDev = end; // из параметров конструктора
-    if ( myStartDev->type() == hub || myEndDev->type() == hub ) myModel = 0;
-    else myModel = 1;
-    myStartPort = startInter;
-    myEndPort = endInter;
+    myStartDev = start;
+    myEndDev = end;
+    myStartDev->addConnection(sp,this);
+    myEndDev->addConnection(ep,this);
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
 }
 
@@ -100,14 +101,29 @@ void cableDev::motion()
        update();
 }
 //-----------------------------------------------------------
+
 QString cableDev::startSocketName() const
 {
-    return myStartDev->socketName(myStartPort);
+    return myStartDev->socketName(this);
 }
 
 QString cableDev::endSocketName() const
 {
-    return myEndDev->socketName(myEndPort);
+    return myEndDev->socketName(this);
 }
 
+void cableDev::deleteConnect()
+{
+    myStartPort->setConnect(false,NULL);
+    myEndPort->setConnect(false,NULL);
+    myStartDev->deleteConnection(this);
+    myEndDev->deleteConnection(this);
+}
+
+void cableDev::insertInPort(devicePort *p)
+{
+    if ( !myStartPort ) myStartPort = p;
+    else if ( !myEndPort ) myEndPort = p;
+    else qFatal("ERROR in cable!");
+}
 

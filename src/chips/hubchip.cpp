@@ -1,5 +1,6 @@
 #include "hubchip.h"
 #include "deviceimpl.h"
+#include "deviceport.h"
 
 hubChip::hubChip(int n /* = 4 */) : boxChip(n)
 {

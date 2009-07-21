@@ -14,6 +14,7 @@ class QSpinBox;
 class QCheckBox;
 class QRadioButton;
 class QVBoxLayout;
+class deviceImpl;
 class device;
 class devicePort;
 class interface;
@@ -26,19 +27,18 @@ public:
     enum { UDP = 25 ,TCP = 26 };
     sendDialog(aim cur,device *t);
     void prepare();
-    ipAddress ip() const { return myIp; }
-    device* senderDevice() const { return mySenderDevice; }
+    QString dest() const { return myDest; }
     bool broadcast() const { return myBroadcast; }
     int messageSize() const { return mySize; }
     int protocol() const { return myProtocol; }
+
 public slots:
     void checkSelected(int cur);
     void checkAccept();
 private:
-    QMap<QListWidgetItem*,devicePort*> spisok;
     aim myState;
-    device *mySenderDevice;
-    ipAddress myIp;
+    deviceImpl *myDevice;
+    QString myDest;
     int mySize;
     int myProtocol;
     bool myBroadcast;

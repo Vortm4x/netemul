@@ -3,7 +3,6 @@
 
 #include "macaddress.h"
 #include "ipaddress.h"
-#include "deviceport.h"
 #include "frame.h"
 
 class devicePort;
@@ -18,6 +17,7 @@ class abstractChip
 {
 public:
     abstractChip();
+    virtual ~abstractChip() { }
 
     QString staticsString() const;
 

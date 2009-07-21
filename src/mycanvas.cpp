@@ -1,6 +1,5 @@
 #include "mycanvas.h"
 #include "connectdialog.h"
-#include "deviceport.h"
 #include "device.h"
 #include "cabledev.h"
 #include "senddialog.h"
@@ -162,7 +161,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         messageSize = temp->messageSize();
                         broadcast = temp->broadcast();
                         protocol = temp->protocol();
-                        senderDevice = temp->senderDevice();
+                        senderDevice = t;
                         if ( broadcast ) {
                             emit uncheck();
                             setMode( myCanvas::move , myCanvas::noDev);
@@ -172,7 +171,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 } else {
                     sendDialog *temp = new sendDialog(sendDialog::receiver,t);
                     if (temp->exec() ) {
-                        receiverIp = temp->ip();
+                        receiverIp = temp->dest();
                         senderDevice->sendMessage(receiverIp,messageSize,protocol);
                         emit uncheck();
                         setMode( myCanvas::move , myCanvas::noDev);
@@ -195,18 +194,12 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString ep)
 {
     if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
-    devicePort *ts = s->socket(sp);
-    devicePort *te = e->socket(ep);
-    cableDev *cable = new cableDev(s, e, ts, te); // Создаем между ними кабель
+    cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
     s->update();
     e->update();
     cable->setZValue(-1000.0); // Кидаем его на самый-самый задний план
     addItem(cable); // И добавляем его на сцену =)
-    ts->setConnect(true,cable);
-    te->setConnect(true,cable);
     connections << cable;
-    s->addConnection(cable);
-    e->addConnection(cable);
     cable->updatePosition(); // Обновляем его положение
     return cable;
 }
@@ -387,14 +380,7 @@ void myCanvas::closeFile()
 //---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
 {
-    cable->startPort()->setConnect(false,cable);
-    cable->endPort()->setConnect(false,cable);
-    cable->start()->deleteConnection(cable);
-    cable->start()->update(cable->start()->boundingRect());
-    cable->end()->deleteConnection(cable);
-    cable->end()->update(cable->end()->boundingRect());
-    cable->startPort()->setConnect(false,NULL);
-    cable->endPort()->setConnect(false,NULL);
+    cable->deleteConnect();
     connections.removeOne(cable);
 }
 
@@ -651,6 +637,16 @@ textItem* myCanvas::createTextItem()
     return t;
 }
 //--------------------------------------------------------------------
+/*!
+  Проверяет устройство ли данный объект или нет.
+  @return true если устройство, false в противном случае.
+*/
+bool myCanvas::isDevice(QGraphicsItem *t) const
+{
+    if ( t->type() != cableDev::Type && t->type() != textItem::Type ) return true;
+    return false;
+}
+//------------------------------------------------------------------------
 
 
 

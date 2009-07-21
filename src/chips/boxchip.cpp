@@ -1,4 +1,6 @@
 #include "boxchip.h"
+#include "deviceport.h"
+#include <QStringList>
 
 boxChip::boxChip(int n /* = 4 */)
 {
@@ -14,13 +16,6 @@ QStringList boxChip::sockets() const
     for ( int  i = 0 ; i < mySockets.size() ; i++ )
         t << QObject::tr("LAN%1").arg(i+1);
     return t;
-}
-
-devicePort* boxChip::socket(const QString &name)
-{
-    QString t = name;
-    t.remove(0,3);
-    return mySockets.at( t.toInt() );
 }
 
 bool boxChip::setSocketsCount(int n)
@@ -43,9 +38,28 @@ bool boxChip::setSocketsCount(int n)
     return true;
 }
 
-QString boxChip::socketName(devicePort *p) const
+QString boxChip::socketName(const cableDev *c) const
 {
     for ( int i = 0 ; i < mySockets.size() ; i++ )
-        if ( mySockets.at(i) == p ) return QObject::tr("LAN%1").arg(i+1);
+        if ( mySockets.at(i)->isCableConnect(c) ) return QObject::tr("LAN%1").arg(i+1);
     return QString();
+}
+
+void boxChip::addConnection(const QString &port , cableDev *c)
+{
+    QString t = port;
+    t.remove(0,3);
+    mySockets.at( t.toInt() -1 )->setConnect(true,c);
+}
+
+bool boxChip::isConnectSocket(const QString &str) const
+{
+    return socket(str)->isConnect();
+}
+
+const devicePort* boxChip::socket(const QString &name) const
+{
+    QString t = name;
+    t.remove(0,3);
+    return mySockets[ t.toInt()-1 ];
 }

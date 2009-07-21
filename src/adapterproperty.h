@@ -27,10 +27,7 @@ private:
     QIcon connectIcon(bool b);
     void updateTab(int n);
     adapterSetting *sd;
-    QLabel *lb_recFrame;
-    QLabel *lb_recPacket;
-    QLabel *lb_sendFrame;
-    QLabel *lb_sendPacket;
+    QLabel *lb_statics;
     QTabBar *tab_interfaces;
     QLineEdit *le_name;
     QLineEdit *le_mac;

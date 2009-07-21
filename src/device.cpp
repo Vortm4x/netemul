@@ -1,15 +1,15 @@
+#include "routerdevice.h"
 #include "device.h"
 #include "computer.h"
 #include "hubdevice.h"
 #include "switchdevice.h"
-#include "routerdevice.h"
+#include "cabledev.h"
 #include <QMenu>
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
 
 device::device(int t)
 {
-    myReady = 0;
     devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
@@ -24,7 +24,6 @@ device::device(int t)
 
 device::device(QDataStream &stream)
 {
-    myReady = 0;
     devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
@@ -79,7 +78,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     }
      // Потом картинку
     if ( isConnect() ) {
-        if ( myReady == myCableList.count() ) painter->setBrush(Qt::green);
+        if ( impl->isReady() == myCableList.count() ) painter->setBrush(Qt::green);
         else painter->setBrush(Qt::yellow);
     }
     else painter->setBrush(Qt::red);
@@ -100,5 +99,17 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     scene()->clearSelection();
 }
 //----------------------------------------------------------------
+
+void device::addConnection(const QString &port, cableDev *c)
+{
+    myCableList << c;
+    impl->addConnection(port,c);
+}
+
+void device::deleteConnection(cableDev *c)
+{
+    myCableList.removeOne(c);
+    update();
+}
 
 

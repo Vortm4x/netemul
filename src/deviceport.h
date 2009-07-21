@@ -2,11 +2,10 @@
 #define DEVICEPORT_H
 
 #include <QQueue>
-
-#include "cabledev.h"
 #include "frame.h"
 
 class macAddress;
+class cableDev;
 
 /*!
   Класс представляе собой место соединения кабеля с устройством(сокет, гнездо, отверстие).
@@ -28,7 +27,9 @@ public:
     void sendFrame(frame t);
     void receiveFrame(QByteArray &b);
     void queueEvent();
-    void setChecked(bool c) { myCable->setChecked(c); }
+    void setChecked(bool c);
+    bool isCableConnect(const cableDev *c) const;
+    bool hasReceive() const { return !receiveQueue.isEmpty(); }
 private:
     QQueue<frame> senderQueue;
     QQueue<frame> receiveQueue;
@@ -37,12 +38,6 @@ private:
     bool myBusy;
 };
 //------------------------------------------------------
-inline void devicePort::receiveFrame(QByteArray &b)
-{
-    QDataStream s(b);
-    frame f;
-    s >> f;
-    receiveQueue.enqueue(f);
-}
+
 
 #endif // DEVICEPORT_H

@@ -9,22 +9,26 @@
 
 class frame;
 struct arpRecord;
+class cableDev;
 
 class interface : public abstractChip
 {
 public:
     enum { ethernet100 = 0 , ethernet1000 = 1 , staticMode = 100 , dinamicMode = 101 };
-    interface();
+    interface(const QString &name);
     ~interface();
-    void receiveEvent(frame *fr,devicePort *sender);
+    void receiveEvent(frame fr);
     void receiveIp(const ipPacket &ip);
     void receiveArp(const arpPacket &arp);
     void sendPacket(ipPacket *p,ipAddress gw = ipAddress("0.0.0.0"));
     void sendBroadcast(ipPacket *p);
-    void updateArp(int u);
+    void updateArp();
     void clearArp();
-    devicePort* socket() { return mySocket; }
-    bool isConnect() const { return mySocket->isConnect(); }
+    const devicePort* socket() const { return mySocket; }
+    bool isConnect() const;
+    void setConnect(bool b,cableDev *c);
+    bool isCableConnect(const cableDev *c) const;
+    void deciSecondEvent();
 
     ipPacket popPacket() { return buffer.dequeue(); }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );

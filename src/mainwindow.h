@@ -45,10 +45,8 @@ public slots:
     void applySetting();
     void groupClicked(QAction *clk);
     void uncheck();
-    void adapterDialog();
     void helpDialog();
     void playBack();
-    void programmDialog();
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);

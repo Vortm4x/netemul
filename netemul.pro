@@ -4,6 +4,7 @@
 include(src/chips/chips.pri)
 include(src/programms/programms.pri)
 include(src/controls/controls.pri)
+include(src/devices/devices.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -13,7 +14,9 @@ DEPENDPATH += . \
 INCLUDEPATH += . \
     src \
     src/chips \
-    src/controls
+    src/controls \
+    src/programms \
+    src/devices 
 QT += script
 win32 { 
     message("Static link ...")
@@ -32,16 +35,13 @@ UI_DIR = src
 # Input
 HEADERS += src/adapterproperty.h \
     src/arppacket.h \
-    src/boxdevice.h \
     src/cabledev.h \
-    src/computer.h \
     src/computerproperty.h \
     src/connectdialog.h \
     src/device.h \
     src/deviceport.h \
     src/dialogtemplate.h \
     src/frame.h \
-    src/hubdevice.h \
     src/hubproperty.h \
     src/interfacedialog.h \
     src/ipaddress.h \
@@ -51,13 +51,9 @@ HEADERS += src/adapterproperty.h \
     src/mainwindow.h \
     src/mycanvas.h \
     src/routeeditor.h \
-    src/routerdevice.h \
     src/routerproperty.h \
     src/senddialog.h \
     src/settingdialog.h \
-    src/sharebus.h \
-    src/smartdevice.h \
-    src/switchdevice.h \
     src/switchproperty.h \
     src/tableswitch.h \
     src/testdialog.h \
@@ -66,25 +62,21 @@ HEADERS += src/adapterproperty.h \
     src/tcppacket.h \
     src/programmdialog.h \
     src/installdialog.h \
-    src/textitem.h \
-    src/deviceimpl.h \
-FORMS += ui/testdialog.ui \
+    src/textitem.h 
+FORMS += ui/programmdialog.ui \
+    ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui \
-    ui/programmdialog.ui \
     ui/installdialog.ui
 SOURCES += src/adapterproperty.cpp \
     src/arppacket.cpp \
-    src/boxdevice.cpp \
     src/cabledev.cpp \
-    src/computer.cpp \
     src/computerproperty.cpp \
     src/connectdialog.cpp \
     src/device.cpp \
     src/deviceport.cpp \
     src/dialogtemplate.cpp \
     src/frame.cpp \
-    src/hubdevice.cpp \
     src/hubproperty.cpp \
     src/interfacedialog.cpp \
     src/ipaddress.cpp \
@@ -95,13 +87,9 @@ SOURCES += src/adapterproperty.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp \
     src/routeeditor.cpp \
-    src/routerdevice.cpp \
     src/routerproperty.cpp \
     src/senddialog.cpp \
     src/settingdialog.cpp \
-    src/sharebus.cpp \
-    src/smartdevice.cpp \
-    src/switchdevice.cpp \
     src/switchproperty.cpp \
     src/tableswitch.cpp \
     src/testdialog.cpp \
@@ -110,6 +98,5 @@ SOURCES += src/adapterproperty.cpp \
     src/tcppacket.cpp \
     src/programmdialog.cpp \
     src/installdialog.cpp \
-    src/textitem.cpp \
-    src/deviceimpl.cpp \
+    src/textitem.cpp 
 RESOURCES += netemul.qrc

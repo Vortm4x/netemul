@@ -3,24 +3,9 @@
 
 routerDevice::routerDevice(int c)
 {
-    int i;
-    for ( i = 1 ; i <=  c ; i++ ) {
-        QString t = trUtf8("LAN%1").arg(i);
-        addInterface(t,0);
-    }
+    for ( int i = 0 ; i <  c ; i++ )
+        addInterface(trUtf8("LAN%1").arg(i+1));
     setNote(trUtf8("Маршрутизатор"));
-}
-
-interface* routerDevice::addInterface(QString str,int t)
-{
-    devicePort *tempPort = new devicePort;
-    interface *tempInter = new interface(tempPort, t);
-    tempInter->setSmart(this);
-    tempPort->setParentDev(tempInter);
-    tempPort->setConnect(false, NULL);
-    tempPort->setName(str);
-    addSocket(tempPort);
-    return tempPort;
 }
 
 void routerDevice::receiveEvent(frame *fr , devicePort *sender)
@@ -32,7 +17,8 @@ void routerDevice::receiveEvent(frame *fr , devicePort *sender)
 void routerDevice::dialog()
 {
     routerProperty *d = new routerProperty;
-    d->setRouter(this);
+    smartSetting *set = new smartSetting(this);
+    d->setRouter(set);
     d->exec();
     delete d;
 }

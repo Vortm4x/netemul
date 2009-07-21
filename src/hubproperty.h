@@ -10,7 +10,7 @@ class QLabel;
 class QPlainTextEdit;
 
 class ipEdit;
-class hubSetting;
+class boxSetting;
 
 class hubProperty : public dialogTemplate
 {
@@ -18,9 +18,9 @@ Q_OBJECT
 public:
     hubProperty();
     ~hubProperty();
-    void setHub(hubSetting *s);
+    void setHub(boxSetting *s);
 private:
-    hubSetting *st;
+    boxSetting *st;
     QComboBox *cb_count;
     QCheckBox *chk_manual;
     QLabel *lb_statics;

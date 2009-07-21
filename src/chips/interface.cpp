@@ -1,11 +1,12 @@
 #include "interface.h"
 #include "frame.h"
 #include "arppacket.h"
+#include "deviceport.h"
 #include <QtDebug>
 #include <QList>
 #include <QMessageBox>
 
-interface::interface()
+interface::interface(const QString &name) : myName(name)
 {
     mySocket = new devicePort;
 }
@@ -16,20 +17,18 @@ interface::~interface()
     clearArp();
 }
 
-void interface::receiveEvent(frame *fr,devicePort *sender)
+void interface::receiveEvent(frame fr)
 {
-    Q_UNUSED(sender)
-    if ( fr->type() == frame::ip ) {
+    if ( fr.type() == frame::ip ) {
         ipPacket p;
-        *fr >> p;
+        fr >> p;
         receiveIp(p);
     }
-    if ( fr->type() == frame::arp ) {
+    if ( fr.type() == frame::arp ) {
         arpPacket p;
-        *fr >> p;
+        fr >> p;
         receiveArp(p);
     }
-    delete fr;
 }
 
 void interface::sendBroadcast(ipPacket *p)
@@ -58,6 +57,7 @@ void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */
             delete p;
             return;
         }
+    qDebug() << "interfacik want to send arp-request";
     if ( myWaits.contains( t ) ) {
         myWaits.insert(t,p);
         return;
@@ -117,11 +117,11 @@ void interface::receiveIp(const ipPacket &ip)
     buffer.enqueue(ip);
 }
 
-void interface::updateArp(int u)
+void interface::updateArp()
 {
     foreach ( arpRecord *i, myArpTable ) {
         if ( i->mode == staticMode ) continue;
-        if ( ++i->time == u ) {
+        if ( ++i->time == 1200 ) {
             myArpTable.removeOne(i);
             delete i;
         }
@@ -160,6 +160,30 @@ void interface::receiveArp(const arpPacket &arp)
             fr << a;
             mySocket->pushToSend(fr);
         }
+    }
+}
+
+bool interface::isConnect() const
+{
+    return mySocket->isConnect();
+}
+
+void interface::setConnect(bool b,cableDev *c)
+{
+    mySocket->setConnect(b,c);
+}
+
+bool interface::isCableConnect(const cableDev *c) const
+{
+    return mySocket->isCableConnect(c);
+}
+
+void interface::deciSecondEvent()
+{
+    mySocket->queueEvent();
+    if ( mySocket->hasReceive() ) {
+        frame f = mySocket->popFromReceive();
+        receiveEvent(f);
     }
 }
 

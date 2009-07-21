@@ -10,12 +10,13 @@ public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
     routerDevice(int c = 4);
-    interface* addInterface();
     void receiveEvent(frame *fr , devicePort *sender);
-    void dialog();
+    void dialog();;
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 };
+
+
 
 #endif // ROUTERDEVICE_H

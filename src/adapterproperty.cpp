@@ -41,16 +41,10 @@ adapterProperty::adapterProperty()
     le_mask = new ipEdit(trUtf8("Маска подсети: "));
     all->addWidget(le_mask);
 
-    lb_recFrame = new QLabel;
-    lb_recPacket = new QLabel;
-    lb_sendFrame = new QLabel;
-    lb_sendPacket = new QLabel;
+    lb_statics = new QLabel;
     connect(le_mask, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    all->addWidget(lb_recFrame);
-    all->addWidget(lb_sendFrame);
-    all->addWidget(lb_recPacket);
-    all->addWidget(lb_sendPacket);
+    all->addWidget(lb_statics);
 
     all->addStretch(1);
     QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),trUtf8("Сбросить статистику"));
@@ -106,10 +100,7 @@ void adapterProperty::updateTab(int n)
     le_mac->setText( sd->mac() );
     le_ip->setText( sd->ip() );
     le_mask->setText( sd->mask() );
-    lb_recFrame->setText( sd->receiveFrame() );
-    lb_recPacket->setText( sd->receivePacket() );
-    lb_sendFrame->setText( sd->sendFrame() );
-    lb_sendPacket->setText( sd->sendPacket() );
+    lb_statics->setText( sd->statics() );
     if (sd) sd->setCheckedSocket( sd->name() );
 }
 //-----------------------------------------------------

@@ -7,13 +7,14 @@
 #include "deviceimpl.h"
 
 class cableDev;
-class QMenu;
 
 /*!
   Устройство, это основная единица с которой мы имеем дело в программе,
   хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
   Класс содержит несколько виртуальных функций, только переопределив которые, мы сможем его унаследовать.
 */
+
+
 class device : public QGraphicsItem
 {
 public:
@@ -31,6 +32,7 @@ public:
     }
     void setMenu(QMenu *context) { popUpMenu = context; }
     QString tableName() { return impl->tableName(); }
+    QString socketName(const cableDev *c) const { return impl->socketName(c); }
     bool isSmart() const { return impl->isSmart(); }
     bool isConnect() { return myCableList.count(); }
     void dialog() { impl->dialog(); }
@@ -38,26 +40,23 @@ public:
     void adapterDialog() const { impl->adapterDialog(); }
     void programmsDialog() const { impl->programmsDialog(); }
     bool isCanSend() const { return impl->isCanSend(); }
-    void sendMessage(ipAddress dest, int size , int pr) { impl->sendMessage(dest,size,pr); }
-    devicePort* socket(const QString &str) { return impl->socket(str); }
-    QString socketName(devicePort *p) { return impl->socketName(p); }
     bool isConnectSocket(const QString &str) { return impl->isConnectSocket(str); }
     QStringList sockets() const { return impl->sockets(); }
     void secondTimerEvent() { impl->secondTimerEvent(); }
     void deciSecondTimerEvent() { impl->deciSecondTimerEvent(); }
+    deviceImpl* contentDevice() { return impl; }
+    void addConnection(const QString &port, cableDev *c);
+    void deleteConnection(cableDev *c);
+    void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
 
-    virtual void addConnection(cableDev *cable) { myCableList << cable;}
-    virtual void deleteConnection(cableDev *cable) { myCableList.removeOne(cable); }
     QList<cableDev*> cables() const { return myCableList; }
     QString nextName() { return QString("eth%1").arg(count++); }
-    void sendEvent();
     virtual void showTable() { }
     bool hasTable() const { return impl->hasTable(); }
 private:
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
 protected:
-    int myReady;
     QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню
@@ -75,12 +74,5 @@ inline QDataStream& operator<<(QDataStream &stream,const device &dev)
     return stream;
 }
 //--------------------------------------------------------------------
-/*!
-  Посылает пакеты с устройства.
-*/
-inline void device::sendEvent()
-{
-    impl->sendEvent();
-}
-//--------------------------------------------------------------------
+
 #endif // DEVICE_H

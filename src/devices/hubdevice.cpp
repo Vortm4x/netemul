@@ -15,10 +15,7 @@ hubDevice::~hubDevice()
 
 void hubDevice::read(QDataStream &stream)
 {
-    int n;
     QString s;
-    stream >> n;
-    chip->setSocketsCount(n);
     stream >> *chip;
     stream >> s;
     setNote(s);
@@ -26,7 +23,7 @@ void hubDevice::read(QDataStream &stream)
 
 void hubDevice::write(QDataStream &stream) const
 {
-    stream << hubDev << sockets().count();
+    stream << hubDev;
     stream << *chip;
     stream << note();
 }
@@ -34,8 +31,9 @@ void hubDevice::write(QDataStream &stream) const
 void hubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
-    if ( !d ) return;
-    d->setHub(new hubSetting(this));
+    boxSetting *set = new boxSetting(this);
+    d->setHub(set);
     d->exec();
     delete d;
+    delete set;
 }

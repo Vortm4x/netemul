@@ -17,7 +17,7 @@
 sendDialog::sendDialog(aim cur,device* t)
 {
     myState = cur;
-    mySenderDevice = t;
+    myDevice = t->contentDevice();
     setWindowTitle(trUtf8("Отправка"));
     all = new QVBoxLayout;
     prepare();
@@ -43,7 +43,7 @@ void sendDialog::checkAccept()
         if ( rtn_tcp->isChecked() ) myProtocol = TCP;
         else myProtocol = UDP;
     } else {
-        myIp = spisok[ list->currentItem() ]->parentDev()->ip();
+        myDest = myDevice->nameToIp( list->currentItem()->text() );
     }
     accept();
 }
@@ -60,6 +60,7 @@ void sendDialog::prepare()
         sizeBox->setSuffix(trUtf8(" KB"));
         connect( sizeBox, SIGNAL(valueChanged(int)),sizeSlider, SLOT(setValue(int)));
         connect(sizeSlider , SIGNAL(valueChanged(int)) ,sizeBox, SLOT(setValue(int)));
+        sizeBox->setValue(50);
         check = new QCheckBox(trUtf8("Широковещательный"));
         check->setChecked(false);
         okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Далее"));
@@ -83,12 +84,10 @@ void sendDialog::prepare()
     }
     else {
         list = new QListWidget;
-        spisok.clear();
-        QList<devicePort*> portList = mySenderDevice->sockets();
-        foreach ( devicePort* item , portList)
-            if ( item->isConnect() && !item->isBusy() ) {
-                QListWidgetItem *temp = new QListWidgetItem( item->connectIcon() , item->name() );
-                spisok.insert(temp,item);
+        QStringList portList = myDevice->sockets();
+        foreach ( QString i , portList)
+            if ( myDevice->isConnectSocket(i) ) {
+                QListWidgetItem *temp = new QListWidgetItem( QIcon(":/im/images/ok.png") , i);
                 list->addItem(temp);
             }
         caption = new QLabel(trUtf8("Укажите адаптер приемника"));
@@ -103,3 +102,4 @@ void sendDialog::prepare()
         connect( list , SIGNAL(currentRowChanged(int)) ,SLOT(checkSelected(int)));
     }
 }
+

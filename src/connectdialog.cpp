@@ -37,8 +37,8 @@ void connectDialog::changeSelect()
         okButton->setEnabled(false);
         return;
     }
-    okButton->setEnabled( !start->socket( startList->currentItem()->text() )->isConnect() &&
-                          !end->socket( endList->currentItem()->text() )->isConnect() );
+    okButton->setEnabled( !start->isConnectSocket( startList->currentItem()->text() ) &&
+                          !end->isConnectSocket( endList->currentItem()->text() ) );
 }
 
 void connectDialog::changeEvent(QEvent *e)

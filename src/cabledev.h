@@ -14,17 +14,17 @@ struct bitStream {
     qint8 direct;
 };
 
-class cableDev : public QObject, public QGraphicsLineItem
+class cableDev : public QGraphicsLineItem
 {
 public:
-    enum { Type = UserType + 1 , hub = UserType + 7 };
+    enum { Type = UserType + 1 };
     enum { startToEnd = 1 , endToStart = -1 };
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
         return QRectF(line().p1(),line().p2()).normalized().adjusted(-5,-5,5,5);
     }
-    cableDev(device *start,device *end,devicePort* startInter, devicePort* endInter,int s = 5); // Конструктору нужны начала и конец кабеля
+    cableDev(device *start,device *end,QString sp, QString ep,int s = 5);
     ~cableDev();
     void updatePosition(); // Обновление прорисовки
     void motion();
@@ -33,6 +33,7 @@ public:
     device* end() { return myEndDev; }
     devicePort* startPort() { return myStartPort; }
     devicePort* endPort() { return myEndPort; }
+    void insertInPort(devicePort *p);
     int model() const { return myModel; }
     void input(QByteArray &b,devicePort *cur);
     void output(bitStream *t);
@@ -40,6 +41,7 @@ public:
     bool isChecked() const { return myChecked; }
     QString startSocketName() const;
     QString endSocketName() const;
+    void deleteConnect();
 private:
     bool myChecked;
     int myModel;

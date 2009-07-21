@@ -40,8 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
 //    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-    view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState |
-                                QGraphicsView::DontAdjustForAntialiasing );
+ //   view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState |
+   //                             QGraphicsView::DontAdjustForAntialiasing );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
 #if USER != frost
@@ -175,12 +175,11 @@ void MainWindow::createAction()
     propertyAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
                                   QIcon(":/im/images/refresh.png") );
     propertyAct->setShortcut(tr("Ctrl+Alt+P"));
-    connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
+
 
     tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
                                 QIcon(":/im/images/table.png"));
     tableAct->setShortcut( tr("Ctrl+T"));
-    connect( tableAct , SIGNAL(triggered()) ,sceneControler ,  SLOT(tableDialog()) );
 
     aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
     connect( aboutQtAct , SIGNAL(triggered()) , qApp ,SLOT(aboutQt()) );
@@ -194,7 +193,6 @@ void MainWindow::createAction()
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
                                   QIcon(":/im/images/interface.png"));
     adapterAct->setShortcut(tr("Ctrl+I"));
-    connect( adapterAct , SIGNAL(triggered()) , SLOT(adapterDialog()) );
 
     playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
                                QIcon(":/im/images/pause.png") );
@@ -203,7 +201,6 @@ void MainWindow::createAction()
     progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
                               QIcon(":/im/images/program.png"));
     progAct->setShortcut(tr("Ctrl+P"));
-    connect( progAct , SIGNAL(triggered()), SLOT(programmDialog()));
 }
 
 //Создаем меню
@@ -265,7 +262,7 @@ void MainWindow::createTools()
     //deviceBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     deviceBar->setEnabled(false);
     controlBar = addToolBar(trUtf8("Управление"));
-    controlBar->setIconSize(QSize(24,24));
+    controlBar->setIconSize(QSize(32,32));
     controlBar->addAction(propertyAct);
     controlBar->addAction(adapterAct);
     controlBar->addAction(progAct);
@@ -298,6 +295,8 @@ void MainWindow::createScene()
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setEnabled(bool)) );
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
     connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
+    connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
+    connect( tableAct , SIGNAL(triggered()) ,sceneControler ,  SLOT(tableDialog()) );
 }
 //------------------------------------------------------------------
 /*!

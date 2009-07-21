@@ -9,7 +9,7 @@ class QLineEdit;
 class QLabel;
 class QPlainTextEdit;
 
-class switchDevice;
+class boxSetting;
 class ipEdit;
 
 class switchProperty : public dialogTemplate
@@ -18,15 +18,12 @@ class switchProperty : public dialogTemplate
     Q_DISABLE_COPY(switchProperty)
 public:
     switchProperty();
-    void setSwitch(switchDevice *d);
+    void setSwitch(boxSetting *d);
 private:
-    switchDevice *sw;    
+    boxSetting *sw;
     QComboBox *cb_count;    
     QCheckBox *chk_manual;
-    QLabel *lb_recFrame;
-    QLabel *lb_sendFrame;
-    QLabel *lb_recPacket;
-    QLabel *lb_sendPacket;
+    QLabel *lb_statics;
     QLabel *lb_mac;
     QLineEdit *le_mac;
     QPlainTextEdit *te_text;

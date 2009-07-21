@@ -5,7 +5,7 @@
 
 class QCheckBox;
 
-class computer;
+class computerSetting;
 class ipEdit;
 class QPlainTextEdit;
 
@@ -15,9 +15,9 @@ class computerProperty : public dialogTemplate
     Q_DISABLE_COPY(computerProperty)
 public:
     computerProperty();
-    void setDevice(computer *c);
+    void setDevice(computerSetting *c);
 private:
-    computer *comp;
+    computerSetting *comp;
     QCheckBox *cb_route;
     QPlainTextEdit *te_text;
     ipEdit *gateway;

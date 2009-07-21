@@ -4,9 +4,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
 #include <QGraphicsRectItem>
-#include "macaddress.h"
-#include "ipaddress.h"
-#include "interface.h"
 #include "textitem.h"
 
 class QMenu;
@@ -15,6 +12,7 @@ class cableDev;
 class connectDialog;
 class devicePort;
 class textItem;
+class device;
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -102,7 +100,7 @@ private:
     // All temp transport varios
     int messageSize;
     bool broadcast;
-    ipAddress receiverIp;
+    QString receiverIp;
     device *senderDevice;
     int protocol;
 
@@ -130,14 +128,4 @@ protected:
     void timerEvent(QTimerEvent *e);
 };
 //------------------------------------------------------------------
-/*!
-  Проверяет устройство ли данный объект или нет.
-  @return true если устройство, false в противном случае.
-*/
-inline bool myCanvas::isDevice(QGraphicsItem *t) const
-{
-    if ( t->type() != cableDev::Type && t->type() != textItem::Type ) return true;
-    return false;
-}
-//------------------------------------------------------------------------
 #endif // MYCANVAS_H

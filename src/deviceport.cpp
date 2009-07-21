@@ -1,4 +1,5 @@
 #include "deviceport.h"
+#include "cabledev.h"
 
 devicePort::devicePort()
 {
@@ -32,6 +33,7 @@ void devicePort::setConnect(bool cur,cableDev *cable)
 {
     myConnect = cur;
     myCable = cable;
+    cable->insertInPort(this);
     if ( !cur && !cable)
         senderQueue.clear();
 }
@@ -48,6 +50,25 @@ void devicePort::sendFrame(frame t)
     myCable->input(b,this);
 }
 //-----------------------------------------------------
+
+bool devicePort::isCableConnect(const cableDev *c) const
+{
+    if ( myCable == c ) return true;
+    return false;
+}
+
+void devicePort::setChecked(bool c)
+{
+    myCable->setChecked(c);
+}
+
+void devicePort::receiveFrame(QByteArray &b)
+{
+    QDataStream s(b);
+    frame f;
+    s >> f;
+    receiveQueue.enqueue(f);
+}
 
 
 
