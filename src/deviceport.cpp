@@ -10,9 +10,9 @@ devicePort::devicePort()
 
 devicePort::~devicePort()
 {
-    senderQueue.clear();
-    receiveQueue.clear();
+
 }
+#ifndef __TESTING__
 /*!
   Достает кадр из очереди и отправляет его.
 */
@@ -69,6 +69,7 @@ void devicePort::receiveFrame(QByteArray &b)
     s >> f;
     receiveQueue.enqueue(f);
 }
+#endif
 
 
 

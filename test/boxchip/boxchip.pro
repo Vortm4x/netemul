@@ -7,5 +7,11 @@ TARGET = boxchip
 CONFIG += console
 INCLUDEPATH += ../../src
 TEMPLATE = app
-SOURCES += main.cpp
-
+SOURCES += main.cpp \
+    ../../src/chips/boxchip.cpp \
+    ../../src/chips/abstractchip.cpp \
+    ../../src/deviceport.cpp
+HEADERS += ../../src/chips/boxchip.h \
+    ../../src/chips/abstractchip.h \
+    ../../src/deviceport.h
+DEFINES += __TESTING__

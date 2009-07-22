@@ -2,6 +2,7 @@
 #define SWITCHCHIP_H
 
 #include "boxchip.h"
+#include "frame.h"
 
 struct macRecord {
     macAddress mac;

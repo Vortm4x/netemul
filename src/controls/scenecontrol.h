@@ -1,14 +1,16 @@
 #ifndef SCENECONTROL_H
 #define SCENECONTROL_H
 
-#include "mycanvas.h"
+#include <QObject>
+
+class myCanvas;
 
 class sceneControl : public QObject
 {
     Q_OBJECT
 public:
     sceneControl(QObject *parent,myCanvas *s);
-    bool isSelect() const { if ( scene->oneSelectedDevice() ) return true; return false; }
+    bool isSelect() const;
     QString tableName() const;
 private:
     myCanvas *scene;

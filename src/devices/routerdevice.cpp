@@ -8,12 +8,6 @@ routerDevice::routerDevice(int c)
     setNote(trUtf8("Маршрутизатор"));
 }
 
-void routerDevice::receiveEvent(frame *fr , devicePort *sender)
-{
-    Q_UNUSED(sender);
-    delete fr;
-}
-
 void routerDevice::dialog()
 {
     routerProperty *d = new routerProperty;

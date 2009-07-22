@@ -3,6 +3,7 @@
 
 #include "boxchip.h"
 #include <QVector>
+#include "frame.h"
 
 class hubChip : public boxChip
 {

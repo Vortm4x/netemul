@@ -280,6 +280,7 @@ void smartDevice::sendMessage( const QString &a , int size , int pr)
 {
     Q_UNUSED(pr);
     ipAddress gw;
+    qDebug() << "fgjdidgttdgt";
     routeRecord *r = recordAt(a);
     if ( !r ) return;
     qDebug() << "smartik want to send";

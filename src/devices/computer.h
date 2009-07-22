@@ -20,6 +20,7 @@ public:
 
     void dialog();
     bool hasTable() const { return true; }
+    void adapterDialog() { smartDevice::adapterDialog(); }
 
     bool isCanSend() const { return true; }
 protected:

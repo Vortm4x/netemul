@@ -57,7 +57,7 @@ void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */
             delete p;
             return;
         }
-    qDebug() << "interfacik want to send arp-request";
+    qDebug() << "interfecik want to send arp-request";
     if ( myWaits.contains( t ) ) {
         myWaits.insert(t,p);
         return;

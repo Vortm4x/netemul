@@ -2,7 +2,9 @@
 #define DEVICEPORT_H
 
 #include <QQueue>
+#ifndef __TESTING__
 #include "frame.h"
+#endif
 
 class macAddress;
 class cableDev;
@@ -21,6 +23,7 @@ public:
     bool isBusy() const { return myBusy; }
     void setBusy(bool cur) { myBusy = cur; }
     bool isConnect() const { return myConnect;}
+#ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
     void pushToSend(const frame &f) { senderQueue.enqueue(f); }
     frame popFromReceive() { return receiveQueue.dequeue(); }
@@ -30,9 +33,12 @@ public:
     void setChecked(bool c);
     bool isCableConnect(const cableDev *c) const;
     bool hasReceive() const { return !receiveQueue.isEmpty(); }
+#endif
 private:
+#ifndef __TESTING__
     QQueue<frame> senderQueue;
     QQueue<frame> receiveQueue;
+#endif
     cableDev *myCable;
     bool myConnect;
     bool myBusy;

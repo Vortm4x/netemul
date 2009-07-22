@@ -4,6 +4,7 @@
 #include <QMultiMap>
 #include <QQueue>
 
+#include "arppacket.h"
 #include "abstractchip.h"
 #include "ippacket.h"
 

@@ -1,6 +1,6 @@
 #include "scenecontrol.h"
 #include "device.h"
-
+#include "mycanvas.h"
 
 sceneControl::sceneControl(QObject *parent , myCanvas *s ) : QObject(parent) , scene(s)
 {
@@ -48,4 +48,10 @@ void sceneControl::programmsDialog() const
 {
     device *t = scene->oneSelectedDevice();
     t->programmsDialog();
+}
+
+bool sceneControl::isSelect() const
+{
+    if ( scene->oneSelectedDevice() ) return true;
+    return false;
 }

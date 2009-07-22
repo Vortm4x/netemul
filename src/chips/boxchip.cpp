@@ -1,6 +1,8 @@
 #include "boxchip.h"
-#include "deviceport.h"
 #include <QStringList>
+
+#include "deviceport.h"
+
 
 boxChip::boxChip(int n /* = 4 */)
 {
@@ -40,8 +42,10 @@ bool boxChip::setSocketsCount(int n)
 
 QString boxChip::socketName(const cableDev *c) const
 {
+#ifndef __TESTING__
     for ( int i = 0 ; i < mySockets.size() ; i++ )
         if ( mySockets.at(i)->isCableConnect(c) ) return QObject::tr("LAN%1").arg(i+1);
+#endif
     return QString();
 }
 
@@ -49,7 +53,9 @@ void boxChip::addConnection(const QString &port , cableDev *c)
 {
     QString t = port;
     t.remove(0,3);
+#ifndef __TESTING__
     mySockets.at( t.toInt() -1 )->setConnect(true,c);
+#endif
 }
 
 bool boxChip::isConnectSocket(const QString &str) const

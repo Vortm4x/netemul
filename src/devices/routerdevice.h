@@ -10,7 +10,6 @@ public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
     routerDevice(int c = 4);
-    void receiveEvent(frame *fr , devicePort *sender);
     void dialog();;
 protected:
     void write(QDataStream &stream) const;
