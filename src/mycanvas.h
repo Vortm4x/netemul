@@ -13,6 +13,7 @@ class connectDialog;
 class devicePort;
 class textItem;
 class device;
+class deviceImpl;
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -71,6 +72,7 @@ signals:
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
     void fileClosed(); //!< Сообщает главному окну о закрытии файла
 public slots:
+    deviceImpl* createComputer();
     void editorLostFocus(textItem *t);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);

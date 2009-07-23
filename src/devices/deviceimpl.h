@@ -1,7 +1,7 @@
 #ifndef DEVICEIMPL_H
 #define DEVICEIMPL_H
 
-#include <QObject>
+#include <QtScript>
 
 class cableDev;
 
@@ -12,6 +12,8 @@ class cableDev;
 
 class deviceImpl : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QString note READ note WRITE setNote)
 public:
     deviceImpl();
     virtual ~deviceImpl() { }
@@ -37,8 +39,8 @@ public:
     virtual void sendMessage(const QString &a,int size , int pr) { Q_UNUSED(a) Q_UNUSED(size) Q_UNUSED(pr)
                                                                    qFatal("ERROR!"); }
 
-    virtual void write(QDataStream &stream) const = 0;
-    virtual void read(QDataStream &stream) = 0;
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
 
     virtual void secondTimerEvent() { }
     virtual void deciSecondTimerEvent() { }
@@ -59,5 +61,12 @@ public:
 private:
     deviceImpl *dev;
 };
+
+Q_DECLARE_METATYPE(deviceImpl*)
+
+
+
+
+
 
 #endif // DEVICEIMPL_H

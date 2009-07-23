@@ -33,4 +33,27 @@ QString abstractChip::staticsString() const
     return t;
 }
 
+#ifndef __TESTING__
+void abstractChip::write(QDataStream &stream) const
+{
+    stream << myMac;
+    stream << myIp;
+    stream << myMask;
+    stream << myReceiveFrame;
+    stream << mySendFrame;
+    stream << myReceivePacket;
+    stream << mySendPacket;
+}
+
+void abstractChip::read(QDataStream &stream)
+{
+    stream >> myMac;
+    stream >> myIp;
+    stream >> myMask;
+    stream >> myReceiveFrame;
+    stream >> mySendFrame;
+    stream >> myReceivePacket;
+    stream >> mySendPacket;
+}
+#endif
 

@@ -15,17 +15,13 @@ hubDevice::~hubDevice()
 
 void hubDevice::read(QDataStream &stream)
 {
-    QString s;
-    stream >> *chip;
-    stream >> s;
-    setNote(s);
+    boxDevice::read(stream);
 }
 
 void hubDevice::write(QDataStream &stream) const
 {
     stream << hubDev;
-    stream << *chip;
-    stream << note();
+    boxDevice::write(stream);
 }
 
 void hubDevice::dialog()

@@ -434,7 +434,6 @@ void myCanvas::hideInsertRect()
 void myCanvas::openScene(QString fileName)
 {
     newFile();
-    bool endDev = true;
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Невозможно открыть файл для чтения";
@@ -442,7 +441,6 @@ void myCanvas::openScene(QString fileName)
     }
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_3);
-    int tp;
     QPointF p;
     QString str;
     s >> str;
@@ -455,15 +453,12 @@ void myCanvas::openScene(QString fileName)
     QApplication::changeOverrideCursor(Qt::WaitCursor);
     device *item;
     int n,i;
-    while ( !file.atEnd() && endDev ) {
-        s >> tp;
-        if ( tp != noDev ) {
-            item = new device(s);
-            item->setMenu(itemMenu);
-            addItem(item);
-            myDevices << item;
-        }
-        else endDev = false;
+    s >> n;
+    for ( i = 0 ; i < n ; i++ ) {
+        item = new device(s);
+        item->setMenu(itemMenu);
+        addItem(item);
+        myDevices << item;
     }
     s >> n;
     for ( i = 0 ; i < n ; i++ ) {
@@ -506,6 +501,7 @@ void myCanvas::saveScene(QString fileName)
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_3);
     s << QCoreApplication::applicationVersion();
+    s << myDevices.size();
     foreach(device *i, myDevices)
         s << *i;
     s << noDev;
@@ -647,6 +643,12 @@ bool myCanvas::isDevice(QGraphicsItem *t) const
     return false;
 }
 //------------------------------------------------------------------------
+
+deviceImpl* myCanvas::createComputer()
+{
+    device *t = addDeviceOnScene(QPointF(25,25) , compDev);
+    return t->contentDevice();
+}
 
 
 

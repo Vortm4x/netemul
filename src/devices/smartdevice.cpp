@@ -200,38 +200,24 @@ void smartDevice::addConnection(const QString &port,cableDev *c)
 */
 void smartDevice::write(QDataStream &stream) const
 {
+    deviceImpl::write(stream);
     stream << myInterfaces.size(); // Количество сокетов
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
-        stream << *myInterfaces[i];
-    int c = 0; // Количество статических записей в таблице маршрутизации.
-    foreach (routeRecord *i, myRouteTable) 
-        if (i->mode == staticMode) c++;
-    stream << c;
-    foreach (routeRecord *i, myRouteTable) 
-        if (i->mode == staticMode) stream << *i;
+        myInterfaces[i]->write(stream);
     stream << myRouter; // Включена или нет маршрутизация.
     stream << myProgramms.count(); // Количество программ.
     foreach ( programm *i , myProgramms )  // И сами программы.
         stream << *i;
-    stream << note();
 }
 //-------------------------------------------------
 void smartDevice::read(QDataStream &stream)
 {
-    QPointF p;
-    QString str;
+    deviceImpl::read(stream);
     int n,i;
     stream >> n;
     for (i = 0; i < n ; i++) {
         interface *p = addInterface(QString());
-        stream >> *p;
-    }
-    stream >> n;
-    for ( i = 0; i < n ; i++) {
-        routeRecord *rec = new routeRecord;
-        stream >> *rec;
-        rec->mode = staticMode;
-        myRouteTable.append(rec);
+        p->read(stream);
     }
     stream >> myRouter;
     stream >> n;
@@ -247,8 +233,6 @@ void smartDevice::read(QDataStream &stream)
         stream >> *r;
         installProgramm(r);
     }
-    stream >> str;
-    setNote(str);
 }
 /*!
   Задает устройству шлюз по умолчанию.

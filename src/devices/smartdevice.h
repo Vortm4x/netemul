@@ -62,7 +62,6 @@ public:
     void routePacket(ipPacket *p);
     void connectedNet(interface *p);
     void deciSecondTimerEvent();
-
     ipAddress findInterfaceIp(ipAddress a);
     routeRecord* recordAt(const ipAddress &a) const;
     routeRecord* recordAt(const interface *p);
@@ -78,10 +77,10 @@ public:
     routeRecord* addToTable(routeRecord *r,bool tr = true);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r,bool tr = true);
-
     void setGateway(const QString str);
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
+    bool hasTable() const { return true; }
     ipAddress gateway() const;
     friend class ripProgramm;
     friend class adapterSetting;
@@ -94,8 +93,8 @@ protected:
     QVector<interface*> myInterfaces;
     QList<programm*> myProgramms; //!< Программы установленные на устройстве.
     QList<routeRecord*> myRouteTable; //!< Таблица маршрутизации.
-    void write(QDataStream &stream) const;
-    void read(QDataStream &stream);
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
 };
 //-------------------------------------------------------------------
 inline bool operator<(const routeRecord &e1 , const routeRecord &e2)

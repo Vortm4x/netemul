@@ -21,6 +21,8 @@ public:
 protected:
     bool myManual;
     boxChip *chip;
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
 };
 
 class boxSetting : public deviceSetting {

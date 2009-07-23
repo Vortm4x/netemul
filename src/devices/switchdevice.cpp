@@ -18,16 +18,12 @@ switchDevice::~switchDevice()
 void switchDevice::write(QDataStream &stream) const
 {
     stream << switchDev;
-    stream << *chip;
-    stream << note();
+    boxDevice::write(stream);
 }
 
 void switchDevice::read(QDataStream &stream)
 {
-    QString value;
-    stream >> *chip;
-    stream >> value;
-    setNote(value);
+    boxDevice::read(stream);
 }
 
 void switchDevice::dialog()

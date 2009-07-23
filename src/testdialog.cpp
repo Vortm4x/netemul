@@ -2,7 +2,17 @@
 #include <QtDebug>
 #include <QFile>
 #include "mycanvas.h"
+#include "deviceimpl.h"
 
+QScriptValue ObjectToScript(QScriptEngine *engine, deviceImpl* const &in)
+{
+    return engine->newQObject(in);
+}
+
+void ObjectFromScript(const QScriptValue &object, deviceImpl* &out)
+{
+    out = qobject_cast<deviceImpl*>(object.toQObject());
+}
 
 testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
 {
@@ -16,6 +26,7 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
         listWidget->addItem( i.remove(".js") );
     QScriptValue p = engine.newQObject(c);
     engine.globalObject().setProperty("canva",p);
+    qScriptRegisterMetaType(&engine, ObjectToScript, ObjectFromScript);
     connect( startButton , SIGNAL(clicked()), this , SLOT(start()));
     connect( checkBox , SIGNAL(toggled(bool)) , SLOT(selectAll(bool)));
 }
