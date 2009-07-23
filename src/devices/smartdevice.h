@@ -3,7 +3,7 @@
 
 #include "interface.h"
 #include "deviceimpl.h"
-#include "programmdialog.h"
+#include <QVector>
 
 class programm;
 
@@ -11,7 +11,6 @@ class programm;
   Запись таблицы маршрутизации.
 */
 struct routeRecord {
-    Q_DECLARE_TR_FUNCTIONS(routeRecord)
 public:
     ipAddress dest;
     ipAddress mask;
@@ -43,9 +42,9 @@ public:
     smartDevice() : myRouter(false) { myReady = 0; }
     virtual ~smartDevice();
     QString tableName() const { return trUtf8("Таблица маршрутизации"); }
-    void tableDialog();
-    void adapterDialog();
-    void programmsDialog();
+    virtual void tableDialog();
+    virtual void adapterDialog();
+    virtual void programmsDialog();
     bool isSmart() const { return true; }
     const devicePort* socket(const QString &name) const { return adapter(name)->socket(); }
     QStringList sockets() const;
@@ -83,7 +82,6 @@ public:
     void setGateway(const QString str);
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
-    void incTime();
     ipAddress gateway() const;
     friend class ripProgramm;
     friend class adapterSetting;
@@ -127,7 +125,6 @@ inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
   Модель данных для настроек адаптеров.
 */
 class adapterSetting {
-    Q_DECLARE_TR_FUNCTIONS(adapterSetting)
 public:
     adapterSetting(smartDevice *s) : sd(s) { }
     void setCurrent(int n) { cur = n; }
@@ -145,6 +142,7 @@ public:
     void setMask(const QString &str) { sd->myInterfaces.at(cur)->setMask(str); }
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
     QString statics() const { return sd->myInterfaces.at(cur)->staticsString(); }
+    void sendArpRequest(ipAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
 private:
     int cur;
     smartDevice *sd;

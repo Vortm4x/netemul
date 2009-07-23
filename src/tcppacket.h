@@ -2,22 +2,16 @@
 #define TCPPACKET_H
 
 #include <QDataStream>
+#include "udppacket.h"
 
 /*!
   Реализует tcp-сегмент
 */
-class tcpPacket
+class tcpPacket : public udpPacket
 {
 public:
     tcpPacket();
-    void setSender( quint16 i ) { mySender = i;}
-    void setReceiver( quint16 i ) { myReceiver = i; }
-    quint16 sender() const { return mySender; }
-    quint16 receiver() const { return myReceiver; }
-private:
-    quint16 mySender; //!< Порт отправителя
-    quint16 myReceiver; //!< Порт получателя
-    QByteArray data; //!< Поле данных
+    tcpPacket(const QByteArray &b);
 protected:
     friend QDataStream& operator<<( QDataStream &stream, const tcpPacket &p );
     friend QDataStream& operator>>( QDataStream &stream, tcpPacket &p );

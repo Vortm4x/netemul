@@ -11,22 +11,24 @@ class udpPacket
 {
 public:
     udpPacket();
+    udpPacket(const QByteArray &b);
     udpPacket(const udpPacket &u);
     ~udpPacket() { }
     udpPacket& operator=(const udpPacket &u);
+    QByteArray toData() const;
+    int size() const { return data.size(); }
     void setSender( quint16 i ) { mySender = i;}
     void setReceiver( quint16 i ) { myReceiver = i; }
-    void setData(QByteArray d) { myData = d; }
-    const QByteArray& data() const { return myData; }
     quint16 sender() const { return mySender; }
     quint16 receiver() const { return myReceiver; }
-private:
-    quint16 mySender; //!< Порт отправителя
-    quint16 myReceiver; //!< Порт получателя
-    QByteArray myData; //!< Поле данных
+    void pack(const QByteArray &b) { data = b; }
+    QByteArray& unpack() { return data; }
 protected:
     friend QDataStream& operator<<( QDataStream &stream, const udpPacket &p );
     friend QDataStream& operator>>( QDataStream &stream, udpPacket &p );
+    quint16 mySender; //!< Порт отправителя
+    quint16 myReceiver; //!< Порт получателя
+    QByteArray data; //!< Поле данных
 };
 //-----------------------------------------------------
 /*!
@@ -39,7 +41,7 @@ inline QDataStream& operator<<( QDataStream &stream, const udpPacket &p )
 {
     stream << p.myReceiver;
     stream << p.mySender;
-    stream << p.myData;
+    stream << p.data;
     return stream;
 }
 //-------------------------------------------------------
@@ -53,7 +55,7 @@ inline QDataStream& operator>>( QDataStream &stream, udpPacket &p )
 {
     stream >> p.myReceiver;
     stream >> p.mySender;
-    stream >> p.myData;
+    stream >> p.data;
     return stream;
 }
 //-------------------------------------------------------

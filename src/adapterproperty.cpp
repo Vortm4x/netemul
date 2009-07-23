@@ -53,7 +53,7 @@ adapterProperty::adapterProperty()
     all->addLayout(lay);
     setLayout(all);
     connect( le_ip , SIGNAL(maskChanged(quint8)) , le_mask , SLOT(setDefaultMask(quint8)));
-    connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab()));
+    connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab(int)));
 }
 //-----------------------------------------------------------
 /*!
@@ -117,6 +117,7 @@ void adapterProperty::apply()
     sd->setIp( le_ip->text() );
     sd->setMask( le_mask->text() );
     sd->connectedNet();
+    sd->sendArpRequest(le_ip->text());
     if ( sender() == btn_ok ) accept();
 }
 //------------------------------------------------------------

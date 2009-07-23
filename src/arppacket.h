@@ -10,8 +10,10 @@ public:
     arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , quint8 t);
     arpPacket(const arpPacket &other);
     arpPacket() { }
+    arpPacket(const QByteArray &b);
     ~arpPacket() { }
-    enum { request = 0 , answer = 1 };
+    QByteArray toData() const;
+    enum { request = 0 , response = 1 };
     void setType(int i) { myType = i; }
     int type() const { return myType; }
     void setSenderMac(macAddress m) { mySenderMac = m; }

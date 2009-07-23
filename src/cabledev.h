@@ -35,7 +35,7 @@ public:
     devicePort* endPort() { return myEndPort; }
     void insertInPort(devicePort *p);
     int model() const { return myModel; }
-    void input(QByteArray &b,devicePort *cur);
+    void input(QByteArray b,devicePort *cur);
     void output(bitStream *t);
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }

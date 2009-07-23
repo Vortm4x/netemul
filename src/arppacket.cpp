@@ -9,6 +9,20 @@ arpPacket::arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si
     myType = t;
 }
 
+arpPacket::arpPacket(const QByteArray &b)
+{
+    QDataStream s(b);
+    s >> myType >> mySenderMac >> myReceiverMac >> mySenderIp >> myReceiverIp;
+}
+
+QByteArray arpPacket::toData() const
+{
+    QByteArray t;
+    QDataStream s(&t,QIODevice::WriteOnly);
+    s << myType << mySenderMac << myReceiverMac << mySenderIp << myReceiverIp;
+    return t;
+}
+
 arpPacket& arpPacket::operator=(arpPacket &other)
 {
     mySenderMac = other.mySenderMac;

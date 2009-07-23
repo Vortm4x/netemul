@@ -9,19 +9,19 @@ switchChip::switchChip(int c /* = 4 */ )
     }
 }
 
-void switchChip::receiveEvent(frame fr,devicePort *sender)
+void switchChip::receiveEvent(frame *fr,devicePort *sender)
 {
     bool contains = false;
     foreach ( macRecord *i , mySwitchTable )
-        if ( i->mac == fr.sender() ) {
+        if ( i->mac == fr->sender() ) {
             if ( i->port != sender && i->mode != staticMode ) i->port = sender;
             contains = true;
             break;
         }
-    if ( !contains ) addToTable(fr.sender() , sender  , dinamicMode , 0);
+    if ( !contains ) addToTable(fr->sender() , sender  , dinamicMode , 0);
 
     foreach ( macRecord *i , mySwitchTable )
-        if ( i->mac == fr.receiver() ) {
+        if ( i->mac == fr->receiver() ) {
             if ( i->port->isConnect() && i->port != sender ) {
                     i->time = 0;
                     i->port->pushToSend(fr);
@@ -30,8 +30,9 @@ void switchChip::receiveEvent(frame fr,devicePort *sender)
         }
     foreach ( devicePort *item , mySockets ) {
         if ( item != sender && item->isConnect() )
-            item->pushToSend(fr);
+            item->pushToSend(fr->copy());
     }
+    delete fr;
 }
 
 macRecord* switchChip::addToTable(macAddress mac ,devicePort *p , int mode , int time)

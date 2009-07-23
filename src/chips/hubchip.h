@@ -8,7 +8,7 @@
 class hubChip : public boxChip
 {
 public:
-    void receiveEvent(frame fr,devicePort *sender);
+    void receiveEvent(frame *fr,devicePort *sender);
     hubChip(int n = 4);
     ~hubChip();
 };

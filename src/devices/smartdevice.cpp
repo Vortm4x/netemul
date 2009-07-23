@@ -2,6 +2,9 @@
 #include "ripprogramm.h"
 #include "routeeditor.h"
 #include "adapterproperty.h"
+#include "programmdialog.h"
+#include "udppacket.h"
+#include "tcppacket.h"
 #include <QtDebug>
 
 smartDevice::~smartDevice()
@@ -152,9 +155,9 @@ routeRecord* smartDevice::recordAt(const interface *p)
 QString routeRecord::modeString() const
 {
     switch ( mode ) {
-        case smartDevice::staticMode : return trUtf8("Статическая");
-        case smartDevice::ripMode : return trUtf8("RIP");
-        case smartDevice::connectMode : return trUtf8("Подключена");
+        case smartDevice::staticMode : return QObject::trUtf8("Статическая");
+        case smartDevice::ripMode : return QObject::trUtf8("RIP");
+        case smartDevice::connectMode : return QObject::trUtf8("Подключена");
     }
     return QString();
 }
@@ -182,7 +185,7 @@ void smartDevice::connectedNet(interface *p)
             if ( add ) break; else return;
         }
     myReady++;
-    addToTable( dest , mask , ip , ip , 0 , connectMode );
+    addToTable( dest , mask , ip , ip , 0 , connectMode );    
 }
 //------------------------------------------------------------
 
@@ -280,10 +283,8 @@ void smartDevice::sendMessage( const QString &a , int size , int pr)
 {
     Q_UNUSED(pr);
     ipAddress gw;
-    qDebug() << "fgjdidgttdgt";
     routeRecord *r = recordAt(a);
     if ( !r ) return;
-    qDebug() << "smartik want to send";
     if ( r->gateway != r->out ) gw = r->gateway;
     for ( int i = 0 ; i < size ; i++) {
         ipPacket *t = new ipPacket;
@@ -311,13 +312,11 @@ void smartDevice::treatPacket(ipPacket *p)
 {
     int v;
     if ( p->upProtocol() == ipPacket::udp ) {
-        udpPacket u;
-        *p >> u;
+        udpPacket u(p->toData());
         v = u.receiver();
     }
     else {
-        tcpPacket t;
-        *p >> t;
+        tcpPacket t(p->toData());
         v = t.receiver();
     }
     programm *t = programmAt( v );
@@ -352,15 +351,6 @@ programm* smartDevice::programmAt(const QString n) const
     return NULL;
 }
 //----------------------------------------------------
-/*!
-  Вызывает тик таймера у всех работающих на устройстве программ.
-*/
-void smartDevice::incTime()
-{
-    foreach ( programm *i , myProgramms )
-        if ( i->isEnable() ) i->incTime();
-}
-//------------------------------------------------------
 /*!
   Узнает ip-адрес интерфейса лежащего в той же сети что и указанный адрес.
   @param a - Адрес для поиска.

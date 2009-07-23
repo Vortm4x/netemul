@@ -53,7 +53,7 @@ void cableDev::updatePosition()
   @param b - поток байт(уже в таком виде нам передается кадр).
   @param cur - устройство отправитель( для определения откуда начинаем рисовать ).
 */
-void cableDev::input(QByteArray &b,devicePort *cur )
+void cableDev::input(QByteArray b,devicePort *cur )
 {
     bitStream *t = new bitStream;
     qint8 v = b.at(0);

@@ -9,7 +9,7 @@ class connectDialog : public QDialog , private Ui::connectDilog
 {
     Q_OBJECT
     Q_DISABLE_COPY(connectDialog)
-public:
+public:           
     explicit connectDialog(device *start,device *end);
 public slots:
     void changeSelect();

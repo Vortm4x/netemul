@@ -31,9 +31,9 @@ public:
 
     virtual bool hasTable() const { return false; }
     virtual void dialog() = 0;
-    virtual void tableDialog() const { qFatal("error not compability Table!"); }
-    virtual void adapterDialog() const { qFatal("error not compability adapter!"); }
-    virtual void programmsDialog() const { qFatal("error not compability"); }
+    virtual void tableDialog() { qFatal("error not compability Table!"); }
+    virtual void adapterDialog() { qFatal("error not compability adapter!"); }
+    virtual void programmsDialog() { qFatal("error not compability"); }
     virtual void sendMessage(const QString &a,int size , int pr) { Q_UNUSED(a) Q_UNUSED(size) Q_UNUSED(pr)
                                                                    qFatal("ERROR!"); }
 

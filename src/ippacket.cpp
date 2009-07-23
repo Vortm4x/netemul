@@ -11,6 +11,13 @@ ipPacket& ipPacket::operator=(const ipPacket &other)
     data = other.data;
     return *this;
 }
+
+ipPacket::ipPacket(const QByteArray &b)
+{
+    QDataStream s(b);
+    s >> mySender >> myReceiver >> myUpProtocol >> data;
+}
+
 /*!
   Копирующий конструктор класса.
 */
@@ -33,5 +40,11 @@ bool ipPacket::isBroadcast(const ipAddress mask) const
     return false;
 }
 //----------------------------------------------------
-
+QByteArray ipPacket::toData() const
+{
+    QByteArray t;
+    QDataStream s(&t,QIODevice::WriteOnly);
+    s << mySender << myReceiver << myUpProtocol << data;
+    return t;
+}
 

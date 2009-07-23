@@ -3,6 +3,7 @@
 #include "settingdialog.h"
 #include "testdialog.h"
 #include "interfacedialog.h"
+#include "mycanvas.h"
 #include <QGraphicsView>
 #include <QApplication>
 #include <QDockWidget>
@@ -290,13 +291,12 @@ void MainWindow::createScene()
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
-    connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setEnabled(bool)) );
-    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setEnabled(bool)) );
-    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setEnabled(bool)) );
+    connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
     connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
     connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
-    connect( tableAct , SIGNAL(triggered()) ,sceneControler ,  SLOT(tableDialog()) );
 }
 //------------------------------------------------------------------
 /*!

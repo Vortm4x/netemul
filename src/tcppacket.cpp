@@ -4,6 +4,11 @@ tcpPacket::tcpPacket()
 {
 }
 
+tcpPacket::tcpPacket(const QByteArray &b) : udpPacket(b)
+{
+
+}
+
 /*!
   Записывает tcp-сегмент в поток.
   @param stream - поток для записи.

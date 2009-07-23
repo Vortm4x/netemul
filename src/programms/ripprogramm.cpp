@@ -1,5 +1,6 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
+#include "udppacket.h"
 #include <QtDebug>
 
 /*!
@@ -33,10 +34,9 @@ void ripProgramm::incTime()
 */
 void ripProgramm::execute(ipPacket *p)
 {
-    udpPacket u;
-    *p >> u;
-    QDataStream d(u.data());
-    int count = u.data().size() / 9;
+    udpPacket u(p->unpack());
+    QDataStream d(u.unpack());
+    int count = u.size();
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
@@ -85,8 +85,8 @@ void ripProgramm::sendUpdate(bool isAll)
             udpPacket u; // И новую дейтаграмму
             u.setSender(mySocket);
             u.setReceiver(mySocket);
-            u.setData(t); // В нее вектор
-            *p << u; // Её в пакет.
+            u.pack(t); // В нее вектор
+            p->pack(u.toData()); // Её в пакет.
             i->sendPacket(p); // Пакет отправляем.
         }
     foreach ( routeRecord *i, sd->myRouteTable )

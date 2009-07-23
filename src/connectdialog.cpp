@@ -12,10 +12,10 @@ connectDialog::connectDialog(device *s, device *e)
     connect( endList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
 
     foreach ( QString i , start->sockets() )
-         new QListWidgetItem( connectIcon( start->isConnectSocket(i) ) , i , startList );
+         new QListWidgetItem( connectIcon( start->isConnectSocket(i) ) , i , startList, start->isConnectSocket(i) );
 
     foreach ( QString i , end->sockets() )
-        new QListWidgetItem( connectIcon( end->isConnectSocket(i) ) , i , endList );
+        new QListWidgetItem( connectIcon( end->isConnectSocket(i) ) , i , endList, end->isConnectSocket(i) );
 
     for ( int i = 0 ; i < startList->count() ; i++ )
         if ( !startList->item(i)->type() ) {

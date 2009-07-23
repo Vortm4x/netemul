@@ -11,7 +11,6 @@ class devicePort;
 */
 class computer : public smartDevice
 {
-    Q_DECLARE_TR_FUNCTIONS(computer)
 public:
     enum { compDev = 3 };
     int type() const { return compDev; }
@@ -20,7 +19,6 @@ public:
 
     void dialog();
     bool hasTable() const { return true; }
-    void adapterDialog() { smartDevice::adapterDialog(); }
 
     bool isCanSend() const { return true; }
 protected:

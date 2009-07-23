@@ -5,7 +5,6 @@
 
 class routerDevice : public smartDevice
 {
-    Q_DECLARE_TR_FUNCTIONS(routerDevice)
 public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }

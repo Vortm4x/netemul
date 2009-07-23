@@ -1,5 +1,6 @@
 #include "deviceport.h"
 #include "cabledev.h"
+#include "frame.h"
 
 devicePort::devicePort()
 {
@@ -33,21 +34,20 @@ void devicePort::setConnect(bool cur,cableDev *cable)
 {
     myConnect = cur;
     myCable = cable;
-    cable->insertInPort(this);
-    if ( !cur && !cable)
+    if (cable) cable->insertInPort(this);
+    if ( !cur && !cable) {
         senderQueue.clear();
+        receiveQueue.clear();
+    }
 }
 //---------------------------------------------------
 /*!
   Отправляет кадр в сеть.
   @param t - указатель на кадр.
 */
-void devicePort::sendFrame(frame t)
+void devicePort::sendFrame(frame *t)
 {
-    QByteArray b;
-    QDataStream s( &b , QIODevice::WriteOnly );
-    s << t;
-    myCable->input(b,this);
+    myCable->input(t->toData(),this);
 }
 //-----------------------------------------------------
 
@@ -64,9 +64,7 @@ void devicePort::setChecked(bool c)
 
 void devicePort::receiveFrame(QByteArray &b)
 {
-    QDataStream s(b);
-    frame f;
-    s >> f;
+    frame *f = new frame(b);
     receiveQueue.enqueue(f);
 }
 #endif

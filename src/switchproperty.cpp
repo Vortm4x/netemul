@@ -67,6 +67,7 @@ void switchProperty::setSwitch(boxSetting *d)
     le_mask->setText( d->snmpMask() );
     lb_statics->setText( d->statics() );
     chk_manual->setChecked( d->isManual() );
+    check( d->isManual() );
     te_text->setPlainText(  d->note() );
     btn_apply->setEnabled(false);
 }

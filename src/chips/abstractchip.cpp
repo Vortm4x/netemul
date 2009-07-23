@@ -7,8 +7,6 @@ abstractChip::abstractChip()
 {
 #ifndef __TESTING__
     myMac.setRandom();
-    myIp.setIp("0.0.0.0");
-    myMask.setIp("0.0.0.0");
 #endif
     resetStatics();
 }

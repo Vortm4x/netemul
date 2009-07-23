@@ -79,6 +79,7 @@ void hubProperty::setHub(boxSetting *s)
     le_mask->setText( st->snmpMask() );
     lb_statics->setText( st->statics() );
     chk_manual->setChecked( st->isManual() );
+    check( st->isManual() );
     te_text->setPlainText( st->note() );
     btn_apply->setEnabled(false);
 }

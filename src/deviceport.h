@@ -3,11 +3,11 @@
 
 #include <QQueue>
 #ifndef __TESTING__
-#include "frame.h"
 #endif
 
 class macAddress;
 class cableDev;
+class frame;
 
 /*!
   Класс представляе собой место соединения кабеля с устройством(сокет, гнездо, отверстие).
@@ -25,9 +25,9 @@ public:
     bool isConnect() const { return myConnect;}
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
-    void pushToSend(const frame &f) { senderQueue.enqueue(f); }
-    frame popFromReceive() { return receiveQueue.dequeue(); }
-    void sendFrame(frame t);
+    void pushToSend(frame *f) { senderQueue.enqueue(f); }
+    frame* popFromReceive() { return receiveQueue.dequeue(); }
+    void sendFrame(frame *t);
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c);
@@ -36,8 +36,8 @@ public:
 #endif
 private:
 #ifndef __TESTING__
-    QQueue<frame> senderQueue;
-    QQueue<frame> receiveQueue;
+    QQueue<frame*> senderQueue;
+    QQueue<frame*> receiveQueue;
 #endif
     cableDev *myCable;
     bool myConnect;

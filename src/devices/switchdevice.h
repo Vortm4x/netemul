@@ -19,7 +19,7 @@ public:
     ~switchDevice();
     void updateMac(int u);
     void dialog();
-    void showTable();
+    void tableDialog();
     bool hasTable() const { return true; }
 protected:
     void write(QDataStream &stream) const;

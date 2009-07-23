@@ -40,7 +40,7 @@ void switchDevice::dialog()
     delete d;
 }
 
-void switchDevice::showTable()
+void switchDevice::tableDialog()
 {
     tableSwitch *d = new tableSwitch;
     d->setSwitch(this);

@@ -2,8 +2,6 @@
 #define FRAME_H
 
 #include "macaddress.h"
-#include "ippacket.h"
-#include "arppacket.h"
 
 /*!
   Реализует кадр, также как и в реальной сети содержит адрес отправителя, получателя и
@@ -16,7 +14,9 @@ public:
     enum { normal = 3 , broadcast = 4 };
     frame();
     frame(const frame &other);
+    frame(const QByteArray &b);
     ~frame();
+    frame* copy() const;
     frame& operator=(const frame &other);
     macAddress sender() const { return mySender; }
     void setSender(macAddress temp) { mySender = temp; }
@@ -25,10 +25,9 @@ public:
     void setDifferent(qint8 d) { myDifferent = d; }
     int type() const { return myType; }
     void setType(int t) { myType = t; }
-    void operator<<(arpPacket &p);
-    void operator>>(arpPacket &p) const;
-    void operator<<(ipPacket &p);
-    void operator>>(ipPacket &p) const;
+    QByteArray toData() const;
+    void pack(const QByteArray &b) { data = b; }
+    QByteArray& unpack() { return data; }
 private:
     macAddress mySender; //!< Mac-адрес отправителя
     macAddress myReceiver; //!< Mac-адрес получателя
@@ -40,46 +39,6 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream, frame &f);
 };
 
-/*!
-    Упаковывает arp-сообщение в кадр.
-    @param p - arp-сообщение.
-*/
-inline void frame::operator<<(arpPacket &p)
-{
-    QDataStream in(&data,QIODevice::WriteOnly);
-    in << p;
-}
-//--------------------------------------------
-/*!
-    Извлекает arp-сообщение из кадра.
-    @param p - arp-сообщение в которое извлекаем.
-*/
-inline void frame::operator>>(arpPacket &p) const
-{
-    QDataStream out(data);
-    out >> p;
-}
-//--------------------------------------------
-/*!
-    Упаковывает ip-пакет в кадр.
-    @param p - ip-пакет.
-*/
-inline void frame::operator<<(ipPacket &p)
-{
-    QDataStream in(&data,QIODevice::WriteOnly);
-    in << p;
-}
-//-----------------------------------------------
-/*!
-    Извлекает ip-пакет из кадра.
-    @param p - ip-пакет в который извлекаем.
-*/
-inline void frame::operator>>(ipPacket &p) const
-{
-    QDataStream out(data);
-    out >> p;
-}
-//------------------------------------------------
 /*!
   Записывает кадр в поток.
   @param stream - ссылка на поток.

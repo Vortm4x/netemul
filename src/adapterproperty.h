@@ -22,7 +22,7 @@ class adapterProperty : public dialogTemplate
 public:
     adapterProperty();
     ~adapterProperty();
-    void setDevice(adapterSetting *s);
+    void setDevice(adapterSetting *s);    
 private:
     QIcon connectIcon(bool b);
     void updateTab(int n);
