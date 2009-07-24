@@ -1,7 +1,6 @@
 #include "switchdevice.h"
 #include "switchproperty.h"
 #include "switchchip.h"
-#include "tableswitch.h"
 #include "frame.h"
 
 switchDevice::switchDevice(int c)
@@ -38,8 +37,5 @@ void switchDevice::dialog()
 
 void switchDevice::tableDialog()
 {
-    tableSwitch *d = new tableSwitch;
-    d->setSwitch(this);
-    d->exec();
-    delete d;
+    chip->dialog();
 }

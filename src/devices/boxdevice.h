@@ -18,6 +18,7 @@ public:
     void addConnection(const QString &port , cableDev *c) { chip->addConnection(port,c); }
     void setManual(bool c) { myManual = c; }
     bool isManual() { return myManual; }
+    void deciSecondTimerEvent();
 public slots:
     void setSocketsCount(int n) { chip->setSocketsCount(n); }
 protected:

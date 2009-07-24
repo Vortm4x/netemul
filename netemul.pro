@@ -17,7 +17,8 @@ INCLUDEPATH += . \
     src/chips \
     src/controls \
     src/programms \
-    src/devices 
+    src/devices \
+    src/models
 QT += script
 win32 { 
     message("Static link ...")

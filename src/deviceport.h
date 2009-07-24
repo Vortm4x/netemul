@@ -23,6 +23,8 @@ public:
     bool isBusy() const { return myBusy; }
     void setBusy(bool cur) { myBusy = cur; }
     bool isConnect() const { return myConnect;}
+    void setNum(int n) { myNum = n; }
+    int num() const { return myNum; }
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
     void pushToSend(frame *f) { senderQueue.enqueue(f); }
@@ -35,6 +37,7 @@ public:
     bool hasReceive() const { return !receiveQueue.isEmpty(); }
 #endif
 private:
+    int myNum;
 #ifndef __TESTING__
     QQueue<frame*> senderQueue;
     QQueue<frame*> receiveQueue;

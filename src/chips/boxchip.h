@@ -6,6 +6,7 @@
 
 class cableDev;
 class devicePort;
+class frame;
 
 class boxChip : public abstractChip
 {
@@ -18,6 +19,9 @@ public:
     bool isConnectSocket(const QString &str) const;
     void addConnection(const QString &port, cableDev *c);
     QString socketName(const cableDev *c) const;
+    virtual void dialog() { }
+    virtual void receiveEvent(frame *fr,devicePort *sender) = 0;
+    void deciSecondTimerEvent();
 private:
     const devicePort* socket(const QString &name) const;
 protected:

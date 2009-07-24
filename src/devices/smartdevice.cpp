@@ -425,11 +425,13 @@ void smartDevice::deciSecondTimerEvent()
 void smartDevice::setIp(const QString &a, const QString &ip)
 {
     adapter(a)->setIp(ip);
+    connectedNet(adapter(a));
 }
 
 void smartDevice::setMask(const QString &a, const QString &ip)
 {
     adapter(a)->setMask(ip);
+    connectedNet(adapter(a));
 }
 
 

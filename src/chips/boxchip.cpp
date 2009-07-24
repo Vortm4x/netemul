@@ -8,6 +8,7 @@ boxChip::boxChip(int n /* = 4 */)
 {
     for ( int i = 0 ; i < n ; i++ ) {
         devicePort *t = new devicePort;
+        t->setNum(i+1);
         mySockets.push_back(t);
     }
 }
@@ -26,6 +27,7 @@ bool boxChip::setSocketsCount(int n)
     if ( t <= n ) {
         for ( i = t ; i < n ; i++ ) {
             devicePort *t = new devicePort;
+            t->setNum(i+1);
             mySockets.push_back(t);
         }
     }
@@ -68,4 +70,12 @@ const devicePort* boxChip::socket(const QString &name) const
     QString t = name;
     t.remove(0,3);
     return mySockets[ t.toInt()-1 ];
+}
+
+void boxChip::deciSecondTimerEvent()
+{
+    foreach ( devicePort *i , mySockets ) {
+        i->queueEvent();
+        if ( i->hasReceive() ) receiveEvent(i->popFromReceive(),i);
+    }
 }

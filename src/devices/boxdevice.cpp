@@ -21,5 +21,10 @@ void boxDevice::read(QDataStream &stream)
     chip->read(stream);
 }
 
+void boxDevice::deciSecondTimerEvent()
+{
+    chip->deciSecondTimerEvent();
+}
+
 
 
