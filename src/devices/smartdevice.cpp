@@ -192,6 +192,7 @@ void smartDevice::connectedNet(interface *p)
 void smartDevice::addConnection(const QString &port,cableDev *c)
 {
     adapter(port)->setConnect(true,c);
+    connectedNet(adapter(port));
 }
 
 /*!
@@ -238,7 +239,7 @@ void smartDevice::read(QDataStream &stream)
   Задает устройству шлюз по умолчанию.
   @param str - строка с адресом.
 */
-void smartDevice::setGateway(const QString str)
+void smartDevice::setGateway(const QString &str)
 {
     ipAddress t(str);
     foreach ( routeRecord *i , myRouteTable ) // Ищем старый шлюз
@@ -420,5 +421,16 @@ void smartDevice::deciSecondTimerEvent()
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         myInterfaces[i]->deciSecondEvent();
 }
+
+void smartDevice::setIp(const QString &a, const QString &ip)
+{
+    adapter(a)->setIp(ip);
+}
+
+void smartDevice::setMask(const QString &a, const QString &ip)
+{
+    adapter(a)->setMask(ip);
+}
+
 
 

@@ -10,7 +10,8 @@
 
 device::device(int t)
 {
-    devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
+    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
+    pixmapRect = devRect.adjusted(3,3,-3,-3);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     switch (t) {
@@ -24,7 +25,8 @@ device::device(int t)
 
 device::device(QDataStream &stream)
 {
-    devRect = QRect(rectDevX,rectDevY,rectDevWidth,rectDevHeight);
+    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
+    pixmapRect = devRect.adjusted(3,3,-3,-3);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     QPointF p;
@@ -70,10 +72,10 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(devRect,5,5); //Рисуем край нашего компьютера
     switch ( impl->type() ) {
-        case compDev : painter->drawPixmap(devRect,QPixmap(":/im/images/laptop.png")); break;
-        case hubDev : painter->drawPixmap(devRect,QPixmap(":/im/images/modem.png")); break;
-        case switchDev : painter->drawPixmap(devRect,QPixmap(":/im/images/switch.png")); break;
-        case routerDev : painter->drawPixmap(devRect,QPixmap(":/im/images/router.png")); break;
+        case compDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/laptop.png")); break;
+        case hubDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/modem.png")); break;
+        case switchDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/switch.png")); break;
+        case routerDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/router.png")); break;
         default: break;
     }
      // Потом картинку

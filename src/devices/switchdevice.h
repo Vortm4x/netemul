@@ -21,6 +21,7 @@ public:
     void dialog();
     void tableDialog();
     bool hasTable() const { return true; }
+    QString tableName() { return trUtf8("Таблица коммутации"); }
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

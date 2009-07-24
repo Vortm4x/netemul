@@ -12,11 +12,7 @@
 routeEditor::routeEditor()
 {
     QVBoxLayout *all = new QVBoxLayout;
-    table = new QTableWidget(1,6);
-    QStringList head;
-    head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
-            << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
-    table->setHorizontalHeaderLabels(head);
+    table = new QTableWidget(1,6);   
     table->setSelectionBehavior( QAbstractItemView::SelectRows );
     table->setMinimumSize( QSize(700,200) );
     all->addWidget(table);

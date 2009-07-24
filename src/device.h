@@ -13,8 +13,6 @@ class cableDev;
   хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
   Класс содержит несколько виртуальных функций, только переопределив которые, мы сможем его унаследовать.
 */
-
-
 class device : public QGraphicsItem
 {
 public:
@@ -23,6 +21,7 @@ public:
     enum { Type = UserType + 2 };
     int type() const { return Type; }
     QRect devRect;
+    QRect pixmapRect;
     device(int t);
     device(QDataStream &stream);
     ~device();

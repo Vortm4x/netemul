@@ -72,7 +72,6 @@ signals:
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
     void fileClosed(); //!< Сообщает главному окну о закрытии файла
 public slots:
-    deviceImpl* createComputer();
     void editorLostFocus(textItem *t);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
@@ -84,7 +83,13 @@ public slots:
     bool isPlayed() const { return myTimer; }
     void saveScene(QString fileName);
     void openScene(QString fileName);
+    deviceImpl* addComputer(int x,int y);
+    deviceImpl* addSwitch(int x,int y);
+    deviceImpl* addHub(int x,int y);
+    deviceImpl* addRouter(int x,int y);
+    void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
+    device* deviceWithImpl(deviceImpl *d);
     bool myOpen;
     int lastId;
     sendState myState;

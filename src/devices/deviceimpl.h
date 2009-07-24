@@ -49,6 +49,11 @@ public:
     virtual bool isReady() { return true; }
     virtual void addConnection(const QString &port , cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
+public slots:
+    virtual void setIp(const QString &a , const QString &ip);
+    virtual void setMask(const QString &a, const QString &ip);
+    virtual void setGateway(const QString &str);
+    virtual void setSocketsCount(int n);
 private:
     QString myNote;
 };

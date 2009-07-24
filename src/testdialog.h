@@ -4,6 +4,7 @@
 #include <QtGui/QDialog>
 #include "ui_testdialog.h"
 #include <QtScript>
+#include <QScriptEngineDebugger>
 
 class myCanvas;
 
@@ -24,6 +25,7 @@ protected:
     virtual void changeEvent(QEvent *e);
 private:
     QScriptEngine engine;
+    QScriptEngineDebugger debugger;
     bool test(QString s);
     myCanvas *canva;
 };

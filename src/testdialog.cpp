@@ -25,6 +25,8 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
     foreach ( QString i , s)
         listWidget->addItem( i.remove(".js") );
     QScriptValue p = engine.newQObject(c);
+//    debugger.attachTo(&engine);
+//    debugger.action(QScriptEngineDebugger::InterruptAction)->trigger();
     engine.globalObject().setProperty("canva",p);
     qScriptRegisterMetaType(&engine, ObjectToScript, ObjectFromScript);
     connect( startButton , SIGNAL(clicked()), this , SLOT(start()));

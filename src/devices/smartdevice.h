@@ -5,11 +5,6 @@
 #include "deviceimpl.h"
 #include <QVector>
 
-class programm;
-
-/*!
-  Запись таблицы маршрутизации.
-*/
 struct routeRecord {
 public:
     ipAddress dest;
@@ -24,7 +19,9 @@ public:
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
 };
-//-----------------------------------------------------------------------
+
+class programm;
+
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
   свойства компьютера и роутера.
@@ -77,13 +74,16 @@ public:
     routeRecord* addToTable(routeRecord *r,bool tr = true);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r,bool tr = true);
-    void setGateway(const QString str);
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
     ipAddress gateway() const;
     friend class ripProgramm;
     friend class adapterSetting;
+public slots:
+    void setIp(const QString &a, const QString &ip);
+    void setMask(const QString &a, const QString &ip);
+    void setGateway(const QString &str);
 private:
     void updateArp();
     interface* adapter(const QString &name);
@@ -108,18 +108,7 @@ inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
     return e1.dest < e2.dest;
 }
 inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2) { return *e1 > *e2; }
-inline QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)
-{
-    stream << rec.dest;
-    stream << rec.mask << rec.gateway;
-    stream << rec.time << rec.metric << rec.out;
-    return stream;
-}
-inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
-{
-    stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric >> rec.out;
-    return stream;
-}
+
 /*!
   Модель данных для настроек адаптеров.
 */

@@ -5,6 +5,7 @@ include(src/chips/chips.pri)
 include(src/programms/programms.pri)
 include(src/controls/controls.pri)
 include(src/devices/devices.pri)
+include(src/models/models.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -27,6 +28,10 @@ CONFIG += warn_on
 contains(QT_CONFIG, opengl) { 
     message("OpenGL connected ...")
     QT += opengl
+}
+contains(QT_CONFIG, scripttools) {
+    message("Debugger connected ...")
+    QT += scripttools
 }
 OBJECTS_DIR = build
 MOC_DIR = build

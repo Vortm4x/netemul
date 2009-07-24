@@ -20,8 +20,6 @@ public:
     void dialog();
 
     bool isCanSend() const { return true; }
-public slots:
-    void ddd() { setGateway("127.0.9.99"); }
 protected:
     void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}
     void read(QDataStream &stream) { smartDevice::read(stream); }

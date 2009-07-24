@@ -644,11 +644,42 @@ bool myCanvas::isDevice(QGraphicsItem *t) const
 }
 //------------------------------------------------------------------------
 
-deviceImpl* myCanvas::createComputer()
+deviceImpl* myCanvas::addComputer(int x,int y)
 {
-    device *t = addDeviceOnScene(QPointF(25,25) , compDev);
+    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , compDev);
     return t->contentDevice();
 }
+deviceImpl* myCanvas::addRouter(int x,int y)
+{
+    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , routerDev);
+    return t->contentDevice();
+}
+deviceImpl* myCanvas::addHub(int x,int y)
+{
+    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , hubDev);
+    return t->contentDevice();
+}
+
+deviceImpl* myCanvas::addSwitch(int x,int y)
+{
+    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , switchDev);
+    return t->contentDevice();
+}
+
+void myCanvas::addConnection(deviceImpl *s,deviceImpl *e, const QString &sp,const QString &se)
+{
+    device *st = deviceWithImpl(s);
+    device *et = deviceWithImpl(e);
+    createConnection(st,et,sp,se);
+}
+
+device* myCanvas::deviceWithImpl(deviceImpl *d)
+{
+    foreach ( device *i , myDevices )
+        if ( i->contentDevice() == d ) return i;
+    return 0;
+}
+
 
 
 

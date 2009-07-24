@@ -28,4 +28,12 @@ void routerDevice::read(QDataStream &stream)
    smartDevice::read(stream);
 }
 
+void routerDevice::setSocketsCount(int n)
+{
+    qDeleteAll(myInterfaces);
+    myInterfaces.clear();
+    for ( int i = 0 ; i < n ; i++ )
+        addInterface( trUtf8("LAN%1").arg(i+1) );
+}
+
 
