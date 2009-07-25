@@ -1,7 +1,6 @@
 #include "switchchip.h"
 #include "deviceport.h"
 #include "switchmodel.h"
-#include "tableswitch.h"
 #include "frame.h"
 
 switchChip::switchChip(int c /* = 4 */ ) : boxChip(c)
@@ -35,10 +34,10 @@ void switchChip::updateMac()
 
 }
 
-void switchChip::dialog()
+void switchChip::addToSwitchTable(const macAddress &m , const QString &p, int mode , int time)
 {
-    tableSwitch *t = new tableSwitch(switchTable);
-    t->exec();
-    delete t;
+    QString t = p;
+    t.remove(0,3);
+    switchTable->addToTable( m , mySockets.at( t.toInt() - 1 ) , mode , time );
 }
 

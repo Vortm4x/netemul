@@ -80,7 +80,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     }
      // Потом картинку
     if ( isConnect() ) {
-        if ( impl->isReady() == myCableList.count() ) painter->setBrush(Qt::green);
+        if ( impl->isReady() ) painter->setBrush(Qt::green);
         else painter->setBrush(Qt::yellow);
     }
     else painter->setBrush(Qt::red);

@@ -15,6 +15,8 @@ public:
     void deleteFromTable(macAddress mac);
     void updateMac();
     void dialog();
+    switchModel* model() { return switchTable; }
+    void addToSwitchTable(const macAddress &m , const QString &p, int mode , int time);
 private:
     switchModel *switchTable;
 };

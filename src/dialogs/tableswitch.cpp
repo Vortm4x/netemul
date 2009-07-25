@@ -1,23 +1,23 @@
 #include "tableswitch.h"
+#include "switchdevice.h"
 #include "switchmodel.h"
 
-tableSwitch::tableSwitch(switchModel *s)
+tableSwitch::tableSwitch(switchTableSetting *s)
 {
     sw = s;
     setupUi(this);
-    cb_port->clear();
-    table->setModel(s);
+    table->setModel(s->switchTable());
+    int n = s->socketsCount();
+    for ( int i = 0 ; i < n ; i++ )
+        cb_port->addItem(trUtf8("LAN%1").arg(i+1));
     connect( btn_add , SIGNAL(clicked()) , SLOT(addRecord()) );
     connect( btn_del , SIGNAL(clicked()) , SLOT(deleteRecord()) );
 }
 
-tableSwitch::~tableSwitch()
-{
-
-}
 void tableSwitch::addRecord()
 {
-    sw->addToTable( macAddress( le_macAddress->text() ) , 0 , switchModel::staticMode , 0);
+    sw->addToTable( macAddress( le_macAddress->text() ) , cb_port->currentText() , switchModel::staticMode , 0);
+    le_macAddress->clear();
 }
 /*!
   Корректирует размер столбцов в соответствии с размером таблицы.
@@ -31,9 +31,7 @@ void tableSwitch::correctSize()
 //-----------------------------------------------------------------
 void tableSwitch::deleteRecord()
 {
-    //if ( table->selectedItems().isEmpty() ) return;
-    //int n = table->currentRow();
-    //sw->deleteFromTable( macAddress( table->item(n,0)->text() ) );
+    sw->switchTable()->removeRows( table->currentIndex().row() , 1 );
 }
 
 void tableSwitch::changeEvent(QEvent *e)

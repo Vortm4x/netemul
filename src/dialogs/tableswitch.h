@@ -3,7 +3,7 @@
 
 #include "ui_tableswitch.h"
 
-class switchModel;
+class switchTableSetting;
 
 
 class tableSwitch : public QDialog , private Ui::tableSwitch
@@ -11,11 +11,10 @@ class tableSwitch : public QDialog , private Ui::tableSwitch
     Q_OBJECT
     Q_DISABLE_COPY(tableSwitch)
 public:
-    explicit tableSwitch(switchModel *s);
-    virtual ~tableSwitch();
+    explicit tableSwitch(switchTableSetting *s);
     void correctSize();     
 private:
-    switchModel *sw;
+    switchTableSetting *sw;
 public slots:
     void addRecord();
     void deleteRecord();

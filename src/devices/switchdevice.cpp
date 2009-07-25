@@ -1,4 +1,5 @@
 #include "switchdevice.h"
+#include "tableswitch.h"
 #include "switchproperty.h"
 #include "switchchip.h"
 #include "frame.h"
@@ -11,7 +12,7 @@ switchDevice::switchDevice(int c)
 
 switchDevice::~switchDevice()
 {
-
+    delete chip;
 }
 
 void switchDevice::write(QDataStream &stream) const
@@ -37,5 +38,27 @@ void switchDevice::dialog()
 
 void switchDevice::tableDialog()
 {
-    chip->dialog();
+    switchTableSetting *set = new switchTableSetting(this);
+    tableSwitch *t = new tableSwitch(set);
+    t->exec();
+    delete set;
+    delete t;
+}
+
+switchChip* switchDevice::concreteChip()
+{
+    return static_cast<switchChip*>(chip);
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+void switchTableSetting::addToTable(const macAddress &m , const QString &p, int mode , int time)
+{
+    sw->concreteChip()->addToSwitchTable(m,p,mode,time);
+}
+
+switchModel* switchTableSetting::switchTable()
+{
+    return sw->concreteChip()->model();
 }

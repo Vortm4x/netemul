@@ -6,6 +6,7 @@ include(src/programms/programms.pri)
 include(src/controls/controls.pri)
 include(src/devices/devices.pri)
 include(src/models/models.pri)
+include(src/dialogs/dialogs.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -18,7 +19,8 @@ INCLUDEPATH += . \
     src/controls \
     src/programms \
     src/devices \
-    src/models
+    src/models \
+    src/dialogs
 QT += script
 win32 { 
     message("Static link ...")
@@ -39,52 +41,30 @@ MOC_DIR = build
 UI_DIR = src
 
 # Input
-HEADERS += src/adapterproperty.h \
-    src/arppacket.h \
+HEADERS += src/arppacket.h \
     src/cabledev.h \
-    src/computerproperty.h \
-    src/connectdialog.h \
     src/device.h \
     src/deviceport.h \
-    src/dialogtemplate.h \
     src/frame.h \
-    src/hubproperty.h \
-    src/interfacedialog.h \
     src/ipaddress.h \
     src/ipedit.h \
     src/ippacket.h \
     src/macaddress.h \
     src/mainwindow.h \
     src/mycanvas.h \
-    src/routeeditor.h \
-    src/routerproperty.h \
-    src/senddialog.h \
-    src/settingdialog.h \
-    src/switchproperty.h \
-    src/tableswitch.h \
-    src/testdialog.h \
-    src/tablearp.h \
     src/udppacket.h \
     src/tcppacket.h \
-    src/programmdialog.h \
-    src/installdialog.h \
     src/textitem.h 
 FORMS += ui/programmdialog.ui \
     ui/testdialog.ui \
     ui/connectdialog.ui \
     ui/tableswitch.ui \
     ui/installdialog.ui
-SOURCES += src/adapterproperty.cpp \
-    src/arppacket.cpp \
+SOURCES += src/arppacket.cpp \
     src/cabledev.cpp \
-    src/computerproperty.cpp \
-    src/connectdialog.cpp \
     src/device.cpp \
     src/deviceport.cpp \
-    src/dialogtemplate.cpp \
     src/frame.cpp \
-    src/hubproperty.cpp \
-    src/interfacedialog.cpp \
     src/ipaddress.cpp \
     src/ipedit.cpp \
     src/ippacket.cpp \
@@ -92,17 +72,7 @@ SOURCES += src/adapterproperty.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp \
-    src/routeeditor.cpp \
-    src/routerproperty.cpp \
-    src/senddialog.cpp \
-    src/settingdialog.cpp \
-    src/switchproperty.cpp \
-    src/tableswitch.cpp \
-    src/testdialog.cpp \
-    src/tablearp.cpp \
     src/udppacket.cpp \
     src/tcppacket.cpp \
-    src/programmdialog.cpp \
-    src/installdialog.cpp \
     src/textitem.cpp 
 RESOURCES += netemul.qrc

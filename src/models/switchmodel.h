@@ -28,12 +28,13 @@ public:
     Qt::ItemFlags flags(const QModelIndex &m) const;
     QVariant headerData(int s , Qt::Orientation o , int role) const;
     QVariant data(const QModelIndex &m, int role) const;
+    bool removeRows( int row, int count, const QModelIndex & parent = QModelIndex() );
 
+    void deleteFromTable(const macAddress &mac);
     macRecord* addToTable(const macAddress &mac ,devicePort *p , int mode , int time);
     void contains(const macAddress &m , devicePort *s);
     devicePort* portWithMac(const macAddress &m);
-    void deleteFromTable(const macAddress &mac);
-private:
+private:   
     QList<macRecord*> table;
 };
 
