@@ -35,8 +35,8 @@ public:
     switchTableSetting(switchDevice *s) : sw(s) { }
     switchModel* switchTable();
     int socketsCount() const { return sw->chip->socketsCount(); }
-    void addToTable(const macAddress &m , const QString &p, int mode , int time);
     void removeFromTable(int row);
+    devicePort* socket(const QString &s) { return sw->chip->socket(s); }
 private:
     switchDevice *sw;
 };

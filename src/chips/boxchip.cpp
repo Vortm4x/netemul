@@ -62,10 +62,12 @@ void boxChip::addConnection(const QString &port , cableDev *c)
 
 bool boxChip::isConnectSocket(const QString &str) const
 {
-    return socket(str)->isConnect();
+    QString t = str;
+    t.remove(0,3);
+    return mySockets[ t.toInt() ]->isConnect();
 }
 
-const devicePort* boxChip::socket(const QString &name) const
+devicePort* boxChip::socket(const QString &name)
 {
     QString t = name;
     t.remove(0,3);

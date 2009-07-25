@@ -21,8 +21,7 @@ public:
     QString socketName(const cableDev *c) const;
     virtual void receiveEvent(frame *fr,devicePort *sender) = 0;
     void deciSecondTimerEvent();
-private:
-    const devicePort* socket(const QString &name) const;
+    devicePort* socket(const QString &name);
 protected:
     QVector<devicePort*> mySockets;
 };

@@ -34,10 +34,4 @@ void switchChip::updateMac()
 
 }
 
-void switchChip::addToSwitchTable(const macAddress &m , const QString &p, int mode , int time)
-{
-    QString t = p;
-    t.remove(0,3);
-    switchTable->addToTable( m , mySockets.at( t.toInt() - 1 ) , mode , time );
-}
 

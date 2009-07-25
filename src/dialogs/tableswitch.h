@@ -4,7 +4,7 @@
 #include "ui_tableswitch.h"
 
 class switchTableSetting;
-
+class switchModel;
 
 class tableSwitch : public QDialog , private Ui::tableSwitch
 {
@@ -15,12 +15,14 @@ public:
     void correctSize();     
 private:
     switchTableSetting *sw;
-public slots:
+    switchModel *t_sw;
+private slots:
     void addRecord();
     void deleteRecord();
+    void selectionChanged();
+    void resetSelection();
 protected:
     virtual void changeEvent(QEvent *e);
-    void resizeEvent(QResizeEvent *e) { Q_UNUSED(e); correctSize(); }
 };
 
 #endif // TABLESWITCH_H

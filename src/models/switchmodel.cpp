@@ -25,6 +25,7 @@ Qt::ItemFlags switchModel::flags(const QModelIndex &m) const
 
 QVariant switchModel::headerData(int s , Qt::Orientation o , int role) const
 {
+    if ( role == Qt::TextAlignmentRole ) return Qt::AlignCenter;
     if ( role != Qt::DisplayRole ) return QVariant();
     if ( o == Qt::Horizontal ) {
         switch (s) {

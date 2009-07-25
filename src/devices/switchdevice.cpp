@@ -52,13 +52,9 @@ switchChip* switchDevice::concreteChip()
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-
-void switchTableSetting::addToTable(const macAddress &m , const QString &p, int mode , int time)
-{
-    sw->concreteChip()->addToSwitchTable(m,p,mode,time);
-}
-
 switchModel* switchTableSetting::switchTable()
 {
     return sw->concreteChip()->model();
 }
+
+
