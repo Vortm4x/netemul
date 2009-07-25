@@ -1,4 +1,6 @@
 #include "../../src/frame.h"
+#include "../../src/arppacket.h"
+#include "../../src/ippacket.h"
 #include <QtTest>
 
 class TestFrame : public QObject
@@ -15,15 +17,14 @@ private:
 void TestFrame::saveLoadArp()
 {
     arpPacket *p = new arpPacket;
-    p->setType(arpPacket::answer);
+    p->setType(arpPacket::response);
     p->setReceiverIp(ipAddress("1.2.3.4"));
     p->setReceiverMac(macAddress("10:01:10:01:10:01"));
     p->setSenderIp(ipAddress("4.3.2.1"));
     p->setSenderMac(macAddress("00:11:22:33:44:55"));
-    arpFrame << *p;
+    arpFrame.pack(p->toData());
     delete p;
-    p = new arpPacket;
-    arpFrame >> *p;
+    p = new arpPacket(arpFrame.unpack() );
     QCOMPARE( p->type() , 1 );
     QCOMPARE( p->receiverIp() , ipAddress("1.2.3.4") );
     QCOMPARE( p->receiverMac() ,macAddress("10:01:10:01:10:01") );
@@ -38,10 +39,9 @@ void TestFrame::saveLoadIp()
     p->setSender(ipAddress("1.2.3.4"));
     p->setReceiver(ipAddress("4.3.2.1"));
     p->setUpProtocol(ipPacket::tcp);
-    ipFrame << *p;
+    ipFrame.pack( p->toData() );
     delete p;
-    p = new ipPacket;
-    ipFrame >> *p;
+    p = new ipPacket( ipFrame.unpack() );
     QCOMPARE( p->sender() , ipAddress("1.2.3.4") );
     QCOMPARE( p->receiver() , ipAddress("4.3.2.1") );
     QCOMPARE( p->upProtocol() , (qint8)1 );

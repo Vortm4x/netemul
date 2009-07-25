@@ -25,9 +25,9 @@ public:
     bool isConnect() const { return myConnect;}
     void setNum(int n) { myNum = n; }
     int num() const { return myNum; }
+    void pushToSend(frame *f) { senderQueue.enqueue(f); }
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
-    void pushToSend(frame *f) { senderQueue.enqueue(f); }
     frame* popFromReceive() { return receiveQueue.dequeue(); }
     void sendFrame(frame *t);
     void receiveFrame(QByteArray &b);
@@ -38,10 +38,8 @@ public:
 #endif
 private:
     int myNum;
-#ifndef __TESTING__
     QQueue<frame*> senderQueue;
     QQueue<frame*> receiveQueue;
-#endif
     cableDev *myCable;
     bool myConnect;
     bool myBusy;

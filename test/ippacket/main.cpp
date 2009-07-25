@@ -42,10 +42,9 @@ void TestIpPacket::saveLoadTcp()
     tcpPacket *p = new tcpPacket;
     p->setSender(1024);
     p->setReceiver(512);
-    tcpIp << *p;
+    tcpIp.pack(p->toData());
     delete p;
-    p = new tcpPacket;
-    tcpIp >> *p;
+    p = new tcpPacket( tcpIp.unpack() );
     QCOMPARE( p->sender() , quint16(1024) );
     QCOMPARE( p->receiver() ,quint16( 512 ));
     delete p;
@@ -56,10 +55,9 @@ void TestIpPacket::saveLoadUdp()
     udpPacket *p = new udpPacket;
     p->setSender(1024);
     p->setReceiver(512);
-    udpIp << *p;
+    udpIp.pack( p->toData() );
     delete p;
-    p = new udpPacket;
-    udpIp >> *p;
+    p = new udpPacket( udpIp.unpack() );
     QCOMPARE( p->sender() , quint16(1024) );
     QCOMPARE( p->receiver() , quint16(512) );
     delete p;

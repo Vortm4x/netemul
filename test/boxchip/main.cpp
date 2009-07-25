@@ -1,16 +1,16 @@
 #include <QtTest>
-#include "../../src/chips/boxchip.h"
+#include "../../src/chips/hubchip.h"
 
-class TestBoxChip : public QObject
+class TestHubChip : public QObject
 {
    Q_OBJECT
 private slots:
     void setSocketsCount();
 };
 
-void TestBoxChip::setSocketsCount()
+void TestHubChip::setSocketsCount()
 {
-    boxChip b(4);
+    hubChip b(4);
     QCOMPARE(b.socketsCount() , 4);
     b.setSocketsCount(2);
     QCOMPARE(b.socketsCount() , 2);
@@ -18,5 +18,5 @@ void TestBoxChip::setSocketsCount()
     QCOMPARE(b.socketsCount() , 12);
 }
 
-QTEST_MAIN(TestBoxChip)
+QTEST_MAIN(TestHubChip)
 #include "main.moc"
