@@ -11,9 +11,9 @@ SOURCES += main.cpp \
     ../../src/chips/boxchip.cpp \
     ../../src/chips/hubchip.cpp \
     ../../src/chips/abstractchip.cpp \
-    ../../src/deviceport.cpp
+    deviceport.cpp
 HEADERS += ../../src/chips/boxchip.h \
-	../../src/chips/hubchip.h \
+    ../../src/chips/hubchip.h \
     ../../src/chips/abstractchip.h \
-    ../../src/deviceport.h
+    deviceport.h
 DEFINES += __TESTING__

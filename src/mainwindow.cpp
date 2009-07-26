@@ -41,8 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
 //    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
- //   view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState |
-   //                             QGraphicsView::DontAdjustForAntialiasing );
+    view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
 #if USER != frost

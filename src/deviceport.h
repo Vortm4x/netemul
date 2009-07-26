@@ -26,15 +26,14 @@ public:
     void setNum(int n) { myNum = n; }
     int num() const { return myNum; }
     void pushToSend(frame *f) { senderQueue.enqueue(f); }
+    bool isCableConnect(const cableDev *c) const;
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
-    frame* popFromReceive() { return receiveQueue.dequeue(); }
+    frame* popFromReceive() { if (receiveQueue.isEmpty() ) return 0; return receiveQueue.dequeue(); }
     void sendFrame(frame *t);
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c);
-    bool isCableConnect(const cableDev *c) const;
-    bool hasReceive() const { return !receiveQueue.isEmpty(); }
 #endif
 private:
     int myNum;

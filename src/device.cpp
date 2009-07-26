@@ -111,6 +111,7 @@ void device::addConnection(const QString &port, cableDev *c)
 void device::deleteConnection(cableDev *c)
 {
     myCableList.removeOne(c);
+    impl->deleteConnection(c);
     update();
 }
 

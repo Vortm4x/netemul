@@ -16,6 +16,7 @@ public:
     QStringList sockets() const { return chip->sockets(); }
     QString socketName(const cableDev *c) const { return chip->socketName(c); }
     void addConnection(const QString &port , cableDev *c) { chip->addConnection(port,c); }
+    void deleteConnection(cableDev *c) { chip->deleteConnection(c); }
     void setManual(bool c) { myManual = c; }
     bool isManual() { return myManual; }
     void deciSecondTimerEvent();

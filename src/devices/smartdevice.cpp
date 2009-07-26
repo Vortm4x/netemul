@@ -7,6 +7,12 @@
 #include "tcppacket.h"
 #include <QtDebug>
 
+smartDevice::smartDevice() : myRouter(false)
+{
+    myReady = false;
+    isDirty = true;
+}
+
 smartDevice::~smartDevice()
 {
     qDeleteAll(myRouteTable);
@@ -169,11 +175,12 @@ QString routeRecord::modeString() const
 */
 void smartDevice::connectedNet(interface *p)
 {
+    checkReady();
     bool add = p->isConnect(); // Показывает происходит ли добавление.
     ipAddress ip = p->ip();
     ipAddress mask = p->mask();
-    if ( ip.isEmpty() || mask.isEmpty() ) { // Если ip и маска пустые
-        if ( routeRecord *t = recordAt(p) ) deleteFromTable(t);
+    if ( ip.isEmpty() || mask.isEmpty() ) {
+        checkTable();
         return;
     }
     ipAddress dest = mask & ip;
@@ -181,18 +188,40 @@ void smartDevice::connectedNet(interface *p)
         if ( i->dest == dest && i->mask == mask ) {
             if ( i->gateway == ip && add) return;
             deleteFromTable(i);
-            myReady--;
             if ( add ) break; else return;
         }
-    myReady++;
     addToTable( dest , mask , ip , ip , 0 , connectMode );    
 }
 //------------------------------------------------------------
+
+void smartDevice::checkTable()
+{
+    foreach ( routeRecord *i , myRouteTable )
+        if ( i->mode == connectMode && !i->dest.isLoopBack() ) {
+            bool b = false;
+            foreach ( interface *j , myInterfaces )
+                if ( (j->ip() & j->mask()) == i->dest ) {
+                    b = true;
+                    break;
+                }
+            if (!b) deleteFromTable(i);
+        }
+}
 
 void smartDevice::addConnection(const QString &port,cableDev *c)
 {
     adapter(port)->setConnect(true,c);
     connectedNet(adapter(port));
+}
+
+void smartDevice::deleteConnection(cableDev *c)
+{
+    foreach ( interface *i , myInterfaces )
+        if ( i->isCableConnect(c) ) {
+            i->setConnect(false,0);
+            connectedNet(i);
+            return;
+        }
 }
 
 /*!
@@ -344,7 +373,7 @@ programm* smartDevice::programmAt(const QString n) const
 ipAddress smartDevice::findInterfaceIp(ipAddress a)
 {
     for ( int i = 0 ; i < myInterfaces.size() ; ++i ) {
-        if ( myInterfaces[i]->isConnect() ) continue;
+        if ( !myInterfaces[i]->isConnect() ) continue;
         if ( (myInterfaces[i]->ip() & myInterfaces[i]->mask() ) == ( a & myInterfaces[i]->mask() ) )
             return myInterfaces[i]->ip();
     }
@@ -424,14 +453,35 @@ void smartDevice::deciSecondTimerEvent()
 
 void smartDevice::setIp(const QString &a, const QString &ip)
 {
+    isDirty = true;
     adapter(a)->setIp(ip);
     connectedNet(adapter(a));
 }
 
 void smartDevice::setMask(const QString &a, const QString &ip)
 {
+    isDirty = true;
     adapter(a)->setMask(ip);
     connectedNet(adapter(a));
+}
+
+void smartDevice::checkReady() const
+{
+    myReady = true;
+    foreach ( interface *i , myInterfaces )
+        if ( i->isConnect() && i->ip().isEmpty() ) {
+            myReady = false;
+            break;
+        }
+}
+
+bool smartDevice::isReady() const
+{
+    if ( isDirty ) {
+        checkReady();
+        isDirty = false;
+    }
+    return myReady;
 }
 
 

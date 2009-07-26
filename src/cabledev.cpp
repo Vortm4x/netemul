@@ -97,7 +97,7 @@ void cableDev::motion()
        foreach ( bitStream *i , myStreams ) {
             i->pos = i->pos + i->direct*speed;
             if ( i->pos >= 1 || i->pos <= 0) output(i);
-        }
+       }
        update();
 }
 //-----------------------------------------------------------
@@ -114,8 +114,6 @@ QString cableDev::endSocketName() const
 
 void cableDev::deleteConnect()
 {
-    myStartPort->setConnect(false,NULL);
-    myEndPort->setConnect(false,NULL);
     myStartDev->deleteConnection(this);
     myEndDev->deleteConnection(this);
 }

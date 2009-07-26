@@ -44,10 +44,8 @@ bool boxChip::setSocketsCount(int n)
 
 QString boxChip::socketName(const cableDev *c) const
 {
-#ifndef __TESTING__
     for ( int i = 0 ; i < mySockets.size() ; i++ )
         if ( mySockets.at(i)->isCableConnect(c) ) return QObject::tr("LAN%1").arg(i+1);
-#endif
     return QString();
 }
 
@@ -55,23 +53,27 @@ void boxChip::addConnection(const QString &port , cableDev *c)
 {
     QString t = port;
     t.remove(0,3);
-#ifndef __TESTING__
     mySockets.at( t.toInt() -1 )->setConnect(true,c);
-#endif
 }
+
+void boxChip::deleteConnection(cableDev *c)
+{
+    foreach ( devicePort *i , mySockets )
+        if ( i->isCableConnect(c) ) {
+            i->setConnect(false,0);
+            return;
+        }
+}
+
 
 bool boxChip::isConnectSocket(const QString &str) const
 {
-    QString t = str;
-    t.remove(0,3);
-    return mySockets[ t.toInt() ]->isConnect();
+    return mySockets[ str.mid(3).toInt() - 1 ]->isConnect();
 }
 
 devicePort* boxChip::socket(const QString &name)
 {
-    QString t = name;
-    t.remove(0,3);
-    return mySockets[ t.toInt()-1 ];
+    return mySockets[ name.mid(3).toInt()-1 ];
 }
 
 #ifndef __TESTING__
@@ -79,7 +81,8 @@ void boxChip::deciSecondTimerEvent()
 {
     foreach ( devicePort *i , mySockets ) {
         i->queueEvent();
-        if ( i->hasReceive() ) receiveEvent(i->popFromReceive(),i);
+        frame *t = i->popFromReceive();
+        if ( t ) receiveEvent(t,i);
     }
 }
 #endif

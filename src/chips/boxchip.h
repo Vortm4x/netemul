@@ -18,6 +18,7 @@ public:
     int socketsCount() const { return mySockets.size(); }
     bool isConnectSocket(const QString &str) const;
     void addConnection(const QString &port, cableDev *c);
+    void deleteConnection(cableDev *c);
     QString socketName(const cableDev *c) const;
     virtual void receiveEvent(frame *fr,devicePort *sender) = 0;
     void deciSecondTimerEvent();

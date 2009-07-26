@@ -36,14 +36,16 @@ public:
     enum { UDP = 25 ,TCP = 26 };
     /*! Значения для флага записи из таблицы маршрутизации. */
     enum { changed = 0 , noChanged = 1 };
-    smartDevice() : myRouter(false) { myReady = 0; }
+    smartDevice();
     virtual ~smartDevice();
     QString tableName() const { return trUtf8("Таблица маршрутизации"); }
     virtual void tableDialog();
     virtual void adapterDialog();
     virtual void programmsDialog();
     bool isSmart() const { return true; }
-    const devicePort* socket(const QString &name) const { return adapter(name)->socket(); }
+    bool isReady() const;
+    void checkReady() const;
+    void checkTable();
     QStringList sockets() const;
     QStringList interfacesIp() const;
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
@@ -53,6 +55,7 @@ public:
     interface* ipToAdapter(const ipAddress a);
     interface* addInterface(const QString &name);
     void addConnection(const QString &port, cableDev *c);
+    void deleteConnection(cableDev *c);
     void sendMessage(const QString &a, int size , int pr);
     void receivePacket(ipPacket *p,interface *f);
     void treatPacket(ipPacket *p);
@@ -89,7 +92,8 @@ private:
     interface* adapter(const QString &name);
 protected:
     bool myRouter;
-    int myReady;
+    mutable bool myReady;
+    mutable bool isDirty;
     QVector<interface*> myInterfaces;
     QList<programm*> myProgramms; //!< Программы установленные на устройстве.
     QList<routeRecord*> myRouteTable; //!< Таблица маршрутизации.

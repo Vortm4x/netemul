@@ -13,6 +13,12 @@ devicePort::~devicePort()
 {
 
 }
+
+bool devicePort::isCableConnect(const cableDev *c) const
+{
+    if ( myCable == c ) return true;
+    return false;
+}
 #ifndef __TESTING__
 /*!
   Достает кадр из очереди и отправляет его.
@@ -50,12 +56,6 @@ void devicePort::sendFrame(frame *t)
     myCable->input(t->toData(),this);
 }
 //-----------------------------------------------------
-
-bool devicePort::isCableConnect(const cableDev *c) const
-{
-    if ( myCable == c ) return true;
-    return false;
-}
 
 void devicePort::setChecked(bool c)
 {

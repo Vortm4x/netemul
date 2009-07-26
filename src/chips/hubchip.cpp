@@ -14,10 +14,10 @@ hubChip::~hubChip()
 
 void hubChip::receiveEvent(frame *fr,devicePort *sender)
 {
-#ifndef __TESTING__
     foreach ( devicePort *i , mySockets )
         if ( i != sender && i->isConnect() )
             i->pushToSend( fr->copy() );
-    delete fr;
-#endif    
+#ifndef __TESTING__
+    delete fr; 
+#endif
 }

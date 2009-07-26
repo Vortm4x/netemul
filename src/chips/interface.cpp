@@ -166,14 +166,13 @@ bool interface::isCableConnect(const cableDev *c) const
 void interface::deciSecondEvent()
 {
     mySocket->queueEvent();
-    if ( mySocket->hasReceive() ) {
-        frame *f = mySocket->popFromReceive();
-        receiveEvent(f);
-    }
+    frame *f = mySocket->popFromReceive();
+    if ( f ) receiveEvent(f);
 }
 
 void interface::sendArpRequest(ipAddress a)
 {
+    if ( a.isEmpty() ) return;
     arpPacket p(  macAddress() , myMac , a , myIp , arpPacket::request );
     macAddress m;
     m.setBroadcast();

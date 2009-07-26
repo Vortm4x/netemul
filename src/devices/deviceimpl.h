@@ -36,8 +36,7 @@ public:
     virtual void tableDialog() { qFatal("error not compability Table!"); }
     virtual void adapterDialog() { qFatal("error not compability adapter!"); }
     virtual void programmsDialog() { qFatal("error not compability"); }
-    virtual void sendMessage(const QString &a,int size , int pr) { Q_UNUSED(a) Q_UNUSED(size) Q_UNUSED(pr)
-                                                                   qFatal("ERROR!"); }
+    virtual void sendMessage(const QString &,int, int) { qFatal("ERROR!"); }
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
@@ -46,8 +45,9 @@ public:
     virtual void deciSecondTimerEvent() { }
     virtual QString nameToIp(const QString &name) const { Q_UNUSED(name) return QString(); }
 
-    virtual bool isReady() { return true; }
+    virtual bool isReady() const { return true; }
     virtual void addConnection(const QString &port , cableDev *c) = 0;
+    virtual void deleteConnection(cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
 public slots:
     virtual void setIp(const QString &a , const QString &ip);
