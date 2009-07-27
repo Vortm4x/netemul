@@ -167,7 +167,6 @@ routeRecord* ripProgramm::findChanged() const
 void ripProgramm::write(QDataStream &stream) const
 {
     stream << (int)RIP;
-    qDebug() << "zadralo";
     programmRep::write(stream);
 }
 //---------------------------------------------------
@@ -177,7 +176,6 @@ void ripProgramm::write(QDataStream &stream) const
 */
 void ripProgramm::read(QDataStream &stream)
 {
-    qDebug() << "mmmm";
     programmRep::read(stream);
 }
 //---------------------------------------------------

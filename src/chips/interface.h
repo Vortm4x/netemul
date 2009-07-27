@@ -40,6 +40,8 @@ public:
     frame* createFrame( macAddress receiverMac , int t);
     QList<arpRecord*> arpTable() const { return myArpTable; }
 
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
 private:

@@ -191,4 +191,16 @@ void interface::sendArpResponse(macAddress m, ipAddress a)
     mySocket->pushToSend(f);
 }
 
+void interface::write(QDataStream &stream) const
+{
+    abstractChip::write(stream);
+    stream << myName;
+}
+
+void interface::read(QDataStream &stream)
+{
+    abstractChip::read(stream);
+    stream >> myName;
+}
+
 

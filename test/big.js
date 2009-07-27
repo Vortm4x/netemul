@@ -51,4 +51,7 @@ r[0].setIp( "LAN4" ,"192.168.1.221");
 r[1].setIp( "LAN4" , "192.168.1.222");
 r[2].setIp( "LAN4" , "192.168.1.253");
 r[3].setIp( "LAN4" , "192.168.1.254");
+saveScene("big.net");
+closeFile();
+openScene("big.net");
 true;

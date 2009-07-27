@@ -23,6 +23,8 @@ public:
     virtual void receiveEvent(frame *fr,devicePort *sender) = 0;
     void deciSecondTimerEvent();
     devicePort* socket(const QString &name);
+    virtual void write(QDataStream &stream) const;
+    virtual void read(QDataStream &stream);
 protected:
     QVector<devicePort*> mySockets;
 };

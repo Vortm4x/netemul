@@ -53,7 +53,7 @@ void boxChip::addConnection(const QString &port , cableDev *c)
 {
     QString t = port;
     t.remove(0,3);
-    mySockets.at( t.toInt() -1 )->setConnect(true,c);
+    mySockets.at( t.toInt() - 1 )->setConnect(true,c);
 }
 
 void boxChip::deleteConnection(cableDev *c)
@@ -86,3 +86,17 @@ void boxChip::deciSecondTimerEvent()
     }
 }
 #endif
+
+void boxChip::write(QDataStream &stream) const
+{
+    abstractChip::write(stream);
+    stream << mySockets.size();
+}
+
+void boxChip::read(QDataStream &stream)
+{
+    abstractChip::read(stream);
+    int n;
+    stream >> n;
+    setSocketsCount(n);
+}

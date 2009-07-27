@@ -12,7 +12,6 @@ programmRep::programmRep()
 void programmRep::write(QDataStream &stream) const
 {
     stream << mySocket << myEnable;
-    qDebug() << "1";
 }
 //--------------------------------------------
 /*!
@@ -22,6 +21,5 @@ void programmRep::write(QDataStream &stream) const
 void programmRep::read(QDataStream &stream)
 {
     stream >> mySocket >> myEnable;
-    qDebug() << "2";
 }
 //-------------------------------------------

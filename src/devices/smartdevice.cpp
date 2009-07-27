@@ -10,6 +10,7 @@ smartDevice::smartDevice() : myRouter(false)
 {
     myReady = false;
     isDirty = true;
+    myInterfaces.clear();
 }
 
 smartDevice::~smartDevice()
@@ -244,6 +245,8 @@ void smartDevice::read(QDataStream &stream)
     deviceImpl::read(stream);
     int n,i;
     stream >> n;
+    qDeleteAll(myInterfaces);
+    myInterfaces.clear();
     for (i = 0; i < n ; i++) {
         interface *p = addInterface(QString());
         p->read(stream);
