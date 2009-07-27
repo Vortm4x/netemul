@@ -468,7 +468,9 @@ void myCanvas::openScene(QString fileName)
         device *end = deviceInPoint(p);
         s >> str;
         QString startP = str;
+        qDebug() << str;
         s >> str;
+        qDebug() << str;
         QString endP = str;
         createConnection( start , end , startP , endP );
     }
@@ -509,6 +511,7 @@ void myCanvas::saveScene(QString fileName)
     foreach (cableDev *i, connections) {
         s << i->line().p1() << i->line().p2();
         s << i->startSocketName() << i->endSocketName() ;
+        qDebug() << i->startSocketName() << i->endSocketName();
     }
     s << myTextItems.count();
     foreach ( textItem *i, myTextItems ) {

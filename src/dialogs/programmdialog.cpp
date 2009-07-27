@@ -16,7 +16,7 @@ programmDialog::programmDialog(QWidget *parent) :
 void programmDialog::updateList()
 {
     list->clear();
-    foreach ( programm *i, s->programms() ){
+    foreach ( programm i, s->programms() ){
         QListWidgetItem *item = new QListWidgetItem(i->name());
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
         if ( i->isEnable() ) item->setCheckState(Qt::Checked);

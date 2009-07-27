@@ -3,6 +3,7 @@
 # -------------------------------------------------
 include(../testing.pri)
 QT += testlib
+QT -= gui
 TARGET = boxchip
 CONFIG += console
 INCLUDEPATH += ../../src

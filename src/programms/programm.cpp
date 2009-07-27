@@ -1,24 +1,50 @@
 #include "programm.h"
+#include "ripprogramm.h"
+#include <QtDebug>
 
-programm::programm()
+programm::programm(int n)
 {
+    qDebug() << "Create programm!";
+    switch ( n ) {
+        case RIP: rep = new ripProgramm; break;
+        default: break;
+    }
+    rep->countRef = 1;
+}
 
-}
-/*!
-  Записывает программу в поток.
-  @param stream - поток для записи.
-*/
-void programm::write(QDataStream &stream) const
+programm::programm(QDataStream &stream)
 {
-    stream << mySocket << myEnable;
+    qDebug() << "Create programm!";
+    int n;
+    stream >> n;
+    switch (n) {
+        case RIP: rep = new ripProgramm; break;
+        default: break;
+    }
+    rep->read(stream);
+    rep->countRef = 1;
 }
-//--------------------------------------------
-/*!
-  Считывает программу из потока.
-  @param stream - поток для чтения.
-*/
-void programm::read(QDataStream &stream)
+
+programm::programm(const programm &other)
 {
-    stream >> mySocket >> myEnable;
+    rep = other.rep;
+    rep->countRef++;
 }
-//-------------------------------------------
+
+programm::~programm()
+{
+    if ( --rep->countRef <= 0 ) {
+        qDebug() << "Destroy programm!";
+        delete rep;
+    }
+}
+
+programm& programm::operator=(const programm &other)
+{
+    other.rep->countRef++;
+    if ( --rep->countRef <= 0 ) delete rep;
+    rep = other.rep;
+    return *this;
+}
+
+

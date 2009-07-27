@@ -3,6 +3,7 @@
 
 #include "interface.h"
 #include "deviceimpl.h"
+#include "programm.h"
 #include <QVector>
 
 struct routeRecord {
@@ -20,8 +21,6 @@ public:
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
 };
 
-class programm;
-
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
   свойства компьютера и роутера.
@@ -32,7 +31,6 @@ public:
     /*! Источники записи таблицы маршрутизации. */
     enum { connectMode = 3 , staticMode = 4 , ripMode = 5 };
     enum { addNet = 100 , delNet = 101 };
-    enum { RIP = 50 };
     enum { UDP = 25 ,TCP = 26 };
     /*! Значения для флага записи из таблицы маршрутизации. */
     enum { changed = 0 , noChanged = 1 };
@@ -62,17 +60,18 @@ public:
     void routePacket(ipPacket *p);
     void connectedNet(interface *p);
     void deciSecondTimerEvent();
+    void secondTimerEvent();
     ipAddress findInterfaceIp(ipAddress a);
     routeRecord* recordAt(const ipAddress &a) const;
     routeRecord* recordAt(const interface *p);
-    programm* programmAt(const quint16 p) const;
-    programm* programmAt(const QString n) const;
-    void removeProgramm(programm *p);
-    void installProgramm( programm *p) { myProgramms << p; }
+    programm programmAt(const quint16 p) const;
+    programm programmAt(const QString n) const;
+    void removeProgramm(programm p);
+    void installProgramm( programm p) { p->setDevice(this); myProgramms << p; }
     bool sendInterrupt(int u);
     int socketsCount() const { return myInterfaces.count(); }
     QList<routeRecord*>& routeTable() { return myRouteTable; }
-    QList<programm*>& programms() { return myProgramms; }
+    QList<programm>& programms() { return myProgramms; }
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r,bool tr = true);
     void deleteFromTable(int n);
@@ -95,7 +94,7 @@ protected:
     mutable bool myReady;
     mutable bool isDirty;
     QVector<interface*> myInterfaces;
-    QList<programm*> myProgramms; //!< Программы установленные на устройстве.
+    QList<programm> myProgramms; //!< Программы установленные на устройстве.
     QList<routeRecord*> myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

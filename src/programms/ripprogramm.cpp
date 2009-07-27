@@ -7,10 +7,9 @@
   Инициализирует программу стандартными настройками.
   @param d - устройство на которое устанавливается программа.
 */
-ripProgramm::ripProgramm(smartDevice *d)
+ripProgramm::ripProgramm()
 {
-    myName = trUtf8("RIP");
-    sd = d;
+    myName = QObject::trUtf8("RIP");
     mySocket = 520;
     interval = defaultTtl;
     timer = qrand()%30;
@@ -158,6 +157,28 @@ routeRecord* ripProgramm::findChanged() const
     foreach ( routeRecord *i , sd->myRouteTable )
         if ( i->change == smartDevice::changed ) return i;
     return NULL;
+}
+//---------------------------------------------------
+
+/*!
+  Записывает отличительные черты RIP в поток.
+  @param stream - поток для записи.
+*/
+void ripProgramm::write(QDataStream &stream) const
+{
+    stream << (int)RIP;
+    qDebug() << "zadralo";
+    programmRep::write(stream);
+}
+//---------------------------------------------------
+/*!
+  Считывает отличительные черты RIP из потока.
+  @param stream - поток для чтения.
+*/
+void ripProgramm::read(QDataStream &stream)
+{
+    qDebug() << "mmmm";
+    programmRep::read(stream);
 }
 //---------------------------------------------------
 

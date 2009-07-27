@@ -21,10 +21,6 @@ void installDialog::updateList()
     QStringList l;
     l << trUtf8("RIP");
     list->addItems(l);
-    for ( int i = 0; i < list->count(); i++ ) {
-        QString str = list->item(i)->text();
-        if ( s->programmAt(str)  &&  s->programmAt(str)->isEnable() ) list->item(i)->setFlags(Qt::NoItemFlags);
-    }
 }
 //-----------------------------------------------
 /*!
@@ -33,13 +29,14 @@ void installDialog::updateList()
 */
 void installDialog::install()
 {
-    programm *p = NULL;
+    int p;
     switch (list->currentRow() ) {
         case 0:
-            p = new ripProgramm( s );
+            p = programm::RIP;
             break;
     }
-    if (p) s->installProgramm(p);
+    programm a(p);
+    s->installProgramm(a);
     accept();
 }
 //-----------------------------------------------

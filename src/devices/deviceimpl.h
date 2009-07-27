@@ -20,7 +20,7 @@ public:
 
     virtual int type() const = 0;
 
-    virtual void setCheckedSocket(const QString &s) { Q_UNUSED(s) }
+    virtual void setCheckedSocket(const QString&) {  }
     virtual QStringList sockets() const = 0;
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;

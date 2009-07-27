@@ -296,6 +296,7 @@ void MainWindow::createScene()
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
     connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
     connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
+    connect( progAct , SIGNAL(triggered()) , sceneControler , SLOT(programmsDialog()) );
 }
 //------------------------------------------------------------------
 /*!

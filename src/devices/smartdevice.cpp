@@ -1,5 +1,4 @@
 #include "smartdevice.h"
-#include "ripprogramm.h"
 #include "routeeditor.h"
 #include "adapterproperty.h"
 #include "programmdialog.h"
@@ -236,8 +235,8 @@ void smartDevice::write(QDataStream &stream) const
         myInterfaces[i]->write(stream);
     stream << myRouter; // Включена или нет маршрутизация.
     stream << myProgramms.count(); // Количество программ.
-    foreach ( programm *i , myProgramms )  // И сами программы.
-        stream << *i;
+    foreach ( programm i , myProgramms )  // И сами программы.
+        stream << i;
 }
 //-------------------------------------------------
 void smartDevice::read(QDataStream &stream)
@@ -251,17 +250,9 @@ void smartDevice::read(QDataStream &stream)
     }
     stream >> myRouter;
     stream >> n;
-    int t;
-    programm *r;
-    for ( i = 0; i < n; i++ ) {
-        stream >> t;
-        switch (t) {
-            case RIP:
-                r = new ripProgramm(this);
-                break;
-        }
-        stream >> *r;
-        installProgramm(r);
+    for ( i = 0 ; i < n; i++ ) {
+        programm p(stream);
+        installProgramm(p);
     }
 }
 /*!
@@ -333,8 +324,8 @@ void smartDevice::treatPacket(ipPacket *p)
         tcpPacket t(p->toData());
         v = t.receiver();
     }
-    programm *t = programmAt( v );
-    if ( t && t->isEnable() ) {
+    programm t = programmAt( v );
+    if ( t->isEnable() ) {
         t->execute(p);
         return;
     }
@@ -346,11 +337,11 @@ void smartDevice::treatPacket(ipPacket *p)
   @param p - номер порта.
   @return Указатель на программу, либо NULL если такой программы нет.
 */
-programm* smartDevice::programmAt(const quint16 p) const
+programm smartDevice::programmAt(const quint16 p) const
 {
-    foreach ( programm *i , myProgramms )
+    foreach ( programm i , myProgramms )
         if ( i->socket() == p ) return i;
-    return NULL;
+    return programm();
 }
 //----------------------------------------------------
 /*!
@@ -358,11 +349,11 @@ programm* smartDevice::programmAt(const quint16 p) const
   @param n - название программы.
   @return Указатель на программу, либо NULL если такой программы нет.
 */
-programm* smartDevice::programmAt(const QString n) const
+programm smartDevice::programmAt(const QString n) const
 {
-    foreach ( programm *i , myProgramms )
+    foreach ( programm i , myProgramms )
         if ( i->name() == n ) return i;
-    return NULL;
+    return programm();
 }
 //----------------------------------------------------
 /*!
@@ -384,10 +375,9 @@ ipAddress smartDevice::findInterfaceIp(ipAddress a)
   Удаляет программу.
   @param p - указатель на программу.
 */
-void smartDevice::removeProgramm(programm *p)
+void smartDevice::removeProgramm(programm p)
 {
     myProgramms.removeOne(p);
-    delete p;
 }
 //------------------------------------------------------
 /*!
@@ -397,7 +387,7 @@ void smartDevice::removeProgramm(programm *p)
 bool smartDevice::sendInterrupt(int u)
 {
     bool b = false;
-    foreach ( programm *i ,myProgramms )
+    foreach ( programm i ,myProgramms )
         if ( i->isEnable() && i->interrupt(u) ) b = true;
     return b;
 }
@@ -449,6 +439,12 @@ void smartDevice::deciSecondTimerEvent()
 {
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         myInterfaces[i]->deciSecondEvent();
+}
+
+void smartDevice::secondTimerEvent()
+{
+    foreach ( programm i , myProgramms )
+        i->incTime();
 }
 
 void smartDevice::setIp(const QString &a, const QString &ip)
