@@ -1,4 +1,5 @@
 #include "settingdialog.h"
+#include "appsetting.h"
 #include <QListWidget>
 #include <QStackedWidget>
 #include <QLabel>
@@ -55,7 +56,6 @@ settingDialog::settingDialog()
     connect(routerComboBox, SIGNAL(currentIndexChanged(int)), SLOT(applyEnable()));
     connect(sp_ttlArp, SIGNAL(valueChanged(int)), SLOT(applyEnable()));
     connect(sp_ttlMac, SIGNAL(valueChanged(int)), SLOT(applyEnable()));
-    connect(sp_rip, SIGNAL(valueChanged(int)), SLOT(applyEnable()));
 
     layout->addWidget(listWidget);
     layout->addWidget(stackedWidget);
@@ -78,6 +78,8 @@ void settingDialog::createGeneral()
    widgetLayouts[0]->addLayout(ttl);
    
    widgetLayouts[0]->addStretch(1);
+
+   sp_ttlArp->setValue( appSetting::ttlArp() );
 }
 
 //Создаем закладку Компьютер
@@ -93,6 +95,9 @@ void settingDialog::createComputer()
     computerComboBox->setFixedWidth(50);
     widgetLayouts[1]->addWidget(computerComboBox);
     widgetLayouts[1]->addStretch(1);
+
+    computerComboBox->setCurrentIndex( computerComboBox->findText(
+                                        QString::number( appSetting::defaultComputerCount() ) ) );
 }
 
 //Создаем закладку Концентратор
@@ -114,6 +119,11 @@ void settingDialog::createHub()
     widgetLayouts[2]->addWidget(hubComboBox);
     widgetLayouts[2]->addWidget(hubCheckBox);
     widgetLayouts[2]->addStretch(1);
+
+    hubComboBox->setCurrentIndex( hubComboBox->findText(
+                                        QString::number( appSetting::defaultHubCount() ) ) );
+
+    hubCheckBox->setChecked( appSetting::defaultHubManual() );
 }
 
 //Создаем закладку Коммутатор
@@ -146,6 +156,12 @@ void settingDialog::createSwitch()
     widgetLayouts[3]->addLayout(ttl);
    
     widgetLayouts[3]->addStretch(1);
+    switchComboBox->setCurrentIndex( switchComboBox->findText(
+                                         QString::number( appSetting::defaultSwitchCount() ) ) );
+
+    switchCheckBox->setChecked( appSetting::defaultSwitchManual() );
+
+    sp_ttlMac->setValue( appSetting::ttlMac() );
 }
 
 void settingDialog::createRouter()
@@ -161,109 +177,22 @@ void settingDialog::createRouter()
     routerComboBox->setFixedWidth(50);
     widgetLayouts[4]->addWidget(routerComboBox);
     
-    label = new QLabel(trUtf8("Интервал обмена RIP-сообщениями"));
-    sp_rip = new QSpinBox;
-    sp_rip->setFixedWidth(100);
-    sp_rip->setRange(10,30);
-    sp_rip->setValue(30);
-    sp_rip->setSuffix(trUtf8(" сек"));
-    sp_rip->setEnabled(false);
-    QHBoxLayout *ttl = new QHBoxLayout;
-    ttl->addWidget(label);
-    ttl->addWidget(sp_rip,0 ,Qt::AlignLeft);
-    widgetLayouts[4]->addLayout(ttl);
-    
     widgetLayouts[4]->addStretch(1);
-}
 
-void settingDialog::setComputerSockets(int i)
-{
-    myComputerSockets = i;
-    for (i = 0 ; i < 6 ; i++) {
-        if (computerComboBox->itemText(i).toInt() == myComputerSockets)  {
-            computerComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
-}
-
-void settingDialog::setHubSockets(unsigned int i)
-{
-    myHubSockets = i;
-    int arrayPort[] = {4,5,6,8,12,24,48};
-    for (i = 0 ; i < sizeof(arrayPort)/sizeof(arrayPort[0]) ; i++) {
-        if (hubComboBox->itemText(i).toInt() == myHubSockets)  {
-            hubComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
-}
-
-void settingDialog::setHubManual(bool b)
-{
-    myHubManual = b;
-    hubCheckBox->setChecked( b );
-}
-
-void settingDialog::setSwitchSockets(unsigned int i)
-{
-    mySwitchSockets = i;
-    int arrayPort[] = {4,5,8,12,16,24,32,48};
-    for (i = 0 ; i < sizeof(arrayPort)/sizeof(arrayPort[0]) ; i++) {
-        if (switchComboBox->itemText(i).toInt() == mySwitchSockets)  {
-            switchComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
-}
-
-void settingDialog::setSwitchManual(bool b)
-{
-    mySwitchManual = b;
-    switchCheckBox->setChecked(b);
-}
-
-void settingDialog::setRouterSockets(unsigned int i)
-{
-    myRouterSockets = i;
-    int arrayPort[] = {1,2,4,5,7,8,9};
-    for (i = 0 ; i < sizeof(arrayPort)/sizeof(arrayPort[0]) ; i++) {
-        if (routerComboBox->itemText(i).toInt() == myRouterSockets)  {
-            routerComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
+    routerComboBox->setCurrentIndex( routerComboBox->findText(
+                        QString::number( appSetting::defaultRouterCount() ) ) );
 }
 
 void settingDialog::apply()
 {
-    myComputerSockets = computerComboBox->currentText().toInt();
-    myHubSockets = hubComboBox->currentText().toInt();
-    mySwitchSockets = switchComboBox->currentText().toInt();
-    myHubManual = hubCheckBox->isChecked();
-    mySwitchManual = switchCheckBox->isChecked();
-    myRouterSockets = routerComboBox->currentText().toInt();
-    myTtlArp = sp_ttlArp->value();
-    myTtlMac = sp_ttlMac->value();
-    myRip = sp_rip->value();
-    emit sendApply();
+    appSetting::setDefaultComputerCount( computerComboBox->currentText().toInt() );
+    appSetting::setDefaultHubCount(  hubComboBox->currentText().toInt() );
+    appSetting::setDefaultSwitchCount(  switchComboBox->currentText().toInt() );
+    appSetting::setDefaultRouterCount(  routerComboBox->currentText().toInt() );
+    appSetting::setDefaultHubManual( hubCheckBox->isChecked() );
+    appSetting::setDefaultSwitchManual( switchCheckBox->isChecked() );
+    appSetting::setTtlArp( sp_ttlArp->value() );
+    appSetting::setTtlMac( sp_ttlMac->value() );
     if ( sender() == btn_ok ) accept();
 }
 
-void settingDialog::setTtlArp(int i)
-{
-    myTtlArp = i;
-    sp_ttlArp->setValue(i);
-}
-
-void settingDialog::setTtlMac(int i)
-{
-    myTtlMac = i;
-    sp_ttlMac->setValue(i);
-}
-
-void settingDialog::setRip(int i)
-{
-    myRip = i;
-    sp_rip->setValue(i);
-}

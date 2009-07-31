@@ -1,9 +1,16 @@
 #include "routemodel.h"
+#include <QtDebug>
 
 routeModel::routeModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {    
     head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
             << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
+}
+
+routeModel::~routeModel()
+{
+    qDeleteAll(table);
+    table.clear();
 }
 
 int routeModel::rowCount(const QModelIndex &r) const
@@ -22,7 +29,7 @@ QVariant routeModel::headerData( int s , Qt::Orientation o, int role ) const
 {
     if ( table.isEmpty() ) return QVariant();
     if ( o == Qt::Horizontal )
-        if ( role == Qt::DisplayRole ) return head.at(s);
+        if ( role == Qt::DisplayRole ) return head.at(s);        
     if ( o == Qt::Vertical )
         if ( role == Qt::DisplayRole ) return s+1;
     return QAbstractTableModel::headerData(s, o, role);
@@ -50,3 +57,108 @@ QVariant routeModel::data(const QModelIndex &r, int role /* = Qt::DisplayRole */
     return QVariant();
 }
 
+/*!
+  Добавляет в таблицу маршрутизации новую запись.
+  @param d - сеть назначения.
+  @param m - маска сети.
+  @param g - адрес следующего маршрутизатора.
+  @param o - интерфейс с которого отправляем.
+  @param metr - метрика
+  @param mode - источник записи.
+  @return указатель на новую запись
+*/
+routeRecord* routeModel::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode)
+{
+    routeRecord *r = new routeRecord;
+    r->dest = d;
+    r->mask = m;
+    r->metric = metr;
+    r->gateway = g;
+    r->mode = mode;
+    r->time = 0;
+    r->change = noChanged;
+    r->out = o;
+    return addToTable(r);
+}
+//---------------------------------------------------------------
+/*!
+  Добавляет запись в таблицу маршрутизации.
+  @param r - указатель на запись.
+  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
+  @return указатель добавленную на запись.
+*/
+routeRecord* routeModel::addToTable(routeRecord *r)
+{
+    table << r;
+    qStableSort(table.begin(),table.end(),routeGreat);    
+    r->change = changed;
+    reset();
+    return r;    
+}
+//------------------------------------------------------------
+void routeModel::deleteFromTable(int n)
+{
+    int v = 0;
+    foreach ( routeRecord *i , table )
+        if ( v++ == n ) {
+            deleteFromTable(i);
+            return;
+        }
+}
+/*!
+  Удаляет запись из таблицы маршрутизации.
+  @param r - указатель на запись.
+  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
+*/
+void routeModel::deleteFromTable(routeRecord *r)
+{
+    r->change = changed;
+    table.removeOne(r);
+    delete r;
+    qStableSort(table.begin(),table.end(),routeGreat);
+    reset();
+}
+//--------------------------------------------------------------
+/*!
+  Находит в таблице маршрутизации.
+  @param a - адрес назначения.
+  @return указатель на запись, если такой записи нет то NULL.
+*/
+routeRecord* routeModel::recordAt(const ipAddress &a) const
+{
+    foreach ( routeRecord *i , table )
+        if ( i->dest == ( a & i->mask ) ) return i;
+    return NULL;
+}
+//---------------------------------------------
+
+void routeModel::checkConnectedNet(ipAddress ip, ipAddress mask, bool add)
+{
+    ipAddress dest = mask & ip;
+    foreach ( routeRecord *i , table )
+        if ( i->dest == dest && i->mask == mask ) {
+            if ( i->gateway == ip && add) return;
+            deleteFromTable(i);
+            if ( add ) break; else return;
+        }
+    addToTable( dest , mask , ip , ip , 0 , connectMode );
+}
+
+/*!
+  @return строчка описывающая источник записи.
+*/
+QString routeRecord::modeString() const
+{
+    switch ( mode ) {
+        case routeModel::staticMode : return QObject::trUtf8("Статическая");
+        case routeModel::ripMode : return QObject::trUtf8("RIP");
+        case routeModel::connectMode : return QObject::trUtf8("Подключена");
+    }
+    return QString();
+}
+//----------------------------------------------------------------
+
+bool routeModel::isConnectedMode(QModelIndex curr)
+{
+    return (table.at(curr.row())->modeString() != trUtf8("Подключена"));
+}

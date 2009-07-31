@@ -38,7 +38,7 @@ void sendDialog::checkSelected(int cur)
 void sendDialog::checkAccept()
 {
     if (myState == sender) {
-        mySize = sizeBox->value();
+        mySize = sizeSlider->value();
         myBroadcast = check->checkState();
         if ( rtn_tcp->isChecked() ) myProtocol = TCP;
         else myProtocol = UDP;

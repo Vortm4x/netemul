@@ -14,7 +14,6 @@ public:
     tcpPacket(const QByteArray &b);
 protected:
     friend QDataStream& operator<<( QDataStream &stream, const tcpPacket &p );
-    friend QDataStream& operator>>( QDataStream &stream, tcpPacket &p );
 };
 
 #endif // TCPPACKET_H

@@ -1,10 +1,11 @@
 #include "cabledev.h"
 #include "device.h"
 #include "deviceport.h"
+#include "appsetting.h"
 
 cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
 {
-    mySpeed = s;
+    mySpeed = s; // Скорость кабеля.
     myStartPort = NULL;
     myEndPort = NULL;
     myChecked = false;
@@ -36,10 +37,22 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     else painter->setPen(QPen(Qt::black,1.7)); // Иначе черным
     painter->drawLine(line());
     painter->setPen(QPen(Qt::black,1));
+
+//    if ( myStreams.isEmpty() ) return ;
+//    qreal min = 1;
+//    qreal max = 0;
+//    foreach ( bitStream *i , myStreams ) {
+//        if ( i->pos > max ) max = i->pos;
+//        if ( i->pos < min ) min = i->pos;
+//    }
+//    painter->setPen(QPen(Qt::red,2));
+//    painter->drawLine( line().pointAt(min) , line().pointAt(max) );
+
     foreach ( bitStream *i , myStreams ) {
         painter->setBrush(i->color);
         painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
     }
+
 }
 //--------------------------------------------------------------------
 void cableDev::updatePosition()

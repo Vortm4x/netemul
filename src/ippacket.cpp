@@ -1,33 +1,18 @@
 #include "ippacket.h"
 
-ipPacket::ipPacket()
-{
-}
-
-ipPacket& ipPacket::operator=(const ipPacket &other)
-{
-    mySender = other.mySender;
-    myReceiver = other.myReceiver;
-    data = other.data;
-    return *this;
-}
-
 ipPacket::ipPacket(const QByteArray &b)
 {
+    d = new ipPacketData;
     QDataStream s(b);
-    s >> mySender >> myReceiver >> myUpProtocol >> data;
+    s >> d->sender >> d->receiver >> d->upProtocol >> d->data;
 }
 
-/*!
-  Копирующий конструктор класса.
-*/
-ipPacket::ipPacket(const ipPacket &other)
+ipPacket::ipPacket(ipAddress s,ipAddress r)
 {
-    mySender = other.mySender;
-    myReceiver = other.myReceiver;
-    data = other.data;
+    d = new ipPacketData;
+    d->sender = s ;
+    d->receiver = r;
 }
-//--------------------------------------------------
 /*!
   Проверяет является ли пакет широковещательным.
   @param mask - маска сети, по которой идет проверка.
@@ -36,15 +21,37 @@ ipPacket::ipPacket(const ipPacket &other)
 bool ipPacket::isBroadcast(const ipAddress mask) const
 {
     ipAddress a = ~mask;
-    if ( ( myReceiver & a ) == a) return true;
+    if ( ( d->receiver & a ) == a) return true;
     return false;
 }
 //----------------------------------------------------
 QByteArray ipPacket::toData() const
 {
+    return d->toData();
+}
+
+//----------------------------------------------------
+//----------------------------------------------------
+
+/*!
+  * Переводит пакет в массив байт.
+*/
+QByteArray ipPacketData::toData() const
+{
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);
-    s << mySender << myReceiver << myUpProtocol << data;
+    s << sender << receiver << upProtocol << data;
     return t;
+}
+
+/*!
+ * Копирующий конструктор данных.
+*/
+ipPacketData::ipPacketData(const ipPacketData &other) : QSharedData(other)
+{
+    sender = other.sender;
+    receiver = other.receiver;
+    data = other.data;
+    upProtocol = other.upProtocol;
 }
 

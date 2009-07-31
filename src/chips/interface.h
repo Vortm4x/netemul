@@ -4,13 +4,14 @@
 #include <QMultiMap>
 #include <QQueue>
 
-#include "arppacket.h"
 #include "abstractchip.h"
 #include "ippacket.h"
+#include "arppacket.h"
 
 class frame;
 struct arpRecord;
 class cableDev;
+class arpModel;
 
 class interface : public abstractChip
 {
@@ -19,11 +20,11 @@ public:
     interface(const QString &name);
     interface() { }
     ~interface();
-    void receiveEvent(frame *fr);
-    void receiveIp(ipPacket *ip);
-    void receiveArp(arpPacket *arp);
-    void sendPacket(ipPacket *p,ipAddress gw = ipAddress("0.0.0.0"));
-    void sendBroadcast(ipPacket *p);
+    void receiveEvent(frame &fr,devicePort*);
+    void receiveIp(ipPacket &ip);
+    void receiveArp(arpPacket &arp);
+    void sendPacket(ipPacket &p,ipAddress gw = ipAddress("0.0.0.0"));
+    void sendBroadcast(ipPacket &p);
     void updateArp();
     void clearArp();
     const devicePort* socket() const { return mySocket; }
@@ -33,23 +34,29 @@ public:
     void deciSecondEvent();
     void sendArpRequest(ipAddress a);
     void sendArpResponse(macAddress m, ipAddress a);
+    bool isBusy() const;
 
-    ipPacket* popPacket() { return buffer.dequeue(); }
+    ipPacket popPacket() { return buffer.dequeue(); }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
     void removeFromTable (QString ip);
-    frame* createFrame( macAddress receiverMac , int t);
-    QList<arpRecord*> arpTable() const { return myArpTable; }
+    frame createFrame( macAddress receiverMac , int t);
+    bool hasReceive() const { return !buffer.isEmpty(); }
+    ipPacket popFromReceive() { return buffer.dequeue(); }
+    void setChecked(bool b);
+    //arpModel* arpTable() const { return myArpTable; }
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
 private:
+    void pushToSocket(frame &f);
     QString myName;
-    QQueue<ipPacket*> buffer; //!< Очередь входящих ip-пакетов.
+    QQueue<ipPacket> buffer; //!< Очередь входящих ip-пакетов.
     devicePort *mySocket;
     QList<arpRecord*> myArpTable;
-    QMultiMap<ipAddress,ipPacket*> myWaits;
+    //arpModel *myArpTable;
+    QMultiMap<ipAddress,ipPacket> myWaits;
 };
 
 struct arpRecord {
@@ -62,7 +69,5 @@ struct arpRecord {
         else return QObject::trUtf8("Динамическая");
     }
 };
-
-
 
 #endif // INTERFACE_H

@@ -2,8 +2,9 @@
 #define ROUTEMODEL_H
 
 #include <QAbstractTableModel>
-#include "ipaddress.h"
 #include <QStringList>
+#include "ipaddress.h"
+
 
 struct routeRecord {
 public:
@@ -23,12 +24,23 @@ public:
 class routeModel : public QAbstractTableModel
 {
 public:
+    enum { connectMode = 3 , staticMode = 4 , ripMode = 5 };
+    enum { changed = 0 , noChanged = 1 };
     routeModel(QObject *parent = 0);
+    ~routeModel();
     int rowCount( const QModelIndex &r = QModelIndex()) const;
     int columnCount( const QModelIndex &r = QModelIndex() ) const;
     QVariant headerData( int s , Qt::Orientation o, int role ) const;
     Qt::ItemFlags flags(const QModelIndex &r) const;
     QVariant data(const QModelIndex &r, int role = Qt::DisplayRole ) const;
+
+    routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
+    routeRecord* addToTable(routeRecord *r);
+    void deleteFromTable(int n);
+    void deleteFromTable(routeRecord *r);
+    routeRecord* recordAt(const ipAddress &a) const;
+    void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
+    bool isConnectedMode(QModelIndex curr);
 private:
     QList<routeRecord*> table;
     QStringList head;
@@ -46,5 +58,19 @@ inline QDataStream& operator>>(QDataStream &stream, routeRecord &rec)
     stream >> rec.dest >> rec.mask >> rec.gateway >> rec.time >> rec.metric >> rec.out;
     return stream;
 }
+
+inline bool operator<(const routeRecord &e1 , const routeRecord &e2)
+{
+    if ( e1.mask != e2.mask ) return e1.mask < e2.mask;
+    return e1.dest < e2.dest;
+}
+
+inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
+{
+    if ( e1.mask != e2.mask ) return e1.mask > e2.mask;
+    return e1.dest < e2.dest;
+}
+
+inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2) { return *e1 > *e2; }
 
 #endif // ROUTEMODEL_H

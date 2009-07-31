@@ -11,7 +11,7 @@ class switchChip : public boxChip
 public:
     switchChip(int c = 4);
     ~switchChip();
-    void receiveEvent(frame *fr,devicePort *sender);
+    void receiveEvent(frame &fr,devicePort *sender);
     void deleteFromTable(macAddress mac);
     void updateMac();
     void dialog();

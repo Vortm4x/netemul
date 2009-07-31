@@ -29,6 +29,8 @@ public:
     QRectF boundingRect() const {
         return devRect;
     }
+    bool isBusy() const { return impl->isBusy(); }
+    void updateCables();
     void setMenu(QMenu *context) { popUpMenu = context; }
     QString tableName() { return impl->tableName(); }
     QString socketName(const cableDev *c) const { return impl->socketName(c); }
@@ -49,8 +51,6 @@ public:
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
 
     QList<cableDev*> cables() const { return myCableList; }
-    QString nextName() { return QString("eth%1").arg(count++); }
-    virtual void showTable() { }
     bool hasTable() const { return impl->hasTable(); }
 private:
     deviceImpl *impl;
@@ -60,7 +60,6 @@ protected:
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
-    int count;
 };
 //--------------------------------------------------------------------
 /*!

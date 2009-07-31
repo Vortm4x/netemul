@@ -2,12 +2,10 @@
 #define DEVICEPORT_H
 
 #include <QQueue>
-#ifndef __TESTING__
-#endif
+#include "frame.h"
 
 class macAddress;
 class cableDev;
-class frame;
 
 /*!
   Класс представляе собой место соединения кабеля с устройством(сокет, гнездо, отверстие).
@@ -20,28 +18,27 @@ class devicePort
 public:
     devicePort();
     ~devicePort();
-    bool isBusy() const { return myBusy; }
-    void setBusy(bool cur) { myBusy = cur; }
+    bool isBusy() const { return !senderQueue.isEmpty() || !receiveQueue.isEmpty(); }
     bool isConnect() const { return myConnect;}
     void setNum(int n) { myNum = n; }
     int num() const { return myNum; }
-    void pushToSend(frame *f) { senderQueue.enqueue(f); }
+    void pushToSend(frame &f) { senderQueue.enqueue(f); }
     bool isCableConnect(const cableDev *c) const;
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
-    frame* popFromReceive() { if (receiveQueue.isEmpty() ) return 0; return receiveQueue.dequeue(); }
-    void sendFrame(frame *t);
+    frame popFromReceive() { return receiveQueue.dequeue(); }
+    void sendFrame(frame t);
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c);
+    bool hasReceive() const { return !receiveQueue.isEmpty(); }
 #endif
 private:
     int myNum;
-    QQueue<frame*> senderQueue;
-    QQueue<frame*> receiveQueue;
+    QQueue<frame> senderQueue;
+    QQueue<frame> receiveQueue;
     cableDev *myCable;
     bool myConnect;
-    bool myBusy;
 };
 //------------------------------------------------------
 

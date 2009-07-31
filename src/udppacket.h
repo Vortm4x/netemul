@@ -2,33 +2,42 @@
 #define UDPPACKET_H
 
 #include <QDataStream>
+#include <QSharedData>
 
-
+class udpPacketData : public QSharedData
+{
+public:
+    udpPacketData() { }
+    udpPacketData(const udpPacketData &other);
+    ~udpPacketData() { }
+    QByteArray toData() const;
+    friend class udpPacket;
+private:
+    quint16 sender; //!< Порт отправителя
+    quint16 receiver; //!< Порт получателя
+    QByteArray data; //!< Поле данных
+};
 /*!
   Реализует udp-дейтаграмму
 */
 class udpPacket
 {
 public:
-    udpPacket();
+    udpPacket() { d = new udpPacketData; }
     udpPacket(const QByteArray &b);
     udpPacket(const udpPacket &u);
     ~udpPacket() { }
-    udpPacket& operator=(const udpPacket &u);
     QByteArray toData() const;
-    int size() const { return data.size(); }
-    void setSender( quint16 i ) { mySender = i;}
-    void setReceiver( quint16 i ) { myReceiver = i; }
-    quint16 sender() const { return mySender; }
-    quint16 receiver() const { return myReceiver; }
-    void pack(const QByteArray &b) { data = b; }
-    QByteArray& unpack() { return data; }
+    int size() const { return d->data.size(); }
+    void setSender( quint16 i ) { d->sender = i;}
+    void setReceiver( quint16 i ) { d->receiver = i; }
+    quint16 sender() const { return d->sender; }
+    quint16 receiver() const { return d->receiver; }
+    void pack(const QByteArray &b) { d->data = b; }
+    QByteArray unpack() const { return d->data; }
 protected:
+    QSharedDataPointer<udpPacketData> d;
     friend QDataStream& operator<<( QDataStream &stream, const udpPacket &p );
-    friend QDataStream& operator>>( QDataStream &stream, udpPacket &p );
-    quint16 mySender; //!< Порт отправителя
-    quint16 myReceiver; //!< Порт получателя
-    QByteArray data; //!< Поле данных
 };
 //-----------------------------------------------------
 /*!
@@ -39,23 +48,7 @@ protected:
 */
 inline QDataStream& operator<<( QDataStream &stream, const udpPacket &p )
 {
-    stream << p.myReceiver;
-    stream << p.mySender;
-    stream << p.data;
-    return stream;
-}
-//-------------------------------------------------------
-/*!
-  Извлекает из потока udp-дейтаграмму
-  @param stream - поток для чтения.
-  @param p - извлекаемый пакет.
-  @return ссылку на результирующий поток.
-*/
-inline QDataStream& operator>>( QDataStream &stream, udpPacket &p )
-{
-    stream >> p.myReceiver;
-    stream >> p.mySender;
-    stream >> p.data;
+    stream << p.toData();
     return stream;
 }
 //-------------------------------------------------------

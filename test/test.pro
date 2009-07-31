@@ -8,5 +8,5 @@ SUBDIRS = mac \
 	ippacket \
 	ipaddress \
 	frame \
-	boxchip
+	boxchip \
 # Input

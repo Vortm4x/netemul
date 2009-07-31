@@ -7,6 +7,7 @@ include(src/controls/controls.pri)
 include(src/devices/devices.pri)
 include(src/models/models.pri)
 include(src/dialogs/dialogs.pri)
+include(src/other/other.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -20,7 +21,8 @@ INCLUDEPATH += . \
     src/programms \
     src/devices \
     src/models \
-    src/dialogs
+    src/dialogs \
+    src/other
 QT += script
 win32 { 
     message("Static link ...")
@@ -32,9 +34,11 @@ contains(QT_CONFIG, opengl) {
     message("OpenGL connected ...")
     QT += opengl
 }
-contains(QT_CONFIG, scripttools) {
-    message("Debugger connected ...")
-    QT += scripttools
+debug {
+    contains(QT_CONFIG, scripttools) {
+        message("Debugger connected ...")
+        QT += scripttools
+    }
 }
 OBJECTS_DIR = build
 MOC_DIR = build

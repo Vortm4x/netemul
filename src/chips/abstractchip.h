@@ -8,7 +8,7 @@
 #include <QDataStream>
 #endif
 
-
+class frame;
 class devicePort;
 class ipPacket;
 
@@ -25,12 +25,15 @@ public:
 
     QString staticsString() const;
 #ifndef __TESTING__
+    void checkReceive(frame &f);
+    void checkSender(frame &f);
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
     ipAddress mask() const { return myMask; }
+    virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     void setMac(const macAddress &m) { myMac = m; }
-    void setIp(const QString str) { myIp.setIp(str); }
-    void setMask(const QString str) { myMask.setIp(str); }
+    void setIp(const QString str) { if ( !str.isEmpty() ) myIp.setIp(str); }
+    void setMask(const QString str) { if ( !str.isEmpty() ) myMask.setIp(str); }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 #endif

@@ -17,7 +17,7 @@ public:
     void setText(QString str);
     ipAddress ipText() const { return ipAddress(text()); }
     QString text() const;
-    void clear();
+    void clear();   
 public slots:
     void setDefaultMask(quint8 u);
     void changeMask(QString s);

@@ -20,6 +20,7 @@ public:
     void setManual(bool c) { myManual = c; }
     bool isManual() { return myManual; }
     void deciSecondTimerEvent();
+    bool isBusy() const { return chip->isBusy(); }
 public slots:
     void setSocketsCount(int n) { chip->setSocketsCount(n); }
 protected:

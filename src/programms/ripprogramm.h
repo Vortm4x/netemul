@@ -4,6 +4,7 @@
 #include "programmrep.h"
 
 class smartDevice;
+class routeModel;
 class routeRecord;
 class ipPacket;
 
@@ -18,7 +19,7 @@ public:
     enum { defaultTtl = 30 , RIP = 50 };
     ripProgramm();
     void setDevice(smartDevice *s) { sd = s; }
-    void execute(ipPacket *p);
+    void execute(ipPacket &p);
     void checkTable( routeRecord *r );
     void incTime();
     void sendUpdate(bool isAll);
@@ -30,6 +31,7 @@ private:
     smartDevice *sd;
     int timer;
     int interval;
+    routeModel *model;
 };
 //----------------------------------------------
 

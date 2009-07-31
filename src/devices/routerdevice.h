@@ -8,7 +8,7 @@ class routerDevice : public smartDevice
 public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
-    routerDevice(int c = 4);
+    routerDevice(int c = 0);
     void dialog();
 protected:
     void write(QDataStream &stream) const;

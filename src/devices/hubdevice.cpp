@@ -1,8 +1,11 @@
 #include "hubproperty.h"
 #include "hubdevice.h"
+#include "appsetting.h"
 
-hubDevice::hubDevice(int c)
+hubDevice::hubDevice(int c /* = 0 */ )
 {
+    if (!c) c = appSetting::defaultHubCount();
+    myManual = appSetting::defaultHubManual();
     chip = new hubChip(c);
     setNote( QObject::trUtf8( "Концентратор" ) );
 }

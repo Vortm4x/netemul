@@ -2,10 +2,12 @@
 #include "tableswitch.h"
 #include "switchproperty.h"
 #include "switchchip.h"
-#include "frame.h"
+#include "appsetting.h"
 
-switchDevice::switchDevice(int c)
+switchDevice::switchDevice(int c /* =0 */)
 {
+    if (!c) c = appSetting::defaultSwitchCount();
+    myManual = appSetting::defaultSwitchManual();
     chip = new switchChip(c);
     setNote(trUtf8("Коммутатор"));
 }

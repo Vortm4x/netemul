@@ -1,6 +1,5 @@
 #include "interface.h"
 #include "frame.h"
-#include "arppacket.h"
 #include "deviceport.h"
 #include <QList>
 #include <QMessageBox>
@@ -16,42 +15,48 @@ interface::~interface()
     clearArp();
 }
 
-void interface::receiveEvent(frame *fr)
+void interface::pushToSocket(frame &f)
 {
-    if ( fr->type() == frame::ip ) {
-        ipPacket *p = new ipPacket(fr->unpack());
+    checkSender(f);
+    mySocket->pushToSend(f);
+}
+
+void interface::receiveEvent(frame &fr,devicePort*)
+{
+    checkReceive(fr);
+    if ( fr.type() == frame::ip ) {
+        ipPacket p(fr.unpack());
         receiveIp(p);
     }
-    if ( fr->type() == frame::arp ) {
-        arpPacket *p = new arpPacket(fr->unpack());
+    if ( fr.type() == frame::arp ) {
+        arpPacket p(fr.unpack());
         receiveArp(p);
     }
 }
 
-void interface::sendBroadcast(ipPacket *p)
+void interface::sendBroadcast(ipPacket &p)
 {
-    frame *f = createFrame( macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
-    f->setDifferent( frame::broadcast );
-    f->pack( p->toData() );
-    mySocket->pushToSend(f);
+    frame f = createFrame( macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
+    f.setDifferent( frame::broadcast );
+    f.pack( p.toData() );
+    pushToSocket(f);
 }
 
-void interface::sendPacket(ipPacket *p,ipAddress gw /* = ipAddress("0.0.0.0") */ )
+void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */ )
 {
-    if ( p->isBroadcast( myMask ) ) {
+    if ( p.isBroadcast( myMask ) ) {
         sendBroadcast(p);
         return;
     }
     ipAddress t;    
-    if ( gw.isEmpty() ) t = p->receiver();
+    if ( gw.isEmpty() ) t = p.receiver();
     else t = gw;
     foreach ( arpRecord *i , myArpTable )
         if ( i->ip == t ) {
-            frame *f = createFrame( i->mac , frame::ip );
+            frame f = createFrame( i->mac , frame::ip );
             i->time = 0; // Стартуем заново время жизни arp записи
-            f->pack( p->toData() );
-            mySocket->pushToSend(f);
-            delete p;
+            f.pack( p.toData() );
+            pushToSocket(f);
             return;
         }
     if ( myWaits.contains( t ) ) {
@@ -93,16 +98,16 @@ arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
     return t;
 }
 
-frame* interface::createFrame( macAddress receiverMac, int t)
+frame interface::createFrame( macAddress receiverMac, int t)
 {
-    frame *f = new frame;
-    f->setSender(myMac);
-    f->setReceiver(receiverMac);
-    f->setType(t);
+    frame f;
+    f.setSender(myMac);
+    f.setReceiver(receiverMac);
+    f.setType(t);
     return f;
 }
 
-void interface::receiveIp(ipPacket *ip)
+void interface::receiveIp(ipPacket &ip)
 {
     buffer.enqueue(ip);
 }
@@ -126,25 +131,25 @@ void interface::clearArp()
     myArpTable.clear();
 }
 
-void interface::receiveArp(arpPacket *arp)
+void interface::receiveArp(arpPacket &arp)
 {
-    if ( arp->type() == arpPacket::response ) {
-        if ( arp->receiverIp() == arp->senderIp() ) {
+    if ( arp.type() == arpPacket::response ) {
+        if ( arp.receiverIp() == arp.senderIp() ) {
             QMessageBox::warning(0, QObject::trUtf8("Некорректная работа сети"),
                                  QObject::trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
         }
-        addToTable(  arp->senderIp() , arp->senderMac() , dinamicMode );
-        QMultiMap<ipAddress,ipPacket*>::iterator i;
-        for ( i = myWaits.begin() ; i != myWaits.end() ; ++i ) {
-            if ( i.key() == arp->senderIp() ) {
+        addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
+        QMultiMap<ipAddress,ipPacket>::iterator i = myWaits.begin();
+        for ( ; i != myWaits.end() ; ++i ) {
+            if ( i.key() == arp.senderIp() ) {
                 sendPacket(i.value(),i.key());
                 myWaits.remove(i.key() , i.value() );
             }
         }
     }
     else {
-        arpRecord *t = addToTable(arp->senderIp() , arp->senderMac() , dinamicMode );
-        if ( arp->receiverIp() == myIp ) sendArpResponse(t->mac, t->ip);
+        arpRecord *t = addToTable(arp.senderIp() , arp.senderMac() , dinamicMode );
+        if ( arp.receiverIp() == myIp ) sendArpResponse(t->mac, t->ip);
     }
 }
 
@@ -163,11 +168,18 @@ bool interface::isCableConnect(const cableDev *c) const
     return mySocket->isCableConnect(c);
 }
 
+void interface::setChecked(bool b)
+{
+    mySocket->setChecked(b);
+}
+
 void interface::deciSecondEvent()
 {
     mySocket->queueEvent();
-    frame *f = mySocket->popFromReceive();
-    if ( f ) receiveEvent(f);
+    if ( mySocket->hasReceive() ) {
+        frame f = mySocket->popFromReceive();
+        receiveEvent( f, mySocket );
+    }
 }
 
 void interface::sendArpRequest(ipAddress a)
@@ -176,19 +188,19 @@ void interface::sendArpRequest(ipAddress a)
     arpPacket p(  macAddress() , myMac , a , myIp , arpPacket::request );
     macAddress m;
     m.setBroadcast();
-    frame *f = createFrame(m, frame::arp);
-    f->setDifferent(frame::broadcast);
-    f->pack(p.toData());
-    mySocket->pushToSend(f);
+    frame f = createFrame(m, frame::arp);
+    f.setDifferent(frame::broadcast);
+    f.pack(p.toData());
+    pushToSocket(f);
 }
 
 void interface::sendArpResponse(macAddress m, ipAddress a)
 {
     arpPacket p(m, myMac, a, myIp, arpPacket::response);
-    frame *f = createFrame(m, frame::arp);
-    f->pack(p.toData());
-    f->setDifferent(frame::normal);
-    mySocket->pushToSend(f);
+    frame f = createFrame(m, frame::arp);
+    f.pack(p.toData());
+    f.setDifferent(frame::normal);
+    pushToSocket(f);
 }
 
 void interface::write(QDataStream &stream) const
@@ -201,6 +213,11 @@ void interface::read(QDataStream &stream)
 {
     abstractChip::read(stream);
     stream >> myName;
+}
+
+bool interface::isBusy() const
+{
+    return mySocket->isBusy() || !buffer.isEmpty();
 }
 
 

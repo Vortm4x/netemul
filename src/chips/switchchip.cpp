@@ -13,20 +13,24 @@ switchChip::~switchChip()
     delete switchTable;
 }
 
-void switchChip::receiveEvent(frame *fr,devicePort *sender)
+void switchChip::receiveEvent(frame &fr,devicePort *sender)
 {
-    switchTable->contains( fr->sender() , sender );
+    checkReceive(fr);
 
-    devicePort *t = switchTable->portWithMac( fr->receiver() );
+    switchTable->contains( fr.sender() , sender );
+
+    devicePort *t = switchTable->portWithMac( fr.receiver() );
     if ( t && t->isConnect() ) {
+        checkSender(fr);
         t->pushToSend(fr);
         return;
     }
     foreach ( devicePort *i , mySockets ) {
-        if ( i != sender && i->isConnect() )
-            i->pushToSend(fr->copy());
+        if ( i != sender && i->isConnect() ) {
+            checkSender(fr);
+            i->pushToSend(fr);
+        }
     }
-    delete fr;
 }
 
 void switchChip::updateMac()

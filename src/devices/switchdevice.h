@@ -17,7 +17,7 @@ public:
     friend class switchTableSetting;
     enum { switchDev = 5 };
     int type() const { return switchDev; }
-    switchDevice(int c = 4); //Пока конструктор и прорисовка
+    switchDevice(int c = 0); //Пока конструктор и прорисовка
     ~switchDevice();
     void updateMac(int u);
     void dialog();

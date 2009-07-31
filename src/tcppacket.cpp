@@ -17,22 +17,7 @@ tcpPacket::tcpPacket(const QByteArray &b) : udpPacket(b)
 */
 QDataStream& operator<<( QDataStream &stream, const tcpPacket &p )
 {
-    stream << p.myReceiver;
-    stream << p.mySender;
-    stream << p.data;
+    stream << p.toData();
     return stream;
 }
 //-------------------------------------------------------
-/*!
-  Извлекает из потока tcp-сегмент
-  @param stream - поток для чтения.
-  @param p - извлекаемый пакет.
-  @return ссылку на результирующий поток.
-*/
-QDataStream& operator>>( QDataStream &stream, tcpPacket &p )
-{
-    stream >> p.myReceiver;
-    stream >> p.mySender;
-    stream >> p.data;
-    return stream;
-}

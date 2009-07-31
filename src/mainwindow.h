@@ -42,7 +42,6 @@ public slots:
     void setting();
     void test();
     void selectionChange();
-    void applySetting();
     void groupClicked(QAction *clk);
     void uncheck();
     void helpDialog();

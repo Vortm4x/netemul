@@ -1,5 +1,7 @@
 #include "smartdevice.h"
+#ifndef __TESTING__
 #include "routeeditor.h"
+#include "routemodel.h"
 #include "adapterproperty.h"
 #include "programmdialog.h"
 #include "udppacket.h"
@@ -11,12 +13,11 @@ smartDevice::smartDevice() : myRouter(false)
     myReady = false;
     isDirty = true;
     myInterfaces.clear();
+    myRouteTable = new routeModel(this);
 }
 
 smartDevice::~smartDevice()
 {
-    qDeleteAll(myRouteTable);
-    myRouteTable.clear();
 }
 
 const interface* smartDevice::adapter(const QString &s) const
@@ -40,68 +41,6 @@ interface* smartDevice::addInterface(const QString &name)
     return t;
 }
 
-/*!
-  Добавляет в таблицу маршрутизации новую запись.
-  @param d - сеть назначения.
-  @param m - маска сети.
-  @param g - адрес следующего маршрутизатора.
-  @param o - интерфейс с которого отправляем.
-  @param metr - метрика
-  @param mode - источник записи.
-  @return указатель на новую запись
-*/
-routeRecord* smartDevice::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode)
-{
-    routeRecord *r = new routeRecord;
-    r->dest = d;
-    r->mask = m;
-    r->metric = metr;
-    r->gateway = g;
-    r->mode = mode;
-    r->time = 0;
-    r->change = noChanged;
-    r->out = o;
-    return addToTable(r);
-}
-//---------------------------------------------------------------
-/*!
-  Добавляет запись в таблицу маршрутизации.
-  @param r - указатель на запись.
-  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
-  @return указатель добавленную на запись.
-*/
-routeRecord* smartDevice::addToTable(routeRecord *r,bool tr /* = true */)
-{
-    myRouteTable << r;
-    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
-    r->change = changed;
-    if ( tr ) sendInterrupt(addNet);
-    return r;
-}
-//------------------------------------------------------------
-void smartDevice::deleteFromTable(int n)
-{
-    int v = 0;
-    foreach ( routeRecord *i , myRouteTable )
-        if ( v++ == n ) {
-            deleteFromTable(i);
-            return;
-        }
-}
-/*!
-  Удаляет запись из таблицы маршрутизации.
-  @param r - указатель на запись.
-  @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
-*/
-void smartDevice::deleteFromTable(routeRecord *r,bool tr /* = true*/)
-{
-    r->change = changed;
-    if ( tr ) sendInterrupt(delNet);
-    myRouteTable.removeOne(r);
-    delete r;
-    qStableSort(myRouteTable.begin(),myRouteTable.end(),routeGreat);
-}
-//--------------------------------------------------------------
 interface* smartDevice::ipToAdapter(const ipAddress a)
 {
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
@@ -109,65 +48,25 @@ interface* smartDevice::ipToAdapter(const ipAddress a)
     return NULL;
 }
 
-void smartDevice::receivePacket(ipPacket *p, interface *f)
+void smartDevice::receivePacket(ipPacket &p, interface *f)
 {
-    if ( p->receiver() == f->ip() || p->isBroadcast(f->mask()) ) treatPacket(p);
+    if ( p.receiver() == f->ip() || p.isBroadcast(f->mask()) ) treatPacket(p);
     else routePacket(p);
 }
 /*!
   Маршрутизирует пакет.
   @param p - указатель на пакет.
 */
-void smartDevice::routePacket(ipPacket *p)
+void smartDevice::routePacket(ipPacket &p)
 {
     if ( !myRouter ) return; // Выходим если нет маршрутизации.
-    routeRecord *t = recordAt(p->receiver());
-    if ( !t ) {
-        delete p;
-        return;
-    }
+    routeRecord *t = myRouteTable->recordAt(p.receiver());
+    if ( !t ) return;
     ipAddress gw;
     if ( t->out != t->gateway ) gw = t->gateway;
     ipToAdapter(t->out)->sendPacket(p,gw);
 }
 //---------------------------------------------
-/*!
-  Находит в таблице маршрутизации.
-  @param a - адрес назначения.
-  @return указатель на запись, если такой записи нет то NULL.
-*/
-routeRecord* smartDevice::recordAt(const ipAddress &a) const
-{
-    foreach ( routeRecord *i , myRouteTable )
-        if ( i->dest == ( a & i->mask ) ) return i;
-    return NULL;
-}
-//---------------------------------------------
-/*!
-  Находит запись в таблице с указанным портом.
-  @param p - указатель на порт.
-  @return указатель на запись или NULL если такой записи нет.
-*/
-routeRecord* smartDevice::recordAt(const interface *p)
-{
-    foreach ( routeRecord *i , myRouteTable )
-        if ( ipToAdapter(i->out) == p ) return i;
-    return 0;
-}
-//-------------------------------------------------------
-/*!
-  @return строчка описывающая источник записи.
-*/
-QString routeRecord::modeString() const
-{
-    switch ( mode ) {
-        case smartDevice::staticMode : return QObject::trUtf8("Статическая");
-        case smartDevice::ripMode : return QObject::trUtf8("RIP");
-        case smartDevice::connectMode : return QObject::trUtf8("Подключена");
-    }
-    return QString();
-}
-//----------------------------------------------------------------
 /*!
   Вызывается при подключении или отключении сети от устройства, а также
   при смене ip-адреса или маски подсети.
@@ -175,38 +74,13 @@ QString routeRecord::modeString() const
 */
 void smartDevice::connectedNet(interface *p)
 {
-    checkReady();
-    bool add = p->isConnect(); // Показывает происходит ли добавление.
+    checkReady();    
     ipAddress ip = p->ip();
     ipAddress mask = p->mask();
-    if ( ip.isEmpty() || mask.isEmpty() ) {
-        checkTable();
-        return;
-    }
-    ipAddress dest = mask & ip;
-    foreach ( routeRecord *i , myRouteTable )
-        if ( i->dest == dest && i->mask == mask ) {
-            if ( i->gateway == ip && add) return;
-            deleteFromTable(i);
-            if ( add ) break; else return;
-        }
-    addToTable( dest , mask , ip , ip , 0 , connectMode );    
+    if ( ip.isEmpty() || mask.isEmpty() ) return;
+    myRouteTable->checkConnectedNet(ip, mask, p->isConnect());
 }
 //------------------------------------------------------------
-
-void smartDevice::checkTable()
-{
-    foreach ( routeRecord *i , myRouteTable )
-        if ( i->mode == connectMode && !i->dest.isLoopBack() ) {
-            bool b = false;
-            foreach ( interface *j , myInterfaces )
-                if ( (j->ip() & j->mask()) == i->dest ) {
-                    b = true;
-                    break;
-                }
-            if (!b) deleteFromTable(i);
-        }
-}
 
 void smartDevice::addConnection(const QString &port,cableDev *c)
 {
@@ -265,20 +139,17 @@ void smartDevice::read(QDataStream &stream)
 void smartDevice::setGateway(const QString &str)
 {
     ipAddress t(str);
-    foreach ( routeRecord *i , myRouteTable ) // Ищем старый шлюз
-        if ( i->dest.isEmpty() && i->mask.isEmpty() ) {
-            deleteFromTable(i); // Удаляем его
-            break;
-        }
+    routeRecord *i = myRouteTable->recordAt(trUtf8("0.0.0.0")); // Ищем старый шлюз
+    if ( i ) myRouteTable->deleteFromTable(i); // Удаляем его
     ipAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) return;
-    addToTable(ipAddress(),ipAddress(),t,a,0,staticMode);
+    myRouteTable->addToTable(ipAddress(),ipAddress(),t,a,0,routeModel::staticMode);
 }
 //--------------------------------------------------------------
 ipAddress smartDevice::gateway() const
 {
-    foreach ( routeRecord *i , myRouteTable )
-        if ( i->mask.isEmpty() && i->dest.isEmpty() ) return i->gateway;
+    routeRecord *i = myRouteTable->recordAt(trUtf8("0.0.0.0"));
+    if ( i ) return i->gateway;
     return ipAddress();
 }
 /*!
@@ -291,15 +162,12 @@ void smartDevice::sendMessage( const QString &a , int size , int pr)
 {
     Q_UNUSED(pr);
     ipAddress gw;
-    routeRecord *r = recordAt(a);
+    routeRecord *r = myRouteTable->recordAt(a);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
-    for ( int i = 0 ; i < size ; i++) {
-        ipPacket *t = new ipPacket;
-        t->setSender(r->out);
-        t->setReceiver(a);
+    ipPacket t(r->out,a);
+    for ( int i = 0 ; i < size ; i++)
         ipToAdapter(r->out)->sendPacket(t,gw);
-    }
 }
 //---------------------------------------------------------------
 /*!
@@ -316,23 +184,16 @@ void smartDevice::updateArp()
   Обрабатывает входящий пакет.
   @param p - указатель на пакет.
 */
-void smartDevice::treatPacket(ipPacket *p)
+void smartDevice::treatPacket(ipPacket &p)
 {
-    int v;
-    if ( p->upProtocol() == ipPacket::udp ) {
-        udpPacket u(p->toData());
-        v = u.receiver();
+    udpPacket u(p.toData());
+    int v = u.receiver();
+    foreach ( programm i , myProgramms ) {
+        if ( i->socket() == v && i->isEnable() ) {
+            i->execute(p);
+            break;
+        }
     }
-    else {
-        tcpPacket t(p->toData());
-        v = t.receiver();
-    }
-    programm t = programmAt( v );
-    if ( t->isEnable() ) {
-        t->execute(p);
-        return;
-    }
-    delete p;
 }
 //--------------------------------------------------
 /*!
@@ -397,7 +258,9 @@ bool smartDevice::sendInterrupt(int u)
 //-------------------------------------------------------
 void smartDevice::tableDialog()
 {
-    SHOW_DIALOG(routeEditor)
+    routeEditor *d = new routeEditor(this);
+    d->exec();
+    delete d;
 }
 
 void smartDevice::adapterDialog()
@@ -423,11 +286,17 @@ QStringList smartDevice::sockets() const
     return t;
 }
 
+void smartDevice::setCheckedSocket(const QString &str)
+{
+    foreach ( interface *i , myInterfaces )
+        if ( i->isConnect() ) i->setChecked( i->name() == str );
+}
+
 QStringList smartDevice::interfacesIp() const
 {
     QStringList t;
     for ( int  i = 0 ; i < myInterfaces.size() ; i++ )
-        t << myInterfaces.at(i)->ip().toString();
+        if ( myInterfaces.at(i)->isConnect() ) t << myInterfaces.at(i)->ip().toString();
     return t;
 }
 
@@ -440,8 +309,13 @@ QString smartDevice::socketName(const cableDev *c) const
 
 void smartDevice::deciSecondTimerEvent()
 {
-    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
-        myInterfaces[i]->deciSecondEvent();
+    foreach ( interface *i , myInterfaces ) {
+        if ( i->hasReceive() ) {
+            ipPacket p = i->popFromReceive();
+            receivePacket(p,i);
+        }
+        i->deciSecondEvent();
+    }
 }
 
 void smartDevice::secondTimerEvent()
@@ -482,6 +356,16 @@ bool smartDevice::isReady() const
     }
     return myReady;
 }
+
+
+bool smartDevice::isBusy() const
+{
+    foreach ( interface *i , myInterfaces )
+        if ( i->isBusy() ) return true;
+    return false;
+}
+
+#endif
 
 
 

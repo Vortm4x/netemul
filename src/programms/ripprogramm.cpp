@@ -1,7 +1,9 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 #include "udppacket.h"
+#include "routemodel.h"
 #include <QtDebug>
+
 
 /*!
   Инициализирует программу стандартными настройками.
@@ -31,9 +33,9 @@ void ripProgramm::incTime()
   маршрутизаторов
   @param b - Полученное сообщение.
 */
-void ripProgramm::execute(ipPacket *p)
+void ripProgramm::execute(ipPacket &p)
 {
-    udpPacket u(p->unpack());
+    udpPacket u(p.unpack());
     QDataStream d(u.unpack());
     int count = u.size();
     for ( int i = 0; i < count ; i++ ){
@@ -41,55 +43,54 @@ void ripProgramm::execute(ipPacket *p)
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
         t->metric++;
-        t->out = sd->findInterfaceIp( p->sender() );
-        t->gateway = p->sender();
+        t->out = sd->findInterfaceIp( p.sender() );
+        t->gateway = p.sender();
         t->time = 0;
-        t->mode = smartDevice::ripMode;
-        t->change = smartDevice::noChanged;
+        t->mode = routeModel::ripMode;
+        t->change = routeModel::noChanged;
         checkTable(t);
     }
-    delete p;
 }
 //---------------------------------------------------
 /*!
     Посылает rip-сообщение.
 */
-void ripProgramm::sendUpdate(bool isAll)
+void ripProgramm::sendUpdate(bool /*isAll*/)
 {
-    if ( !isAll) foreach ( routeRecord *i, sd->myRouteTable )
-                    if ( i->mode == smartDevice::ripMode ) i->time++;
-    foreach ( interface *i , sd->myInterfaces )
-        if ( i->isConnect() ) {
-            QByteArray t;
-            QDataStream d(&t , QIODevice::WriteOnly);            
-            if ( isAll ) {
-                foreach ( routeRecord *j , sd->myRouteTable ) {
-                    if ( j->out.isLoopBack() ) continue;
-                    if ( (j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
-                    d << j->dest << j->mask;
-                    if ( j->time == 6 ) d << infinity;
-                    else d << j->metric;
-                }
-            }
-            else {
-                routeRecord *r = findChanged();
-                if ( !r ) return;
-                if ( (r->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
-                d << r->dest << r->mask << r->metric;
-            }
-            ipPacket *p = new ipPacket; // Создаем новый пакет.
-            p->setSender( i->ip() );
-            p->setBroadcast( i->mask() );
-            p->setUpProtocol( ipPacket::udp );
-            udpPacket u; // И новую дейтаграмму
-            u.setSender(mySocket);
-            u.setReceiver(mySocket);
-            u.pack(t); // В нее вектор
-            p->pack(u.toData()); // Её в пакет.
-            i->sendPacket(p); // Пакет отправляем.
-        }
-    foreach ( routeRecord *i, sd->myRouteTable )
-        if ( i->time == 6 ) sd->deleteFromTable(i,false);
+//    if ( !isAll) foreach ( routeRecord *i, sd->myRouteTable )
+//                    if ( i->mode == routeModel::ripMode ) i->time++;
+//    foreach ( interface *i , sd->myInterfaces )
+//        if ( i->isConnect() ) {
+//            QByteArray t;
+//            QDataStream d(&t , QIODevice::WriteOnly);
+//            if ( isAll ) {
+//                foreach ( routeRecord *j , sd->myRouteTable ) {
+//                    if ( j->out.isLoopBack() ) continue;
+//                    if ( (j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
+//                    d << j->dest << j->mask;
+//                    if ( j->time == 6 ) d << infinity;
+//                    else d << j->metric;
+//                }
+//            }
+//            else {
+//                routeRecord *r = findChanged();
+//                if ( !r ) return;
+//                if ( (r->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
+//                d << r->dest << r->mask << r->metric;
+//            }
+//            ipPacket p; // Создаем новый пакет.
+//            p->setSender( i->ip() );
+//            p->setBroadcast( i->mask() );
+//            p->setUpProtocol( ipPacket::udp );
+//            udpPacket u; // И новую дейтаграмму
+//            u.setSender(mySocket);
+//            u.setReceiver(mySocket);
+//            u.pack(t); // В нее вектор
+//            p->pack(u.toData()); // Её в пакет.
+//            i->sendPacket(p); // Пакет отправляем.
+//        }
+//    foreach ( routeRecord *i, sd->myRouteTable )
+//        if ( i->time == 6 ) sd->deleteFromTable(i,false);
 }
 //---------------------------------------------------
 /*!
@@ -98,15 +99,15 @@ void ripProgramm::sendUpdate(bool isAll)
 */
 void ripProgramm::checkTable(routeRecord *r)
 {
-    routeRecord *i = sd->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
+    routeRecord *i = model->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
     if ( !i && r->metric < 16 ) { // Если её нет, добавляем эту и выходим.
-        sd->addToTable(r);
+        model->addToTable(r);
         return;
     }
     if ( !i ) return;
-    if ( i->mode != smartDevice::ripMode ) return; // Если это не RIP запись выходим.
+    if ( i->mode != routeModel::ripMode ) return; // Если это не RIP запись выходим.
     if ( r->metric >= 16 ) {
-        sd->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
+        model->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
         delete r;
         return;
     }
@@ -136,7 +137,7 @@ bool ripProgramm::interrupt(int u)
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
             if ( interval - timer > 3 ) sendUpdate(false);
-            t->change = smartDevice::noChanged;
+            t->change = routeModel::noChanged;
             return true;
         case smartDevice::delNet : // И когда удаляется тоже.
             t->metric = 16;
@@ -154,8 +155,8 @@ bool ripProgramm::interrupt(int u)
 */
 routeRecord* ripProgramm::findChanged() const
 {
-    foreach ( routeRecord *i , sd->myRouteTable )
-        if ( i->change == smartDevice::changed ) return i;
+//    foreach ( routeRecord *i , sd->myRouteTable )
+//        if ( i->change == routeModel::changed ) return i;
     return NULL;
 }
 //---------------------------------------------------

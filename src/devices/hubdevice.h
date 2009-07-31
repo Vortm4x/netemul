@@ -11,7 +11,7 @@ class hubDevice : public boxDevice
 public:
     int type() const { return hubDev; }
     enum { hubDev = 4 };
-    hubDevice(int c = 4);
+    hubDevice(int c = 0);
     ~hubDevice();
     void dialog();
 protected:

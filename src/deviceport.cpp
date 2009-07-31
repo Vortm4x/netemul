@@ -5,7 +5,6 @@
 devicePort::devicePort()
 {
     myConnect = false;
-    myBusy = false;
     myCable = 0;
 }
 
@@ -25,8 +24,7 @@ bool devicePort::isCableConnect(const cableDev *c) const
 */
 void devicePort::queueEvent()
 {
-    if ( senderQueue.isEmpty() ) { myBusy = false; return; }
-    myBusy = true;
+    if ( senderQueue.isEmpty() ) return;
     sendFrame( senderQueue.dequeue() );
 }
 //---------------------------------------------------
@@ -51,9 +49,9 @@ void devicePort::setConnect(bool cur,cableDev *cable)
   Отправляет кадр в сеть.
   @param t - указатель на кадр.
 */
-void devicePort::sendFrame(frame *t)
+void devicePort::sendFrame(frame t)
 {
-    myCable->input(t->toData(),this);
+    myCable->input(t.toData(),this);
 }
 //-----------------------------------------------------
 
@@ -64,7 +62,7 @@ void devicePort::setChecked(bool c)
 
 void devicePort::receiveFrame(QByteArray &b)
 {
-    frame *f = new frame(b);
+    frame f(b);
     receiveQueue.enqueue(f);
 }
 #endif

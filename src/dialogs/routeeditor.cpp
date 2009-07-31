@@ -1,20 +1,26 @@
 #include "routeeditor.h"
 #include "ipedit.h"
 #include "smartdevice.h"
+#include "routemodel.h"
 #include <QPushButton>
-#include <QTableWidget>
+#include <QTableView>
 #include <QSpinBox>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QComboBox>
 #include <QSettings>
+#include <QHeaderView>
 
-routeEditor::routeEditor()
+routeEditor::routeEditor(smartDevice *s)
 {
+    dev = s;    
     QVBoxLayout *all = new QVBoxLayout;
-    table = new QTableWidget(1,6);   
-    table->setSelectionBehavior( QAbstractItemView::SelectRows );
-    table->setMinimumSize( QSize(700,200) );
+    table = new QTableView;
+    model = dev->routeTable();
+    table->setModel(model);
+    table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
     all->addWidget(table);
     ip_dest = new ipEdit(trUtf8("Адрес назначения: "));
     all->addWidget(ip_dest);
@@ -26,6 +32,7 @@ routeEditor::routeEditor()
     temp->addWidget( new QLabel(trUtf8("Интерфейс: ")) );
     cb_out = new QComboBox;
     cb_out->setFixedWidth(250);
+    cb_out->addItems( dev->interfacesIp() );
     temp->addWidget(cb_out);
     temp->addStretch(1);
     all->addLayout(temp);
@@ -46,6 +53,7 @@ routeEditor::routeEditor()
     lay->addWidget( btn_add, 1, Qt::AlignLeft);
     btn_remove = new QPushButton(QIcon(":/im/images/edit_remove.png"),trUtf8("Удалить"));
     btn_remove->setFixedWidth(150);
+    btn_remove->setEnabled(false);
     connect( btn_remove , SIGNAL(clicked()) ,SLOT(deleteRecord()) );
     lay->addWidget(btn_remove, 1, Qt::AlignLeft);
     lay->addStretch(2);
@@ -55,7 +63,7 @@ routeEditor::routeEditor()
     all->addLayout(lay);
 
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
-    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()) );
+    connect( table->selectionModel() , SIGNAL(currentRowChanged(QModelIndex,QModelIndex)) , SLOT(checkSelection(QModelIndex)) );
     readSetting();
     setLayout(all);
 }
@@ -65,81 +73,32 @@ routeEditor::~routeEditor()
     writeSetting();
 }
 
-void routeEditor::setDevice(smartDevice *s)
-{
-    dev = s;
-    cb_out->addItems( s->interfacesIp() );
-    updateTable();
-}
-
-void routeEditor::updateTable()
-{
-    int n = 1;
-    table->clearContents();
-    table->setRowCount(0);
-    foreach ( routeRecord *i , dev->routeTable() ) {
-        table->insertRow(n-1);
-        QTableWidgetItem *temp = new QTableWidgetItem( i->dest.toString() );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,0,temp);
-        temp = new QTableWidgetItem( i->mask.toString() );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,1,temp);
-        temp = new QTableWidgetItem( i->gateway.toString() );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,2,temp);
-        temp = new QTableWidgetItem( i->out.toString() );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,3,temp);
-        temp = new QTableWidgetItem( trUtf8("%1").arg(i->metric) );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,4,temp);
-        temp = new QTableWidgetItem( trUtf8("%1").arg(i->modeString()) );
-        temp->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        table->setItem(n-1,5,temp);
-        n++;
-    }
-    correctSize();
-}
-
-void routeEditor::resizeEvent(QResizeEvent *e)
-{
-    Q_UNUSED(e);
-    correctSize();
-}
-
 void routeEditor::addRecord()
 {
-    dev->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() , sp_metr->value(),
-                     smartDevice::staticMode );
+    model->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() , sp_metr->value(),
+                     routeModel::staticMode );
     ip_dest->clear();
     ip_mask->clear();
     ip_gateway->clear();
     cb_out->setCurrentIndex(0);
     sp_metr->setValue(0);
-    updateTable();
+    btn_remove->setEnabled(false);
+
 }
 
 void routeEditor::deleteRecord()
 {
-    if ( table->selectedItems().isEmpty() ) return;
-    dev->deleteFromTable( table->currentRow() );
-    updateTable();
+    if ( !table->selectionModel()->hasSelection() ) return;
+    model->deleteFromTable( table->currentIndex().row() );
+    btn_remove->setEnabled(false);
 }
 
-void routeEditor::correctSize()
-{
-    int n = table->width();
-    for ( int i = 0 ; i < 6 ; i++ )
-        table->setColumnWidth(i,2*n/11);
-    table->setColumnWidth(4,n/11);
-}
 /*!
   Проверяет выделенное и при необходимости делает недоступной кнопку удалить.
 */
-void routeEditor::checkSelection()
+void routeEditor::checkSelection(QModelIndex curr)
 {
-    if ( !table->selectedItems().isEmpty() && table->item( table->currentRow() , 5 )->text() != trUtf8("Подключена") ) {
+    if ( curr.isValid() && model->isConnectedMode(curr) ) {
         btn_remove->setEnabled(true);
         return;
     }
@@ -174,3 +133,9 @@ void routeEditor::writeSetting() const
     s.endGroup();
 }
 //--------------------------------------------
+
+void routeEditor::updateTable()
+{
+
+}
+

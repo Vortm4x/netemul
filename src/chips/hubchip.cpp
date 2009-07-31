@@ -12,12 +12,12 @@ hubChip::~hubChip()
     mySockets.clear();
 }
 
-void hubChip::receiveEvent(frame *fr,devicePort *sender)
+void hubChip::receiveEvent(frame &fr,devicePort *sender)
 {
+    checkReceive(fr);
     foreach ( devicePort *i , mySockets )
-        if ( i != sender && i->isConnect() )
-            i->pushToSend( fr->copy() );
-#ifndef __TESTING__
-    delete fr; 
-#endif
+        if ( i != sender && i->isConnect() ) {
+            checkSender(fr);
+            i->pushToSend( fr );
+        }
 }

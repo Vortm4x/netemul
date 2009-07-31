@@ -14,7 +14,7 @@ class computer : public smartDevice
 public:
     enum { compDev = 3 };
     int type() const { return compDev; }
-    computer(int c = 1);
+    computer(int c = 0);
     ~computer() { }
 
     void dialog();

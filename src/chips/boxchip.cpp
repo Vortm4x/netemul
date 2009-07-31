@@ -81,12 +81,22 @@ void boxChip::deciSecondTimerEvent()
 {
     foreach ( devicePort *i , mySockets ) {
         i->queueEvent();
-        frame *t = i->popFromReceive();
-        if ( t ) receiveEvent(t,i);
+        if ( i->hasReceive() ) {
+            frame t = i->popFromReceive();
+            receiveEvent(t,i);
+        }
     }
 }
 #endif
 
+bool boxChip::isBusy() const
+{
+    foreach ( devicePort *i , mySockets )
+        if ( i->isBusy() ) return true;
+    return false;
+}
+
+#ifndef __TESTING__
 void boxChip::write(QDataStream &stream) const
 {
     abstractChip::write(stream);
@@ -100,3 +110,4 @@ void boxChip::read(QDataStream &stream)
     stream >> n;
     setSocketsCount(n);
 }
+#endif

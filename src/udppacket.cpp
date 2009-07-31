@@ -1,34 +1,31 @@
 #include "udppacket.h"
 
-udpPacket::udpPacket()
-{
-}
-
 QByteArray udpPacket::toData() const
 {
-    QByteArray t;
-    QDataStream s(&t,QIODevice::WriteOnly);
-    s << myReceiver << mySender << data;
-    return t;
+    return d->toData();
 }
 
 udpPacket::udpPacket(const QByteArray &b)
 {
+    d = new udpPacketData;
     QDataStream s(b);
-    s >> myReceiver >> mySender >> data;
+    s >> d->receiver >> d->sender >> d->data;
 }
 
-udpPacket::udpPacket(const udpPacket &u)
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+udpPacketData::udpPacketData(const udpPacketData &u) : QSharedData(u)
 {
-    mySender = u.mySender;
-    myReceiver = u.myReceiver;
+    sender = u.sender;
+    receiver = u.receiver;
     data = u.data;
 }
 
-udpPacket& udpPacket::operator=(const udpPacket &u)
+QByteArray udpPacketData::toData() const
 {
-    mySender = u.mySender;
-    myReceiver = u.myReceiver;
-    data = u.data;
-    return *this;
+    QByteArray t;
+    QDataStream s(&t,QIODevice::WriteOnly);
+    s << receiver << sender << data;
+    return t;
 }

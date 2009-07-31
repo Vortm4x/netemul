@@ -6,7 +6,6 @@
 
 class cableDev;
 class devicePort;
-class frame;
 
 class boxChip : public abstractChip
 {
@@ -20,11 +19,13 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     QString socketName(const cableDev *c) const;
-    virtual void receiveEvent(frame *fr,devicePort *sender) = 0;
     void deciSecondTimerEvent();
     devicePort* socket(const QString &name);
+    bool isBusy() const;
+#ifndef __TESTING__
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+#endif
 protected:
     QVector<devicePort*> mySockets;
 };

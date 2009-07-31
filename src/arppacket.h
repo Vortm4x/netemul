@@ -1,39 +1,50 @@
 #ifndef ARPPACKET_H
 #define ARPPACKET_H
 
+#include <QSharedData>
 #include "macaddress.h"
 #include "ipaddress.h"
+
+
+class arpPacketData : public QSharedData
+{
+public:
+    arpPacketData() { }
+    arpPacketData(const arpPacketData &other);
+    ~arpPacketData() { }
+    QByteArray toData() const;
+    friend class arpPacket;
+private:
+    quint8 type;
+    macAddress senderMac;
+    macAddress receiverMac;
+    ipAddress senderIp;
+    ipAddress receiverIp;
+};
 
 class arpPacket
 {
 public:
     arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , quint8 t);
-    arpPacket(const arpPacket &other);
-    arpPacket() { }
+    arpPacket(const arpPacket &other) : d(other.d) { }
+    arpPacket() { d = new arpPacketData; }
     arpPacket(const QByteArray &b);
-    ~arpPacket() { }
     QByteArray toData() const;
     enum { request = 0 , response = 1 };
-    void setType(int i) { myType = i; }
-    int type() const { return myType; }
-    void setSenderMac(macAddress m) { mySenderMac = m; }
-    void setSenderIp(ipAddress a) { mySenderIp = a; }
-    void setReceiverMac(macAddress m) { myReceiverMac = m; }
-    void setReceiverIp(ipAddress a) { myReceiverIp = a; }
-    macAddress senderMac() const { return mySenderMac; }
-    ipAddress senderIp() const { return mySenderIp; }
-    macAddress receiverMac() const  { return myReceiverMac; }
-    ipAddress receiverIp() const { return myReceiverIp; }
-    arpPacket& operator=(arpPacket &other);
+    void setType(int i) { d->type = i; }
+    int type() const { return d->type; }
+    void setSenderMac(macAddress m) { d->senderMac = m; }
+    void setSenderIp(ipAddress a) { d->senderIp = a; }
+    void setReceiverMac(macAddress m) { d->receiverMac = m; }
+    void setReceiverIp(ipAddress a) { d->receiverIp = a; }
+    macAddress senderMac() const { return d->senderMac; }
+    ipAddress senderIp() const { return d->senderIp; }
+    macAddress receiverMac() const  { return d->receiverMac; }
+    ipAddress receiverIp() const { return d->receiverIp; }
 private:
-    quint8 myType;
-    macAddress mySenderMac;
-    macAddress myReceiverMac;
-    ipAddress mySenderIp;
-    ipAddress myReceiverIp;
+    QSharedDataPointer<arpPacketData> d;
 protected:
     friend QDataStream& operator<<(QDataStream &stream,const arpPacket &p);
-    friend QDataStream& operator>>(QDataStream &stream,arpPacket &p);
 };
 //-------------------------------------------------------------------
 /*!
@@ -44,29 +55,9 @@ protected:
 */
 inline QDataStream& operator<<(QDataStream &stream,const arpPacket &p)
 {
-    stream << p.myType;
-    stream << p.mySenderMac;
-    stream << p.myReceiverMac;
-    stream << p.mySenderIp;
-    stream << p.myReceiverIp;
+    stream << p.toData();
     return stream;
 }
 //------------------------------------------------------------
-/*!
-  Извлекает arp-пакет из потока.
-  @param stream - поток для извлечения.
-  @param p - пакет в который извлекаем.
-  @return обновленный поток.
-*/
-inline QDataStream& operator>>(QDataStream &stream,arpPacket &p)
-{
-    stream >> p.myType;
-    stream >> p.mySenderMac;
-    stream >> p.myReceiverMac;
-    stream >> p.mySenderIp;
-    stream >> p.myReceiverIp;
-    return stream;
-}
-//--------------------------------------------------------------
 
 #endif // ARPPACKET_H

@@ -115,4 +115,12 @@ void device::deleteConnection(cableDev *c)
     update();
 }
 
+void device::updateCables()
+{
+    foreach ( cableDev *i , myCableList )
+        i->updatePosition();
+}
+
+
+
 

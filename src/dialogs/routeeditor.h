@@ -2,13 +2,16 @@
 #define ROUTEEDITOR_H
 
 #include <QDialog>
-class QTableWidget;
-class QPushbutton;
+#include <QModelIndex>
+class QTableView;
+class QPushButton;
 class QSpinBox;
 class QComboBox;
 
 class ipEdit;
 class smartDevice;
+class routeModel;
+
 /*!
   Реализует отображение таблицы маршрутизации.
 */
@@ -16,11 +19,8 @@ class routeEditor : public QDialog
 {
     Q_OBJECT
 public:
-    routeEditor();
+    routeEditor(smartDevice *s);
     ~routeEditor();
-    void updateTable();
-    void correctSize();
-    void setDevice(smartDevice *s);
 private:
     void readSetting();
     void writeSetting() const;
@@ -32,14 +32,14 @@ private:
     QPushButton *btn_add;
     QPushButton *btn_remove;
     QPushButton *btn_close;
-    QTableWidget *table;
+    QTableView *table;
+    routeModel *model;
     smartDevice *dev;
-protected:
-    void resizeEvent(QResizeEvent *e);
 public slots:
     void addRecord();
     void deleteRecord();
-    void checkSelection();
+    void checkSelection(QModelIndex curr);
+    void updateTable();
 };
 //--------------------------------------------------
 

@@ -3,6 +3,7 @@
 #include "device.h"
 #include "cabledev.h"
 #include "senddialog.h"
+#include "appsetting.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QMenu>
@@ -286,8 +287,7 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                         if (i.key()->type() != textItem::Type ) i.key()->setPos( calibrate(i.key()->scenePos()) );
                         if ( isDevice(i.key()) ) {
                             device *d = qgraphicsitem_cast<device*>(i.key());
-                            foreach ( cableDev* itemka, d->cables() )
-                                    itemka->updatePosition();
+                            d->updateCables();
                         }
                     }
                     coordMap.clear();
@@ -528,25 +528,25 @@ void myCanvas::saveScene(QString fileName)
 void myCanvas::timerEvent(QTimerEvent *e)
 {
     Q_UNUSED(e);
-    static int n = 10;
-    motionFrame();
+    ticTime();
+}
+//--------------------------------------------------------------
+void myCanvas::ticTime()
+{
+    static int n = 9;
+    foreach ( cableDev *t , connections)
+            if ( t->isBusy() ) t->motion();
     n--;
     foreach ( device *i, myDevices ) {
         i->deciSecondTimerEvent();
         if ( !n ) i->secondTimerEvent();
     }
-    if ( !n ) n = 10;
-}
-//--------------------------------------------------------------
-void myCanvas::motionFrame()
-{
-    foreach ( cableDev *t , connections)
-            if ( t->isBusy() ) t->motion();
+    if ( !n ) n = 9;
 }
 
-void myCanvas::whileMotion()
+void myCanvas::emulateTime()
 {
-    while ( !isEnd() ) motionFrame();
+   while ( !isEnd() ) ;//ticTime();
 }
 
 bool myCanvas::isEnd() const
@@ -554,6 +554,8 @@ bool myCanvas::isEnd() const
     foreach ( cableDev *t , connections ) {
         if ( t->isBusy() ) return false;
     }
+    foreach ( device *i , myDevices )
+        if ( i->isBusy() ) return false;
     return true;
 }
 
@@ -677,6 +679,18 @@ device* myCanvas::deviceWithImpl(deviceImpl *d)
     foreach ( device *i , myDevices )
         if ( i->contentDevice() == d ) return i;
     return 0;
+}
+
+int myCanvas::animateSpeed() const
+{
+    return appSetting::animateSpeed();
+}
+
+void myCanvas::setAnimateSpeed(int n)
+{
+    killTimer(myTimer);
+    myTimer = startTimer(n);
+    appSetting::setAnimateSpeed(n);
 }
 
 

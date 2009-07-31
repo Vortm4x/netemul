@@ -1,25 +1,12 @@
 #ifndef SMARTDEVICE_H
 #define SMARTDEVICE_H
 
-#include "interface.h"
 #include "deviceimpl.h"
+#include "interface.h"
 #include "programm.h"
 #include <QVector>
 
-struct routeRecord {
-public:
-    ipAddress dest;
-    ipAddress mask;
-    ipAddress gateway;
-    ipAddress out;
-    int time;
-    qint8 metric;
-    int mode;
-    quint8 change; //!< Флаг показывающий изменена запись или нет.
-    QString modeString() const;
-    friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
-    friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
-};
+class routeModel;
 
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
@@ -28,12 +15,10 @@ public:
 class smartDevice : public deviceImpl
 {
 public:
-    /*! Источники записи таблицы маршрутизации. */
-    enum { connectMode = 3 , staticMode = 4 , ripMode = 5 };
+    /*! Источники записи таблицы маршрутизации. */    
     enum { addNet = 100 , delNet = 101 };
     enum { UDP = 25 ,TCP = 26 };
-    /*! Значения для флага записи из таблицы маршрутизации. */
-    enum { changed = 0 , noChanged = 1 };
+    /*! Значения для флага записи из таблицы маршрутизации. */    
     smartDevice();
     virtual ~smartDevice();
     QString tableName() const { return trUtf8("Таблица маршрутизации"); }
@@ -44,6 +29,7 @@ public:
     bool isReady() const;
     void checkReady() const;
     void checkTable();
+    bool isBusy() const;
     QStringList sockets() const;
     QStringList interfacesIp() const;
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
@@ -55,33 +41,28 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a, int size , int pr);
-    void receivePacket(ipPacket *p,interface *f);
-    void treatPacket(ipPacket *p);
-    void routePacket(ipPacket *p);
+    void receivePacket(ipPacket &p,interface *f);
+    void treatPacket(ipPacket &p);
+    void routePacket(ipPacket &p);
     void connectedNet(interface *p);
     void deciSecondTimerEvent();
     void secondTimerEvent();
+    void setCheckedSocket(const QString &str);
     ipAddress findInterfaceIp(ipAddress a);
-    routeRecord* recordAt(const ipAddress &a) const;
-    routeRecord* recordAt(const interface *p);
     programm programmAt(const quint16 p) const;
     programm programmAt(const QString n) const;
     void removeProgramm(programm p);
     void installProgramm( programm p) { p->setDevice(this); myProgramms << p; }
     bool sendInterrupt(int u);
     int socketsCount() const { return myInterfaces.count(); }
-    QList<routeRecord*>& routeTable() { return myRouteTable; }
     QList<programm>& programms() { return myProgramms; }
-    routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
-    routeRecord* addToTable(routeRecord *r,bool tr = true);
-    void deleteFromTable(int n);
-    void deleteFromTable(routeRecord *r,bool tr = true);
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
     ipAddress gateway() const;
     friend class ripProgramm;
     friend class adapterSetting;
+    routeModel* routeTable() { return myRouteTable; }
 public slots:
     void setIp(const QString &a, const QString &ip);
     void setMask(const QString &a, const QString &ip);
@@ -95,23 +76,11 @@ protected:
     mutable bool isDirty;
     QVector<interface*> myInterfaces;
     QList<programm> myProgramms; //!< Программы установленные на устройстве.
-    QList<routeRecord*> myRouteTable; //!< Таблица маршрутизации.
+    routeModel *myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 };
 //-------------------------------------------------------------------
-inline bool operator<(const routeRecord &e1 , const routeRecord &e2)
-{
-    if ( e1.mask != e2.mask ) return e1.mask < e2.mask;
-    return e1.dest < e2.dest;
-}
-inline bool operator>(const routeRecord &e1 , const routeRecord &e2)
-{
-    if ( e1.mask != e2.mask ) return e1.mask > e2.mask;
-    return e1.dest < e2.dest;
-}
-inline bool routeGreat(const routeRecord *e1 , const routeRecord *e2) { return *e1 > *e2; }
-
 /*!
   Модель данных для настроек адаптеров.
 */
@@ -149,4 +118,6 @@ public:
 private:
     smartDevice *sd;
 };
+
+
 #endif // SMARTDEVICE_H

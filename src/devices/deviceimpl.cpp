@@ -16,25 +16,20 @@ void deviceImpl::read(QDataStream &stream)
     stream >> myNote;
 }
 
-void deviceImpl::setIp(const QString &a , const QString &ip)
+void deviceImpl::setIp(const QString& , const QString&)
 {
-    Q_UNUSED(a);
-    Q_UNUSED(ip);
 }
 
-void deviceImpl::setMask(const QString &a , const QString &ip)
+void deviceImpl::setMask(const QString&, const QString&)
 {
-    Q_UNUSED(a);
-    Q_UNUSED(ip);
+
 }
 
-void deviceImpl::setGateway(const QString &str)
+void deviceImpl::setGateway(const QString&)
 {
-    Q_UNUSED(str)
 }
 
-void deviceImpl::setSocketsCount(int n)
+void deviceImpl::setSocketsCount(int)
 {
-    Q_UNUSED(n)
 }
 

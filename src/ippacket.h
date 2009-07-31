@@ -1,7 +1,27 @@
 #ifndef IPPACKET_H
 #define IPPACKET_H
 
+#include <QSharedData>
 #include "ipaddress.h"
+
+/*!
+  * Содержит в себе разделяемые между ip пакетами данные.
+*/
+class ipPacketData : public QSharedData
+{
+public:
+    ipPacketData() { }
+    ipPacketData(const ipPacketData &other);
+    ~ipPacketData() {  }
+    friend class ipPacket;
+private:
+    ipAddress sender; //!< Адрес отправителя.
+    ipAddress receiver; //!< Адрес получателя.
+    qint8 upProtocol; //!< Протокол верхнего уровня
+    QByteArray data; //!< Данные протокола более высокого уровня.
+    QByteArray toData() const;
+};
+
 
 /*!
   Реализует ip-пакет, так же как и в реальной сети содержит адрес отправителя, получателя,
@@ -13,33 +33,30 @@ class ipPacket
 public:
     /*! Используется для обозначения протокола верхнего уровня. */
     enum { udp = 0 , tcp = 1 };
-    ipPacket();
+    ipPacket() { d = new ipPacketData; }
     ipPacket(const QByteArray &b);
+    ipPacket(ipAddress s,ipAddress r);
     ~ipPacket() { }
-    ipPacket(const ipPacket &other);
+    ipPacket(const ipPacket &other) : d(other.d) { }
     QByteArray toData() const;
-    ipPacket(ipAddress s,ipAddress r) { mySender = s ; myReceiver = r; }
-    ipAddress sender() const { return mySender; }
-    ipAddress receiver() const { return myReceiver; }
-    void setSender(ipAddress a) { mySender = a; }
-    void setReceiver(ipAddress a) { myReceiver = a; }
+    ipAddress sender() const { return d->sender; }
+    ipAddress receiver() const { return d->receiver; }
+    void setSender(ipAddress a) { d->sender = a; }
+    void setReceiver(ipAddress a) { d->receiver = a; }
     bool isBroadcast(const ipAddress mask) const;
     bool isBroadcast(const QString str) const { return isBroadcast(ipAddress(str)); }
     void setBroadcast(const ipAddress mask);
     void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
     ipPacket& operator=(const ipPacket &other);
-    void setUpProtocol(qint8 u) { myUpProtocol = u; }
-    qint8 upProtocol() const { return myUpProtocol; }
-    void pack(const QByteArray &b) { data = b; }
-    QByteArray& unpack() { return data; }
+    void setUpProtocol(qint8 u) { d->upProtocol = u; }
+    qint8 upProtocol() const { return d->upProtocol; }
+    void pack(const QByteArray &b) { d->data = b; }
+    QByteArray unpack() const  { return d->data; }
 private:
-    ipAddress mySender; //!< Адрес отправителя.
-    ipAddress myReceiver; //!< Адрес получателя.
-    qint8 myUpProtocol; //!< Протокол верхнего уровня
-    QByteArray data; //!< Данные протокола более высокого уровня.
+    QSharedDataPointer<ipPacketData> d; //!< Данные пакета.
 protected:
+    friend bool operator==(const ipPacket &p1,const ipPacket &p2);
     friend QDataStream& operator<<(QDataStream &stream,const ipPacket &p);
-    friend QDataStream& operator>>(QDataStream &stream,ipPacket &p);
 };
 //---------------------------------------------------------------------------
 /*!
@@ -50,36 +67,22 @@ protected:
 */
 inline QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
 {
-    stream << p.mySender;
-    stream << p.myReceiver;
-    stream << p.myUpProtocol;
-    stream << p.data;
+    stream << p.toData();
     return stream;
 }
 //--------------------------------------------------
-/*!
-  Извлекает ip-пакет из потока.
-  @param stream - поток для чтения.
-  @param p - извлекаемый пакет.
-  @return ссылку на результирующий поток.
-*/
-inline QDataStream& operator>>(QDataStream &stream,ipPacket &p)
-{
-    stream >> p.mySender;
-    stream >> p.myReceiver;
-    stream >> p.myUpProtocol;
-    stream >> p.data;
-    return stream;
-}
-//-------------------------------------------------------------
 /*!
   Назначает пакету широковещательный адрес исходя из маски.
   @param mask - Маска.
 */
 inline void ipPacket::setBroadcast(const ipAddress mask)
 {
-    myReceiver = mySender | ~mask;
+    d->receiver = d->sender | ~mask;
 }
 //---------------------------------------------------
+inline bool operator==(const ipPacket &p1,const ipPacket &p2)
+{
+    return ( p1.sender() == p2.sender() && p1.receiver() == p2.receiver() );
+}
 
 #endif // IPPACKET_H

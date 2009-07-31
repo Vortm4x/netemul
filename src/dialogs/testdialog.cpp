@@ -25,9 +25,11 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
     foreach ( QString i , s)
         listWidget->addItem( i.remove(".js") );
     QScriptValue p = engine.newQObject(c);
-//    debugger.attachTo(&engine);
-//    debugger.action(QScriptEngineDebugger::InterruptAction)->trigger();
-    engine.globalObject().setProperty("canva",p);
+#ifdef __NO_TOOLS__
+    debugger.attachTo(&engine);
+    debugger.action(QScriptEngineDebugger::InterruptAction)->trigger();
+#endif
+    engine.globalObject().setProperty("scene",p);
     qScriptRegisterMetaType(&engine, ObjectToScript, ObjectFromScript);
     connect( startButton , SIGNAL(clicked()), this , SLOT(start()));
     connect( checkBox , SIGNAL(toggled(bool)) , SLOT(selectAll(bool)));
@@ -77,7 +79,7 @@ bool testDialog::test(QString s)
     QFile file(g);
     file.open(QIODevice::ReadOnly);
     QString temporary = file.readAll();
-    temporary.prepend("with (canva) {");
+    temporary.prepend("with (scene) {");
     temporary.append(" }");
     QScriptValue t = engine.evaluate(temporary);
     if ( t.isError() ) {

@@ -2,7 +2,7 @@
 
 boxDevice::boxDevice()
 {
-    myManual = false;
+
 }
 
 boxDevice::~boxDevice()

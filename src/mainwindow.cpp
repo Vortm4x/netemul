@@ -4,6 +4,7 @@
 #include "testdialog.h"
 #include "interfacedialog.h"
 #include "mycanvas.h"
+#include "appsetting.h"
 #include <QGraphicsView>
 #include <QApplication>
 #include <QDockWidget>
@@ -343,35 +344,9 @@ void MainWindow::selectionChange()
 void MainWindow::setting()
 {
     settingDialog *d = new settingDialog;
-    connect( d , SIGNAL(sendApply()) , SLOT(applySetting()) );
-    d->setHubSockets( canva->hubSockets() );
-    d->setComputerSockets( canva->computerSockets() );
-    d->setSwitchSockets( canva->switchSockets() );
-    d->setSwitchManual(canva->switchManual());
-    d->setHubManual(canva->hubManual());
-    d->setRouterSockets(canva->routerSockets());
-    d->setTtlArp(canva->ttlArp());
-    d->setTtlMac(canva->ttlMac());
-    d->setRip(canva->rip());
     d->applyDisable();
-    if ( d->exec() ) {
-        d->apply();
-    }
+    d->exec();
     delete d ;
-}
-
-void MainWindow::applySetting()
-{
-    settingDialog *t = qobject_cast<settingDialog*>(sender());
-    canva->setComputerSockets( t->computerSockets() );
-    canva->setHubSockets( t->hubSockets() );
-    canva->setSwitchSockets( t->switchSockets() );
-    canva->setHubManual(t->huManual() );
-    canva->setSwitchManual(t->switchManual());
-    canva->setRouterSockets(t->routerSockets());
-    canva->setTtlArp(t->ttlArp());
-    canva->setTtlMac(t->ttlMac());
-    canva->setRip(t->rip());
 }
 
 //Слот сохранить
@@ -433,15 +408,8 @@ void MainWindow::writeSetting()
     setting.setValue("left" , pos().x() );
     setting.setValue("top" , pos().y() );
     setting.endGroup();
-    setting.setValue("computer/socketCount" , canva->computerSockets() );
-    setting.setValue("hub/socketCount" , canva->hubSockets() );
-    setting.setValue("switch/socketCount" , canva->switchSockets() );
-    setting.setValue("router/socketCount" , canva->routerSockets() );
-    setting.setValue("hub/manual",canva->hubManual());
-    setting.setValue("switch/manual", canva->switchManual());
-    setting.setValue("ttl/Arp", canva->ttlArp());
-    setting.setValue("ttl/Mac",canva->ttlMac());
-    setting.setValue("ttl/Rip",canva->rip());
+    appSetting::writeSetting();
+
 }
 //---------------------------------------------------
 /*
@@ -456,15 +424,7 @@ void MainWindow::readSetting()
     move( setting.value( "left" , 100 ).toInt() ,
           setting.value( "top" , 100 ).toInt() );
     setting.endGroup();
-    canva->setComputerSockets( setting.value("computer/socketCount",1).toInt() );
-    canva->setHubSockets( setting.value("hub/socketCount",4).toInt() );
-    canva->setSwitchSockets( setting.value("switch/socketCount",4).toInt() );
-    canva->setRouterSockets(setting.value("router/socketCount",4).toInt() );
-    canva->setHubManual(setting.value("hub/manual").toBool());
-    canva->setSwitchManual(setting.value("switch/manual").toBool());
-    canva->setTtlArp(setting.value("ttl/Arp",1200).toInt());
-    canva->setTtlMac(setting.value("ttl/Mac",300).toInt());
-    canva->setRip(setting.value("ttl/Rip",30).toInt());
+    appSetting::readSetting();
 }
 //----------------------------------------------------
 /*!

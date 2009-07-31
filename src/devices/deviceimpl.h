@@ -1,6 +1,7 @@
 #ifndef DEVICEIMPL_H
 #define DEVICEIMPL_H
 
+
 #include <QtScript>
 
 class cableDev;
@@ -14,6 +15,7 @@ class deviceImpl : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString note READ note WRITE setNote)
+    Q_PROPERTY(bool router READ isRouter WRITE setRouter)
 public:
     deviceImpl();
     virtual ~deviceImpl() { }
@@ -24,6 +26,7 @@ public:
     virtual QStringList sockets() const = 0;
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
+    virtual bool isBusy() const = 0;
 
     const QString& note() const { return myNote; }
     void setNote(const QString &n) { myNote = n; }
@@ -36,7 +39,6 @@ public:
     virtual void tableDialog() { qFatal("error not compability Table!"); }
     virtual void adapterDialog() { qFatal("error not compability adapter!"); }
     virtual void programmsDialog() { qFatal("error not compability"); }
-    virtual void sendMessage(const QString &,int, int) { qFatal("ERROR!"); }
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
@@ -49,11 +51,15 @@ public:
     virtual void addConnection(const QString &port , cableDev *c) = 0;
     virtual void deleteConnection(cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
+
+    virtual bool isRouter() const { qFatal("No router!"); return false; }
+    virtual void setRouter(bool) { qFatal("No router!"); }
 public slots:
     virtual void setIp(const QString &a , const QString &ip);
     virtual void setMask(const QString &a, const QString &ip);
     virtual void setGateway(const QString &str);
     virtual void setSocketsCount(int n);
+    virtual void sendMessage(const QString& ,int, int) { qFatal("ERROR!"); }
 private:
     QString myNote;
 };
@@ -68,6 +74,7 @@ private:
 };
 
 Q_DECLARE_METATYPE(deviceImpl*)
+
 
 
 

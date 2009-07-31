@@ -4,13 +4,13 @@
 #include <QtGui/QDialog>
 #include "ui_testdialog.h"
 #include <QtScript>
+//#define __NO_TOOLS__ 0
+
+#ifdef __NO_TOOLS__
 #include <QScriptEngineDebugger>
+#endif
 
 class myCanvas;
-
-namespace Ui {
-    class testDialog;
-}
 
 class testDialog : public QDialog , private Ui::testDialog {
     Q_OBJECT
@@ -25,7 +25,9 @@ protected:
     virtual void changeEvent(QEvent *e);
 private:
     QScriptEngine engine;
+#ifdef __NO_TOOLS__
     QScriptEngineDebugger debugger;
+#endif
     bool test(QString s);
     myCanvas *canva;
 };

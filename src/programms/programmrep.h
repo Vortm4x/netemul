@@ -22,7 +22,7 @@ public:
       всех потомках этого класса.
       @param b - ссылка на данные пришедшие программе. */
     virtual void setDevice(smartDevice*) { }
-    virtual void execute(ipPacket *p) = 0 ;
+    virtual void execute(ipPacket &p) = 0 ;
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
