@@ -29,8 +29,10 @@ public:
     QVariant headerData(int s , Qt::Orientation o , int role) const;
     QVariant data(const QModelIndex &m, int role) const;
 
+    void updateMac();
     void deleteFromTable(const macAddress &mac);
-    macRecord* addToTable(const macAddress &mac ,devicePort *p , int mode , int time);
+    void deleteFromTable(macRecord *r);
+    macRecord* addToTable(const macAddress &mac ,devicePort *p , int mode);
     void contains(const macAddress &m , devicePort *s);
     devicePort* portWithMac(const macAddress &m);
 private:   

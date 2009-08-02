@@ -1,5 +1,6 @@
 #include "switchmodel.h"
 #include "deviceport.h"
+#include "appsetting.h"
 
 switchModel::switchModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {
@@ -53,12 +54,12 @@ QVariant switchModel::data(const QModelIndex &m, int role) const
     return QVariant();
 }
 
-macRecord* switchModel::addToTable(const macAddress &mac ,devicePort *p , int mode , int time)
+macRecord* switchModel::addToTable(const macAddress &mac ,devicePort *p , int mode)
 {
     foreach ( macRecord *i , table )
         if ( i->mac == mac ) return NULL;
     macRecord *t = new macRecord;
-    t->time = time;
+    t->time = 0;
     t->mode = mode;
     t->port = p;
     t->mac = mac;
@@ -70,12 +71,14 @@ macRecord* switchModel::addToTable(const macAddress &mac ,devicePort *p , int mo
 void switchModel::deleteFromTable(const macAddress &mac)
 {
     foreach ( macRecord *i , table )
-        if ( i->mac == mac ) {
-            table.removeOne(i);
-            delete i;
-            reset();
-            return;
-        }
+        if ( i->mac == mac ) deleteFromTable(i);
+}
+
+void switchModel::deleteFromTable(macRecord *r)
+{
+    table.removeOne(r);
+    delete r;
+    reset();
 }
 
 void switchModel::contains(const macAddress &m , devicePort *s)
@@ -87,7 +90,7 @@ void switchModel::contains(const macAddress &m , devicePort *s)
             cont = true;
             break;
         }
-    if ( !cont ) addToTable( m , s , dinamicMode , 0);
+    if ( !cont ) addToTable( m , s , dinamicMode );
 }
 
 devicePort* switchModel::portWithMac(const macAddress &m)
@@ -98,4 +101,11 @@ devicePort* switchModel::portWithMac(const macAddress &m)
             return i->port;
         }
     return 0;
+}
+
+void switchModel::updateMac()
+{
+    int t = appSetting::ttlMac();
+    foreach ( macRecord *i , table )
+        if ( ++i->time >= t ) deleteFromTable(i);
 }

@@ -22,7 +22,7 @@ tableSwitch::tableSwitch(switchTableSetting *s)
 void tableSwitch::addRecord()
 {
     devicePort *t = sw->socket( cb_port->currentText() );
-    t_sw->addToTable( macAddress( le_macAddress->text() ) , t  , switchModel::staticMode , 0);
+    t_sw->addToTable( macAddress( le_macAddress->text() ) , t  , switchModel::staticMode);
     le_macAddress->setText("00:00:00:00:00:00");
 }
 

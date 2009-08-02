@@ -14,6 +14,7 @@ cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
     myStartDev->addConnection(sp,this);
     myEndDev->addConnection(ep,this);
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
+    setZValue(-1000.0); // Кидаем его на самый-самый задний план
 }
 
 cableDev::~cableDev()

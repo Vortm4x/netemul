@@ -7,6 +7,7 @@
 #include <QMenu>
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
+#include <QtDebug>
 
 device::device(int t)
 {
@@ -21,6 +22,7 @@ device::device(int t)
         case routerDev : impl = new routerDevice; break;
         default: break;
     }
+    setToolTip( impl->note() );
 }
 
 device::device(QDataStream &stream)
@@ -42,6 +44,7 @@ device::device(QDataStream &stream)
         default: break;
     }
     impl->read(stream);
+    setToolTip( impl->note() );
 }
 
 device::~device()
@@ -119,6 +122,14 @@ void device::updateCables()
 {
     foreach ( cableDev *i , myCableList )
         i->updatePosition();
+}
+
+bool device::isConnectDevices(device *s , device *e)
+{
+    foreach( cableDev *i , s->myCableList )
+        foreach ( cableDev *j , e->myCableList )
+            if ( i == j ) return true;
+    return false;
 }
 
 

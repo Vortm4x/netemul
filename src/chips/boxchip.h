@@ -19,7 +19,8 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     QString socketName(const cableDev *c) const;
-    void deciSecondTimerEvent();
+    virtual void deciSecondTimerEvent();
+    virtual void secondTimerEvent() { }
     devicePort* socket(const QString &name);
     bool isBusy() const;
 #ifndef __TESTING__

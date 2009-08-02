@@ -15,6 +15,7 @@ routerProperty::routerProperty()
     QHBoxLayout *temp = new QHBoxLayout;
     temp->addWidget( new QLabel(trUtf8("Количество портов: ") ) );
     cb_count = new QComboBox;
+    connect( cb_count , SIGNAL(currentIndexChanged(int)) , SLOT(applyEnable()) );
     QStringList t;
     t << "2" << "4" << "5"<< "7" << "8" << "9";
     cb_count->addItems(t);
@@ -38,7 +39,7 @@ routerProperty::routerProperty()
  Задает диалогу устройство для работы.
  @param r - указатель на роутер.
 */
-void routerProperty::setRouter(smartSetting *r)
+void routerProperty::setRouter(routerSetting *r)
 {
     rt = r;
     cb_route->setChecked(r->isRouter());
@@ -51,5 +52,8 @@ void routerProperty::apply()
 {
     rt->setRouter( cb_route->isChecked() );
     rt->setNote( te_text->toPlainText() );
+    int m = cb_count->currentText().toInt();
+    if ( m != rt->socketsCount() ) rt->setSocketsCount( m );
+    cb_count->setCurrentIndex( cb_count->findText( QString::number( rt->socketsCount() ) ) );
     if ( sender() == btn_ok ) accept();
 }

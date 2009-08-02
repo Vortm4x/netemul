@@ -9,7 +9,7 @@ switchDevice::switchDevice(int c /* =0 */)
     if (!c) c = appSetting::defaultSwitchCount();
     myManual = appSetting::defaultSwitchManual();
     chip = new switchChip(c);
-    setNote(trUtf8("Коммутатор"));
+    setNote(trUtf8("<b>Коммутатор</b><p>Изменить комментарий можно в свойствах. Доступен HTML."));
 }
 
 switchDevice::~switchDevice()
@@ -43,13 +43,18 @@ void switchDevice::tableDialog()
     switchTableSetting *set = new switchTableSetting(this);
     tableSwitch *t = new tableSwitch(set);
     t->exec();
-    delete set;
     delete t;
+    delete set;
 }
 
 switchChip* switchDevice::concreteChip()
 {
     return static_cast<switchChip*>(chip);
+}
+
+void switchDevice::secondTimerEvent()
+{
+    chip->secondTimerEvent();
 }
 
 //----------------------------------------------------------------------------

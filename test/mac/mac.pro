@@ -8,6 +8,8 @@ TARGET = mac
 CONFIG += console
 CONFIG -= app_bundle
 TEMPLATE = app
-HEADERS += ../../src/macaddress.h
+
+# HEADERS += ../../src/macaddress.h
 SOURCES += main.cpp \
-	../../src/macaddress.cpp
+    ../../src/macaddress.cpp
+HEADERS += ../../src/macaddress.h

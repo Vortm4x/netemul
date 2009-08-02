@@ -8,6 +8,8 @@ include(src/devices/devices.pri)
 include(src/models/models.pri)
 include(src/dialogs/dialogs.pri)
 include(src/other/other.pri)
+include(src/graphics/graphics.pri)
+include(src/forms/forms.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -22,7 +24,8 @@ INCLUDEPATH += . \
     src/devices \
     src/models \
     src/dialogs \
-    src/other
+    src/other \
+    src/graphics
 QT += script
 win32 { 
     message("Static link ...")
@@ -59,11 +62,6 @@ HEADERS += src/arppacket.h \
     src/udppacket.h \
     src/tcppacket.h \
     src/textitem.h 
-FORMS += ui/programmdialog.ui \
-    ui/testdialog.ui \
-    ui/connectdialog.ui \
-    ui/tableswitch.ui \
-    ui/installdialog.ui
 SOURCES += src/arppacket.cpp \
     src/cabledev.cpp \
     src/device.cpp \

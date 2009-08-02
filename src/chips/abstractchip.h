@@ -24,13 +24,13 @@ public:
     virtual ~abstractChip() { }
 
     QString staticsString() const;
-#ifndef __TESTING__
     void checkReceive(frame &f);
     void checkSender(frame &f);
+    virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
+#ifndef __TESTING__
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
     ipAddress mask() const { return myMask; }
-    virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     void setMac(const macAddress &m) { myMac = m; }
     void setIp(const QString str) { if ( !str.isEmpty() ) myIp.setIp(str); }
     void setMask(const QString str) { if ( !str.isEmpty() ) myMask.setIp(str); }

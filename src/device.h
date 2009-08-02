@@ -35,12 +35,12 @@ public:
     QString tableName() { return impl->tableName(); }
     QString socketName(const cableDev *c) const { return impl->socketName(c); }
     bool isSmart() const { return impl->isSmart(); }
-    bool isConnect() { return myCableList.count(); }
-    void dialog() { impl->dialog(); }
+    bool isConnect() const { return myCableList.count(); }
+    void dialog() { impl->dialog(); setToolTip( impl->note() ); }
     void tableDialog() const { impl->tableDialog(); }
     void adapterDialog() const { impl->adapterDialog(); }
     void programmsDialog() const { impl->programmsDialog(); }
-    bool isCanSend() const { return impl->isCanSend(); }
+    bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isConnectSocket(const QString &str) { return impl->isConnectSocket(str); }
     QStringList sockets() const { return impl->sockets(); }
     void secondTimerEvent() { impl->secondTimerEvent(); }
@@ -50,6 +50,7 @@ public:
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
 
+    static bool isConnectDevices(device *s, device *e);
     QList<cableDev*> cables() const { return myCableList; }
     bool hasTable() const { return impl->hasTable(); }
 private:

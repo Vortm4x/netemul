@@ -2,7 +2,6 @@
 #include "scenecontrol.h"
 #include "settingdialog.h"
 #include "testdialog.h"
-#include "interfacedialog.h"
 #include "mycanvas.h"
 #include "appsetting.h"
 #include <QGraphicsView>
@@ -32,7 +31,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.7.9");
+    QCoreApplication::setApplicationVersion("0.8.1");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню

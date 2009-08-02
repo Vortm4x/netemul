@@ -6,6 +6,8 @@ devicePort::devicePort()
 {
     myConnect = false;
     myCable = 0;
+    receiveQueue.clear();
+    senderQueue.clear();
 }
 
 devicePort::~devicePort()

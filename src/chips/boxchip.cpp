@@ -76,9 +76,9 @@ devicePort* boxChip::socket(const QString &name)
     return mySockets[ name.mid(3).toInt()-1 ];
 }
 
-#ifndef __TESTING__
 void boxChip::deciSecondTimerEvent()
 {
+#ifndef __TESTING__
     foreach ( devicePort *i , mySockets ) {
         i->queueEvent();
         if ( i->hasReceive() ) {
@@ -86,8 +86,8 @@ void boxChip::deciSecondTimerEvent()
             receiveEvent(t,i);
         }
     }
-}
 #endif
+}
 
 bool boxChip::isBusy() const
 {

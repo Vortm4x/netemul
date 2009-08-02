@@ -4,6 +4,9 @@
 #include "cabledev.h"
 #include "senddialog.h"
 #include "appsetting.h"
+#include "insertrect.h"
+#include "sendellipse.h"
+#include "selectrect.h"
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
 #include <QMenu>
@@ -25,12 +28,10 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     nowMode = noFile; // Сначала файла нет
     itemMenu = context; // меню из аргумента
     line = 0; // Провода нет
-    selectRect = 0; // Выделения нет
+    SelectRect = 0; // Выделения нет
     p2Rect = QPoint();
-    coordMap.clear();
-    myDevices.clear();
-    insertRect = 0 ;
-    sendEllipse = 0;
+    InsertRect = 0 ;
+    SendEllipse = 0;
     myState = noSendItem;
     prevMode = move;
     prevType = noDev;
@@ -64,26 +65,14 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
             case move: // Если перемещение
                 // Если есть перемещаемые устройства используем метод предка для их перемещения
                 if ( coordMap.count() ) QGraphicsScene::mouseMoveEvent(event);
-                else  if (selectRect != 0 ) // Если есть выделение обновляем его.
-                        selectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
+                else  if (SelectRect ) // Если есть выделение обновляем его.
+                        SelectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
                 break;
             case insert: // Если режим вставки устройства
-                if ( insertRect ) {
-                    if ( insertRect->collidingItems().isEmpty() )
-                        setShapeView( insertRect , QPen(Qt::blue) , QBrush( QColor( 0 , 0 , 128 , 64) ) );
-                    else
-                        setShapeView( insertRect , QPen(Qt::red) , QBrush( QColor( 128 , 0 , 0 , 64)) );
-                    insertRect->setPos( event->scenePos() );
-                }
+                if ( InsertRect ) InsertRect->moving( event->scenePos() );
                 break;
             case send: // Если режим отправки пакетов.
-                if ( sendEllipse ) {
-                    if ( myState == noSendItem )
-                        setShapeView(sendEllipse , QPen(Qt::lightGray), QBrush(QColor(255,128,0,128)));
-                    else
-                        setShapeView(sendEllipse , QPen(Qt::green) , QBrush(QColor(0,128,0,128)));
-                    sendEllipse->setPos( event->scenePos());
-                }
+                if ( SendEllipse ) SendEllipse->moving( event->scenePos() );
                 break;
     }
 }
@@ -98,7 +87,6 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         QGraphicsScene::mousePressEvent(event);
         return;
     }
-    bool isCorrect = true;
     switch (nowMode) {
         case noFile:
             return; // Если файл не открыт то не будем обрабатывать вообще
@@ -114,24 +102,19 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
             } // Иначе создаем прямоугольник выделения.
             else {
                 if ( items( event->scenePos() ).count() ) break;
-                selectRect = new QGraphicsRectItem;
-                selectRect->setPos( 0,0 );
+                SelectRect = new selectRect;
                 p2Rect = QPointF( event->scenePos() );
-                setShapeView( selectRect , QPen(Qt::blue) , QBrush( QColor( 0 , 0 ,128 , 64)) );
-                selectRect->setZValue(1000);
-                addItem(selectRect);
+                addItem(SelectRect);
             }
             break;
         case text:
-             textRect = createTextItem();
-             textRect->setPos(event->scenePos());
+             createTextItem(event->scenePos());
              setMode( move , noDev );
              uncheck();
              break;
         case insert: // Если режим вставки
-            if ( insertRect->pos().y() < 0 ) break;
-            isCorrect = insertRect->collidingItems().isEmpty();
-            if (isCorrect) {
+            if ( InsertRect->pos().y() < 0 ) break;
+            if ( InsertRect->isReadyInsert() ) {
                 addDeviceOnScene(event->scenePos(), nowType); // Добавляем устройство на сцену
                 prevMode = insert;
                 prevType = nowType;
@@ -146,13 +129,12 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
             addItem(line);
             break;
         case send:
-            if ( sendEllipse->collidingItems().count() ) {
-                QGraphicsItem *tempItem = sendEllipse->collidingItems().first();
+            if ( SendEllipse->hasUnderDevice() ) {
+                QGraphicsItem *tempItem = SendEllipse->underDevice() ;
                 device *t = qgraphicsitem_cast<device*>(tempItem);
                 if ( !t ) break;
-                if ( !t->isCanSend() ) break;
-                if ( !t->isConnect() ) {
-                QMessageBox::warning(NULL,trUtf8("Ошибка"),trUtf8("Устройство не имеет соединений"),
+                if ( !t->isCanSend() ) {
+                    QMessageBox::warning(NULL,trUtf8("Ошибка"),trUtf8("Устройство не имеет возможности отправки данных!"),
                                      QMessageBox::Ok , QMessageBox::Ok);
                     break;
                 }
@@ -166,7 +148,10 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         if ( broadcast ) {
                             emit uncheck();
                             setMode( myCanvas::move , myCanvas::noDev);
-                        } else myState = oneSendItem;
+                        } else {
+                            myState = oneSendItem;
+                            SendEllipse->chooseOneDevice();
+                        }
                     }
                     delete temp;
                 } else {
@@ -198,7 +183,6 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
     s->update();
     e->update();
-    cable->setZValue(-1000.0); // Кидаем его на самый-самый задний план
     addItem(cable); // И добавляем его на сцену =)
     connections << cable;
     cable->updatePosition(); // Обновляем его положение
@@ -216,30 +200,17 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
             case noFile:
                 return;
             case cable:
-                if (line != 0) { // Если кабель тянеться и режим тоже кабель
-                    device *startItem = 0;
-                    device *endItem = 0;
+                if (line) { // Если кабель тянеться и режим тоже кабель
                     QString start,end;
-                    QList<QGraphicsItem *> startItems = items(line->line().p1());
-                    if (startItems.count() && startItems.first() == line)
-                        startItems.removeFirst(); // если первое устройство под одним концом эта же линия
-                            // то удаляем её =) Все тоже самое для второго конца
-                    QList<QGraphicsItem *> endItems = items(line->line().p2());
-                    if (endItems.count() && endItems.first() == line)
-                        endItems.removeFirst();
-                        // Удаляем временную линию и освобождаем её память
+                    device *startItem = deviceInPoint(line->line().p1()) ;
+                    device *endItem = deviceInPoint(line->line().p2()) ;
                     removeItem(line);
-                    if ( startItems.count()  && endItems.count() ) {
-                        foreach ( cableDev* cabledev, connections )
-                            if ( (cabledev->start() == qgraphicsitem_cast<device*>(startItems.first()) &&
-                                  cabledev->end() == qgraphicsitem_cast<device*>(endItems.first()) ) ||
-                                 ( cabledev->start() == qgraphicsitem_cast<device*>(endItems.first()) &&
-                                   cabledev->end() == qgraphicsitem_cast<device*>(startItems.first()) )
-                                ) { canCreate = false; }
-                    } else canCreate = false;
-                    if (canCreate && startItems.first() != endItems.first() && isDevice(startItems.first() ) ) {
-                        startItem = qgraphicsitem_cast<device*>(startItems.first());
-                        endItem = qgraphicsitem_cast<device*>(endItems.first());
+                    delete line;
+                    line = 0; // Линию временную делаем указателем на нуль
+                    if ( !startItem || !endItem ) break;
+                    if ( device::isConnectDevices(startItem, endItem) ) break;
+                    if ( startItem == endItem ) break;
+                    if ( canCreate ) {
                         connectDialog *conDialog = new connectDialog(startItem,endItem);
                         conDialog->move(400,400);
                         canCreate = conDialog->exec() ;
@@ -253,11 +224,9 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     // Вообщем так ... если уствойства есть под обоими концами
                     // и эти устройства различны то мы создаем этот кабель! Проверено все ок =)
                    if ( canCreate ) createConnection( startItem , endItem , start , end );
+                   prevMode = cable;
+                   prevType = noDev;
                 }
-                delete line;
-                line = NULL; // Линию временную делаем указателем на нуль
-                prevMode = cable;
-                prevType = noDev;
                 break;
             case move:
                 if ( coordMap.count() ) {
@@ -274,7 +243,6 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                                  || underItems.count() ) { needReturn = true; break; }
                     }
                     if ( needReturn ) {
-                        //qDebug() << "Nado iz" << i.key()->scenePos() << " v " << i.value() << endl;
                         i.toFront();
                          while (i.hasNext()) {
                             i.next();
@@ -293,14 +261,14 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                     coordMap.clear();
                 }
                 else {
-                    if ( selectRect != 0 ) {
+                    if ( SelectRect != 0 ) {
                         QPainterPath path;
-                        path.addRect(selectRect->rect());
+                        path.addRect(SelectRect->rect());
                         setSelectionArea(path);
-                        removeItem(selectRect);
-                        delete selectRect;
+                        removeItem(SelectRect);
+                        delete SelectRect;
                         p2Rect = QPoint();
-                        selectRect = 0 ;
+                        SelectRect = 0 ;
                     }
                 }
                 QGraphicsScene::mouseReleaseEvent(event); // передаем событие предку
@@ -390,32 +358,24 @@ void myCanvas::setMode(int modScene,int curDev)
     nowType = curDev;
     myState = noSendItem;
     setSelectionArea( QPainterPath() );
-    if ( insertRect ) {
-        removeItem(insertRect);
-        delete insertRect;
-        insertRect = 0 ;
+    if ( InsertRect ) {
+        removeItem(InsertRect);
+        delete InsertRect;
+        InsertRect = 0 ;
     }
-    if ( sendEllipse ) {
-        removeItem( sendEllipse);
-        delete sendEllipse;
-        sendEllipse = 0;
+    if ( SendEllipse ) {
+        removeItem( SendEllipse);
+        delete SendEllipse;
+        SendEllipse = 0;
     }
     switch ( nowMode ) {
         case insert:
-            insertRect = new QGraphicsRectItem;
-            insertRect->setPos( 0, -50 );
-            setShapeView(insertRect,QPen(Qt::red),QBrush( QColor( 128 , 0 , 0 , 64)));
-            insertRect->setZValue(1000);
-            addItem(insertRect);
-            insertRect->setRect( -20 , -20 , 40 ,40);
+            InsertRect = new insertRect;
+            addItem(InsertRect);
             break;
         case send:
-            sendEllipse = new QGraphicsEllipseItem;
-            sendEllipse->setPos( 0 , -100);
-            setShapeView(sendEllipse,QPen(Qt::blue),QBrush( QColor( 0 , 0 ,128 ,64)));
-            sendEllipse->setZValue(1000);
-            addItem(sendEllipse);
-            sendEllipse->setRect(-10,-10,20,20);
+            SendEllipse = new sendEllipse;
+            addItem(SendEllipse);
             break;
         default:
             break;
@@ -424,8 +384,8 @@ void myCanvas::setMode(int modScene,int curDev)
 
 void myCanvas::hideInsertRect()
 {
-    if ( insertRect ) insertRect->setPos( 100 , -100);
-    if ( sendEllipse ) sendEllipse->setPos( 100 , -100);
+    if ( InsertRect ) InsertRect->hideItem();
+    if ( SendEllipse ) SendEllipse->hideItem();
 }
 /*!
   Загружает сцену из файла.
@@ -474,10 +434,8 @@ void myCanvas::openScene(QString fileName)
     }
     s >> n;
     for ( i = 0 ; i < n ; i++ ) {
-        textItem *t = createTextItem();
-        s >> p; t->setPos(p);
-        s >> str; t->setPlainText(str);
-        t->adjustSize();
+        s >> p; s >> str;
+        createTextItem(p,str);
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
@@ -525,9 +483,8 @@ void myCanvas::saveScene(QString fileName)
   разнести из по разным потокам, но не сейчас. Происходят следующие действия:
   обновление arp,mac, rip таблиц и сдвиг пакетов на кабелях.
 */
-void myCanvas::timerEvent(QTimerEvent *e)
+void myCanvas::timerEvent(QTimerEvent*)
 {
-    Q_UNUSED(e);
     ticTime();
 }
 //--------------------------------------------------------------
@@ -535,7 +492,7 @@ void myCanvas::ticTime()
 {
     static int n = 9;
     foreach ( cableDev *t , connections)
-            if ( t->isBusy() ) t->motion();
+        if ( t->isBusy() ) t->motion();
     n--;
     foreach ( device *i, myDevices ) {
         i->deciSecondTimerEvent();
@@ -546,7 +503,7 @@ void myCanvas::ticTime()
 
 void myCanvas::emulateTime()
 {
-   while ( !isEnd() ) ;//ticTime();
+   while ( !isEnd() ) ticTime();
 }
 
 bool myCanvas::isEnd() const
@@ -555,7 +512,9 @@ bool myCanvas::isEnd() const
         if ( t->isBusy() ) return false;
     }
     foreach ( device *i , myDevices )
-        if ( i->isBusy() ) return false;
+        if ( i->isBusy() ) {
+            return false;
+        }
     return true;
 }
 
@@ -568,8 +527,9 @@ device* myCanvas::oneSelectedDevice()
 
 device* myCanvas::deviceInPoint(QPointF p)
 {
-    if ( !itemAt(p) || !isDevice(itemAt(p)) ) return NULL;
-    return qgraphicsitem_cast<device*>(items(p).first());
+    foreach ( QGraphicsItem *i , items(p) )
+        if ( isDevice(i) ) return qgraphicsitem_cast<device*>(i);
+    return 0;
 }
 
 
@@ -588,17 +548,6 @@ QPointF myCanvas::calibrate(QPointF c)
     c.setX( (qRound(c.x()) / 50)*50+25 );
     c.setY( (qRound(c.y()) / 50)*50+25 );
     return c;
-}
-/*!
-  Задает указанному объекту внешний вид.
-  @param i - указатель на объект.
-  @param p - перо для объекта.
-  @param b - кисть для объекта.
-*/
-void myCanvas::setShapeView(QAbstractGraphicsShapeItem *i , QPen p , QBrush b)
-{
-    i->setPen(p);
-    i->setBrush(b);
 }
 //--------------------------------------------------------------------
 /*!
@@ -623,11 +572,11 @@ void myCanvas::editorLostFocus(textItem *t)
   Создает на сцене новый комментарий.
   @return указатель на созданный комментарий.
 */
-textItem* myCanvas::createTextItem()
+textItem* myCanvas::createTextItem(QPointF p , const QString &str /*=tr("Комментарий")*/)
 {
-    textItem *t = new textItem;
-    t->setTextInteractionFlags(Qt::TextEditorInteraction);
-    t->setZValue(1000.0);
+    textItem *t = new textItem(p);
+    t->setPlainText(str);
+    t->adjustSize();
     connect(t,SIGNAL(lostFocus(textItem*)),SLOT(editorLostFocus(textItem*)));
     addItem(t);
     myTextItems << t;
@@ -640,7 +589,7 @@ textItem* myCanvas::createTextItem()
 */
 bool myCanvas::isDevice(QGraphicsItem *t) const
 {
-    if ( t->type() != cableDev::Type && t->type() != textItem::Type ) return true;
+    if ( t->type() == device::Type ) return true;
     return false;
 }
 //------------------------------------------------------------------------

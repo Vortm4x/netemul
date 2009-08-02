@@ -1,25 +1,32 @@
 #include "adapterproperty.h"
 #include "smartdevice.h"
 #include "ipedit.h"
+#include "interfacedialog.h"
 #include <QTabBar>
 #include <QLabel>
 #include <QLineEdit>
 #include <QCheckBox>
+#include <QMessageBox>
 
 /*!
   Конструктор создает основной интерфейс диалога.
 */
-adapterProperty::adapterProperty()
+adapterProperty::adapterProperty(adapterSetting *s)
 {
-    sd = NULL;
+    sd = s;
     QVBoxLayout *all = new QVBoxLayout;
     tab_interfaces = new QTabBar;
+    for ( int i = 0 ; i < sd->socketsCount() ; i++ ) {
+        sd->setCurrent(i);
+        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
+    }
     all->addWidget(tab_interfaces);
 
     QHBoxLayout *temp = new QHBoxLayout;
     QLabel *lbl_temp = new QLabel(trUtf8("Имя адаптера: "));
     le_name = new QLineEdit;
     le_name->setMaxLength(10);
+    le_name->setReadOnly(true);
     temp->addWidget(lbl_temp);
     temp->addWidget(le_name);
     all->addLayout(temp);
@@ -47,13 +54,26 @@ adapterProperty::adapterProperty()
     all->addWidget(lb_statics);
 
     all->addStretch(1);
+    QHBoxLayout *b = new QHBoxLayout;
+    b->addStretch(1);
+    if ( sd->canManageInterface() ) {
+        btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , trUtf8("Добавить") );
+        btn_del = new QPushButton(QIcon(":/im/images/edit_remove.png") , trUtf8("Удалить") );
+        connect( btn_add , SIGNAL(clicked()) , SLOT(addInterface()) );
+        connect( btn_del , SIGNAL(clicked()) , SLOT(deleteInterface()) );
+        b->addWidget(btn_add, 0 , Qt::AlignRight);
+        b->addWidget(btn_del, 0 , Qt::AlignRight);
+    }
     QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),trUtf8("Сбросить статистику"));
     connect( btn_reset , SIGNAL(clicked()) , SLOT(reset()));
-    all->addWidget(btn_reset, 0 , Qt::AlignRight);
+    b->addWidget(btn_reset, 0 , Qt::AlignRight);
+    all->addLayout(b);
     all->addLayout(lay);
     setLayout(all);
     connect( le_ip , SIGNAL(maskChanged(quint8)) , le_mask , SLOT(setDefaultMask(quint8)));
     connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab(int)));
+    btn_apply->setEnabled(false);
+    updateTab(0);
 }
 //-----------------------------------------------------------
 /*!
@@ -65,21 +85,6 @@ adapterProperty::~adapterProperty()
     sd->setCheckedSocket("");
 }
 //--------------------------------------------------
-/*!
-  Задает диалогу настройки которое он будет отображать.
-  @param s указатель на настройки.
-*/
-void adapterProperty::setDevice(adapterSetting *s)
-{
-    sd = s;
-    for ( int i = 0 ; i < sd->socketsCount() ; i++ ) {
-        sd->setCurrent(i);
-        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
-    }
-    updateTab(0);
-    btn_apply->setEnabled(false);
-}
-//-----------------------------------------------------
 /*!
   При смене вкладки вызывает обновление содержимого.
   @param n - Номер выбранной вкладки.
@@ -106,13 +111,6 @@ void adapterProperty::updateTab(int n)
 //-----------------------------------------------------
 void adapterProperty::apply()
 {
-    for ( int i = 0 ; i < tab_interfaces->count(); i++ )
-        if ( i != tab_interfaces->currentIndex() && le_name->text() == tab_interfaces->tabText(i) ) {
-            le_name->setText(tab_interfaces->tabText(tab_interfaces->currentIndex()));
-            le_name->setSelection(0, le_name->text().length());
-            break;
-        }
-    sd->setName( le_name->text() );
     sd->setMac( le_mac->text() );
     sd->setIp( le_ip->text() );
     sd->setMask( le_mask->text() );
@@ -134,4 +132,38 @@ QIcon adapterProperty::connectIcon(bool b)
 {
     if ( b) return QIcon(":/im/images/ok.png");
     else return QIcon(":/im/images/minus2.png");
+}
+
+void adapterProperty::addInterface()
+{
+    interfaceDialog *d = new interfaceDialog;
+    if ( d->exec() ) {
+        //int n = d->result();
+        sd->addInterface();
+        sd->setCurrent( tab_interfaces->count() );
+        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
+        updateTab( tab_interfaces->count() - 1 );
+    }
+    delete d;
+}
+
+void adapterProperty::deleteInterface()
+{
+    if ( sd->isConnect() ) {
+        QMessageBox::warning(this,trUtf8("Большая просьба!") ,
+                             trUtf8("Прежде чем удалить интерфейс, будьте добры извлечь из него кабель!") , QMessageBox::Ok,
+                             QMessageBox::Ok );
+        return;
+    }
+
+    if ( tab_interfaces->count() == 1 ) {
+        QMessageBox::warning(this,trUtf8("Большая просьба!") , trUtf8("Оставьте хотя бы один интерфейс!") ,
+                             QMessageBox::Ok , QMessageBox::Ok );
+        return;
+    }
+
+    tab_interfaces->removeTab( sd->current() );
+    sd->deleteInterface( le_name->text() );
+    tab_interfaces->setCurrentIndex(0);
+    updateTab(0);
 }

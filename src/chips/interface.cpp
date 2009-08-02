@@ -1,8 +1,10 @@
 #include "interface.h"
 #include "frame.h"
 #include "deviceport.h"
+#include "appsetting.h"
 #include <QList>
 #include <QMessageBox>
+//#include <QtDebug>
 
 interface::interface(const QString &name) : myName(name)
 {
@@ -68,14 +70,17 @@ void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */
     return;
 }
 
-void interface::removeFromTable(QString ip)
+void interface::deleteFromTable(const QString &ip)
 {
     ipAddress a(ip);
     foreach ( arpRecord *i, myArpTable )
-        if ( i->ip == a ) {
-            myArpTable.removeOne(i);
-            delete i;
-        }
+        if ( i->ip == a ) deleteFromTable(i);
+}
+
+void interface::deleteFromTable(arpRecord *r)
+{
+    myArpTable.removeOne(r);
+    delete r;
 }
 
 arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
@@ -139,13 +144,9 @@ void interface::receiveArp(arpPacket &arp)
                                  QObject::trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
         }
         addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
-        QMultiMap<ipAddress,ipPacket>::iterator i = myWaits.begin();
-        for ( ; i != myWaits.end() ; ++i ) {
-            if ( i.key() == arp.senderIp() ) {
-                sendPacket(i.value(),i.key());
-                myWaits.remove(i.key() , i.value() );
-            }
-        }
+        QList<ipPacket> packets = myWaits.values( arp.senderIp() );
+        for ( int i = 0; i < packets.size() ; i++ ) sendPacket( packets[i] , arp.senderIp() );
+        Q_ASSERT( packets.size() == myWaits.remove( arp.senderIp() ) );
     }
     else {
         arpRecord *t = addToTable(arp.senderIp() , arp.senderMac() , dinamicMode );
@@ -180,6 +181,13 @@ void interface::deciSecondEvent()
         frame f = mySocket->popFromReceive();
         receiveEvent( f, mySocket );
     }
+}
+
+void interface::secondEvent()
+{
+    int n = appSetting::ttlArp();
+    foreach ( arpRecord *i , myArpTable )
+        if ( ++i->time >= n ) deleteFromTable(i);
 }
 
 void interface::sendArpRequest(ipAddress a)

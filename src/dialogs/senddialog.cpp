@@ -63,6 +63,7 @@ void sendDialog::prepare()
         sizeBox->setValue(50);
         check = new QCheckBox(trUtf8("Широковещательный"));
         check->setChecked(false);
+        check->setEnabled(false);
         okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Далее"));
         QGroupBox *box = new QGroupBox(trUtf8("Выбирете протокол:"));
         QVBoxLayout *btn = new QVBoxLayout;

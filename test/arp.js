@@ -1,7 +1,7 @@
 // open - глобальная переменная показывает открыт в данный момент файл или нет.
 if ( open ) closeFile();
 newFile();
-animateSpeed = 1;
+stop();
 var sw = new Array();
 sw[0] = addSwitch(3,3);
 sw[0].setSocketsCount(8);
@@ -31,6 +31,6 @@ net[0][0].sendMessage("192.168.1.133",50,0);
 print("start");
 emulateTime();
 print("end");
-animateSpeed = 100;
+play();
 saveScene("test/arp.net");
 true;

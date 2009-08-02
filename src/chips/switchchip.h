@@ -13,8 +13,8 @@ public:
     ~switchChip();
     void receiveEvent(frame &fr,devicePort *sender);
     void deleteFromTable(macAddress mac);
-    void updateMac();
     void dialog();
+    void secondTimerEvent();
     switchModel* model() { return switchTable; }
 private:
     switchModel *switchTable;

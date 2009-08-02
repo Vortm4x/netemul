@@ -3,7 +3,7 @@
 
 #include "dialogtemplate.h"
 
-class smartSetting;
+class routerSetting;
 class QCheckBox;
 class QGroupBox;
 class QComboBox;
@@ -15,9 +15,9 @@ class routerProperty : public dialogTemplate
     Q_DISABLE_COPY(routerProperty)
 public:
     routerProperty();
-    void setRouter(smartSetting *r);
+    void setRouter(routerSetting *r);
 private:
-    smartSetting *rt;
+    routerSetting *rt;
     QPlainTextEdit *te_text;
     QCheckBox *cb_route;
     QComboBox *cb_count;

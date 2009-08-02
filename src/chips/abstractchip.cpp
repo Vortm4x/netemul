@@ -56,6 +56,7 @@ void abstractChip::read(QDataStream &stream)
     stream >> myReceivePacket;
     stream >> mySendPacket;
 }
+#endif
 
 void abstractChip::checkReceive(frame &f)
 {
@@ -68,5 +69,5 @@ void abstractChip::checkSender(frame &f)
     mySendFrame++;
     if ( f.type() == frame::ip ) mySendPacket++;
 }
-#endif
+
 

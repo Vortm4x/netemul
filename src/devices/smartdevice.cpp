@@ -158,9 +158,8 @@ ipAddress smartDevice::gateway() const
   @param size - Размер сообщения в кб(на деле сколько пакетов).
   @param pr - Протокол с помощью которого происходит отправка.
 */
-void smartDevice::sendMessage( const QString &a , int size , int pr)
+void smartDevice::sendMessage( const QString &a , int size ,int)
 {
-    Q_UNUSED(pr);
     ipAddress gw;
     routeRecord *r = myRouteTable->recordAt(a);
     if ( !r ) return;
@@ -265,17 +264,19 @@ void smartDevice::tableDialog()
 
 void smartDevice::adapterDialog()
 {
-    adapterProperty *d = new adapterProperty;
     adapterSetting *set = new adapterSetting(this);
-    d->setDevice(set);
+    adapterProperty *d = new adapterProperty(set);
     d->exec();
-    delete set;
     delete d;
+    delete set;
 }
 
 void smartDevice::programmsDialog()
 {
-    SHOW_DIALOG(programmDialog)
+    programmDialog *d = new programmDialog;
+    d->setDevice(this);
+    d->exec();
+    delete d;
 }
 
 QStringList smartDevice::sockets() const
@@ -322,6 +323,8 @@ void smartDevice::secondTimerEvent()
 {
     foreach ( programm i , myProgramms )
         i->incTime();
+    foreach ( interface *i , myInterfaces )
+        i->secondEvent();
 }
 
 void smartDevice::setIp(const QString &a, const QString &ip)
@@ -357,12 +360,27 @@ bool smartDevice::isReady() const
     return myReady;
 }
 
-
 bool smartDevice::isBusy() const
 {
     foreach ( interface *i , myInterfaces )
         if ( i->isBusy() ) return true;
     return false;
+}
+
+void smartDevice::addInterface()
+{
+    int max = 0;
+    foreach ( interface *i , myInterfaces ) {
+        int t = i->name().mid(3).toInt();
+        if ( t > max ) max = t;
+    }
+    addInterface( trUtf8("eth%1").arg(++max) );
+}
+
+void smartDevice::deleteInterface(const QString &name)
+{
+    interface *t = adapter(name);
+    myInterfaces.remove( myInterfaces.indexOf(t) );
 }
 
 #endif

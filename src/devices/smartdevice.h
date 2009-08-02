@@ -25,6 +25,7 @@ public:
     virtual void tableDialog();
     virtual void adapterDialog();
     virtual void programmsDialog();
+    virtual bool canManageInterface() const = 0;
     bool isSmart() const { return true; }
     bool isReady() const;
     void checkReady() const;
@@ -32,15 +33,15 @@ public:
     bool isBusy() const;
     QStringList sockets() const;
     QStringList interfacesIp() const;
+    void addInterface();
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
     QString socketName(const cableDev *c) const;
     QString nameToIp(const QString &name) const { return adapter(name)->ip().toString(); }
     const interface* adapter(const QString &s) const;
     interface* ipToAdapter(const ipAddress a);
-    interface* addInterface(const QString &name);
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
-    void sendMessage(const QString &a, int size , int pr);
+    void sendMessage(const QString &a, int size ,int);
     void receivePacket(ipPacket &p,interface *f);
     void treatPacket(ipPacket &p);
     void routePacket(ipPacket &p);
@@ -71,6 +72,8 @@ private:
     void updateArp();
     interface* adapter(const QString &name);
 protected:
+    interface* addInterface(const QString &name);
+    void deleteInterface(const QString &name);
     bool myRouter;
     mutable bool myReady;
     mutable bool isDirty;
@@ -88,12 +91,12 @@ class adapterSetting {
 public:
     adapterSetting(smartDevice *s) : sd(s) { }
     void setCurrent(int n) { cur = n; }
+    int current() const { return cur; }
     void resetStatics() { sd->myInterfaces.at(cur)->resetStatics(); }
     void connectedNet() { sd->connectedNet(sd->myInterfaces.at(cur)); }
     int socketsCount() const { return sd->socketsCount(); }
     bool isConnect() const { return sd->myInterfaces.at(cur)->isConnect(); }
     QString name() const { return sd->myInterfaces.at(cur)->name(); }
-    void setName(const QString &str) { sd->myInterfaces.at(cur)->setName(str); }
     QString mac() const { return sd->myInterfaces.at(cur)->mac().toString(); }
     QString ip() const { return sd->myInterfaces.at(cur)->ip().toString(); }
     QString mask() const { return sd->myInterfaces.at(cur)->mask().toString(); }
@@ -103,6 +106,9 @@ public:
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
     QString statics() const { return sd->myInterfaces.at(cur)->staticsString(); }
     void sendArpRequest(ipAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
+    bool canManageInterface() const { return sd->canManageInterface(); }
+    void addInterface() { sd->addInterface(); }
+    void deleteInterface(const QString &name) { sd->deleteInterface(name); }
 private:
     int cur;
     smartDevice *sd;

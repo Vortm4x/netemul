@@ -12,7 +12,7 @@ class textItem : public QGraphicsTextItem
 public:
     enum { Type = UserType + 3 };
     int type() const { return Type; }
-    textItem(QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
+    textItem(QPointF p, QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
 signals:
     void lostFocus(textItem*);
 protected:

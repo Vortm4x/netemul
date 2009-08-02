@@ -32,13 +32,15 @@ public:
     void setConnect(bool b,cableDev *c);
     bool isCableConnect(const cableDev *c) const;
     void deciSecondEvent();
+    void secondEvent();
     void sendArpRequest(ipAddress a);
     void sendArpResponse(macAddress m, ipAddress a);
     bool isBusy() const;
 
     ipPacket popPacket() { return buffer.dequeue(); }
     arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
-    void removeFromTable (QString ip);
+    void deleteFromTable(const QString &ip);
+    void deleteFromTable(arpRecord *r);
     frame createFrame( macAddress receiverMac , int t);
     bool hasReceive() const { return !buffer.isEmpty(); }
     ipPacket popFromReceive() { return buffer.dequeue(); }

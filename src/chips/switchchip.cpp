@@ -33,9 +33,9 @@ void switchChip::receiveEvent(frame &fr,devicePort *sender)
     }
 }
 
-void switchChip::updateMac()
+void switchChip::secondTimerEvent()
 {
-
+    switchTable->updateMac();
 }
 
 

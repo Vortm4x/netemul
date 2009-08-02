@@ -3,7 +3,6 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsLineItem>
-#include <QGraphicsRectItem>
 #include "textitem.h"
 
 class QMenu;
@@ -14,6 +13,9 @@ class devicePort;
 class textItem;
 class device;
 class deviceImpl;
+class insertRect;
+class sendEllipse;
+class selectRect;
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -38,7 +40,7 @@ public:
     void hideInsertRect();
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
-    textItem* createTextItem();
+    textItem* createTextItem(QPointF p, const QString &str = trUtf8("Комментарий") );
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     void ticTime();
@@ -73,17 +75,15 @@ public slots:
     deviceImpl* addRouter(int x,int y);
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
-    void setShapeView(QAbstractGraphicsShapeItem *i , QPen p ,QBrush b);
     device* deviceWithImpl(deviceImpl *d);
     bool myOpen;
     int lastId;
     sendState myState;
     QGraphicsLineItem *line; // Временная линия для рисования
-    QGraphicsRectItem *selectRect; // Временный прямоугольник для выделения
+    selectRect *SelectRect; // Временный прямоугольник для выделения
     QPointF p2Rect; // Точка начала выделения
-    QGraphicsRectItem *insertRect; // Прямоугольныник для вставки
-    QGraphicsEllipseItem *sendEllipse; // Кружочек для выделения отправителя и получателя
-    textItem *textRect; // Временный указатель на текст.
+    insertRect *InsertRect; // Прямоугольныник для вставки
+    sendEllipse *SendEllipse; // Кружочек для выделения отправителя и получателя
 
     QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
     QList<device*> myDevices; //!< Список всех устройств на сцене.
@@ -108,7 +108,7 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
     void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // и отпускания кнопки мыши
-    void timerEvent(QTimerEvent *e);
+    void timerEvent(QTimerEvent*);
 };
 //------------------------------------------------------------------
 #endif // MYCANVAS_H

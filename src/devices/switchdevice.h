@@ -24,6 +24,7 @@ public:
     void tableDialog();
     bool hasTable() const { return true; }
     switchChip* concreteChip();
+    void secondTimerEvent();
     QString tableName() const { return trUtf8("Таблица коммутации"); }
 protected:
     void write(QDataStream &stream) const;

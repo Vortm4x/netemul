@@ -19,6 +19,7 @@ public:
 
     void dialog();
 
+    bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
 protected:
     void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}

@@ -4,12 +4,14 @@
 /*!
   Передает параметры предку и делает надпись перемещаемой и выделяемой.
 */
-textItem::textItem(QGraphicsItem *parent /* = 0 */ , QGraphicsScene *scene /* = 0 */)
+textItem::textItem(QPointF p, QGraphicsItem *parent /* = 0 */ , QGraphicsScene *scene /* = 0 */)
         : QGraphicsTextItem(parent,scene)
 {
+     setPos(p);
+     setTextInteractionFlags(Qt::TextEditorInteraction);
+     setZValue(1000.0);
      setFlag(QGraphicsItem::ItemIsMovable);
      setFlag(QGraphicsItem::ItemIsSelectable);
-     setPlainText(trUtf8("Комментарий"));
      QFont s("Times", 12 , QFont::Bold);
      setFont(s);
 }
