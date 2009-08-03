@@ -3,7 +3,6 @@
 
 #include <QGraphicsItem>
 #include <QDataStream>
-#include <QPainter>
 #include "deviceimpl.h"
 
 class cableDev;
@@ -49,6 +48,7 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
+    bool isSharedBusy(cableDev *c) const { return impl->isSharedBusy(c); }
 
     static bool isConnectDevices(device *s, device *e);
     QList<cableDev*> cables() const { return myCableList; }

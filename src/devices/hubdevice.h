@@ -2,7 +2,6 @@
 #define HUBDEVICE_H
 
 #include "boxdevice.h"
-#include "hubchip.h"
 
 class frame;
 
@@ -14,6 +13,7 @@ public:
     hubDevice(int c = 0);
     ~hubDevice();
     void dialog();
+    bool isSharedBusy(cableDev *c) const;
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

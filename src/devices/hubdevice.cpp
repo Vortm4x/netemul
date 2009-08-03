@@ -1,6 +1,7 @@
 #include "hubproperty.h"
 #include "hubdevice.h"
 #include "appsetting.h"
+#include "hubchip.h"
 
 hubDevice::hubDevice(int c /* = 0 */ )
 {
@@ -35,4 +36,9 @@ void hubDevice::dialog()
     d->exec();
     delete d;
     delete set;
+}
+
+bool hubDevice::isSharedBusy(cableDev *c) const
+{
+    return chip->isSharedBusy(c);
 }

@@ -17,21 +17,24 @@ class devicePort
 {
 public:
     devicePort();
+    devicePort(int n);
     ~devicePort();
     bool isBusy() const { return !senderQueue.isEmpty() || !receiveQueue.isEmpty(); }
     bool isConnect() const { return myConnect;}
     void setNum(int n) { myNum = n; }
+    bool isShared() { return myShared; }
+    void setShared(bool n) { myShared = n; }
     int num() const { return myNum; }
     void pushToSend(frame &f) { senderQueue.enqueue(f); }
     bool isCableConnect(const cableDev *c) const;
 #ifndef __TESTING__
     void setConnect(bool cur,cableDev *cable);
     frame popFromReceive() { return receiveQueue.dequeue(); }
-    void sendFrame(frame t);
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c);
     bool hasReceive() const { return !receiveQueue.isEmpty(); }
+    bool isCableBusy() const;
 #endif
 private:
     int myNum;
@@ -39,6 +42,7 @@ private:
     QQueue<frame> receiveQueue;
     cableDev *myCable;
     bool myConnect;
+    bool myShared;
 };
 //------------------------------------------------------
 

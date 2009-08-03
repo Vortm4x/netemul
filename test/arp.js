@@ -28,9 +28,8 @@ for ( j = 0 ; j < 2 ; j++ ) {
     g += 128;
 }
 net[0][0].sendMessage("192.168.1.133",50,0);
-print("start");
 emulateTime();
-print("end");
 play();
+result = ( net[0][0].sendPacketCount("eth0") == net[1][4].receivePacketCount("eth0") );
 saveScene("test/arp.net");
-true;
+result;

@@ -3,6 +3,7 @@
 
 #include <QGraphicsLineItem>
 #include <QPainter>
+#include <QQueue>
 
 class device;
 class devicePort;
@@ -11,14 +12,12 @@ struct bitStream {
     QByteArray data;
     QBrush color;
     qreal pos;
-    qint8 direct;
 };
 
 class cableDev : public QGraphicsLineItem
 {
 public:
     enum { Type = UserType + 1 };
-    enum { startToEnd = 1 , endToStart = -1 };
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
@@ -28,15 +27,15 @@ public:
     ~cableDev();
     void updatePosition(); // Обновление прорисовки
     void motion();
-    bool isBusy() const { return myStreams.count(); }
+    bool isBusy() const { return fromStartQueue.count() || fromEndQueue.count(); }
+    bool isBusy(const devicePort *d);
     device* start() { return myStartDev; }
     device* end() { return myEndDev; }
     devicePort* startPort() { return myStartPort; }
     devicePort* endPort() { return myEndPort; }
     void insertInPort(devicePort *p);
-    int model() const { return myModel; }
-    void input(QByteArray b,devicePort *cur);
-    void output(bitStream *t);
+    int isShared() const { return myShared; }
+    void input(QByteArray b,devicePort *cur);;
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
     QString startSocketName() const;
@@ -44,8 +43,9 @@ public:
     void deleteConnect();
 private:
     bool myChecked;
-    int myModel;
-    QList<bitStream*> myStreams;
+    bool myShared;
+    QQueue<bitStream*> fromStartQueue;
+    QQueue<bitStream*> fromEndQueue;
     device *myStartDev; //!< Указатель на устройтсво начала.
     device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;

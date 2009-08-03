@@ -68,6 +68,10 @@ public slots:
     void setIp(const QString &a, const QString &ip);
     void setMask(const QString &a, const QString &ip);
     void setGateway(const QString &str);
+    virtual quint64 sendPacketCount(const QString &name) { return adapter(name)->countSendPacket(); }
+    virtual quint64 receivePacketCount(const QString &name) { return adapter(name)->countRecPacket(); }
+    virtual quint64 sendFrameCount(const QString &name) { return adapter(name)->countSendFrame(); }
+    virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
 private:
     void updateArp();
     interface* adapter(const QString &name);

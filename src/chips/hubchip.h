@@ -9,6 +9,8 @@ class hubChip : public boxChip
 {
 public:
     void receiveEvent(frame &fr,devicePort *sender);
+    void addSocket(int n);
+    bool isSharedBusy(cableDev *c) const;
     hubChip(int n = 4);
     ~hubChip();
 };

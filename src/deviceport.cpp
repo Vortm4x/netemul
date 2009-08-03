@@ -5,9 +5,15 @@
 devicePort::devicePort()
 {
     myConnect = false;
+    myShared = false;
     myCable = 0;
-    receiveQueue.clear();
-    senderQueue.clear();
+}
+
+devicePort::devicePort(int n) : myNum(n)
+{
+    myConnect = false;
+    myShared = false;
+    myCable = 0;
 }
 
 devicePort::~devicePort()
@@ -20,6 +26,12 @@ bool devicePort::isCableConnect(const cableDev *c) const
     if ( myCable == c ) return true;
     return false;
 }
+
+bool devicePort::isCableBusy() const
+{
+    return myConnect && myCable->isBusy(this);
+}
+
 #ifndef __TESTING__
 /*!
   Достает кадр из очереди и отправляет его.
@@ -27,7 +39,9 @@ bool devicePort::isCableConnect(const cableDev *c) const
 void devicePort::queueEvent()
 {
     if ( senderQueue.isEmpty() ) return;
-    sendFrame( senderQueue.dequeue() );
+    if ( myCable->isShared() && myCable->isBusy(this) ) return;
+    frame t = senderQueue.dequeue();
+    myCable->input(t.toData(),this);
 }
 //---------------------------------------------------
 /*!
@@ -47,15 +61,6 @@ void devicePort::setConnect(bool cur,cableDev *cable)
     }
 }
 //---------------------------------------------------
-/*!
-  Отправляет кадр в сеть.
-  @param t - указатель на кадр.
-*/
-void devicePort::sendFrame(frame t)
-{
-    myCable->input(t.toData(),this);
-}
-//-----------------------------------------------------
 
 void devicePort::setChecked(bool c)
 {

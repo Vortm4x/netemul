@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QtDebug>
+#include <QPainter>
 
 device::device(int t)
 {

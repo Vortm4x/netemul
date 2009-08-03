@@ -11,7 +11,7 @@ class boxChip : public abstractChip
 {
 public:
     boxChip(int n = 4);
-    virtual ~boxChip() { }
+    virtual ~boxChip();
     QStringList sockets() const;
     bool setSocketsCount(int n);
     int socketsCount() const { return mySockets.size(); }
@@ -21,8 +21,10 @@ public:
     QString socketName(const cableDev *c) const;
     virtual void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }
+    virtual void addSocket(int n);
     devicePort* socket(const QString &name);
     bool isBusy() const;
+    virtual bool isSharedBusy(cableDev*) const { return false; }
 #ifndef __TESTING__
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

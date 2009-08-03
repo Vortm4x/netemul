@@ -1,7 +1,5 @@
 #include "senddialog.h"
 #include "device.h"
-#include "deviceport.h"
-#include "interface.h"
 #include <QPushButton>
 #include <QRadioButton>
 #include <QGroupBox>

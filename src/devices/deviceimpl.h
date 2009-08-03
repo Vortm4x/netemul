@@ -22,6 +22,7 @@ public:
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
     virtual bool isBusy() const = 0;
+    virtual bool isSharedBusy(cableDev*) const { return false; }
 
     const QString& note() const { return myNote; }
     void setNote(const QString &n) { myNote = n; }
@@ -50,11 +51,15 @@ public:
     virtual bool isRouter() const { qFatal("No router!"); return false; }
     virtual void setRouter(bool) { qFatal("No router!"); }
 public slots:
-    virtual void setIp(const QString &a , const QString &ip);
-    virtual void setMask(const QString &a, const QString &ip);
-    virtual void setGateway(const QString &str);
-    virtual void setSocketsCount(int n);
+    virtual void setIp(const QString&, const QString&) { }
+    virtual void setMask(const QString&, const QString&) { }
+    virtual void setGateway(const QString&) { }
+    virtual void setSocketsCount(int) { }
     virtual void sendMessage(const QString& ,int, int) { qFatal("ERROR!"); }
+    virtual quint64 sendPacketCount(const QString&) { return 0; }
+    virtual quint64 receivePacketCount(const QString&) { return 0; }
+    virtual quint64 sendFrameCount(const QString&) { return 0; }
+    virtual quint64 receiveFrameCount(const QString&) { return 0; }
 private:
     QString myNote;
 };

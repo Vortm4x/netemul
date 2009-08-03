@@ -6,21 +6,24 @@
 cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
 {
     mySpeed = s; // Скорость кабеля.
-    myStartPort = NULL;
-    myEndPort = NULL;
+    myStartPort = 0;
+    myEndPort = 0;
     myChecked = false;
     myStartDev = start;
     myEndDev = end;
     myStartDev->addConnection(sp,this);
     myEndDev->addConnection(ep,this);
+    if ( myStartPort->isShared() || myEndPort->isShared() ) myShared = true;
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
     setZValue(-1000.0); // Кидаем его на самый-самый задний план
 }
 
 cableDev::~cableDev()
 {
-    qDeleteAll(myStreams);
-    myStreams.clear();
+    qDeleteAll(fromStartQueue);
+    fromStartQueue.clear();
+    qDeleteAll(fromEndQueue);
+    fromEndQueue.clear();
 }
 /*!
   Отрисовывает кабель.
@@ -39,6 +42,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->drawLine(line());
     painter->setPen(QPen(Qt::black,1));
 
+
 //    if ( myStreams.isEmpty() ) return ;
 //    qreal min = 1;
 //    qreal max = 0;
@@ -49,7 +53,12 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 //    painter->setPen(QPen(Qt::red,2));
 //    painter->drawLine( line().pointAt(min) , line().pointAt(max) );
 
-    foreach ( bitStream *i , myStreams ) {
+    foreach ( bitStream *i , fromEndQueue ) {
+        painter->setBrush(i->color);
+        painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
+    }
+
+    foreach ( bitStream *i , fromStartQueue ) {
         painter->setBrush(i->color);
         painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
     }
@@ -78,40 +87,33 @@ void cableDev::input(QByteArray b,devicePort *cur )
     }
     t->data = b;
     if ( cur == myStartPort ) {
-        t->direct = startToEnd;
-        t->pos = 0;
+        fromStartQueue.enqueue(t);
+        t->pos = 0.0;
     } else {
-        t->direct = endToStart;
-        t->pos = 1;
+        fromEndQueue.enqueue(t);
+        t->pos = 1.0;
     }
-    myStreams << t;
 }
 //---------------------------------------------------------
 /*!
-  Передает поток бит устройству получателю.
-  @param t - указатель на поток.
-*/
-void cableDev::output(bitStream *t)
-{
-    if ( t->direct == startToEnd )
-        endPort()->receiveFrame( t->data );
-    else
-        startPort()->receiveFrame( t->data );
-    myStreams.removeOne(t);
-    delete t;
-}
-//------------------------------------------------------------
-/*!
-  Перемещает все кадры на проводе на один шаг в нужном направлении.
+ * Перемещает все кадры на проводе на один шаг в нужном направлении.
 */
 void cableDev::motion()
 {
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
-       foreach ( bitStream *i , myStreams ) {
-            i->pos = i->pos + i->direct*speed;
-            if ( i->pos >= 1 || i->pos <= 0) output(i);
-       }
+       foreach ( bitStream *i , fromStartQueue )
+           if ( (i->pos += speed) > 1.0 ) {
+                bitStream *t = fromStartQueue.dequeue();
+                endPort()->receiveFrame( t->data );
+                delete t;
+           }
+       foreach ( bitStream *i , fromEndQueue )
+           if ( (i->pos -= speed) <= 0.0 ) {
+                bitStream *t = fromEndQueue.dequeue();
+                startPort()->receiveFrame( t->data );
+                delete t;
+           }
        update();
 }
 //-----------------------------------------------------------
@@ -139,3 +141,16 @@ void cableDev::insertInPort(devicePort *p)
     else qFatal("ERROR in cable!");
 }
 
+
+bool cableDev::isBusy(const devicePort *d)
+{
+    if ( myStartPort == d ) {
+        if ( fromEndQueue.size() ) return true;
+        if ( myEndPort->isShared() ) return myEndDev->isSharedBusy(this);
+    }
+    else {
+        if ( fromStartQueue.size() ) return true;
+        if ( myStartPort->isShared() ) return myStartDev->isSharedBusy(this);
+    }
+    return false;
+}

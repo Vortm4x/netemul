@@ -6,11 +6,14 @@
 
 boxChip::boxChip(int n /* = 4 */)
 {
-    for ( int i = 0 ; i < n ; i++ ) {
-        devicePort *t = new devicePort;
-        t->setNum(i+1);
-        mySockets.push_back(t);
-    }
+    for ( int i = 0 ; i < n ; i++ )
+        addSocket(i+1);
+}
+
+boxChip::~boxChip()
+{
+    qDeleteAll(mySockets);
+    mySockets.clear();
 }
 
 QStringList boxChip::sockets() const
@@ -25,11 +28,8 @@ bool boxChip::setSocketsCount(int n)
 {
     int i,t = mySockets.size();
     if ( t <= n ) {
-        for ( i = t ; i < n ; i++ ) {
-            devicePort *t = new devicePort;
-            t->setNum(i+1);
-            mySockets.push_back(t);
-        }
+        for ( i = t ; i < n ; i++ )
+            addSocket(i+1);
     }
     else {
         for ( i = n ; i < t ; i++ )
@@ -110,4 +110,13 @@ void boxChip::read(QDataStream &stream)
     stream >> n;
     setSocketsCount(n);
 }
+
+void boxChip::addSocket(int n)
+{
+    devicePort *t = new devicePort(n);
+    mySockets.push_back(t);
+}
+
 #endif
+
+
