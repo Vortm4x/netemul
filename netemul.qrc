@@ -14,17 +14,17 @@
         <file>images/minus2.png</file>
         <file>images/left_right.png</file>
         <file>images/ok.png</file>
-        <file>images/gadu.png</file>
         <file>images/redo.png</file>
         <file>images/pause.png</file>
         <file>images/play.png</file>
-        <file>images/edit.png</file>
         <file>images/router.png</file>
-        <file>images/program.png</file>
-        <file>images/table.png</file>
-        <file>images/interface.png</file>
         <file>images/switch.png</file>
         <file>images/table_arp.png</file>
         <file>images/table_route.png</file>
+        <file>images/properties.png</file>
+        <file>images/setting.png</file>
+        <file>images/network_nic.png</file>
+        <file>images/note.png</file>
+        <file>images/install_apps.png</file>
     </qresource>
 </RCC>

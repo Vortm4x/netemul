@@ -38,6 +38,7 @@ protected:
 public slots:
     void addRecord();
     void deleteRecord();
+    void checkSelection();
 };
 
 #endif // TABLEARP_H

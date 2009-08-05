@@ -142,7 +142,7 @@ void MainWindow::createAction()
     cableAct->setData( myCanvas::cable*10 + myCanvas::noDev );
 
     textAct = createOneAction( trUtf8("Текст") , trUtf8("Вставить текстовый комментарий") ,
-                               QIcon(":/im/images/edit.png"), true);
+                               QIcon(":/im/images/note.png"), true);
     textAct->setData( myCanvas::text*10 + myCanvas::noDev );
 
     shareBusAct = createOneAction( trUtf8("Общая шина"),trUtf8("Добавить общую шину"),
@@ -173,12 +173,12 @@ void MainWindow::createAction()
     connect( testAct , SIGNAL(triggered()) , SLOT(test()));
 
     propertyAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
-                                  QIcon(":/im/images/refresh.png") );
+                                  QIcon(":/im/images/properties.png") );
     propertyAct->setShortcut(tr("Ctrl+Alt+P"));
 
 
     tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
-                                QIcon(":/im/images/table.png"));
+                                QIcon(":/im/images/table_route.png"));
     tableAct->setShortcut( tr("Ctrl+T"));
 
     aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
@@ -191,7 +191,7 @@ void MainWindow::createAction()
     connect(helpAct,SIGNAL(triggered()) , SLOT(helpDialog()));
 
     adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
-                                  QIcon(":/im/images/interface.png"));
+                                  QIcon(":/im/images/network_nic.png"));
     adapterAct->setShortcut(tr("Ctrl+I"));
 
     playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
@@ -199,7 +199,7 @@ void MainWindow::createAction()
     connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
 
     progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
-                              QIcon(":/im/images/program.png"));
+                              QIcon(":/im/images/install_apps.png"));
     progAct->setShortcut(tr("Ctrl+P"));
 
     arpAct = createOneAction(trUtf8("Arp-таблица"), trUtf8("Arp-таблица устройства"),

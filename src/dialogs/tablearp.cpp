@@ -47,6 +47,7 @@ tableArp::tableArp()
     connect(btn_del, SIGNAL(clicked()), SLOT(deleteRecord()));
     btn_close = new QPushButton( QIcon( ":im/images/minus2.png" ), trUtf8( "Закрыть" ));
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
+//    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()));
     temp->addWidget(btn_add);
     temp->addWidget(btn_del);
     temp->addStretch(1);
@@ -58,7 +59,7 @@ tableArp::tableArp()
 void tableArp::setDevice(smartDevice *dev)
 {
     device = dev;
-    s = device->sockets();
+    s = device->sockets();    
     list = device->arpModels();
     updateTable();
 }
@@ -83,7 +84,7 @@ void tableArp::updateTable()
     int i = 0;
     arpRecord *r;
     foreach ( arpModel *p, list ) {
-        if ( !device->isConnectSocket(s.at(i)) ) continue;
+        if ( !device->isConnectSocket(s.at(i)) ) { i++; continue; }
         cb_port->addItem(QIcon(":im/images/ok.png"), s.at(i) );
         for ( int j = 0; j < p->size(); j++ ) {
             r = p->recordAt(j);
@@ -99,6 +100,7 @@ void tableArp::updateTable()
             table->setItem( table->rowCount()-1, 3, ti_name);
             table->setItem( table->rowCount()-1, 4, ti_time);
         }
+        i++;
     }
     correctSize();
 }
@@ -128,3 +130,8 @@ void tableArp::deleteRecord()
     updateTable();
 }
 //------------------------------------------------------------------------
+
+void tableArp::checkSelection()
+{
+    //if ( table->currentItem() && table->currentItem()->
+}
