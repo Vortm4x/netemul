@@ -39,6 +39,7 @@ public:
     void tableDialog() const { impl->tableDialog(); }
     void adapterDialog() const { impl->adapterDialog(); }
     void programmsDialog() const { impl->programmsDialog(); }
+    void arpDialog() const { impl->arpDialog(); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isConnectSocket(const QString &str) { return impl->isConnectSocket(str); }
     QStringList sockets() const { return impl->sockets(); }

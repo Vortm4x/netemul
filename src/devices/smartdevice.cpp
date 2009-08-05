@@ -3,6 +3,7 @@
 #include "routeeditor.h"
 #include "routemodel.h"
 #include "adapterproperty.h"
+#include "tablearp.h"
 #include "programmdialog.h"
 #include "udppacket.h"
 #include "tcppacket.h"
@@ -265,6 +266,14 @@ void smartDevice::adapterDialog()
 void smartDevice::programmsDialog()
 {
     programmDialog *d = new programmDialog;
+    d->setDevice(this);
+    d->exec();
+    delete d;
+}
+
+void smartDevice::arpDialog()
+{
+    tableArp *d = new tableArp;
     d->setDevice(this);
     d->exec();
     delete d;

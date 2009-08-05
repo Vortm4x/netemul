@@ -20,6 +20,7 @@ public slots:
     void tableDialog() const;
     void adapterDialog() const;
     void programmsDialog() const;
+    void arpDialog() const;
 signals:
     void selectOneDevice(bool);
     void selectTableDevice(bool);

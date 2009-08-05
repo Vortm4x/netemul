@@ -201,6 +201,10 @@ void MainWindow::createAction()
     progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
                               QIcon(":/im/images/program.png"));
     progAct->setShortcut(tr("Ctrl+P"));
+
+    arpAct = createOneAction(trUtf8("Arp-таблица"), trUtf8("Arp-таблица устройства"),
+                              QIcon(":/im/images/table_arp.png"));
+    arpAct->setShortcut(tr("Ctrl+Shift+A"));
 }
 
 //Создаем меню
@@ -227,6 +231,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(tableAct);
     itemMenu->addAction(adapterAct);
     itemMenu->addAction(progAct);
+    itemMenu->addAction(arpAct);
     itemMenu->setEnabled(false);
 
     settingMenu = menuBar()->addMenu( trUtf8("Сервис") );
@@ -267,6 +272,7 @@ void MainWindow::createTools()
     controlBar->addAction(adapterAct);
     controlBar->addAction(progAct);
     controlBar->addAction(tableAct);
+    controlBar->addAction(arpAct);
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }
@@ -293,10 +299,12 @@ void MainWindow::createScene()
     connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , arpAct , SLOT(setVisible(bool)) );
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
     connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
     connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
     connect( progAct , SIGNAL(triggered()) , sceneControler , SLOT(programmsDialog()) );
+    connect( arpAct , SIGNAL(triggered()) , sceneControler , SLOT(arpDialog()) );
 }
 //------------------------------------------------------------------
 /*!

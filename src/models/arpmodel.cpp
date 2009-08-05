@@ -58,3 +58,13 @@ arpRecord* arpModel::recordAt(const ipAddress &a) const
     return NULL;
 }
 
+arpRecord* arpModel::recordAt(int u) const
+{
+    return myTable.at(u);
+    return NULL;
+}
+
+int arpModel::size()
+{
+    return myTable.size();
+}

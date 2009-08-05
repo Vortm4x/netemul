@@ -18,7 +18,8 @@ public:
     void update();
     void clear();
     arpRecord* recordAt(const ipAddress &a) const;
-
+    arpRecord* recordAt(int u) const;
+    int size();
 private:
     QList<arpRecord*> myTable;
 

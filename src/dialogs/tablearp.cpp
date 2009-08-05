@@ -12,7 +12,7 @@
 /**
    Конструктор создает основной интерфейс окна.
 */
-tableArp::tableArp(QWidget *parent) : QDialog(parent)
+tableArp::tableArp()
 {
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableWidget(0,5);
@@ -55,16 +55,13 @@ tableArp::tableArp(QWidget *parent) : QDialog(parent)
     setLayout(all);
 }
 //------------------------------------------------------------------
-/**
-  Назначает диалогу устройство класса smartDevice, именно с этим устройством,
-  диалог и будет работать.
-*/
 void tableArp::setDevice(smartDevice *dev)
 {
-    d = dev;
+    device = dev;
+    s = device->sockets();
+    list = device->arpModels();
     updateTable();
 }
-//------------------------------------------------------------------
 /**
   Корректирует размер колонок таблицы в соответствии с размером окна.
 */
@@ -80,31 +77,30 @@ void tableArp::correctSize()
 */
 void tableArp::updateTable()
 {
-//    table->clearContents();
-//    cb_port->clear();
-//    table->setRowCount(0);
-//    QStringList s = d->sockets();
-//    QList<arpModel*> list = d->arpModels();
-//    int i = 0;
-//    foreach ( arpModel *p, list ) {
-//        if ( !d->isConnectSocket(s.at(i)) ) continue;
-//        cb_port->addItem(QIcon(":im/images/ok.png"), s.at(i) );
-//        QList<arpRecord*> rec = p->;
-//        foreach ( arpRecord *r, rec ){
-//            table->insertRow(table->rowCount());
-//            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.macString());
-//            QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.ipString());
-//            QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
-//            QTableWidgetItem *ti_name = new QTableWidgetItem(p->name());
-//            QTableWidgetItem *ti_time = new QTableWidgetItem( tr("%1").arg(r->time) );
-//            table->setItem( table->rowCount()-1, 0, ti_mac);
-//            table->setItem( table->rowCount()-1, 1, ti_ip);
-//            table->setItem( table->rowCount()-1, 2, ti_mode);
-//            table->setItem( table->rowCount()-1, 3, ti_name);
-//            table->setItem( table->rowCount()-1, 4, ti_time);
-//        }
-//    }
-//    correctSize();
+    table->clearContents();
+    cb_port->clear();
+    table->setRowCount(0);
+    int i = 0;
+    arpRecord *r;
+    foreach ( arpModel *p, list ) {
+        if ( !device->isConnectSocket(s.at(i)) ) continue;
+        cb_port->addItem(QIcon(":im/images/ok.png"), s.at(i) );
+        for ( int j = 0; j < p->size(); j++ ) {
+            r = p->recordAt(j);
+            table->insertRow(table->rowCount());
+            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.toString());
+            QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.toString());
+            QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
+            QTableWidgetItem *ti_name = new QTableWidgetItem(s.at(i));
+            QTableWidgetItem *ti_time = new QTableWidgetItem( tr("%1").arg(r->time) );
+            table->setItem( table->rowCount()-1, 0, ti_mac);
+            table->setItem( table->rowCount()-1, 1, ti_ip);
+            table->setItem( table->rowCount()-1, 2, ti_mode);
+            table->setItem( table->rowCount()-1, 3, ti_name);
+            table->setItem( table->rowCount()-1, 4, ti_time);
+        }
+    }
+    correctSize();
 }
 //---------------------------------------------------------------
 /**
@@ -115,7 +111,7 @@ void tableArp::updateTable()
 void tableArp::addRecord()
 {
     if ( le_mac->text() == "00:00:00:00:00:00" || ip->text() == "0.0.0.0" ) return;
-//    d->adapter( cb_port->currentText() )->addToTable( ip->text(), le_mac->text(), interface::staticMode );
+    list.at(s.indexOf(cb_port->currentText()))->addToTable( ip->text(), le_mac->text(), arpModel::staticMode );
     updateTable();
     ip->setText("0.0.0.0");
     le_mac->setText("00:00:00:00:00:00");
@@ -127,8 +123,8 @@ void tableArp::addRecord()
 void tableArp::deleteRecord()
 {    
     if ( table->selectedItems().isEmpty() ) return;
-//    int n = table->currentRow();
-//    d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
+    int n = table->currentRow();
+    list.at(s.indexOf( table->item( n, 3)->text() ))->deleteFromTable( table->item( n, 1)->text() );
     updateTable();
 }
 //------------------------------------------------------------------------

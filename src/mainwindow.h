@@ -99,6 +99,7 @@ private:
         QAction *adapterAct;
         QAction *playAct;
         QAction *progAct;
+        QAction *arpAct;
 };
 
 #endif // MAINWINDOW_H

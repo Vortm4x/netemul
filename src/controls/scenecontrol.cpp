@@ -50,6 +50,12 @@ void sceneControl::programmsDialog() const
     t->programmsDialog();
 }
 
+void sceneControl::arpDialog() const
+{
+    device *t = scene->oneSelectedDevice();
+    t->arpDialog();
+}
+
 bool sceneControl::isSelect() const
 {
     if ( scene->oneSelectedDevice() ) return true;

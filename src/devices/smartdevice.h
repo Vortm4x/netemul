@@ -26,6 +26,8 @@ public:
     virtual void tableDialog();
     virtual void adapterDialog();
     virtual void programmsDialog();
+    virtual void arpDialog();
+
     virtual bool canManageInterface() const = 0;
     bool isSmart() const { return true; }
     bool isReady() const;

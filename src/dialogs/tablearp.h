@@ -7,27 +7,31 @@ class QTableWidget;
 class QPushButton;
 class QLineEdit;
 class QComboBox;
+class QStringList;
 class smartDevice;
 class ipEdit;
 class macAddress;
+class arpModel;
 
 class tableArp : public QDialog
 {
     Q_OBJECT
     Q_DISABLE_COPY(tableArp)
 public:
-    tableArp(QWidget *parent = 0);
+    tableArp();
     void setDevice(smartDevice *dev);
     void correctSize();
     void updateTable();
 private:
-    smartDevice *d;
+    smartDevice *device;
     QTableWidget *table;
     QPushButton *btn_add;
     QPushButton *btn_del;
     QPushButton *btn_close;
     QLineEdit *le_mac;
     QComboBox *cb_port;
+    QStringList s;
+    QList<arpModel*> list;
     ipEdit *ip;
 protected:
     void resizeEvent(QResizeEvent *e) { Q_UNUSED(e); correctSize(); }

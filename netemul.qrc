@@ -24,5 +24,7 @@
         <file>images/table.png</file>
         <file>images/interface.png</file>
         <file>images/switch.png</file>
+        <file>images/table_arp.png</file>
+        <file>images/table_route.png</file>
     </qresource>
 </RCC>
