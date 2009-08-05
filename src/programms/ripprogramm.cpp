@@ -4,7 +4,6 @@
 #include "routemodel.h"
 #include <QtDebug>
 
-
 /*!
   Инициализирует программу стандартными настройками.
   @param d - устройство на которое устанавливается программа.
@@ -17,6 +16,12 @@ ripProgramm::ripProgramm()
     timer = qrand()%30;
 }
 //--------------------------------------------------------------
+
+void ripProgramm::setDevice(smartDevice *s)
+{
+    sd = s;
+    model = sd->routeTable();
+}
 /*!
   Отсчитывает интервалы, по истечении которых
   происходит отправка rip-сообщений.
@@ -36,8 +41,9 @@ void ripProgramm::incTime()
 void ripProgramm::execute(ipPacket &p)
 {
     udpPacket u(p.unpack());
-    QDataStream d(u.unpack());
-    int count = u.size();
+    QByteArray b = u.unpack();
+    QDataStream d(b);
+    int count = u.size() / 9;
     for ( int i = 0; i < count ; i++ ){
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
@@ -132,7 +138,7 @@ void ripProgramm::checkTable(routeRecord *r)
 */
 bool ripProgramm::interrupt(int u)
 {
-    routeRecord *t = findChanged();
+    routeRecord *t = 0;
     if ( !t ) return false;
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
@@ -149,18 +155,6 @@ bool ripProgramm::interrupt(int u)
     return false;
 }
 //---------------------------------------------------
-/*!
-  Находит последнюю измененую запись.
-  @return указатель на запись.
-*/
-routeRecord* ripProgramm::findChanged() const
-{
-//    foreach ( routeRecord *i , sd->myRouteTable )
-//        if ( i->change == routeModel::changed ) return i;
-    return NULL;
-}
-//---------------------------------------------------
-
 /*!
   Записывает отличительные черты RIP в поток.
   @param stream - поток для записи.

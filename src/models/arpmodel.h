@@ -1,9 +1,28 @@
 #ifndef ARPMODEL_H
 #define ARPMODEL_H
 
-#include <QAbstractTableModel>
 #include "ipaddress.h"
 #include "macaddress.h"
+
+struct arpRecord;
+
+class arpModel
+{
+public:
+    enum { staticMode = 100 , dinamicMode = 101 };
+    arpModel();
+    ~arpModel() { clear(); }
+    arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
+    void deleteFromTable(const QString &ip);
+    void deleteFromTable(arpRecord *r);
+    void update();
+    void clear();
+    arpRecord* recordAt(const ipAddress &a) const;
+
+private:
+    QList<arpRecord*> myTable;
+
+};
 
 struct arpRecord {
     macAddress mac;
@@ -11,23 +30,9 @@ struct arpRecord {
     int time;
     int mode;
     QString modeString() const {
-        if ( mode ==  0 /* interface::staticMode */ ) return QObject::trUtf8("Статическая");
+        if ( mode == arpModel::staticMode ) return QObject::trUtf8("Статическая");
         else return QObject::trUtf8("Динамическая");
     }
-};
-
-class arpModel : public QAbstractTableModel
-{
-public:
-    arpModel();
-    QVariant data(const QModelIndex &i, int role = Qt::DisplayRole) const;
-//    QVariant headerData(int s, Qt::Orientation o, int r = Qt::DisplayRole) const;
-//    int rowCount(const QModelIndex &p = QModelIndex()) const;
-//    int columnCount(const QModelIndex &p = QModelIndex()) const;
-//    Qt::ItemFlags flags(const QModelIndex &i) const;
-private:
-    QList<arpRecord*> table;
-
 };
 
 #endif // ARPMODEL_H

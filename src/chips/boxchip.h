@@ -21,9 +21,9 @@ public:
     QString socketName(const cableDev *c) const;
     virtual void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }
-    virtual void addSocket(int n);
     devicePort* socket(const QString &name);
     bool isBusy() const;
+    virtual void addSocket(int n);
     virtual bool isSharedBusy(cableDev*) const { return false; }
 #ifndef __TESTING__
     virtual void write(QDataStream &stream) const;

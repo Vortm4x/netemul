@@ -7,6 +7,7 @@
 #include <QVector>
 
 class routeModel;
+class arpModel;
 
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
@@ -64,6 +65,7 @@ public:
     friend class ripProgramm;
     friend class adapterSetting;
     routeModel* routeTable() { return myRouteTable; }
+    QList<arpModel*> arpModels();
 public slots:
     void setIp(const QString &a, const QString &ip);
     void setMask(const QString &a, const QString &ip);
@@ -73,7 +75,6 @@ public slots:
     virtual quint64 sendFrameCount(const QString &name) { return adapter(name)->countSendFrame(); }
     virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
 private:
-    void updateArp();
     interface* adapter(const QString &name);
 protected:
     interface* addInterface(const QString &name);

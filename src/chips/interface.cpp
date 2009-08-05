@@ -2,6 +2,7 @@
 #include "frame.h"
 #include "deviceport.h"
 #include "appsetting.h"
+#include "arpmodel.h"
 #include <QList>
 #include <QMessageBox>
 //#include <QtDebug>
@@ -9,12 +10,13 @@
 interface::interface(const QString &name) : myName(name)
 {
     mySocket = new devicePort;
+    myArpTable = new arpModel;
 }
 
 interface::~interface()
 {
     delete mySocket;
-    clearArp();
+    delete myArpTable;
 }
 
 void interface::pushToSocket(frame &f)
@@ -53,54 +55,20 @@ void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */
     ipAddress t;    
     if ( gw.isEmpty() ) t = p.receiver();
     else t = gw;
-    foreach ( arpRecord *i , myArpTable )
-        if ( i->ip == t ) {
-            frame f = createFrame( i->mac , frame::ip );
-            i->time = 0; // Стартуем заново время жизни arp записи
-            f.pack( p.toData() );
-            pushToSocket(f);
-            return;
-        }
+    arpRecord *a = myArpTable->recordAt(t);
+    if ( a ) {
+        frame f = createFrame( a->mac , frame::ip );
+        a->time = 0; // Стартуем заново время жизни arp записи
+        f.pack( p.toData() );
+        pushToSocket(f);
+        return;
+    }
     if ( myWaits.contains( t ) ) {
         myWaits.insert(t,p);
         return;
     }
     sendArpRequest(t);
     myWaits.insert(t,p);
-    return;
-}
-
-void interface::deleteFromTable(const QString &ip)
-{
-    ipAddress a(ip);
-    foreach ( arpRecord *i, myArpTable )
-        if ( i->ip == a ) deleteFromTable(i);
-}
-
-void interface::deleteFromTable(arpRecord *r)
-{
-    myArpTable.removeOne(r);
-    delete r;
-}
-
-arpRecord* interface::addToTable(ipAddress ip , macAddress mac , int mode )
-{
-    foreach ( arpRecord *i , myArpTable ) {
-        if ( i->ip == ip && i->mac == mac ) return i;
-        if ( i->mode != staticMode && (i->ip == ip || i->mac == mac ) ) {
-            i->ip = ip;
-            i->mac = mac;
-            i->mode = mode;
-            return i;
-        }
-    }
-    arpRecord *t = new arpRecord;
-    t->ip = ip;
-    t->mac = mac;
-    t->mode = mode;
-    t->time = 0;
-    myArpTable << t;
-    return t;
 }
 
 frame interface::createFrame( macAddress receiverMac, int t)
@@ -117,25 +85,6 @@ void interface::receiveIp(ipPacket &ip)
     buffer.enqueue(ip);
 }
 
-void interface::updateArp()
-{
-    foreach ( arpRecord *i, myArpTable ) {
-        if ( i->mode == staticMode ) continue;
-        if ( ++i->time == 1200 ) {
-            myArpTable.removeOne(i);
-            delete i;
-        }
-    }
-}
-
-void interface::clearArp()
-{
-    myIp = ipAddress("0.0.0.0");
-    myMask = ipAddress("0.0.0.0");
-    qDeleteAll(myArpTable);
-    myArpTable.clear();
-}
-
 void interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
@@ -143,13 +92,13 @@ void interface::receiveArp(arpPacket &arp)
             QMessageBox::warning(0, QObject::trUtf8("Некорректная работа сети"),
                                  QObject::trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
         }
-        addToTable(  arp.senderIp() , arp.senderMac() , dinamicMode );
+        myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
         QList<ipPacket> packets = myWaits.values( arp.senderIp() );
         for ( int i = 0; i < packets.size() ; i++ ) sendPacket( packets[i] , arp.senderIp() );
         Q_ASSERT( packets.size() == myWaits.remove( arp.senderIp() ) );
     }
     else {
-        arpRecord *t = addToTable(arp.senderIp() , arp.senderMac() , dinamicMode );
+        arpRecord *t = myArpTable->addToTable(arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
         if ( arp.receiverIp() == myIp ) sendArpResponse(t->mac, t->ip);
     }
 }
@@ -185,9 +134,7 @@ void interface::deciSecondEvent()
 
 void interface::secondEvent()
 {
-    int n = appSetting::ttlArp();
-    foreach ( arpRecord *i , myArpTable )
-        if ( ++i->time >= n ) deleteFromTable(i);
+    myArpTable->update();
 }
 
 void interface::sendArpRequest(ipAddress a)

@@ -49,8 +49,6 @@ UI_DIR = src
 
 # Input
 HEADERS += src/arppacket.h \
-    src/cabledev.h \
-    src/device.h \
     src/deviceport.h \
     src/frame.h \
     src/ipaddress.h \
@@ -60,11 +58,8 @@ HEADERS += src/arppacket.h \
     src/mainwindow.h \
     src/mycanvas.h \
     src/udppacket.h \
-    src/tcppacket.h \
-    src/textitem.h 
+    src/tcppacket.h
 SOURCES += src/arppacket.cpp \
-    src/cabledev.cpp \
-    src/device.cpp \
     src/deviceport.cpp \
     src/frame.cpp \
     src/ipaddress.cpp \
@@ -75,6 +70,5 @@ SOURCES += src/arppacket.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp \
     src/udppacket.cpp \
-    src/tcppacket.cpp \
-    src/textitem.cpp 
+    src/tcppacket.cpp
 RESOURCES += netemul.qrc

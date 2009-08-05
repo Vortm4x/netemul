@@ -146,6 +146,7 @@ void smartDevice::setGateway(const QString &str)
     myRouteTable->addToTable(ipAddress(),ipAddress(),t,a,0,routeModel::staticMode);
 }
 //--------------------------------------------------------------
+
 ipAddress smartDevice::gateway() const
 {
     routeRecord *i = myRouteTable->recordAt(trUtf8("0.0.0.0"));
@@ -167,16 +168,6 @@ void smartDevice::sendMessage( const QString &a , int size ,int)
     ipPacket t(r->out,a);
     for ( int i = 0 ; i < size ; i++)
         ipToAdapter(r->out)->sendPacket(t,gw);
-}
-//---------------------------------------------------------------
-/*!
-  Обновляет arp таблицу всех интерфейсов у данного устройства.
-  @param u - максимальное время жизни.
-*/
-void smartDevice::updateArp()
-{
-    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
-        myInterfaces[i]->updateArp();
 }
 //---------------------------------------------------------------
 /*!
@@ -381,6 +372,14 @@ void smartDevice::deleteInterface(const QString &name)
 {
     interface *t = adapter(name);
     myInterfaces.remove( myInterfaces.indexOf(t) );
+}
+
+QList<arpModel*> smartDevice::arpModels()
+{
+    QList<arpModel*> list;
+    foreach ( interface *i, myInterfaces )
+        list += i->arpTable();
+    return list;
 }
 
 #endif

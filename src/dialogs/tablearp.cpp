@@ -1,5 +1,6 @@
 #include "tablearp.h"
 #include "ipedit.h"
+#include "arpmodel.h"
 #include "smartdevice.h"
 #include <QPushButton>
 #include <QTableWidget>
@@ -82,11 +83,13 @@ void tableArp::updateTable()
 //    table->clearContents();
 //    cb_port->clear();
 //    table->setRowCount(0);
-//    QList<devicePort*> list = d->sockets();
-//    foreach ( devicePort *p, list ) {
-//        if ( !p->isConnect() ) continue;
-//        cb_port->addItem(QIcon(":im/images/ok.png"), p->name() );
-//        QList<arpRecord*> rec = static_cast<interface*>(p->parentDev())->arpTable();
+//    QStringList s = d->sockets();
+//    QList<arpModel*> list = d->arpModels();
+//    int i = 0;
+//    foreach ( arpModel *p, list ) {
+//        if ( !d->isConnectSocket(s.at(i)) ) continue;
+//        cb_port->addItem(QIcon(":im/images/ok.png"), s.at(i) );
+//        QList<arpRecord*> rec = p->;
 //        foreach ( arpRecord *r, rec ){
 //            table->insertRow(table->rowCount());
 //            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.macString());
@@ -101,7 +104,7 @@ void tableArp::updateTable()
 //            table->setItem( table->rowCount()-1, 4, ti_time);
 //        }
 //    }
-    correctSize();
+//    correctSize();
 }
 //---------------------------------------------------------------
 /**
@@ -124,8 +127,8 @@ void tableArp::addRecord()
 void tableArp::deleteRecord()
 {    
     if ( table->selectedItems().isEmpty() ) return;
-    //int n = table->currentRow();
-    //d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
+//    int n = table->currentRow();
+//    d->adapter( table->item( n, 3)->text() )->removeFromTable( table->item( n, 1)->text() );
     updateTable();
 }
 //------------------------------------------------------------------------

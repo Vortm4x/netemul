@@ -11,4 +11,6 @@ SUBDIRS = mac \
 	ipaddress \
 	frame \
 	boxchip \
+	routemodel \
+	ripprogramm
 # Input

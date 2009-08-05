@@ -1,5 +1,5 @@
 #include "routemodel.h"
-#include <QtDebug>
+
 
 routeModel::routeModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {    
@@ -161,4 +161,15 @@ QString routeRecord::modeString() const
 bool routeModel::isConnectedMode(QModelIndex curr)
 {
     return (table.at(curr.row())->modeString() != trUtf8("Подключена"));
+}
+
+/*!
+  * Находит в таблице измененую запись.
+  * @return указатель на измененую запись, 0 - если такой записи нет.
+  */
+routeRecord* routeModel::changedRecord()
+{
+    foreach ( routeRecord *i , table )
+        if ( i->change == changed ) return i;
+    return 0;
 }

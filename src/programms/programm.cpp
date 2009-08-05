@@ -1,10 +1,8 @@
 #include "programm.h"
 #include "ripprogramm.h"
-#include <QtDebug>
 
 programm::programm(int n)
 {
-    qDebug() << "Create programm!";
     switch ( n ) {
         case RIP: rep = new ripProgramm; break;
         default: break;
@@ -14,7 +12,6 @@ programm::programm(int n)
 
 programm::programm(QDataStream &stream)
 {
-    qDebug() << "Create programm!";
     int n;
     stream >> n;
     switch (n) {
@@ -34,7 +31,6 @@ programm::programm(const programm &other)
 programm::~programm()
 {
     if ( --rep->countRef <= 0 ) {
-        qDebug() << "Destroy programm!";
         delete rep;
     }
 }

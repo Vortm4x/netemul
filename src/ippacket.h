@@ -51,6 +51,7 @@ public:
     void setUpProtocol(qint8 u) { d->upProtocol = u; }
     qint8 upProtocol() const { return d->upProtocol; }
     void pack(const QByteArray &b) { d->data = b; }
+    int size() { return d->data.size(); }
     QByteArray unpack() const  { return d->data; }
 private:
     QSharedDataPointer<ipPacketData> d; //!< Данные пакета.

@@ -18,13 +18,12 @@ class ripProgramm : public programmRep
 public:
     enum { defaultTtl = 30 , RIP = 50 };
     ripProgramm();
-    void setDevice(smartDevice *s) { sd = s; }
+    void setDevice(smartDevice *s);
     void execute(ipPacket &p);
     void checkTable( routeRecord *r );
     void incTime();
     void sendUpdate(bool isAll);
     bool interrupt(int u);
-    routeRecord* findChanged() const;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:

@@ -89,6 +89,12 @@ void boxChip::deciSecondTimerEvent()
 #endif
 }
 
+void boxChip::addSocket(int n)
+{
+    devicePort *t = new devicePort(n);
+    mySockets.push_back(t);
+}
+
 bool boxChip::isBusy() const
 {
     foreach ( devicePort *i , mySockets )
@@ -109,12 +115,6 @@ void boxChip::read(QDataStream &stream)
     int n;
     stream >> n;
     setSocketsCount(n);
-}
-
-void boxChip::addSocket(int n)
-{
-    devicePort *t = new devicePort(n);
-    mySockets.push_back(t);
 }
 
 #endif

@@ -34,6 +34,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex &r) const;
     QVariant data(const QModelIndex &r, int role = Qt::DisplayRole ) const;
 
+    routeRecord* changedRecord();
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
