@@ -94,7 +94,7 @@
         <string>Добавить</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
        </property>
       </widget>
@@ -108,7 +108,7 @@
         <string>Удалить</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
        </property>
       </widget>
@@ -132,8 +132,8 @@
         <string>Закрыть</string>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>:/im/images/minus2.png</normaloff>:/im/images/minus2.png</iconset>
+        <iconset resource="../../netemul.qrc">
+         <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
      </item>
@@ -141,7 +141,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btn_cancel</sender>

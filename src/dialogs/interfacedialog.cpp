@@ -34,7 +34,7 @@ interfaceDialog::interfaceDialog()
     standarts->setCurrentRow(0);
 
     cancelButton = new QPushButton(trUtf8("Отмена"));
-    cancelButton->setIcon(QIcon(":/im/images/minus2.png"));
+    cancelButton->setIcon(QIcon(":/im/images/not.png"));
 
     temp->addStretch(1);
 

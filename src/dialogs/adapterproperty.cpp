@@ -131,7 +131,7 @@ void adapterProperty::reset()
 QIcon adapterProperty::connectIcon(bool b)
 {
     if ( b) return QIcon(":/im/images/ok.png");
-    else return QIcon(":/im/images/minus2.png");
+    else return QIcon(":/im/images/not.png");
 }
 
 void adapterProperty::addInterface()

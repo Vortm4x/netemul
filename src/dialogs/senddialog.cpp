@@ -48,7 +48,7 @@ void sendDialog::checkAccept()
 
 void sendDialog::prepare()
 {
-    cancelButton = new QPushButton(QIcon(":/im/images/minus2.png"),trUtf8("Отмена"));
+    cancelButton = new QPushButton(QIcon(":/im/images/not.png"),trUtf8("Отмена"));
     if ( myState == sender ) {
         sizeSlider = new QSlider(Qt::Horizontal);
         sizeCaption = new QLabel(trUtf8("Укажите размер в килобайтах"));

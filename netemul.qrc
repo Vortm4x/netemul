@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/im" >
         <file>images/arrow.png</file>
-        <file>images/laptop.png</file>
-        <file>images/modem.png</file>
         <file>images/cable.png</file>
         <file>images/sharebus.png</file>
         <file>images/back.png</file>
@@ -11,7 +9,6 @@
         <file>images/edit_add.png</file>
         <file>images/edit_remove.png</file>
         <file>images/refresh.png</file>
-        <file>images/minus2.png</file>
         <file>images/left_right.png</file>
         <file>images/ok.png</file>
         <file>images/redo.png</file>
@@ -26,5 +23,8 @@
         <file>images/network_nic.png</file>
         <file>images/note.png</file>
         <file>images/install_apps.png</file>
+        <file>images/computer.png</file>
+        <file>images/not.png</file>
+        <file>images/hub.png</file>
     </qresource>
 </RCC>

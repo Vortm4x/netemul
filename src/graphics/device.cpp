@@ -76,8 +76,8 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(devRect,5,5); //Рисуем край нашего компьютера
     switch ( impl->type() ) {
-        case compDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/laptop.png")); break;
-        case hubDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/modem.png")); break;
+        case compDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/computer.png")); break;
+        case hubDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/hub.png")); break;
         case switchDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/switch.png")); break;
         case routerDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/router.png")); break;
         default: break;

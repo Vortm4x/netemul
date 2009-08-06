@@ -57,7 +57,7 @@ routeEditor::routeEditor(smartDevice *s)
     connect( btn_remove , SIGNAL(clicked()) ,SLOT(deleteRecord()) );
     lay->addWidget(btn_remove, 1, Qt::AlignLeft);
     lay->addStretch(2);
-    btn_close = new QPushButton(QIcon(":/im/images/minus2.png"), trUtf8("Закрыть"));
+    btn_close = new QPushButton(QIcon(":/im/images/not.png"), trUtf8("Закрыть"));
     btn_close->setFixedWidth(150);
     lay->addWidget(btn_close, 1, Qt::AlignRight);
     all->addLayout(lay);

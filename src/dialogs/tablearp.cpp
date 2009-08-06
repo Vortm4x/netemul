@@ -45,7 +45,7 @@ tableArp::tableArp()
     connect(btn_add, SIGNAL(clicked()), SLOT(addRecord()));
     btn_del = new QPushButton( QIcon( ":im/images/edit_remove.png" ), trUtf8( "Удалить" ));
     connect(btn_del, SIGNAL(clicked()), SLOT(deleteRecord()));
-    btn_close = new QPushButton( QIcon( ":im/images/minus2.png" ), trUtf8( "Закрыть" ));
+    btn_close = new QPushButton( QIcon( ":im/images/not.png" ), trUtf8( "Закрыть" ));
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
 //    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()));
     temp->addWidget(btn_add);

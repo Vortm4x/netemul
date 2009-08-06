@@ -55,7 +55,7 @@ void connectDialog::changeEvent(QEvent *e)
 QIcon connectDialog::connectIcon(bool b) const
 {
     if (b) return QIcon(":/im/images/ok.png");
-    else return QIcon(":/im/images/minus2.png");
+    else return QIcon(":/im/images/not.png");
 }
 
 

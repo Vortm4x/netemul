@@ -45,7 +45,7 @@
         <string>Соеденить</string>
        </property>
        <property name="icon">
-        <iconset resource="../netemul.qrc">
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
       </widget>
@@ -56,8 +56,8 @@
         <string>Отмена</string>
        </property>
        <property name="icon">
-        <iconset resource="../netemul.qrc">
-         <normaloff>:/im/images/minus2.png</normaloff>:/im/images/minus2.png</iconset>
+        <iconset resource="../../netemul.qrc">
+         <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
      </item>
@@ -66,7 +66,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../netemul.qrc"/>
+  <include location="../../netemul.qrc"/>
  </resources>
  <connections>
   <connection>

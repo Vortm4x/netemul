@@ -123,7 +123,7 @@ void MainWindow::createAction()
     showGridAct->setCheckable(true);
     showGridAct->setChecked(true);
 
-    deleteAct = createOneAction(trUtf8("Удалить"),trUtf8("Удалить объект") , QIcon(":/im/images/minus2.png"));
+    deleteAct = createOneAction(trUtf8("Удалить"),trUtf8("Удалить объект") , QIcon(":/im/images/not.png"));
     deleteAct->setShortcut(tr("Ctrl+D"));
 
     settingAct = createOneAction( trUtf8("Настройки") , trUtf8("Настройки"));
@@ -150,11 +150,11 @@ void MainWindow::createAction()
     shareBusAct->setData( myCanvas::insert*10 + myCanvas::busDev);
 
     computerAct = createOneAction( trUtf8("Компьютер"),trUtf8("Добавить компьютер"),
-                               QIcon(":/im/images/laptop.png"),true);
+                               QIcon(":/im/images/computer.png"),true);
     computerAct->setData( myCanvas::insert*10 + myCanvas::compDev);
 
     hubAct = createOneAction( trUtf8("Концентратор"),trUtf8("Добавить концентратор"),
-                          QIcon(":/im/images/modem.png"),true);
+                          QIcon(":/im/images/hub.png"),true);
     hubAct->setData( myCanvas::insert*10 + myCanvas::hubDev );
 
     switchAct = createOneAction( trUtf8("Коммутатор"),trUtf8("Добавить коммутатор"),

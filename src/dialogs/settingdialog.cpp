@@ -10,7 +10,7 @@
 settingDialog::settingDialog()
 {
     const char *labelArray[COUNT] = { "Общие", "Компьютер", "Концентратор", "Коммутатор", "Маршрутизатор" };
-    QString imageArray[COUNT] = {"setting.png", "laptop.png" , "modem.png" , "switch.png", "router.png"};
+    QString imageArray[COUNT] = {"setting.png", "computer.png" , "hub.png" , "switch.png", "router.png"};
 
     QVBoxLayout *layout = new QVBoxLayout;
     resize(500, 300);
