@@ -18,6 +18,7 @@ class ripProgramm : public programmRep
 public:
     enum { defaultTtl = 30 , RIP = 50 , ttl = 6 };
     ripProgramm();
+    ~ripProgramm();
     void setDevice(smartDevice *s);
     void execute(ipPacket &p);
     void checkTable( routeRecord *r );
@@ -27,6 +28,9 @@ public:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
+    void addToTemp(routeRecord *r);
+    void clearTemp();
+    QList<routeRecord*> tempList;
     smartDevice *sd;
     int timer;
     int interval;

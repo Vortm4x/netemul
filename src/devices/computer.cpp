@@ -10,7 +10,7 @@ computer::computer(int c /* = 0 */)
     for ( int i = 0 ; i < c ; i++)
         addInterface(trUtf8("eth%1").arg(i));
     myRouteTable->addToTable(tr("127.0.0.0"),tr("255.0.0.0"),tr("127.0.0.1"),tr("127.0.0.1"),0,routeModel::connectMode);
-    setNote(trUtf8("<b>Компьютер</b><p>Изменить комментарий можно в свойствах. Доступен HTML."));
+    setNote(trUtf8("<b>Компьютер</b><!--Доступен HTML.-->"));
 }
 
 void computer::dialog()

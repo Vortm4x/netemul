@@ -15,6 +15,8 @@ smartDevice::smartDevice() : myRouter(false)
     isDirty = true;
     myInterfaces.clear();
     myRouteTable = new routeModel(this);
+    connect( myRouteTable , SIGNAL(recordAdding(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
+    connect( myRouteTable , SIGNAL(recordDeleting(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
 }
 
 smartDevice::~smartDevice()
@@ -177,7 +179,7 @@ void smartDevice::sendMessage( const QString &a , int size ,int)
 */
 void smartDevice::treatPacket(ipPacket &p)
 {
-    udpPacket u(p.toData());
+    udpPacket u(p.unpack());
     int v = u.receiver();
     foreach ( programm i , myProgramms ) {
         if ( i->socket() == v && i->isEnable() ) {
@@ -389,6 +391,13 @@ QList<arpModel*> smartDevice::arpModels()
     foreach ( interface *i, myInterfaces )
         list += i->arpTable();
     return list;
+}
+
+void smartDevice::tableChanged(routeRecord *r,int n)
+{
+    r->change = routeModel::changed;
+    sendInterrupt( n );
+    r->change = routeModel::noChanged;
 }
 
 #endif

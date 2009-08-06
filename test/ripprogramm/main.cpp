@@ -13,6 +13,7 @@ private slots:
     void execute();
     void sendUpdateAll();
     void sendUpdateNoAll();
+    void checkTable();
     void cleanupTestCase();
 private:
     smartDevice *device;
@@ -34,7 +35,7 @@ void TestRipProgramm::initTestCase()
         s << ipAddress(tr("192.168.%1.0").arg(i)) << ipAddress("255.255.255.0") << qint8(1);
     t.pack(b);
     packet.pack(t.toData());
-    packet.setSender(tr("192.168.1.63"));
+    packet.setSender(tr("192.168.4.63"));
     packet.setReceiver(tr("192.168.1.1"));
 }
 
@@ -49,23 +50,44 @@ void TestRipProgramm::sendUpdateAll()
     programm->execute(packet);
     programm->sendUpdate(true);
     QCOMPARE( model->rowCount() , 4 );
-    routeRecord *r = model->recordAt(tr("192.168.1.0"));
-    QCOMPARE( r->time , 1 );
     foreach ( interface *i , device->interfaces() )  {
         QByteArray b = i->buffer();
-        QCOMPARE( b.size() / 9 , 3 );
+        if ( i->ip() == ipAddress("192.168.4.1") ) {
+            QCOMPARE( b.size() , 0 );
+            continue;
+        }
+        QCOMPARE( b.size() / 9 , 4 );
     }
 }
 
 void TestRipProgramm::sendUpdateNoAll()
 {
     programm->execute(packet);
+    routeRecord *t = model->recordAt(tr("192.168.2.0"));
+    t->change = routeModel::changed;
+    QCOMPARE ( programm->interrupt( smartDevice::addNet ) , true );
     programm->sendUpdate(false);
     QCOMPARE( model->rowCount() , 4 );
     foreach ( interface *i , device->interfaces() )  {
         QByteArray b = i->buffer();
-        QCOMPARE( b.size() / 9 , 0 );
+        if ( i->ip() == ipAddress("192.168.4.1") ) {
+            QCOMPARE( b.size() / 9 , 0 );
+            continue;
+        }
+        QCOMPARE( b.size() / 9 , 1 );
     }
+    t->change = routeModel::noChanged;
+}
+
+void TestRipProgramm::checkTable()
+{
+    QCOMPARE( model->rowCount() , 4);
+    routeRecord *r = new routeRecord;
+    r->dest = tr("0.0.0.0");
+    r->mask = tr("0.0.0.0");
+    r->metric = 16;
+    programm->checkTable(r);
+    QCOMPARE( model->rowCount() , 4);
 }
 
 void TestRipProgramm::cleanupTestCase()

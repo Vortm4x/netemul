@@ -17,6 +17,17 @@ ripProgramm::ripProgramm()
 }
 //--------------------------------------------------------------
 
+ripProgramm::~ripProgramm()
+{
+    clearTemp();
+}
+
+void ripProgramm::clearTemp()
+{
+    qDeleteAll(tempList);
+    tempList.clear();
+}
+
 void ripProgramm::setDevice(smartDevice *s)
 {
     sd = s;
@@ -28,9 +39,14 @@ void ripProgramm::setDevice(smartDevice *s)
 */
 void ripProgramm::incTime()
 {
-    if ( ++timer < interval || !sd->isRouter() ) return;
-    sendUpdate(true);
-    timer = 0;
+    if ( !sd->isRouter() ) return;
+    timer++;
+    if ( timer >= interval ) {
+        sendUpdate(true);
+        timer = 0;
+        return;
+    }
+    if ( timer != 0 && timer%5 == 0 && !tempList.isEmpty() ) sendUpdate(false);
 }
 //--------------------------------------------------
 /*!
@@ -72,14 +88,19 @@ void ripProgramm::sendUpdate(bool isAll)
         if ( isAll ) {
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
                 routeRecord *t = model->recordAt(j);
-                qDebug() << t->gateway.toString() << " " << i->mask().toString() ;
+                if ( t->dest.isLoopBack() ) continue;
                 if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) continue;
                 d << t->dest << t->mask;
                 if ( t->time == ttl ) d << infinity;
                 else d << t->metric;
             }
         }
-        qDebug() << b.size();
+        else {
+            foreach ( routeRecord *j , tempList ) {
+                if ( ( j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
+                d << j->dest << j->mask << j->metric;
+            }
+        }
         ipPacket p;
         p.setSender( i->ip() );
         p.setBroadcast( i->mask() );
@@ -90,25 +111,8 @@ void ripProgramm::sendUpdate(bool isAll)
         u.pack(b);
         p.pack( u.toData() );
         i->sendPacket( p );
-        qDebug() << "i->buffer() =" << i->buffer();
     }
-//            else {
-//                routeRecord *r = findChanged();
-//                if ( !r ) return;
-//                if ( (r->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
-//                d << r->dest << r->mask << r->metric;
-//            }
-//            ipPacket p; // Создаем новый пакет.
-//            p->setSender( i->ip() );
-//            p->setBroadcast( i->mask() );
-//            p->setUpProtocol( ipPacket::udp );
-//            udpPacket u; // И новую дейтаграмму
-//            u.setSender(mySocket);
-//            u.setReceiver(mySocket);
-//            u.pack(t); // В нее вектор
-//            p->pack(u.toData()); // Её в пакет.
-//            i->sendPacket(p); // Пакет отправляем.
-//        }
+    if (tempList.size()) clearTemp();
     model->deleteOldRecord(ttl);
 }
 //---------------------------------------------------
@@ -123,8 +127,10 @@ void ripProgramm::checkTable(routeRecord *r)
         model->addToTable(r);
         return;
     }
-    if ( !i ) return;
-    if ( i->mode != routeModel::ripMode ) return; // Если это не RIP запись выходим.
+    if ( !i ) {
+        delete r;
+        return;
+    }
     if ( r->metric >= 16 ) {
         model->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
         delete r;
@@ -152,15 +158,14 @@ void ripProgramm::checkTable(routeRecord *r)
 bool ripProgramm::interrupt(int u)
 {
     routeRecord *t = 0;
-    if ( !t ) return false;
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
-            if ( interval - timer > 3 ) sendUpdate(false);
-            t->change = routeModel::noChanged;
+            addToTemp( model->changedRecord() );
             return true;
         case smartDevice::delNet : // И когда удаляется тоже.
+            t = model->changedRecord();
             t->metric = 16;
-            if ( interval - timer > 3 ) sendUpdate(false);
+            addToTemp(t);
             return true;
         default:
             break;
@@ -168,6 +173,13 @@ bool ripProgramm::interrupt(int u)
     return false;
 }
 //---------------------------------------------------
+
+void ripProgramm::addToTemp(routeRecord *r)
+{
+    routeRecord *t = new routeRecord;
+    *t = *r;
+    tempList << t;
+}
 /*!
   Записывает отличительные черты RIP в поток.
   @param stream - поток для записи.

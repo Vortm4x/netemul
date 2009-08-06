@@ -8,6 +8,7 @@
 
 class routeModel;
 class arpModel;
+class routeRecord;
 
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
@@ -15,6 +16,7 @@ class arpModel;
 */
 class smartDevice : public deviceImpl
 {
+    Q_OBJECT
 public:
     /*! Источники записи таблицы маршрутизации. */    
     enum { addNet = 100 , delNet = 101 };
@@ -59,7 +61,8 @@ public:
     void installProgramm( programm p) { p->setDevice(this); myProgramms << p; }
     bool sendInterrupt(int u);
     int socketsCount() const { return myInterfaces.count(); }
-    QList<programm>& programms() { return myProgramms; }
+    QList<programm> programms() { return myProgramms; }
+    QVector<interface*> interfaces() { return myInterfaces; }
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
@@ -69,6 +72,7 @@ public:
     routeModel* routeTable() { return myRouteTable; }
     QList<arpModel*> arpModels();
 public slots:
+    void tableChanged(routeRecord*,int n);
     void setIp(const QString &a, const QString &ip);
     void setMask(const QString &a, const QString &ip);
     void setGateway(const QString &str);

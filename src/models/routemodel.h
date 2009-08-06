@@ -23,9 +23,11 @@ public:
 
 class routeModel : public QAbstractTableModel
 {
+    Q_OBJECT
 public:
     enum { connectMode = 3 , staticMode = 4 , ripMode = 5 };
     enum { changed = 0 , noChanged = 1 };
+    enum { addNet = 100 , delNet = 101 };
     routeModel(QObject *parent = 0);
     ~routeModel();
     int rowCount( const QModelIndex &r = QModelIndex() ) const;
@@ -45,6 +47,9 @@ public:
     routeRecord* recordAt(int i) const { return table.at(i); }
     void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
     bool isConnectedMode(QModelIndex curr);
+signals:
+    void recordAdding(routeRecord*,int);
+    void recordDeleting(routeRecord*,int);
 private:
     QList<routeRecord*> table;
 };

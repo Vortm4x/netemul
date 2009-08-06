@@ -5,6 +5,11 @@ programmRep::programmRep()
 {
 }
 
+programmRep::~programmRep()
+{
+
+}
+
 /*!
   Записывает программу в поток.
   @param stream - поток для записи.

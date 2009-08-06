@@ -9,7 +9,7 @@ routerDevice::routerDevice(int c /* = 0 */)
     if ( !c ) c = appSetting::defaultRouterCount();
     for ( int i = 0 ; i <  c ; i++ )
         addInterface(trUtf8("LAN%1").arg(i+1));
-    setNote(trUtf8("<b>Маршрутизатор</b><p>Изменить комментарий можно в свойствах. Доступен HTML."));
+    setNote(trUtf8("<b>Маршрутизатор</b><!--Доступен HTML.-->"));
 }
 
 void routerDevice::dialog()

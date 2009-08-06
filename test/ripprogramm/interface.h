@@ -14,7 +14,7 @@ public:
     bool isConnect() { return true; }
     ipAddress mask() const { return myMask; }
     ipAddress ip() const { return myIp; }
-    void sendPacket(ipPacket p) { buf = udpPacket(p.unpack()).unpack();  }
+    void sendPacket(ipPacket p);
 private:
     ipAddress myIp;
     ipAddress myMask;

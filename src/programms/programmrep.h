@@ -12,6 +12,7 @@ class programmRep
 public:
     friend class programm;
     programmRep();
+    virtual ~programmRep();
     void setSocket(quint16 i) { mySocket = i; }
     quint16 socket() const { return mySocket; }
     void setEnable(bool b) { myEnable = b; }

@@ -97,6 +97,7 @@ routeRecord* routeModel::addToTable(routeRecord *r)
     table << r;
     qStableSort(table.begin(),table.end(),routeGreat);    
     reset();
+    emit recordAdding(r,addNet);
     return r;    
 }
 //------------------------------------------------------------
@@ -116,6 +117,7 @@ void routeModel::deleteFromTable(int n)
 */
 void routeModel::deleteFromTable(routeRecord *r)
 {
+    emit recordDeleting(r,delNet);
     table.removeOne(r);
     delete r;
     qStableSort(table.begin(),table.end(),routeGreat);
@@ -193,5 +195,5 @@ void routeModel::update()
 void routeModel::deleteOldRecord(int time)
 {
     foreach ( routeRecord *i , table )
-        if ( i->time >= time ) deleteFromTable(i);
+        if ( i->time >= time && i->mode != connectMode && i->mode != staticMode ) deleteFromTable(i);
 }
