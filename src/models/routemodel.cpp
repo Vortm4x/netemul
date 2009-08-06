@@ -1,10 +1,7 @@
 #include "routemodel.h"
 
-
 routeModel::routeModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {    
-    head << trUtf8("Адрес назначения") << trUtf8("Маска") << trUtf8("Шлюз")
-            << trUtf8("Интерфейс") << trUtf8("Метрика") << trUtf8("Источник");
 }
 
 routeModel::~routeModel()
@@ -16,7 +13,7 @@ routeModel::~routeModel()
 int routeModel::rowCount(const QModelIndex &r) const
 {
     if ( r.isValid() ||( table.count() == 0 ) ) return 0;
-    return table.count();
+    return table.size();
 }
 
 int routeModel::columnCount( const QModelIndex&/* r = QModelIndex() */ ) const
@@ -29,7 +26,15 @@ QVariant routeModel::headerData( int s , Qt::Orientation o, int role ) const
 {
     if ( table.isEmpty() ) return QVariant();
     if ( o == Qt::Horizontal )
-        if ( role == Qt::DisplayRole ) return head.at(s);        
+        if ( role == Qt::DisplayRole )
+            switch (s) {
+                case 0: return trUtf8("Адрес назначения");
+                case 1: return trUtf8("Маска");
+                case 2: return trUtf8("Шлюз");
+                case 3: return trUtf8("Интерфейс");
+                case 4: return trUtf8("Метрика");
+                case 5: return trUtf8("Источник");
+            }
     if ( o == Qt::Vertical )
         if ( role == Qt::DisplayRole ) return s+1;
     return QAbstractTableModel::headerData(s, o, role);
@@ -91,7 +96,6 @@ routeRecord* routeModel::addToTable(routeRecord *r)
 {
     table << r;
     qStableSort(table.begin(),table.end(),routeGreat);    
-    r->change = changed;
     reset();
     return r;    
 }
@@ -112,7 +116,6 @@ void routeModel::deleteFromTable(int n)
 */
 void routeModel::deleteFromTable(routeRecord *r)
 {
-    r->change = changed;
     table.removeOne(r);
     delete r;
     qStableSort(table.begin(),table.end(),routeGreat);
@@ -172,4 +175,23 @@ routeRecord* routeModel::changedRecord()
     foreach ( routeRecord *i , table )
         if ( i->change == changed ) return i;
     return 0;
+}
+//---------------------------------------------------------------------
+/*!
+  * Обновляет содержиое всех записей увеличивая время жизни.
+  */
+void routeModel::update()
+{
+    foreach ( routeRecord *i , table )
+        if ( i->mode != connectMode && i->mode != staticMode ) i->time++;
+}
+//-----------------------------------------------------------------------
+/*!
+  * Удаляет из таблицы записи время жизни которых подошло к концу.
+  * @param time - время жизни достигнув которого запись считается устаревшей.
+  */
+void routeModel::deleteOldRecord(int time)
+{
+    foreach ( routeRecord *i , table )
+        if ( i->time >= time ) deleteFromTable(i);
 }

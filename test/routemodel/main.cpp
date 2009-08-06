@@ -9,6 +9,7 @@ private slots:
     void initTestCase();
     void mainTest();
     void changedRecord();
+    void deleteOldRecord();
     void cleanupTestCase();
 private:
     routeModel *table;
@@ -35,7 +36,16 @@ void TestRouteModel::changedRecord()
     QCOMPARE( t->change , (quint8)routeModel::changed );
     table->deleteFromTable(t);
     t = table->changedRecord();
-    Q_ASSERT( t == NULL);
+    if ( t ) QCOMPARE( t->change , (quint8)routeModel::changed);
+}
+
+void TestRouteModel::deleteOldRecord()
+{
+    routeRecord *t = table->recordAt(tr("192.168.1.1"));
+    t->time = 6;
+    table->deleteOldRecord(6);
+    QCOMPARE( table->rowCount() , 3 );
+
 }
 
 void TestRouteModel::cleanupTestCase()

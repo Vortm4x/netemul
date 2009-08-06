@@ -18,11 +18,13 @@ SOURCES += main.cpp \
     smartdevice.cpp \
     ../../src/models/routemodel.cpp \
     ../../src/ippacket.cpp \
-    ../../src/ipaddress.cpp
+    ../../src/ipaddress.cpp \
+    interface.cpp
 HEADERS += ../../src/programms/ripprogramm.h \
     ../../src/programms/programmrep.h \
     ../../src/udppacket.h \
     smartdevice.h \
     ../../src/models/routemodel.h \
     ../../src/ippacket.h \
-    ../../src/ipaddress.h
+    ../../src/ipaddress.h \
+    interface.h

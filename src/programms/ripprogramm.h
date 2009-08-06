@@ -16,7 +16,7 @@ static const qint8 infinity = 16;
 class ripProgramm : public programmRep
 {
 public:
-    enum { defaultTtl = 30 , RIP = 50 };
+    enum { defaultTtl = 30 , RIP = 50 , ttl = 6 };
     ripProgramm();
     void setDevice(smartDevice *s);
     void execute(ipPacket &p);

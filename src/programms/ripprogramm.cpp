@@ -60,24 +60,38 @@ void ripProgramm::execute(ipPacket &p)
 //---------------------------------------------------
 /*!
     Посылает rip-сообщение.
+    @param isAll - если true, рассылается вся таблица при регулярном update, если false то только изменившиеся записи.
 */
-void ripProgramm::sendUpdate(bool /*isAll*/)
+void ripProgramm::sendUpdate(bool isAll)
 {
-//    if ( !isAll) foreach ( routeRecord *i, sd->myRouteTable )
-//                    if ( i->mode == routeModel::ripMode ) i->time++;
-//    foreach ( interface *i , sd->myInterfaces )
-//        if ( i->isConnect() ) {
-//            QByteArray t;
-//            QDataStream d(&t , QIODevice::WriteOnly);
-//            if ( isAll ) {
-//                foreach ( routeRecord *j , sd->myRouteTable ) {
-//                    if ( j->out.isLoopBack() ) continue;
-//                    if ( (j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
-//                    d << j->dest << j->mask;
-//                    if ( j->time == 6 ) d << infinity;
-//                    else d << j->metric;
-//                }
-//            }
+    if ( isAll ) model->update();
+    foreach ( interface *i , sd->interfaces() ) {
+        if ( !i->isConnect() ) continue;
+        QByteArray b;
+        QDataStream d(&b, QIODevice::WriteOnly );
+        if ( isAll ) {
+            for ( int j = 0 ; j < model->rowCount() ; j++ ) {
+                routeRecord *t = model->recordAt(j);
+                qDebug() << t->gateway.toString() << " " << i->mask().toString() ;
+                if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) continue;
+                d << t->dest << t->mask;
+                if ( t->time == ttl ) d << infinity;
+                else d << t->metric;
+            }
+        }
+        qDebug() << b.size();
+        ipPacket p;
+        p.setSender( i->ip() );
+        p.setBroadcast( i->mask() );
+        p.setUpProtocol( ipPacket::udp );
+        udpPacket u;
+        u.setSender( mySocket );
+        u.setReceiver( mySocket );
+        u.pack(b);
+        p.pack( u.toData() );
+        i->sendPacket( p );
+        qDebug() << "i->buffer() =" << i->buffer();
+    }
 //            else {
 //                routeRecord *r = findChanged();
 //                if ( !r ) return;
@@ -95,8 +109,7 @@ void ripProgramm::sendUpdate(bool /*isAll*/)
 //            p->pack(u.toData()); // Её в пакет.
 //            i->sendPacket(p); // Пакет отправляем.
 //        }
-//    foreach ( routeRecord *i, sd->myRouteTable )
-//        if ( i->time == 6 ) sd->deleteFromTable(i,false);
+    model->deleteOldRecord(ttl);
 }
 //---------------------------------------------------
 /*!

@@ -3,6 +3,7 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 #include "udppacket.h"
+#include "interface.h"
 
 class TestRipProgramm : public QObject
 {
@@ -10,12 +11,14 @@ class TestRipProgramm : public QObject
 private slots:
     void initTestCase();
     void execute();
-    void sendUpdate();
+    void sendUpdateAll();
+    void sendUpdateNoAll();
     void cleanupTestCase();
 private:
     smartDevice *device;
     routeModel *model;
     ripProgramm *programm;
+    ipPacket packet;
 };
 
 void TestRipProgramm::initTestCase()
@@ -24,27 +27,45 @@ void TestRipProgramm::initTestCase()
     programm = new ripProgramm;
     programm->setDevice(device);
     model = device->routeTable();
-}
-
-void TestRipProgramm::execute()
-{
     udpPacket t;
     QByteArray b;
     QDataStream s(&b , QIODevice::WriteOnly );
     for ( int i = 1 ; i < 5 ; i++ )
         s << ipAddress(tr("192.168.%1.0").arg(i)) << ipAddress("255.255.255.0") << qint8(1);
     t.pack(b);
-    ipPacket p;
-    p.pack(t.toData());
-    p.setSender(tr("192.168.1.63"));
-    p.setReceiver(tr("192.168.1.1"));
-    programm->execute(p);
+    packet.pack(t.toData());
+    packet.setSender(tr("192.168.1.63"));
+    packet.setReceiver(tr("192.168.1.1"));
+}
+
+void TestRipProgramm::execute()
+{
+    programm->execute(packet);
     QCOMPARE( model->rowCount() , 4 );
 }
 
-void TestRipProgramm::sendUpdate()
+void TestRipProgramm::sendUpdateAll()
 {
+    programm->execute(packet);
+    programm->sendUpdate(true);
+    QCOMPARE( model->rowCount() , 4 );
+    routeRecord *r = model->recordAt(tr("192.168.1.0"));
+    QCOMPARE( r->time , 1 );
+    foreach ( interface *i , device->interfaces() )  {
+        QByteArray b = i->buffer();
+        QCOMPARE( b.size() / 9 , 3 );
+    }
+}
 
+void TestRipProgramm::sendUpdateNoAll()
+{
+    programm->execute(packet);
+    programm->sendUpdate(false);
+    QCOMPARE( model->rowCount() , 4 );
+    foreach ( interface *i , device->interfaces() )  {
+        QByteArray b = i->buffer();
+        QCOMPARE( b.size() / 9 , 0 );
+    }
 }
 
 void TestRipProgramm::cleanupTestCase()

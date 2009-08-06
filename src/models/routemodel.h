@@ -28,23 +28,25 @@ public:
     enum { changed = 0 , noChanged = 1 };
     routeModel(QObject *parent = 0);
     ~routeModel();
-    int rowCount( const QModelIndex &r = QModelIndex()) const;
+    int rowCount( const QModelIndex &r = QModelIndex() ) const;
     int columnCount( const QModelIndex &r = QModelIndex() ) const;
     QVariant headerData( int s , Qt::Orientation o, int role ) const;
     Qt::ItemFlags flags(const QModelIndex &r) const;
     QVariant data(const QModelIndex &r, int role = Qt::DisplayRole ) const;
 
+    void update();
+    void deleteOldRecord(int time);
     routeRecord* changedRecord();
     routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r);
     routeRecord* recordAt(const ipAddress &a) const;
+    routeRecord* recordAt(int i) const { return table.at(i); }
     void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
     bool isConnectedMode(QModelIndex curr);
 private:
     QList<routeRecord*> table;
-    QStringList head;
 };
 
 inline QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)
