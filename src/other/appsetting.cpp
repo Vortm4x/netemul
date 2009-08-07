@@ -1,5 +1,8 @@
 #include "appsetting.h"
+#include <QApplication>
 #include <QSettings>
+#include <QTranslator>
+#include <QLocale>
 
 int appSetting::_defaultComputerCount = 0;
 int appSetting::_defaultHubCount = 0;
@@ -10,6 +13,8 @@ int appSetting::_ttlMac = 0;
 bool appSetting::_defaultHubManual = false;
 bool appSetting::_defaultSwitchManual = false;
 int appSetting::_speed = 100;
+int appSetting::_language = 0;
+QTranslator* appSetting::mas[2];
 
 appSetting::appSetting()
 {
@@ -17,6 +22,8 @@ appSetting::appSetting()
 
 void appSetting::readSetting()
 {
+    for ( int i = 0 ; i < 2 ; i++ ) mas[i] = new QTranslator;
+    if ( !mas[1]->load("netemul_ru" , QString("translation") ) ) qFatal("123");
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;
@@ -27,10 +34,12 @@ void appSetting::readSetting()
     _ttlArp = setting.value("ttl/Arp",1200).toInt() ;
     _ttlMac = setting.value("ttl/Mac",300).toInt();
     _speed = setting.value("main/speed",100).toInt();
+    setLanguage( setting.value("main/language",0).toInt() );
 }
 
 void appSetting::writeSetting()
 {
+    for ( int i = 0 ; i < 2 ; i++ ) delete mas[i];
     QSettings setting("FROST","netemul");
     setting.setValue("computer/socketCount" , _defaultComputerCount );
     setting.setValue("hub/socketCount" , _defaultHubCount );
@@ -41,4 +50,21 @@ void appSetting::writeSetting()
     setting.setValue("ttl/Arp", _ttlArp );
     setting.setValue("ttl/Mac", _ttlMac );
     setting.setValue("main/speed",_speed);
+    setting.setValue("main/language", _language);
+}
+
+void appSetting::setLanguage(int n)
+{
+    if ( n == _language ) return;
+    _language = n;
+    switch (_language) {
+        case 0:
+            QCoreApplication::removeTranslator(mas[1]);
+            QCoreApplication::installTranslator(mas[0]);
+            break;
+        case 1:
+            QCoreApplication::installTranslator(mas[1]);
+            break;
+        default: break;
+    }
 }

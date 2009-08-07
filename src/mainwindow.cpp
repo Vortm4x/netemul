@@ -26,6 +26,7 @@
 #else
 #endif
 
+#define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
 
 // Конструктор главной формы
 MainWindow::MainWindow(QWidget *parent)
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar()->showMessage(""); // Активизируем статус бар
     readSetting();
     setCentralWidget(view);
+    retranslate();
 }
 
 MainWindow::~MainWindow()
@@ -64,7 +66,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // При попытке закрыть главное окно выводим запрос на подтверждение
-    int res = QMessageBox::question(this,trUtf8("Выход"),trUtf8("Вы дейсвительно хотите выйти"),
+    int res = QMessageBox::question(this,tr("Exit"),tr("You want to go?"),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     if (res == QMessageBox::Yes) {
         writeSetting();
@@ -74,16 +76,55 @@ void MainWindow::closeEvent(QCloseEvent *event)
 }
 
 // Создать один Action
-QAction* MainWindow::createOneAction(QString text,QString tip,QIcon icon/*= QIcon()*/,bool inGroup /*=false*/)
+QAction* MainWindow::createOneAction(QIcon icon/*= QIcon()*/,bool inGroup /*=false*/)
 {
-    QAction *temp = new QAction(text,this);
-    temp->setStatusTip(tip);
+    QAction *temp = new QAction(this);
     temp->setIcon(icon);
     if (inGroup) {
         groupAct->addAction(temp);
         temp->setCheckable(true);
     }
     return temp;
+}
+
+void MainWindow::retranslate()
+{
+    UPDATEACTION(newAct , tr("New"),tr("Create new network") )
+    UPDATEACTION( openAct , tr("Open"),tr("Open existing file") )
+    UPDATEACTION( saveAct , tr("Save"),tr("Save network") )
+    UPDATEACTION( saveAsAct , tr("Save as..."),tr("Save network as...") )
+    UPDATEACTION( closeAct , tr("Close"),tr("Close current file") )
+    UPDATEACTION( exitAct , tr("Exit"),tr("Exit") )
+    UPDATEACTION( showGridAct , tr("Show grid"),tr("Show grid") )
+    UPDATEACTION( arpAct , tr("Arp table"), tr("Arp table") );
+    UPDATEACTION( deleteAct , tr("Delete"),tr("Deleting object") )
+    UPDATEACTION( progAct , tr("Programms"), tr("Programms installed on device") )
+    UPDATEACTION( settingAct ,  tr("Setting") , tr("Setting") )
+    UPDATEACTION( playAct , tr("Stop") , tr("Stop simulation") )
+    UPDATEACTION( staticsAct , tr("Statistics ") , tr("Show scene statistics ") )
+    UPDATEACTION( moveAct , tr("Move"),tr("Move objects") )
+    UPDATEACTION( adapterAct , tr("Netcards") , tr("Edit netcards") )
+    UPDATEACTION( cableAct , tr("Cable"),tr("Create connection") )
+    UPDATEACTION( textAct , tr("Note") , tr("Insert text comment") )
+    UPDATEACTION( helpAct , tr("NetEmul Help") , tr("Full help system program") )
+    UPDATEACTION( shareBusAct , tr("Unibus"),tr("Add unibus") )
+    UPDATEACTION( computerAct , tr("Computer"),tr("Add computer") )
+    UPDATEACTION( aboutAct , tr("About NetEmul") ,tr("About NetEmul") )
+    UPDATEACTION( hubAct , tr("Hub"),tr("Add hub") )
+    UPDATEACTION( switchAct , tr("Switch"),tr("Add switch") )
+    UPDATEACTION( routerAct , tr("Router") , tr("Add router") )
+    UPDATEACTION( sendAct , tr("Send"),tr("Send data") )
+    UPDATEACTION( testAct , tr("Execute scripts") , tr("Run existing scripts")  )
+    UPDATEACTION( aboutQtAct , tr("About Qt") , tr("About Qt") )
+    UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
+    fileMenu->setTitle(tr("File"));
+    viewMenu->setTitle(tr("View"));
+    itemMenu->setTitle(tr("Object"));
+    settingMenu->setTitle(tr("Service"));
+    testMenu->setTitle(tr("Scripts"));
+    helpMenu->setTitle(tr("Help"));
+    deviceBar->setWindowTitle(tr("Devices"));
+    controlBar->setWindowTitle(tr("Controls"));
 }
 
 //Создаем элементы меню
@@ -93,117 +134,101 @@ void MainWindow::createAction()
     groupAct->setExclusive(true);
     connect( groupAct , SIGNAL(triggered(QAction*)) , SLOT(groupClicked(QAction*)));
 
-    newAct = createOneAction(trUtf8("Новый"),trUtf8("Создать новую сеть"));
+    newAct = createOneAction();
     newAct->setShortcut(QKeySequence::New); // Устанавливаем горячие клавиши
     connect( newAct, SIGNAL(triggered()) , SLOT(newFile()));
 
-    openAct = createOneAction(trUtf8("Открыть"),trUtf8("Открыть существующий файл"));
+    openAct = createOneAction();
     openAct->setShortcut(QKeySequence::Open);
     connect( openAct , SIGNAL(triggered()) , SLOT(openFile()));
 
-    saveAct = createOneAction(trUtf8("Сохранить"),trUtf8("Сохранить созданую сеть"));
+    saveAct = createOneAction();
     saveAct->setShortcut(QKeySequence::Save);
     connect( saveAct , SIGNAL(triggered()) , SLOT(saveFile()) );
 
-    saveAsAct = createOneAction(trUtf8("Сохранить как..."),trUtf8("Сохранить сеть как..."));
+    saveAsAct = createOneAction();
 #if QT_VERSION >= 0x040500
     saveAsAct->setShortcut(QKeySequence::SaveAs);
 #endif
     connect( saveAsAct , SIGNAL(triggered()) , SLOT(saveAsFile()) );
 
-    closeAct = createOneAction(trUtf8("Закрыть"),trUtf8("Закрыть текущий файл"));
+    closeAct = createOneAction();
     closeAct->setShortcut(QKeySequence::Close);
     connect( closeAct , SIGNAL(triggered())  , SLOT(closeFile()));
 
-    exitAct = createOneAction(trUtf8("Выход"),trUtf8("Выйти из приложения"));
+    exitAct = createOneAction();
     exitAct->setShortcut(tr("Ctrl+X"));
     connect( exitAct , SIGNAL(triggered()) , SLOT(close()) );
 
-    showGridAct = createOneAction(trUtf8("Показать сетку"),trUtf8("Показать сетку"));
+    showGridAct = createOneAction();
     showGridAct->setCheckable(true);
     showGridAct->setChecked(true);
 
-    deleteAct = createOneAction(trUtf8("Удалить"),trUtf8("Удалить объект") , QIcon(":/im/images/not.png"));
+    deleteAct = createOneAction(QIcon(":/im/images/not.png"));
     deleteAct->setShortcut(tr("Ctrl+D"));
 
-    settingAct = createOneAction( trUtf8("Настройки") , trUtf8("Настройки"));
+    settingAct = createOneAction();
     settingAct->setShortcut( tr("Ctrl+Alt+S"));
     connect( settingAct , SIGNAL(triggered()) , SLOT(setting()));
 
-    staticsAct = createOneAction( trUtf8("Статистика") , trUtf8("Посмотреть статистику сцены") );
+    staticsAct = createOneAction();
 
-    moveAct = createOneAction( trUtf8("Перемещение"),trUtf8("Перемещение объектов"),
-                               QIcon(":/im/images/arrow.png"),true);
+    moveAct = createOneAction(QIcon(":/im/images/arrow.png"),true);
     moveAct->setData( myCanvas::move*10 + myCanvas::noDev );
     moveAct->setChecked(true);
 
-    cableAct = createOneAction( trUtf8("Кабель"),trUtf8("Создать соединение"),
-                            QIcon(":/im/images/cable.png"),true);
+    cableAct = createOneAction(QIcon(":/im/images/cable.png"),true);
     cableAct->setData( myCanvas::cable*10 + myCanvas::noDev );
 
-    textAct = createOneAction( trUtf8("Текст") , trUtf8("Вставить текстовый комментарий") ,
-                               QIcon(":/im/images/note.png"), true);
+    textAct = createOneAction(QIcon(":/im/images/note.png"), true);
     textAct->setData( myCanvas::text*10 + myCanvas::noDev );
 
-    shareBusAct = createOneAction( trUtf8("Общая шина"),trUtf8("Добавить общую шину"),
-                                    QIcon(":/im/images/sharebus.png"),true);
+    shareBusAct = createOneAction(QIcon(":/im/images/sharebus.png"),true);
     shareBusAct->setData( myCanvas::insert*10 + myCanvas::busDev);
 
-    computerAct = createOneAction( trUtf8("Компьютер"),trUtf8("Добавить компьютер"),
-                               QIcon(":/im/images/computer.png"),true);
+    computerAct = createOneAction(QIcon(":/im/images/computer.png"),true);
     computerAct->setData( myCanvas::insert*10 + myCanvas::compDev);
 
-    hubAct = createOneAction( trUtf8("Концентратор"),trUtf8("Добавить концентратор"),
-                          QIcon(":/im/images/hub.png"),true);
+    hubAct = createOneAction(QIcon(":/im/images/hub.png"),true);
     hubAct->setData( myCanvas::insert*10 + myCanvas::hubDev );
 
-    switchAct = createOneAction( trUtf8("Коммутатор"),trUtf8("Добавить коммутатор"),
-                                QIcon(":/im/images/switch.png"),true);
+    switchAct = createOneAction(QIcon(":/im/images/switch.png"),true);
     switchAct->setData( myCanvas::insert*10 + myCanvas::switchDev );
 
-    routerAct = createOneAction( trUtf8("Маршрутизатор") , trUtf8("Добавить маршрутизатор") ,
-                                 QIcon(":/im/images/router.png") , true);
+    routerAct = createOneAction(QIcon(":/im/images/router.png") , true);
     routerAct->setData( myCanvas::insert*10 + myCanvas::routerDev );
 
-    sendAct = createOneAction( trUtf8("Отправка"),trUtf8("Отправить данные"),
-                           QIcon(":/im/images/left_right.png"),true);
+    sendAct = createOneAction(QIcon(":/im/images/left_right.png"),true);
     sendAct->setData( myCanvas::send* 10 + myCanvas::noDev);
 
-    testAct = createOneAction( trUtf8("Выполнить сценарий") , trUtf8("Запустить сценарий") );
+    testAct = createOneAction();
     connect( testAct , SIGNAL(triggered()) , SLOT(test()));
 
-    propertyAct = createOneAction( trUtf8("Свойства") , trUtf8("Свойства") ,
-                                  QIcon(":/im/images/properties.png") );
+    propertyAct = createOneAction(QIcon(":/im/images/properties.png") );
     propertyAct->setShortcut(tr("Ctrl+Alt+P"));
 
-
-    tableAct = createOneAction( trUtf8("Таблица маршрутизации") , trUtf8("Редактирование таблицы маршрутизации"),
-                                QIcon(":/im/images/table_route.png"));
+    tableAct = createOneAction(QIcon(":/im/images/table_route.png"));
     tableAct->setShortcut( tr("Ctrl+T"));
 
-    aboutQtAct = createOneAction( trUtf8("About Qt") , trUtf8("Справочная информация о Qt") );
+    aboutQtAct = createOneAction();
     connect( aboutQtAct , SIGNAL(triggered()) , qApp ,SLOT(aboutQt()) );
 
-    aboutAct = createOneAction( trUtf8("О программе") ,trUtf8("О программе") );    
+    aboutAct = createOneAction();
 
-    helpAct = createOneAction( trUtf8("Помощь") , trUtf8("Полная справочная система программы") );
+    helpAct = createOneAction();
     helpAct->setShortcut(QKeySequence::HelpContents);
     connect(helpAct,SIGNAL(triggered()) , SLOT(helpDialog()));
 
-    adapterAct = createOneAction( trUtf8("Интерфейсы") , trUtf8("Редактировать интерфейсы"),
-                                  QIcon(":/im/images/network_nic.png"));
+    adapterAct = createOneAction(QIcon(":/im/images/network_nic.png"));
     adapterAct->setShortcut(tr("Ctrl+I"));
 
-    playAct = createOneAction( trUtf8("Остановить") , trUtf8("Остановить симуляцию сцены") ,
-                               QIcon(":/im/images/pause.png") );
+    playAct = createOneAction( QIcon(":/im/images/pause.png") );
     connect( playAct , SIGNAL(triggered()) ,SLOT(playBack()) );
 
-    progAct = createOneAction(trUtf8("Программы"), trUtf8("Программы установленные на устройстве"),
-                              QIcon(":/im/images/install_apps.png"));
+    progAct = createOneAction( QIcon(":/im/images/install_apps.png"));
     progAct->setShortcut(tr("Ctrl+P"));
 
-    arpAct = createOneAction(trUtf8("Arp-таблица"), trUtf8("Arp-таблица устройства"),
-                              QIcon(":/im/images/table_arp.png"));
+    arpAct = createOneAction( QIcon(":/im/images/table_arp.png"));
     arpAct->setShortcut(tr("Ctrl+Shift+A"));
 }
 
@@ -211,7 +236,7 @@ void MainWindow::createAction()
 void MainWindow::createMenu()
 {
     // Создаем наши меню и добавляем их на меню бар,
-    fileMenu = menuBar()->addMenu(trUtf8("Файл"));
+    fileMenu = menuBar()->addMenu(QString());
     fileMenu->addAction(newAct);
     fileMenu->addAction(openAct);
     fileMenu->addAction(saveAct);
@@ -220,12 +245,12 @@ void MainWindow::createMenu()
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
-    viewMenu = menuBar()->addMenu(trUtf8("Вид"));
+    viewMenu = menuBar()->addMenu(QString());
     viewMenu->addAction( deviceBar->toggleViewAction() );
     viewMenu->addAction( controlBar->toggleViewAction() );
     viewMenu->addAction(showGridAct);
 
-    itemMenu = menuBar()->addMenu(trUtf8("Объект"));
+    itemMenu = menuBar()->addMenu(QString());
     itemMenu->addAction(deleteAct);
     itemMenu->addAction(propertyAct);
     itemMenu->addAction(tableAct);
@@ -234,14 +259,14 @@ void MainWindow::createMenu()
     itemMenu->addAction(arpAct);
     itemMenu->setEnabled(false);
 
-    settingMenu = menuBar()->addMenu( trUtf8("Сервис") );
+    settingMenu = menuBar()->addMenu( QString() );
     settingMenu->addAction(staticsAct);
     settingMenu->addAction(settingAct);
 
-    testMenu = menuBar()->addMenu( trUtf8("Сценарии") );
+    testMenu = menuBar()->addMenu( QString() );
     testMenu->addAction( testAct );
 
-    helpMenu = menuBar()->addMenu( trUtf8("Справка") );
+    helpMenu = menuBar()->addMenu( QString() );
     helpMenu->addAction(helpAct);
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
@@ -251,7 +276,7 @@ void MainWindow::createMenu()
 */
 void MainWindow::createTools()
 {
-    deviceBar = addToolBar(trUtf8("Устройства"));
+    deviceBar = addToolBar(QString());
     deviceBar->setIconSize(QSize(32,32));
     deviceBar->addAction( moveAct);
     deviceBar->addAction(textAct);
@@ -266,7 +291,7 @@ void MainWindow::createTools()
     deviceBar->addAction( playAct);
     //deviceBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     deviceBar->setEnabled(false);
-    controlBar = addToolBar(trUtf8("Управление"));
+    controlBar = addToolBar(QString());
     controlBar->setIconSize(QSize(32,32));
     controlBar->addAction(propertyAct);
     controlBar->addAction(adapterAct);
@@ -321,7 +346,7 @@ void MainWindow::newFile()
 */
 void MainWindow::closeFile()
 {
-    setWindowTitle(myFile = trUtf8(""));
+    setWindowTitle(myFile = tr(""));
     setEnabledFileItems(false);
 }
 //-----------------------------------------------------------
@@ -361,9 +386,9 @@ void MainWindow::setting()
 void MainWindow::saveFile()
 {
     if ( myFile.isEmpty() ) {
-       QString t = QFileDialog::getSaveFileName(this,trUtf8("Сохранить файл как ..."),
+       QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
                                                 QDir::currentPath(),
-                                                trUtf8("Сети(*.net)"));
+                                                tr("Networks(*.net)"));
        if ( t.isEmpty() ) return;
        myFile = t;
     }
@@ -373,8 +398,8 @@ void MainWindow::saveFile()
 
 void MainWindow::openFile()
 {
-    QString t = QFileDialog::getOpenFileName(this,trUtf8("Открыть"),
-                                             QDir::currentPath(),trUtf8("Сети(*.net)"));
+    QString t = QFileDialog::getOpenFileName(this,tr("Open"),
+                                             QDir::currentPath(),tr("Networks(*.net)"));
     if ( t.isEmpty() ) return;
     myFile = t;
     setWindowTitle( t );
@@ -386,8 +411,8 @@ void MainWindow::openFile()
 //Слот сохранить как =)
 void MainWindow::saveAsFile()
 {
-    QString t = QFileDialog::getSaveFileName(this,trUtf8("Сохранить файл как ..."),
-                                             QApplication::applicationDirPath(),trUtf8("Сети(*.net)"));
+    QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
+                                             QApplication::applicationDirPath(),tr("Networks(*.net)"));
     if ( t.isEmpty() ) return ;
     myFile = t;
     setWindowTitle( myFile );
@@ -472,14 +497,25 @@ void MainWindow::playBack()
     if ( canva->isPlayed() ) {
         canva->stop();
         playAct->setIcon(QIcon(":/im/images/play.png"));
-        playAct->setToolTip(trUtf8("Запустить"));
-        playAct->setStatusTip(trUtf8("Запустить симуляцию"));
+        playAct->setToolTip(tr("Play"));
+        playAct->setStatusTip(tr("Start simulation"));
     } else {
         canva->play();
         playAct->setIcon(QIcon(":/im/images/pause.png"));
-        playAct->setToolTip(trUtf8("Остановить"));
-        playAct->setStatusTip(trUtf8("Остановить симуляцию"));
+        playAct->setToolTip(tr("Stop"));
+        playAct->setStatusTip(tr("Stop simulation"));
     }
 }
 //--------------------------------------------------
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        retranslate();
+        break;
+    default:
+        break;
+    }
+}
 

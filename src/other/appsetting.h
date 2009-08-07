@@ -1,7 +1,7 @@
 #ifndef APPSETTING_H
 #define APPSETTING_H
 
-
+class QTranslator;
 
 class appSetting
 {
@@ -24,9 +24,12 @@ public:
     static int ttlMac() { return _ttlMac; }
     static void setAnimateSpeed(int n) { _speed = n; }
     static int animateSpeed() { return _speed; }
+    static void setLanguage(int n);
+    static int language() { return _language; }
     static void readSetting();
     static void writeSetting();
 private:
+    static QTranslator *mas[2];
     static int _defaultComputerCount;
     static int _defaultHubCount;
     static int _defaultRouterCount;
@@ -34,6 +37,7 @@ private:
     static int _ttlArp;
     static int _ttlMac;
     static int _speed;
+    static int _language;
     static bool _defaultHubManual;
     static bool _defaultSwitchManual;
 protected:

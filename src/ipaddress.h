@@ -9,6 +9,7 @@ public:
     ipAddress();
     ipAddress(const quint8  *cur);
     ipAddress(const QString str);
+    ipAddress(const char *str);
     ipAddress(const ipAddress &other);
     void setIp(const quint8 *cur);
     void setIp(const QString str);

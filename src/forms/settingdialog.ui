@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>316</height>
+    <width>608</width>
+    <height>326</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QListWidget" name="listWidget">
      <property name="minimumSize">
       <size>
-       <width>400</width>
+       <width>600</width>
        <height>70</height>
       </size>
      </property>
@@ -60,8 +60,11 @@
        <set>AlignLeft|AlignVCenter</set>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/setting.png</normaloff>:/im/images/setting.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
      <item>
@@ -69,8 +72,11 @@
        <string>Computer</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/computer.png</normaloff>:/im/images/computer.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
      <item>
@@ -78,8 +84,11 @@
        <string>Hub</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/hub.png</normaloff>:/im/images/hub.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
      <item>
@@ -87,8 +96,11 @@
        <string>Switch</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/switch.png</normaloff>:/im/images/switch.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
      <item>
@@ -96,8 +108,11 @@
        <string>Router</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/router.png</normaloff>:/im/images/router.png</iconset>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
     </widget>
@@ -114,7 +129,7 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="general">
-      <layout class="QVBoxLayout" name="verticalLayout_13">
+      <layout class="QVBoxLayout" name="verticalLayout_14">
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
@@ -182,6 +197,37 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>Language: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="languageBox">
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <item>
+            <property name="text">
+             <string>English</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Russian</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -189,7 +235,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>38</height>
+           <height>40</height>
           </size>
          </property>
         </spacer>
@@ -542,7 +588,7 @@
         <string>Apply</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/refresh.png</normaloff>:/im/images/refresh.png</iconset>
        </property>
       </widget>
@@ -553,7 +599,7 @@
         <string>Ok</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
        <property name="default">
@@ -570,7 +616,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -591,7 +637,9 @@
   <tabstop>routerComboBox</tabstop>
   <tabstop>listWidget</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>listWidget</sender>
@@ -600,8 +648,8 @@
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>75</y>
+     <x>318</x>
+     <y>73</y>
     </hint>
     <hint type="destinationlabel">
      <x>262</x>
@@ -616,8 +664,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>591</x>
-     <y>259</y>
+     <x>412</x>
+     <y>310</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -632,8 +680,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>505</x>
-     <y>260</y>
+     <x>312</x>
+     <y>310</y>
     </hint>
     <hint type="destinationlabel">
      <x>349</x>
@@ -648,8 +696,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>69</x>
-     <y>137</y>
+     <x>78</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>20</x>
@@ -664,8 +712,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>403</x>
-     <y>251</y>
+     <x>238</x>
+     <y>310</y>
     </hint>
     <hint type="destinationlabel">
      <x>269</x>
@@ -680,8 +728,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>71</x>
-     <y>135</y>
+     <x>76</x>
+     <y>128</y>
     </hint>
     <hint type="destinationlabel">
      <x>117</x>
@@ -696,8 +744,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>60</x>
-     <y>131</y>
+     <x>69</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>37</x>
@@ -712,8 +760,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>50</x>
-     <y>133</y>
+     <x>68</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
      <x>67</x>
@@ -728,8 +776,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>72</x>
-     <y>199</y>
+     <x>90</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -744,8 +792,8 @@
    <slot>applyDisable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>433</x>
-     <y>250</y>
+     <x>238</x>
+     <y>310</y>
     </hint>
     <hint type="destinationlabel">
      <x>216</x>
@@ -760,12 +808,44 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>136</y>
+     <x>67</x>
+     <y>98</y>
     </hint>
     <hint type="destinationlabel">
      <x>105</x>
      <y>255</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>languageBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>40</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sl_speed</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>104</x>
+     <y>288</y>
     </hint>
    </hints>
   </connection>

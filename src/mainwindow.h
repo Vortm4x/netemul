@@ -49,6 +49,7 @@ public slots:
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);
+      void changeEvent(QEvent *e);
 private:
         QString myFile; // Имя текущего файла
         myCanvas *canva;
@@ -59,8 +60,9 @@ private:
         void createAction(); // -- событий
         void createScene(); // -- сцены
         void createTools(); // -- Панелей инструментов =)
+        void retranslate();
 
-        QAction* createOneAction(QString text,QString tip,QIcon icon = QIcon(),bool inGroup = false);
+        QAction* createOneAction( QIcon icon = QIcon(),bool inGroup = false);
 
         QMenu *fileMenu; // Выпадающие меню: файл
         QMenu *viewMenu; // -- вид

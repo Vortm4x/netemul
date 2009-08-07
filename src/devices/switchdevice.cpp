@@ -9,7 +9,7 @@ switchDevice::switchDevice(int c /* =0 */)
     if (!c) c = appSetting::defaultSwitchCount();
     myManual = appSetting::defaultSwitchManual();
     chip = new switchChip(c);
-    setNote(trUtf8("<b>Коммутатор</b><!--Доступен HTML.-->"));
+    setNote(trUtf8("<b>Switch</b><!--You can use HTML.-->"));
 }
 
 switchDevice::~switchDevice()

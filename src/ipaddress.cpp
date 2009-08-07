@@ -19,6 +19,14 @@ ipAddress::ipAddress(const QString str)
         myIp[i] = s.at(i).toInt();
 }
 
+ipAddress::ipAddress(const char *str)
+{
+    QString t(str);
+    QStringList l = t.split(".");
+    for ( int i = 0 ; i < 4 ; i++ )
+        myIp[i] = l.at(i).toInt();
+}
+
 ipAddress::ipAddress(const ipAddress &other)
 {
     for ( int i = 0; i < 4 ; i++)

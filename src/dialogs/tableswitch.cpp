@@ -12,7 +12,7 @@ tableSwitch::tableSwitch(switchTableSetting *s)
     h->setResizeMode( QHeaderView::Stretch );
     int n = s->socketsCount();
     for ( int i = 0 ; i < n ; i++ )
-        cb_port->addItem(trUtf8("LAN%1").arg(i+1));
+        cb_port->addItem(tr("LAN%1").arg(i+1));
     connect( btn_add , SIGNAL(clicked()) , SLOT(addRecord()) );
     connect( btn_del , SIGNAL(clicked()) , SLOT(deleteRecord()) );
     connect( table->selectionModel() , SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(selectionChanged()) );

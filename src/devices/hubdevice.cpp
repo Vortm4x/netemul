@@ -8,7 +8,7 @@ hubDevice::hubDevice(int c /* = 0 */ )
     if (!c) c = appSetting::defaultHubCount();
     myManual = appSetting::defaultHubManual();
     chip = new hubChip(c);
-    setNote( QObject::trUtf8( "<b>Концентратор</b><!--Доступен HTML.-->" ) );
+    setNote(trUtf8( "<b>Hub</b><!--You can use HTML.-->" ) );
 }
 
 hubDevice::~hubDevice()

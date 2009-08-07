@@ -30,10 +30,10 @@ QVariant switchModel::headerData(int s , Qt::Orientation o , int role) const
     if ( role != Qt::DisplayRole ) return QVariant();
     if ( o == Qt::Horizontal ) {
         switch (s) {
-            case 0: return trUtf8("MAC-адрес");
-            case 1: return trUtf8("Порт");
-            case 2: return trUtf8("Тип записи");
-            case 3: return trUtf8("Время жизни");
+            case 0: return tr("Mac-address");
+            case 1: return tr("Port");
+            case 2: return tr("Record type");
+            case 3: return tr("TTL");
         }
     }
     return s+1;
@@ -46,7 +46,7 @@ QVariant switchModel::data(const QModelIndex &m, int role) const
         macRecord *t = table.at( m.row() );
         switch ( m.column() ) {
             case 0: return t->mac.toString();
-            case 1: return trUtf8("LAN%1").arg(t->port->num());
+            case 1: return tr("LAN%1").arg(t->port->num());
             case 2: return t->modeString();
             case 3: return t->time;
         }

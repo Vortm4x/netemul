@@ -8,8 +8,8 @@ routerDevice::routerDevice(int c /* = 0 */)
 {
     if ( !c ) c = appSetting::defaultRouterCount();
     for ( int i = 0 ; i <  c ; i++ )
-        addInterface(trUtf8("LAN%1").arg(i+1));
-    setNote(trUtf8("<b>Маршрутизатор</b><!--Доступен HTML.-->"));
+        addInterface(tr("LAN%1").arg(i+1));
+    setNote(trUtf8("<b>Router</b><!--You can use HTML.-->"));
 }
 
 void routerDevice::dialog()

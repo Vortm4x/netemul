@@ -13,6 +13,7 @@ class switchChip;
 // Все его комментарии действительны для других устройств
 class switchDevice : public boxDevice
 {
+    Q_OBJECT
 public:
     friend class switchTableSetting;
     enum { switchDev = 5 };
@@ -25,7 +26,7 @@ public:
     bool hasTable() const { return true; }
     switchChip* concreteChip();
     void secondTimerEvent();
-    QString tableName() const { return trUtf8("Таблица коммутации"); }
+    QString tableName() const { return trUtf8("Table switching"); }
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

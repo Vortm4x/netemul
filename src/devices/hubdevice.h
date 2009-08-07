@@ -7,6 +7,7 @@ class frame;
 
 class hubDevice : public boxDevice
 {
+    Q_OBJECT
 public:
     int type() const { return hubDev; }
     enum { hubDev = 4 };

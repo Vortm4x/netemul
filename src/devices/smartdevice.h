@@ -24,7 +24,7 @@ public:
     /*! Значения для флага записи из таблицы маршрутизации. */    
     smartDevice();
     virtual ~smartDevice();
-    QString tableName() const { return trUtf8("Таблица маршрутизации"); }
+    QString tableName() const { return trUtf8("Routing Table"); }
     virtual void tableDialog();
     virtual void adapterDialog();
     virtual void programmsDialog();

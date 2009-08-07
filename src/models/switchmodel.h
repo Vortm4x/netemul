@@ -12,8 +12,8 @@ struct macRecord {
     int time;
     int mode;
     QString modeString() const {
-        if ( mode == 0 ) return QObject::trUtf8("Статическая");
-        else return QObject::trUtf8("Динамическая");
+        if ( mode == 0 ) return QObject::tr("Static");
+        else return QObject::tr("Dinamic");
     }
 };
 

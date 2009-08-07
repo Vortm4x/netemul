@@ -9,8 +9,8 @@ computer::computer(int c /* = 0 */)
     if ( !c ) c = appSetting::defaultComputerCount();
     for ( int i = 0 ; i < c ; i++)
         addInterface(trUtf8("eth%1").arg(i));
-    myRouteTable->addToTable(tr("127.0.0.0"),tr("255.0.0.0"),tr("127.0.0.1"),tr("127.0.0.1"),0,routeModel::connectMode);
-    setNote(trUtf8("<b>Компьютер</b><!--Доступен HTML.-->"));
+    myRouteTable->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,routeModel::connectMode);
+    setNote(trUtf8("<b>Computer</b><!--You can use HTML.-->"));
 }
 
 void computer::dialog()

@@ -5,6 +5,7 @@
 
 class routerDevice : public smartDevice
 {
+    Q_OBJECT
 public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }

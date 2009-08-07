@@ -23,6 +23,8 @@ settingDialog::settingDialog()
 
     int s = 10000 / appSetting::animateSpeed() / 20;
     sl_speed->setValue(s);
+
+    languageBox->setCurrentIndex( appSetting::language() );
 }
 
 void settingDialog::applyDisable()
@@ -45,6 +47,7 @@ void settingDialog::apply()
     appSetting::setTtlMac( sp_ttlMac->value() );
     int s = 10000 / (sl_speed->value()*20);
     appSetting::setAnimateSpeed(s);
+    appSetting::setLanguage( languageBox->currentIndex() );
     if ( sender() == btn_ok ) accept();
 }
 
@@ -53,6 +56,8 @@ void settingDialog::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::LanguageChange:
         retranslateUi(this);
+        languageBox->setCurrentIndex( appSetting::language() );
+        listWidget->setSpacing( listWidget->spacing() );
         break;
     default:
         break;

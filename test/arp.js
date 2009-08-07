@@ -9,6 +9,7 @@ sw[1] = addSwitch(7,3);
 sw[1].setSocketsCount(8);
 var r = addRouter(5,3);
 r.router = true;
+r.setSocketsCount(8);
 addConnection(sw[0],r,"LAN8","LAN3");
 addConnection(sw[1],r,"LAN8","LAN4");
 var net = new Array();

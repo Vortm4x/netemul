@@ -11,6 +11,7 @@ class devicePort;
 */
 class computer : public smartDevice
 {
+    Q_OBJECT
 public:
     enum { compDev = 3 };
     int type() const { return compDev; }

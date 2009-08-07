@@ -20,6 +20,7 @@ tableArp::tableArp()
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setMinimumWidth(300);
+    table->setAlternatingRowColors(true);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     QStringList head;
     head << trUtf8("Mac-адрес") << trUtf8("Ip-адрес") << trUtf8("Тип записи") << trUtf8("Имя интерфейса")
