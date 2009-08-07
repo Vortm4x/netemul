@@ -26,7 +26,7 @@ public:
     bool hasTable() const { return true; }
     switchChip* concreteChip();
     void secondTimerEvent();
-    QString tableName() const { return trUtf8("Table switching"); }
+    QString tableName() const { return tr("Table switching"); }
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

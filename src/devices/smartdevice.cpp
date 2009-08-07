@@ -143,7 +143,7 @@ void smartDevice::read(QDataStream &stream)
 void smartDevice::setGateway(const QString &str)
 {
     ipAddress t(str);
-    routeRecord *i = myRouteTable->recordAt(trUtf8("0.0.0.0")); // Ищем старый шлюз
+    routeRecord *i = myRouteTable->recordAt("0.0.0.0"); // Ищем старый шлюз
     if ( i ) myRouteTable->deleteFromTable(i); // Удаляем его
     ipAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) return;
@@ -153,7 +153,7 @@ void smartDevice::setGateway(const QString &str)
 
 ipAddress smartDevice::gateway() const
 {
-    routeRecord *i = myRouteTable->recordAt(trUtf8("0.0.0.0"));
+    routeRecord *i = myRouteTable->recordAt("0.0.0.0");
     if ( i ) return i->gateway;
     return ipAddress();
 }
@@ -409,7 +409,7 @@ void smartDevice::installProgramm(programm p)
 {
     foreach ( programm i , myProgramms )
         if ( i->name() == p->name() )  {
-            QMessageBox::warning(0,trUtf8("Не получается =(") , trUtf8("Такая программа уже установлена.") ,
+            QMessageBox::warning(0,trUtf8("Error") , trUtf8("Such a program already installed.") ,
                                  QMessageBox::Ok , QMessageBox::Ok );
             return;
         }

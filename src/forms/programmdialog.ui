@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Программы</string>
+   <string>Programms</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -27,7 +27,7 @@
        <item>
         <widget class="QLabel" name="lb_prog">
          <property name="text">
-          <string>Установленные программы:</string>
+          <string>Installed programms</string>
          </property>
         </widget>
        </item>
@@ -57,10 +57,10 @@
        <item>
         <widget class="QPushButton" name="btn_add">
          <property name="text">
-          <string>Добавить</string>
+          <string>Add</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
          </property>
         </widget>
@@ -68,10 +68,10 @@
        <item>
         <widget class="QPushButton" name="btn_remove">
          <property name="text">
-          <string>Удалить</string>
+          <string>Delete</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
          </property>
         </widget>
@@ -95,7 +95,7 @@
           <string>Ok</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
          </property>
         </widget>
@@ -103,10 +103,10 @@
        <item>
         <widget class="QPushButton" name="btn_cancel">
          <property name="text">
-          <string>Отмена</string>
+          <string>Cancel</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
          </property>
         </widget>
@@ -117,9 +117,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../netemul.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>btn_cancel</sender>

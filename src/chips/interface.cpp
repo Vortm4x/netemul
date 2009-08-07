@@ -89,8 +89,9 @@ void interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
         if ( arp.receiverIp() == arp.senderIp() ) {
-            QMessageBox::warning(0, QObject::trUtf8("Некорректная работа сети"),
-                                 QObject::trUtf8("В сети обнаружено совпадение ip-адресов!"),QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::warning(0, QObject::trUtf8("The network is not working correctly"),
+                                 QObject::trUtf8("The network found a match ip-address! "),
+                                 QMessageBox::Ok, QMessageBox::Ok);
         }
         myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
         QList<ipPacket> packets = myWaits.values( arp.senderIp() );

@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Укажите начальные настройки соединения</string>
+   <string>Specify the initial preferences </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Выберите соединяемые интерфейсы:</string>
+      <string>Select the connected interfaces: </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -42,7 +42,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Соеденить</string>
+        <string>Connect</string>
        </property>
        <property name="icon">
         <iconset resource="../../netemul.qrc">
@@ -53,7 +53,7 @@
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>Отмена</string>
+        <string>Cancel</string>
        </property>
        <property name="icon">
         <iconset resource="../../netemul.qrc">

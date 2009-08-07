@@ -134,7 +134,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 device *t = qgraphicsitem_cast<device*>(tempItem);
                 if ( !t ) break;
                 if ( !t->isCanSend() ) {
-                    QMessageBox::warning(NULL,trUtf8("Ошибка"),trUtf8("Устройство не имеет возможности отправки данных!"),
+                    QMessageBox::warning(0,tr("Error"),tr("The device can't transmit data!"),
                                      QMessageBox::Ok , QMessageBox::Ok);
                     break;
                 }
@@ -405,7 +405,7 @@ void myCanvas::openScene(QString fileName)
     QString str;
     s >> str;
     if ( str != QCoreApplication::applicationVersion() ) {
-        QMessageBox::critical(NULL,trUtf8("Ошибка"),trUtf8("Устаревшая версия файла сохранения. Файл не может быть открыт."),
+        QMessageBox::critical(NULL,tr("Error"),tr("The outdated version of the file, file can't be opened"),
                               QMessageBox::Ok , QMessageBox::Ok );
         closeFile();
         return;

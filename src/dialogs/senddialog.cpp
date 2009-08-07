@@ -16,7 +16,7 @@ sendDialog::sendDialog(aim cur,device* t)
 {
     myState = cur;
     myDevice = t->contentDevice();
-    setWindowTitle(trUtf8("Отправка"));
+    setWindowTitle(tr("Sending"));
     all = new QVBoxLayout;
     prepare();
     QHBoxLayout *temp = new QHBoxLayout;
@@ -48,26 +48,26 @@ void sendDialog::checkAccept()
 
 void sendDialog::prepare()
 {
-    cancelButton = new QPushButton(QIcon(":/im/images/not.png"),trUtf8("Отмена"));
+    cancelButton = new QPushButton(QIcon(":/im/images/not.png"),tr("Cancel"));
     if ( myState == sender ) {
         sizeSlider = new QSlider(Qt::Horizontal);
-        sizeCaption = new QLabel(trUtf8("Укажите размер в килобайтах"));
+        sizeCaption = new QLabel(tr("Size KB"));
         sizeBox = new QSpinBox;
         sizeSlider->setRange(1,1000);
         sizeBox->setRange(1,1000);
-        sizeBox->setSuffix(trUtf8(" KB"));
+        sizeBox->setSuffix(tr(" KB"));
         connect( sizeBox, SIGNAL(valueChanged(int)),sizeSlider, SLOT(setValue(int)));
         connect(sizeSlider , SIGNAL(valueChanged(int)) ,sizeBox, SLOT(setValue(int)));
         sizeBox->setValue(50);
-        check = new QCheckBox(trUtf8("Широковещательный"));
+        check = new QCheckBox(tr("Broadcast"));
         check->setChecked(false);
         check->setEnabled(false);
-        okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Далее"));
-        QGroupBox *box = new QGroupBox(trUtf8("Выбирете протокол:"));
+        okButton = new QPushButton(QIcon(":/im/images/ok.png"),tr("Next"));
+        QGroupBox *box = new QGroupBox(tr("Choose protocol:"));
         QVBoxLayout *btn = new QVBoxLayout;
-        rtn_udp = new QRadioButton(trUtf8("UDP"));
+        rtn_udp = new QRadioButton(tr("UDP"));
         rtn_udp->setChecked(true);
-        rtn_tcp = new QRadioButton(trUtf8("TCP"));
+        rtn_tcp = new QRadioButton(tr("TCP"));
         rtn_tcp->setEnabled(false);
         btn->addWidget(rtn_udp);
         btn->addWidget(rtn_tcp);
@@ -89,8 +89,8 @@ void sendDialog::prepare()
                 QListWidgetItem *temp = new QListWidgetItem( QIcon(":/im/images/ok.png") , i);
                 list->addItem(temp);
             }
-        caption = new QLabel(trUtf8("Укажите адаптер приемника"));
-        okButton = new QPushButton(QIcon(":/im/images/ok.png"),trUtf8("Отправить"));
+        caption = new QLabel(tr("Select the network card receiver"));
+        okButton = new QPushButton(QIcon(":/im/images/ok.png"),tr("Send"));
         if (list->count()) {
             okButton->setEnabled(true);
             list->setCurrentRow(0);

@@ -25,15 +25,15 @@ interfaceDialog::interfaceDialog()
     temp = new QVBoxLayout;
     standarts = new QListWidget;
     temp->addWidget(standarts);
-    standarts->addItem( trUtf8("ethernet 10/100") );
-    standarts->addItem( trUtf8("ethernet 10/100/1000") );
+    standarts->addItem( tr("ethernet 10/100") );
+    standarts->addItem( tr("ethernet 10/100/1000") );
 
-    addEditButton = new QPushButton(trUtf8("Добавить"));
+    addEditButton = new QPushButton(trUtf8("Add"));
     addEditButton->setIcon(QIcon(":/im/images/edit_add.png"));
-    setWindowTitle(trUtf8("Добавить адаптер"));
+    setWindowTitle(tr("Add netcard"));
     standarts->setCurrentRow(0);
 
-    cancelButton = new QPushButton(trUtf8("Отмена"));
+    cancelButton = new QPushButton(trUtf8("Cancel"));
     cancelButton->setIcon(QIcon(":/im/images/not.png"));
 
     temp->addStretch(1);
@@ -61,11 +61,11 @@ void interfaceDialog::changeItem(int n)
     switch(n) {
         case 0:
             picture->setPixmap(QPixmap(":/im/images/k10i100.png"));
-            speed->setText(trUtf8("Скорость: 10/100 Мбит/с"));
+            speed->setText(trUtf8("Speed: 10/100 Mbit/s"));
             break;
         case 1:
             picture->setPixmap(QPixmap(":/im/images/k10i100i1000.png"));
-            speed->setText(trUtf8("Скорость: 10/100/1000 Мбит/с"));
+            speed->setText(trUtf8("Speed: 10/100/1000 Mbit/s"));
             break;
     }
 }

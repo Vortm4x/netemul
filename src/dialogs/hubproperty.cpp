@@ -12,7 +12,7 @@ hubProperty::hubProperty()
 {
     QVBoxLayout *all = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
-    QLabel *t = new QLabel(trUtf8("Количество портов: "));
+    QLabel *t = new QLabel(tr("Number of ports: "));
     cb_count = new QComboBox;
     QStringList s;
     s << "4" << "5" << "6" << "8" << "12" << "16" << "24" << "48";
@@ -21,23 +21,23 @@ hubProperty::hubProperty()
     temp->addWidget(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
-    chk_manual = new QCheckBox(trUtf8("Управление через SNMP: "));
+    chk_manual = new QCheckBox(trUtf8("Manage via SNMP: "));
     connect( chk_manual , SIGNAL(clicked(bool)) , SLOT(check(bool)));
     all->addWidget(chk_manual);
 
     temp = new QHBoxLayout;
-    lb_mac = new QLabel(trUtf8("Mac-адрес: "));
+    lb_mac = new QLabel(trUtf8("Mac-address: "));
     le_mac = new QLineEdit;
     le_mac->setInputMask("HH:HH:HH:HH:HH:HH;_");
     temp->addWidget(lb_mac);
     temp->addWidget(le_mac);
     connect( le_mac , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
     all->addLayout(temp);
-    le_ip = new ipEdit(trUtf8("Ip-адрес: "));
+    le_ip = new ipEdit(trUtf8("Ip-address: "));
     all->addWidget(le_ip);
     connect( le_ip , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
 
-    le_mask = new ipEdit(trUtf8("Маска подсети: "));
+    le_mask = new ipEdit(trUtf8("Mask: "));
     all->addWidget(le_mask);
     connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
@@ -48,7 +48,7 @@ hubProperty::hubProperty()
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
     te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(trUtf8("Пояснения:")));
+    all->addWidget( new QLabel(trUtf8("Description:")));
     all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);
@@ -90,7 +90,7 @@ void hubProperty::apply()
     if ( t != cb_count->currentText().toInt() )
         if ( !st->setSocketsCount( cb_count->currentText().toInt() ) ) {
             QMessageBox::warning(this,trUtf8("Error"),
-            trUtf8("Для изменения количества портов отсоедините все провода.") , QMessageBox::Ok , QMessageBox::Ok);
+            trUtf8("First, remove the cables!") , QMessageBox::Ok , QMessageBox::Ok);
             cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }

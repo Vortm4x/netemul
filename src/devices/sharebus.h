@@ -11,7 +11,6 @@ class devicePort;
 //
 class shareBus : public deviceImpl
 {
-   // Q_DECLARE_TR_FUNCTIONS(shareBus)
 public:
     enum { defaultWidth = 200 };
     shareBus(int c);

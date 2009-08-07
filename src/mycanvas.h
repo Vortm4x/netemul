@@ -40,7 +40,7 @@ public:
     void hideInsertRect();
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
-    textItem* createTextItem(QPointF p, const QString &str = trUtf8("Комментарий") );
+    textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     void ticTime();

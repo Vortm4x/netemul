@@ -10,7 +10,7 @@
 */
 ripProgramm::ripProgramm()
 {
-    myName = QObject::trUtf8("RIP");
+    myName = QObject::tr("RIP");
     mySocket = 520;
     interval = defaultTtl;
     timer = qrand()%30;

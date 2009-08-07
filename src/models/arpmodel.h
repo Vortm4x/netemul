@@ -31,8 +31,8 @@ struct arpRecord {
     int time;
     int mode;
     QString modeString() const {
-        if ( mode == arpModel::staticMode ) return QObject::trUtf8("Статическая");
-        else return QObject::trUtf8("Динамическая");
+        if ( mode == arpModel::staticMode ) return QObject::tr("Static");
+        else return QObject::tr("Dinamic");
     }
 };
 

@@ -7,7 +7,6 @@ connectDialog::connectDialog(device *s, device *e)
     setupUi(this);
     start = s;
     end = e;
-    setWindowTitle(trUtf8("Укажите начальные настройки соединения"));
     connect( startList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
     connect( endList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
 

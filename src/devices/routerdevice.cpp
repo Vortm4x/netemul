@@ -9,7 +9,7 @@ routerDevice::routerDevice(int c /* = 0 */)
     if ( !c ) c = appSetting::defaultRouterCount();
     for ( int i = 0 ; i <  c ; i++ )
         addInterface(tr("LAN%1").arg(i+1));
-    setNote(trUtf8("<b>Router</b><!--You can use HTML.-->"));
+    setNote(tr("<b>Router</b><!--You can use HTML.-->"));
 }
 
 void routerDevice::dialog()
@@ -37,14 +37,14 @@ void routerDevice::setSocketsCount(int n)
 {
     foreach ( interface *i , myInterfaces )
         if ( i->isConnect() ) {
-            QMessageBox::warning(0,trUtf8("Error"), trUtf8("Для изменения количества портов отсоедините все провода.")
-                                 , QMessageBox::Ok , QMessageBox::Ok);
+            QMessageBox::warning(0,tr("Error"), tr("To change the number of ports, disconnect all cables!"),
+                                 QMessageBox::Ok , QMessageBox::Ok);
             return;
         }
     qDeleteAll(myInterfaces);
     myInterfaces.clear();
     for ( int i = 0 ; i < n ; i++ )
-        addInterface( trUtf8("LAN%1").arg(i+1) );
+        addInterface( tr("LAN%1").arg(i+1) );
 }
 
 

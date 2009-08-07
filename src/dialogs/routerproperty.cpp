@@ -13,7 +13,7 @@ routerProperty::routerProperty()
 {
     QVBoxLayout *all = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
-    temp->addWidget( new QLabel(trUtf8("Количество портов: ") ) );
+    temp->addWidget( new QLabel(tr("Number of ports: ") ) );
     cb_count = new QComboBox;
     connect( cb_count , SIGNAL(currentIndexChanged(int)) , SLOT(applyEnable()) );
     QStringList t;
@@ -21,14 +21,14 @@ routerProperty::routerProperty()
     cb_count->addItems(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
-    cb_route = new QCheckBox( trUtf8("Включить маршрутизацию.") );
+    cb_route = new QCheckBox( tr("Enable routing") );
     connect( cb_route , SIGNAL(toggled(bool)) , SLOT(applyEnable()) );
     all->addWidget( cb_route);
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
     te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(trUtf8("Пояснения:")));
+    all->addWidget( new QLabel(trUtf8("Description:")));
     all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);

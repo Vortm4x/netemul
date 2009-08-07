@@ -6,13 +6,13 @@ dialogTemplate::dialogTemplate()
 {    
     lay = new QHBoxLayout;
     btn_cancel = new QPushButton(QIcon(qApp->style()->standardIcon( QStyle::SP_DialogCancelButton)),
-                                 trUtf8("Cancel"));
+                                 tr("Cancel"));
     connect( btn_cancel , SIGNAL(clicked()) , SLOT(reject()) );
     btn_ok = new QPushButton(QIcon(qApp->style()->standardIcon( QStyle::SP_DialogOkButton)),
-                             trUtf8("Ok"));
+                             tr("Ok"));
     connect( btn_ok , SIGNAL(clicked()) , SLOT(apply()) );
     btn_apply = new QPushButton(QIcon(qApp->style()->standardIcon( QStyle::SP_DialogApplyButton)),
-                                trUtf8("Apply"));
+                                tr("Apply"));
     connect(btn_apply, SIGNAL(clicked()) , SLOT(applyDisable()));
 
     lay->addWidget(btn_apply);

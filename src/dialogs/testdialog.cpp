@@ -63,10 +63,10 @@ void testDialog::start()
             break;
         }
     if (res ) {
-        label->setText(trUtf8("Script finished correctly"));
+        label->setText(tr("Script finished correctly"));
         label->setStyleSheet("background : green");
     } else {
-        label->setText(trUtf8("Script finished is not correctly"));
+        label->setText(tr("Script finished is not correctly"));
         label->setStyleSheet("background : red");
     }
     startButton->setEnabled(true);

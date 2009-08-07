@@ -376,55 +376,11 @@
 </context>
 <context>
     <name>QObject</name>
-    <message utf8="true">
-        <location filename="../src/chips/abstractchip.cpp" line="30"/>
-        <source>Получено кадров: %1
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/chips/abstractchip.cpp" line="31"/>
-        <source>Получено пакетов: %1
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/chips/abstractchip.cpp" line="32"/>
-        <source>Отправлено кадров: %1
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/chips/abstractchip.cpp" line="33"/>
-        <source>Отправлено пакетов: %1
-</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../src/chips/boxchip.cpp" line="23"/>
         <location filename="../src/chips/boxchip.cpp" line="48"/>
         <source>LAN%1</source>
         <translation></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/chips/interface.cpp" line="92"/>
-        <source>Некорректная работа сети</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/chips/interface.cpp" line="93"/>
-        <source>В сети обнаружено совпадение ip-адресов!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/models/arpmodel.h" line="34"/>
-        <source>Статическая</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/models/arpmodel.h" line="35"/>
-        <source>Динамическая</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/models/routemodel.cpp" line="159"/>
@@ -438,69 +394,109 @@
         <translation>Подключена</translation>
     </message>
     <message>
+        <location filename="../src/models/arpmodel.h" line="34"/>
         <location filename="../src/models/routemodel.cpp" line="158"/>
         <location filename="../src/models/switchmodel.h" line="15"/>
         <source>Static</source>
         <translation>Статическая</translation>
     </message>
     <message>
+        <location filename="../src/models/arpmodel.h" line="35"/>
         <location filename="../src/models/switchmodel.h" line="16"/>
         <source>Dinamic</source>
         <translation>Динамическая</translation>
     </message>
+    <message>
+        <location filename="../src/chips/abstractchip.cpp" line="30"/>
+        <source>Receive frames: %1
+</source>
+        <translation>Получено кадров: %1
+</translation>
+    </message>
+    <message>
+        <location filename="../src/chips/abstractchip.cpp" line="31"/>
+        <source>Receive packets: %1
+</source>
+        <translation>Получено пакетов: %1
+</translation>
+    </message>
+    <message>
+        <location filename="../src/chips/abstractchip.cpp" line="32"/>
+        <source>Send frames: %1
+</source>
+        <translation>Отправлено кадров: %1
+</translation>
+    </message>
+    <message>
+        <location filename="../src/chips/abstractchip.cpp" line="33"/>
+        <source>Send packets: %1
+</source>
+        <translation>Отправлено пакетов: %1
+</translation>
+    </message>
+    <message>
+        <location filename="../src/chips/interface.cpp" line="92"/>
+        <source>The network is not working correctly</source>
+        <translation>Сеть работает не корректно</translation>
+    </message>
+    <message>
+        <location filename="../src/chips/interface.cpp" line="93"/>
+        <source>The network found a match ip-address! </source>
+        <translation>В сети обнаружены совпадающие ip адреса!</translation>
+    </message>
 </context>
 <context>
     <name>adapterProperty</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="26"/>
-        <source>Имя адаптера: </source>
-        <translation type="unfinished"></translation>
+        <source>Netcard name: </source>
+        <translation>Имя адаптера:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="36"/>
-        <source>Mac-адресс: </source>
-        <translation type="unfinished"></translation>
+        <source>Mac-address: </source>
+        <translation>Мас-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="44"/>
-        <source>Ip-адресс: </source>
-        <translation type="unfinished"></translation>
+        <source>Ip-address: </source>
+        <translation>Ip-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="48"/>
-        <source>Маска подсети: </source>
-        <translation type="unfinished"></translation>
+        <source>Mask: </source>
+        <translation>Маска:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="60"/>
-        <source>Добавить</source>
-        <translation type="unfinished"></translation>
+        <source>Add</source>
+        <translation>Добавить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="61"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
+        <source>Delete</source>
+        <translation>Удалить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="67"/>
-        <source>Сбросить статистику</source>
-        <translation type="unfinished"></translation>
+        <source>Reset statistics</source>
+        <translation>Сбросить статистику</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="153"/>
         <location filename="../src/dialogs/adapterproperty.cpp" line="160"/>
-        <source>Большая просьба!</source>
-        <translation type="unfinished"></translation>
+        <source>Error</source>
+        <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="154"/>
-        <source>Прежде чем удалить интерфейс, будьте добры извлечь из него кабель!</source>
-        <translation type="unfinished"></translation>
+        <source>First, remove the cable!</source>
+        <translation>Сначала извлеките кабель!</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="160"/>
-        <source>Оставьте хотя бы один интерфейс!</source>
-        <translation type="unfinished"></translation>
+        <source>Must be at least one netcard</source>
+        <translation>Должен остаться хотя бы один адаптер</translation>
     </message>
 </context>
 <context>
@@ -518,51 +514,43 @@
 </context>
 <context>
     <name>computerProperty</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="13"/>
-        <source>Шлюз по умолчанию:</source>
-        <translation type="unfinished"></translation>
+        <source>Default gateway:</source>
+        <translation>Шлюз по умолчанию: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="17"/>
-        <source>Включить маршрутизацию</source>
-        <translation type="unfinished"></translation>
+        <source>Enable routing</source>
+        <translation>Включить маршрутизацию</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="24"/>
-        <source>Пояснения:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>connectDialog</name>
-    <message utf8="true">
-        <location filename="../src/dialogs/connectdialog.cpp" line="10"/>
-        <source>Укажите начальные настройки соединения</source>
-        <translation type="unfinished"></translation>
+        <source>Description:</source>
+        <translation>Описание:</translation>
     </message>
 </context>
 <context>
     <name>connectDilog</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/connectdialog.ui" line="14"/>
-        <source>Укажите начальные настройки соединения</source>
-        <translation type="unfinished"></translation>
+        <source>Specify the initial preferences </source>
+        <translation>Укажите начальные настройки</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/connectdialog.ui" line="20"/>
-        <source>Выберите соединяемые интерфейсы:</source>
-        <translation type="unfinished"></translation>
+        <source>Select the connected interfaces: </source>
+        <translation>Выберите соединяемые интерфейсы:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/connectdialog.ui" line="45"/>
-        <source>Соеденить</source>
-        <translation type="unfinished"></translation>
+        <source>Connect</source>
+        <translation>Соединить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/connectdialog.ui" line="56"/>
-        <source>Отмена</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -593,45 +581,45 @@
 </context>
 <context>
     <name>hubProperty</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="15"/>
-        <source>Количество портов: </source>
-        <translation type="unfinished"></translation>
+        <source>Number of ports: </source>
+        <translation>Количество портов:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="24"/>
-        <source>Управление через SNMP: </source>
-        <translation type="unfinished"></translation>
+        <source>Manage via SNMP: </source>
+        <translation>Управляемый через SNMP:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="29"/>
-        <source>Mac-адрес: </source>
-        <translation type="unfinished"></translation>
+        <source>Mac-address: </source>
+        <translation>Мас-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="36"/>
-        <source>Ip-адрес: </source>
-        <translation type="unfinished"></translation>
+        <source>Ip-address: </source>
+        <translation>Ip-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="40"/>
-        <source>Маска подсети: </source>
-        <translation type="unfinished"></translation>
+        <source>Mask: </source>
+        <translation>Маска:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="51"/>
-        <source>Пояснения:</source>
-        <translation type="unfinished"></translation>
+        <source>Description:</source>
+        <translation>Описание:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="92"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="93"/>
-        <source>Для изменения количества портов отсоедините все провода.</source>
-        <translation type="unfinished"></translation>
+        <source>First, remove the cables!</source>
+        <translation>Сначала отсоедините кабеля от устройства!</translation>
     </message>
 </context>
 <context>
@@ -639,27 +627,31 @@
     <message>
         <location filename="../src/dialogs/installdialog.cpp" line="22"/>
         <source>RIP</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">Настройки</translation>
     </message>
     <message>
         <location filename="../src/forms/installdialog.ui" line="20"/>
-        <source>Dialog</source>
-        <translation type="unfinished">Настройки</translation>
+        <source>Programms</source>
+        <translation>Программы</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/installdialog.ui" line="28"/>
-        <source>Доступные программы:</source>
-        <translation type="unfinished"></translation>
+        <source>Available programs: </source>
+        <translation>Доступные программы:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/installdialog.ui" line="55"/>
-        <source>Установить</source>
-        <translation type="unfinished"></translation>
+        <source>Install</source>
+        <translation>Установить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/installdialog.ui" line="66"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Close</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -667,94 +659,98 @@
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="28"/>
         <source>ethernet 10/100</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="29"/>
         <source>ethernet 10/100/1000</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="31"/>
-        <source>Добавить</source>
-        <translation type="unfinished"></translation>
+        <source>Add</source>
+        <translation>Добавить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="33"/>
-        <source>Добавить адаптер</source>
-        <translation type="unfinished"></translation>
+        <source>Add netcard</source>
+        <translation>Добавить сетевую карту</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="36"/>
-        <source>Отмена</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="64"/>
-        <source>Скорость: 10/100 Мбит/с</source>
-        <translation type="unfinished"></translation>
+        <source>Speed: 10/100 Mbit/s</source>
+        <translation>Скорость: 10/100 Мбит/с</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="68"/>
+        <source>Speed: 10/100/1000 Mbit/s</source>
+        <translation>Скорость: 10/100/1000 Мбит/с</translation>
     </message>
     <message utf8="true">
-        <location filename="../src/dialogs/interfacedialog.cpp" line="68"/>
-        <source>Скорость: 10/100/1000 Мбит/с</source>
-        <translation type="unfinished"></translation>
+        <source>Speed: 10/100 Мбит/с</source>
+        <translation type="obsolete">Скорость : 10/100 Мбит/с</translation>
     </message>
 </context>
 <context>
     <name>myCanvas</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/mycanvas.cpp" line="137"/>
         <location filename="../src/mycanvas.cpp" line="408"/>
-        <source>Ошибка</source>
-        <translation type="unfinished"></translation>
+        <source>Error</source>
+        <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/mycanvas.cpp" line="137"/>
-        <source>Устройство не имеет возможности отправки данных!</source>
-        <translation type="unfinished"></translation>
+        <source>The device can&apos;t transmit data!</source>
+        <translation>Устройство не может отправлять данные!</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/mycanvas.cpp" line="408"/>
-        <source>Устаревшая версия файла сохранения. Файл не может быть открыт.</source>
-        <translation type="unfinished"></translation>
+        <source>The outdated version of the file, file can&apos;t be opened</source>
+        <translation>Устаревшая версия файла сохранения. Файл не может быть открыт</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/mycanvas.h" line="43"/>
-        <source>Комментарий</source>
-        <translation type="unfinished"></translation>
+        <source>Commentary</source>
+        <translation>Комментарий</translation>
     </message>
 </context>
 <context>
     <name>programmDialog</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/programmdialog.ui" line="20"/>
-        <source>Программы</source>
-        <translation type="unfinished"></translation>
+        <source>Programms</source>
+        <translation>Программы</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/programmdialog.ui" line="30"/>
-        <source>Установленные программы:</source>
-        <translation type="unfinished"></translation>
+        <source>Installed programms</source>
+        <translation>Установленные программы</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/programmdialog.ui" line="60"/>
-        <source>Добавить</source>
-        <translation type="unfinished"></translation>
+        <source>Add</source>
+        <translation>Добавить</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/programmdialog.ui" line="71"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
+        <source>Delete</source>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="95"/>
         <source>Ok</source>
-        <translation type="unfinished">Ок</translation>
+        <translation>Ок</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/programmdialog.ui" line="106"/>
-        <source>Отмена</source>
-        <translation type="unfinished"></translation>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -856,66 +852,66 @@
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/devices/routerdevice.cpp" line="40"/>
-        <source>Для изменения количества портов отсоедините все провода.</source>
-        <translation type="unfinished"></translation>
+        <source>To change the number of ports, disconnect all cables!</source>
+        <translation>Для изменения количества портов, сначала отключите провода!</translation>
     </message>
 </context>
 <context>
     <name>routerProperty</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="16"/>
-        <source>Количество портов: </source>
-        <translation type="unfinished"></translation>
+        <source>Number of ports: </source>
+        <translation>Количество портов:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="24"/>
-        <source>Включить маршрутизацию.</source>
-        <translation type="unfinished"></translation>
+        <source>Enable routing</source>
+        <translation>Включить маршрутизацию</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="31"/>
-        <source>Пояснения:</source>
-        <translation type="unfinished"></translation>
+        <source>Description:</source>
+        <translation>Описание:</translation>
     </message>
 </context>
 <context>
     <name>sendDialog</name>
-    <message utf8="true">
-        <location filename="../src/dialogs/senddialog.cpp" line="19"/>
-        <source>Отправка</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/senddialog.cpp" line="51"/>
-        <source>Отмена</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/senddialog.cpp" line="54"/>
-        <source>Укажите размер в килобайтах</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../src/dialogs/senddialog.cpp" line="58"/>
         <source> KB</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
+        <location filename="../src/dialogs/senddialog.cpp" line="19"/>
+        <source>Sending</source>
+        <translation>Отправка</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/senddialog.cpp" line="51"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/senddialog.cpp" line="54"/>
+        <source>Size KB</source>
+        <translation>Размер в килобайтах</translation>
+    </message>
+    <message>
         <location filename="../src/dialogs/senddialog.cpp" line="62"/>
-        <source>Широковещательный</source>
-        <translation type="unfinished"></translation>
+        <source>Broadcast</source>
+        <translation>Широковещательный</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/senddialog.cpp" line="65"/>
-        <source>Далее</source>
-        <translation type="unfinished"></translation>
+        <source>Next</source>
+        <translation>Далее</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/senddialog.cpp" line="66"/>
-        <source>Выбирете протокол:</source>
-        <translation type="unfinished"></translation>
+        <source>Choose protocol:</source>
+        <translation>Выберите протокол:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/senddialog.cpp" line="68"/>
@@ -927,15 +923,15 @@
         <source>TCP</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/senddialog.cpp" line="92"/>
-        <source>Укажите адаптер приемника</source>
-        <translation type="unfinished"></translation>
+        <source>Select the network card receiver</source>
+        <translation>Укажите интерфейс приемника</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/senddialog.cpp" line="93"/>
-        <source>Отправить</source>
-        <translation type="unfinished"></translation>
+        <source>Send</source>
+        <translation>Отправка</translation>
     </message>
 </context>
 <context>
@@ -1128,25 +1124,19 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="146"/>
-        <location filename="../src/devices/smartdevice.cpp" line="156"/>
-        <source>0.0.0.0</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/devices/smartdevice.cpp" line="380"/>
         <source>eth%1</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/devices/smartdevice.cpp" line="412"/>
-        <source>Не получается =(</source>
-        <translation type="unfinished"></translation>
+        <source>Error</source>
+        <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/devices/smartdevice.cpp" line="412"/>
-        <source>Такая программа уже установлена.</source>
-        <translation type="unfinished"></translation>
+        <source>Such a program already installed.</source>
+        <translation>Такая программа уже установлена.</translation>
     </message>
     <message>
         <location filename="../src/devices/smartdevice.h" line="27"/>
@@ -1197,108 +1187,103 @@
 </context>
 <context>
     <name>switchProperty</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="16"/>
-        <source>Количество портов: </source>
-        <translation type="unfinished"></translation>
+        <source>Number of ports: </source>
+        <translation>Количество портов:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="25"/>
-        <source>Управление через SNMP: </source>
-        <translation type="unfinished"></translation>
+        <source>Managed via SNMP: </source>
+        <translation>Управляемый через SNMP:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="30"/>
-        <source>Mac-адрес: </source>
-        <translation type="unfinished"></translation>
+        <source>Mac-address: </source>
+        <translation>Мас-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="38"/>
-        <source>Ip-адрес: </source>
-        <translation type="unfinished"></translation>
+        <source>Ip-address: </source>
+        <translation>Ip-адрес: </translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="42"/>
-        <source>Маска подсети: </source>
-        <translation type="unfinished"></translation>
+        <source>Mask: </source>
+        <translation>Маска:</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="54"/>
-        <source>Пояснения:</source>
-        <translation type="unfinished"></translation>
+        <source>Description:</source>
+        <translation>Описание:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="80"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="81"/>
-        <source>Для изменения количества портов отсоедините все провода.</source>
-        <translation type="unfinished"></translation>
+        <source>First, remove the cables!</source>
+        <translation>Сначала отсоедините кабеля от устройства!</translation>
     </message>
 </context>
 <context>
     <name>tableArp</name>
-    <message utf8="true">
+    <message>
         <location filename="../src/dialogs/tablearp.cpp" line="26"/>
-        <source>Mac-адрес</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
-        <source>Ip-адрес</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
-        <source>Тип записи</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
-        <source>Имя интерфейса</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="27"/>
-        <source>Время жизни</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="32"/>
-        <source>Mac-адрес: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="39"/>
-        <source>Ip-адрес: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="41"/>
-        <source>Интерфейс</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="48"/>
-        <source>Добавить</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="50"/>
-        <source>Удалить</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <location filename="../src/dialogs/tablearp.cpp" line="53"/>
-        <source>Закрыть</source>
-        <translation type="unfinished"></translation>
+        <source>Mac-address</source>
+        <translation>Мас-адрес</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="91"/>
-        <source>%1</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <source>Ip-address</source>
+        <translation>Ip-адрес</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <source>Record type</source>
+        <translation>Тип записи</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <source>Netcard name</source>
+        <translation>Имя адаптера</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="27"/>
+        <source>TTL</source>
+        <translation>Время жизни</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="32"/>
+        <source>Mac-address: </source>
+        <translation>Мас-адрес: </translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="39"/>
+        <source>Ip-address: </source>
+        <translation>Ip-адрес: </translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="41"/>
+        <source>Netcard</source>
+        <translation>Адапер</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="48"/>
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="50"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/tablearp.cpp" line="53"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>

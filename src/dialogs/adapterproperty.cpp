@@ -23,7 +23,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     all->addWidget(tab_interfaces);
 
     QHBoxLayout *temp = new QHBoxLayout;
-    QLabel *lbl_temp = new QLabel(trUtf8("Имя адаптера: "));
+    QLabel *lbl_temp = new QLabel(tr("Netcard name: "));
     le_name = new QLineEdit;
     le_name->setMaxLength(10);
     le_name->setReadOnly(true);
@@ -33,7 +33,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     connect(le_name, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
     temp = new QHBoxLayout;
-    lbl_temp = new QLabel(trUtf8("Mac-адресс: "));
+    lbl_temp = new QLabel(tr("Mac-address: "));
     le_mac = new QLineEdit;
     le_mac->setInputMask("HH:HH:HH:HH:HH:HH;_");
     temp->addWidget(lbl_temp);
@@ -41,11 +41,11 @@ adapterProperty::adapterProperty(adapterSetting *s)
     all->addLayout(temp);
     connect(le_mac, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    le_ip = new ipEdit(trUtf8("Ip-адресс: "));
+    le_ip = new ipEdit(tr("Ip-address: "));
     all->addWidget(le_ip);
     connect(le_ip, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    le_mask = new ipEdit(trUtf8("Маска подсети: "));
+    le_mask = new ipEdit(tr("Mask: "));
     all->addWidget(le_mask);
 
     lb_statics = new QLabel;
@@ -57,14 +57,14 @@ adapterProperty::adapterProperty(adapterSetting *s)
     QHBoxLayout *b = new QHBoxLayout;
     b->addStretch(1);
     if ( sd->canManageInterface() ) {
-        btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , trUtf8("Добавить") );
-        btn_del = new QPushButton(QIcon(":/im/images/edit_remove.png") , trUtf8("Удалить") );
+        btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , tr("Add") );
+        btn_del = new QPushButton(QIcon(":/im/images/edit_remove.png") , tr("Delete") );
         connect( btn_add , SIGNAL(clicked()) , SLOT(addInterface()) );
         connect( btn_del , SIGNAL(clicked()) , SLOT(deleteInterface()) );
         b->addWidget(btn_add, 0 , Qt::AlignRight);
         b->addWidget(btn_del, 0 , Qt::AlignRight);
     }
-    QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),trUtf8("Сбросить статистику"));
+    QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),tr("Reset statistics"));
     connect( btn_reset , SIGNAL(clicked()) , SLOT(reset()));
     b->addWidget(btn_reset, 0 , Qt::AlignRight);
     all->addLayout(b);
@@ -150,14 +150,14 @@ void adapterProperty::addInterface()
 void adapterProperty::deleteInterface()
 {
     if ( sd->isConnect() ) {
-        QMessageBox::warning(this,trUtf8("Большая просьба!") ,
-                             trUtf8("Прежде чем удалить интерфейс, будьте добры извлечь из него кабель!") , QMessageBox::Ok,
+        QMessageBox::warning(this,tr("Error") ,
+                             tr("First, remove the cable!") , QMessageBox::Ok,
                              QMessageBox::Ok );
         return;
     }
 
     if ( tab_interfaces->count() == 1 ) {
-        QMessageBox::warning(this,trUtf8("Большая просьба!") , trUtf8("Оставьте хотя бы один интерфейс!") ,
+        QMessageBox::warning(this,tr("Error") , tr("Must be at least one netcard") ,
                              QMessageBox::Ok , QMessageBox::Ok );
         return;
     }
