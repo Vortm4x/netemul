@@ -12,7 +12,6 @@ class tableSwitch : public QDialog , private Ui::tableSwitch
     Q_DISABLE_COPY(tableSwitch)
 public:
     explicit tableSwitch(switchTableSetting *s);
-    void correctSize();     
 private:
     switchTableSetting *sw;
     switchModel *t_sw;

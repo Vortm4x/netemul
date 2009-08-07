@@ -58,7 +58,7 @@ public:
     programm programmAt(const quint16 p) const;
     programm programmAt(const QString n) const;
     void removeProgramm(programm p);
-    void installProgramm( programm p) { p->setDevice(this); myProgramms << p; }
+    void installProgramm( programm p);
     bool sendInterrupt(int u);
     int socketsCount() const { return myInterfaces.count(); }
     QList<programm> programms() { return myProgramms; }

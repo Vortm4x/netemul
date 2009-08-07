@@ -39,7 +39,6 @@ public slots:
     void addRecord();
     void deleteRecord();
     void checkSelection(QModelIndex curr);
-    void updateTable();
 };
 //--------------------------------------------------
 

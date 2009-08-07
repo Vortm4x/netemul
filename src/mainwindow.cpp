@@ -354,6 +354,7 @@ void MainWindow::setting()
     d->applyDisable();
     d->exec();
     delete d ;
+    canva->setAnimateSpeed( appSetting::animateSpeed() );
 }
 
 //Слот сохранить

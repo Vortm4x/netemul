@@ -17,7 +17,7 @@ protected:
     void updateList();
     void changeEvent(QEvent *e);
 private:
-    smartDevice *s; //!< Указатель на устройство
+    smartDevice *smart; //!< Указатель на устройство
 public slots:
     void install();
 };

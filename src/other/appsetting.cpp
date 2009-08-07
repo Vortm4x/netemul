@@ -26,6 +26,7 @@ void appSetting::readSetting()
     _defaultSwitchManual = setting.value("switch/manual",false).toBool() ;
     _ttlArp = setting.value("ttl/Arp",1200).toInt() ;
     _ttlMac = setting.value("ttl/Mac",300).toInt();
+    _speed = setting.value("main/speed",100).toInt();
 }
 
 void appSetting::writeSetting()
@@ -39,4 +40,5 @@ void appSetting::writeSetting()
     setting.setValue("switch/manual", _defaultSwitchManual );
     setting.setValue("ttl/Arp", _ttlArp );
     setting.setValue("ttl/Mac", _ttlMac );
+    setting.setValue("main/speed",_speed);
 }

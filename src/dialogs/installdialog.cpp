@@ -9,7 +9,7 @@ installDialog::installDialog(QWidget *parent) : QDialog(parent)
 
 void installDialog::setDevice(smartDevice *d)
 {
-    s = d;
+    smart = d;
     updateList();
 }
 /*!
@@ -36,7 +36,7 @@ void installDialog::install()
             break;
     }
     programm a(p);
-    s->installProgramm(a);
+    smart->installProgramm(a);
     accept();
 }
 //-----------------------------------------------

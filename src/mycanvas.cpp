@@ -642,6 +642,11 @@ void myCanvas::setAnimateSpeed(int n)
     appSetting::setAnimateSpeed(n);
 }
 
+void myCanvas::play()
+{
+    myTimer = startTimer( appSetting::animateSpeed() );
+}
+
 
 
 

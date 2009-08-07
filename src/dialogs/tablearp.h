@@ -20,7 +20,6 @@ class tableArp : public QDialog
 public:
     tableArp();
     void setDevice(smartDevice *dev);
-    void correctSize();
     void updateTable();
 private:
     smartDevice *device;
@@ -33,8 +32,6 @@ private:
     QStringList s;
     QList<arpModel*> list;
     ipEdit *ip;
-protected:
-    void resizeEvent(QResizeEvent *e) { Q_UNUSED(e); correctSize(); }
 public slots:
     void addRecord();
     void deleteRecord();

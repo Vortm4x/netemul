@@ -64,7 +64,7 @@ public slots:
     void removeDevice();
     void newFile();
     void closeFile();
-    void play() { myTimer = startTimer(100); } // Включаем основной таймер
+    void play();
     void stop() { killTimer(myTimer); myTimer = 0; } // Выключаем таймер
     bool isPlayed() const { return myTimer; }
     void saveScene(QString fileName);

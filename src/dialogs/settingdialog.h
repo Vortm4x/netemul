@@ -1,41 +1,22 @@
 #ifndef SETTINGDIALOG_H
 #define SETTINGDIALOG_H
 
-#include "dialogtemplate.h"
-class QListWidget;
-class QStackedWidget;
-class QWidget;
-class QComboBox;
-class QCheckBox;
-class QSpinBox;
+#include <QDialog>
 
-static const int COUNT = 5;
+#include "ui_settingdialog.h"
 
-class settingDialog : public dialogTemplate
+class settingDialog : public QDialog , private Ui::settingDialog
 {
     Q_OBJECT
+    Q_DISABLE_COPY( settingDialog )
 public:
     settingDialog();    
-    void createGeneral();
-    void createComputer();
-    void createHub();
-    void createSwitch();
-    void createRouter();
-private:
-    QComboBox *computerComboBox;
-    QComboBox *hubComboBox;
-    QComboBox *switchComboBox;
-    QComboBox *routerComboBox;
-    QCheckBox *hubCheckBox;
-    QCheckBox *switchCheckBox;
-    QWidget *widgets[COUNT];
-    QVBoxLayout *widgetLayouts[COUNT];
-    QListWidget *listWidget;
-    QStackedWidget *stackedWidget;
-    QSpinBox *sp_ttlArp;
-    QSpinBox *sp_ttlMac;
 public slots:
     void apply();
+    void applyDisable();
+    void applyEnable();
+protected:
+    virtual void changeEvent(QEvent *e);
 };
 
 #endif // SETTINGDIALOG_H

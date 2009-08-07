@@ -98,11 +98,8 @@ void routeEditor::deleteRecord()
 */
 void routeEditor::checkSelection(QModelIndex curr)
 {
-    if ( curr.isValid() && model->isConnectedMode(curr) ) {
-        btn_remove->setEnabled(true);
-        return;
-    }
-    btn_remove->setEnabled(false);
+    if ( curr.isValid() && model->isConnectedMode(curr) ) btn_remove->setEnabled(true);
+    else btn_remove->setEnabled(false);
 }
 //------------------------------------------
 /*!
@@ -133,9 +130,3 @@ void routeEditor::writeSetting() const
     s.endGroup();
 }
 //--------------------------------------------
-
-void routeEditor::updateTable()
-{
-
-}
-

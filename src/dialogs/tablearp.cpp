@@ -8,8 +8,9 @@
 #include <QBoxLayout>
 #include <QLabel>
 #include <QComboBox>
+#include <QHeaderView>
 
-/**
+/*!
    Конструктор создает основной интерфейс окна.
 */
 tableArp::tableArp()
@@ -17,12 +18,14 @@ tableArp::tableArp()
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableWidget(0,5);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setMinimumWidth(300);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     QStringList head;
     head << trUtf8("Mac-адрес") << trUtf8("Ip-адрес") << trUtf8("Тип записи") << trUtf8("Имя интерфейса")
         << trUtf8("Время жизни") ;
-    table->setHorizontalHeaderLabels(head);    
+    table->setHorizontalHeaderLabels(head);
+    table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     all->addWidget(table);
     QHBoxLayout *temp = new QHBoxLayout;
     QLabel *lb = new QLabel(trUtf8("Mac-адрес: "));
@@ -45,9 +48,10 @@ tableArp::tableArp()
     connect(btn_add, SIGNAL(clicked()), SLOT(addRecord()));
     btn_del = new QPushButton( QIcon( ":im/images/edit_remove.png" ), trUtf8( "Удалить" ));
     connect(btn_del, SIGNAL(clicked()), SLOT(deleteRecord()));
+    btn_del->setEnabled(false);
     btn_close = new QPushButton( QIcon( ":im/images/not.png" ), trUtf8( "Закрыть" ));
     connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
-//    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()));
+    connect( table , SIGNAL(itemSelectionChanged()) , SLOT(checkSelection()));
     temp->addWidget(btn_add);
     temp->addWidget(btn_del);
     temp->addStretch(1);
@@ -63,16 +67,6 @@ void tableArp::setDevice(smartDevice *dev)
     list = device->arpModels();
     updateTable();
 }
-/**
-  Корректирует размер колонок таблицы в соответствии с размером окна.
-*/
-void tableArp::correctSize()
-{
-    int n = table->width();
-    for ( int i = 0; i < 5; i++)
-        table->setColumnWidth(i, n/5);
-}
-//-------------------------------------------------------------------------
 /**
   Обновляет содержимое таблицы арп записей при каких либо изменениях.
 */
@@ -102,7 +96,7 @@ void tableArp::updateTable()
         }
         i++;
     }
-    correctSize();
+    btn_del->setEnabled(false);
 }
 //---------------------------------------------------------------
 /**
@@ -133,5 +127,6 @@ void tableArp::deleteRecord()
 
 void tableArp::checkSelection()
 {
-    //if ( table->currentItem() && table->currentItem()->
+    if ( table->currentRow() == -1 ) btn_del->setEnabled(false);
+    else btn_del->setEnabled(true);
 }

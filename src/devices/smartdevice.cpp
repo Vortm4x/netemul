@@ -8,6 +8,7 @@
 #include "udppacket.h"
 #include "tcppacket.h"
 #include <QtDebug>
+#include <QMessageBox>
 
 smartDevice::smartDevice() : myRouter(false)
 {
@@ -399,6 +400,23 @@ void smartDevice::tableChanged(routeRecord *r,int n)
     sendInterrupt( n );
     r->change = routeModel::noChanged;
 }
+
+/*!
+  * Устанавливает программу на устройство.
+  * @param p - программа для установки.
+  */
+void smartDevice::installProgramm(programm p)
+{
+    foreach ( programm i , myProgramms )
+        if ( i->name() == p->name() )  {
+            QMessageBox::warning(0,trUtf8("Не получается =(") , trUtf8("Такая программа уже установлена.") ,
+                                 QMessageBox::Ok , QMessageBox::Ok );
+            return;
+        }
+    p->setDevice(this);
+    myProgramms << p;
+}
+//-----------------------------------------------------------
 
 #endif
 
