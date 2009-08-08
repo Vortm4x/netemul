@@ -28,12 +28,12 @@ QVariant routeModel::headerData( int s , Qt::Orientation o, int role ) const
     if ( o == Qt::Horizontal )
         if ( role == Qt::DisplayRole )
             switch (s) {
-                case 0: return trUtf8("Destination");
-                case 1: return trUtf8("Mask");
-                case 2: return trUtf8("Gateway");
-                case 3: return trUtf8("Interface");
-                case 4: return trUtf8("Metric");
-                case 5: return trUtf8("Source");
+                case 0: return tr("Destination");
+                case 1: return tr("Mask");
+                case 2: return tr("Gateway");
+                case 3: return tr("Interface");
+                case 4: return tr("Metric");
+                case 5: return tr("Source");
             }
     if ( o == Qt::Vertical )
         if ( role == Qt::DisplayRole ) return s+1;
@@ -155,9 +155,9 @@ void routeModel::checkConnectedNet(ipAddress ip, ipAddress mask, bool add)
 QString routeRecord::modeString() const
 {
     switch ( mode ) {
-        case routeModel::staticMode : return QObject::trUtf8("Static");
-        case routeModel::ripMode : return QObject::trUtf8("RIP");
-        case routeModel::connectMode : return QObject::trUtf8("Connected");
+        case routeModel::staticMode : return QObject::tr("Static");
+        case routeModel::ripMode : return QObject::tr("RIP");
+        case routeModel::connectMode : return QObject::tr("Connected");
     }
     return QString();
 }
@@ -165,7 +165,7 @@ QString routeRecord::modeString() const
 
 bool routeModel::isConnectedMode(QModelIndex curr)
 {
-    return (table.at(curr.row())->modeString() != trUtf8("Connected"));
+    return (table.at(curr.row())->modeString() != tr("Connected"));
 }
 
 /*!

@@ -21,23 +21,23 @@ hubProperty::hubProperty()
     temp->addWidget(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
-    chk_manual = new QCheckBox(trUtf8("Manage via SNMP: "));
+    chk_manual = new QCheckBox(tr("Manage via SNMP: "));
     connect( chk_manual , SIGNAL(clicked(bool)) , SLOT(check(bool)));
     all->addWidget(chk_manual);
 
     temp = new QHBoxLayout;
-    lb_mac = new QLabel(trUtf8("Mac-address: "));
+    lb_mac = new QLabel(tr("Mac-address: "));
     le_mac = new QLineEdit;
     le_mac->setInputMask("HH:HH:HH:HH:HH:HH;_");
     temp->addWidget(lb_mac);
     temp->addWidget(le_mac);
     connect( le_mac , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
     all->addLayout(temp);
-    le_ip = new ipEdit(trUtf8("Ip-address: "));
+    le_ip = new ipEdit(tr("Ip-address: "));
     all->addWidget(le_ip);
     connect( le_ip , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
 
-    le_mask = new ipEdit(trUtf8("Mask: "));
+    le_mask = new ipEdit(tr("Mask: "));
     all->addWidget(le_mask);
     connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
@@ -48,7 +48,7 @@ hubProperty::hubProperty()
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
     te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(trUtf8("Description:")));
+    all->addWidget( new QLabel(tr("Description:")));
     all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);
@@ -89,8 +89,8 @@ void hubProperty::apply()
     int t = st->socketsCount();
     if ( t != cb_count->currentText().toInt() )
         if ( !st->setSocketsCount( cb_count->currentText().toInt() ) ) {
-            QMessageBox::warning(this,trUtf8("Error"),
-            trUtf8("First, remove the cables!") , QMessageBox::Ok , QMessageBox::Ok);
+            QMessageBox::warning(this,tr("Error"),
+            tr("First, remove the cables!") , QMessageBox::Ok , QMessageBox::Ok);
             cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }

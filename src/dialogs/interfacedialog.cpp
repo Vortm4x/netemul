@@ -12,7 +12,7 @@ interfaceDialog::interfaceDialog()
     QVBoxLayout *temp = new QVBoxLayout;
     QVBoxLayout *tempL = new QVBoxLayout;
 
-    picture = new QLabel(trUtf8(""));
+    picture = new QLabel(tr(""));
     temp->addWidget(picture);
 
     speed = new QLabel;
@@ -28,12 +28,12 @@ interfaceDialog::interfaceDialog()
     standarts->addItem( tr("ethernet 10/100") );
     standarts->addItem( tr("ethernet 10/100/1000") );
 
-    addEditButton = new QPushButton(trUtf8("Add"));
+    addEditButton = new QPushButton(tr("Add"));
     addEditButton->setIcon(QIcon(":/im/images/edit_add.png"));
     setWindowTitle(tr("Add netcard"));
     standarts->setCurrentRow(0);
 
-    cancelButton = new QPushButton(trUtf8("Cancel"));
+    cancelButton = new QPushButton(tr("Cancel"));
     cancelButton->setIcon(QIcon(":/im/images/not.png"));
 
     temp->addStretch(1);
@@ -61,11 +61,11 @@ void interfaceDialog::changeItem(int n)
     switch(n) {
         case 0:
             picture->setPixmap(QPixmap(":/im/images/k10i100.png"));
-            speed->setText(trUtf8("Speed: 10/100 Mbit/s"));
+            speed->setText(tr("Speed: 10/100 Mbit/s"));
             break;
         case 1:
             picture->setPixmap(QPixmap(":/im/images/k10i100i1000.png"));
-            speed->setText(trUtf8("Speed: 10/100/1000 Mbit/s"));
+            speed->setText(tr("Speed: 10/100/1000 Mbit/s"));
             break;
     }
 }

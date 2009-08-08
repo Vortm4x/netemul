@@ -377,7 +377,7 @@ void smartDevice::addInterface()
         int t = i->name().mid(3).toInt();
         if ( t > max ) max = t;
     }
-    addInterface( trUtf8("eth%1").arg(++max) );
+    addInterface( tr("eth%1").arg(++max) );
 }
 
 void smartDevice::deleteInterface(const QString &name)
@@ -409,7 +409,7 @@ void smartDevice::installProgramm(programm p)
 {
     foreach ( programm i , myProgramms )
         if ( i->name() == p->name() )  {
-            QMessageBox::warning(0,trUtf8("Error") , trUtf8("Such a program already installed.") ,
+            QMessageBox::warning(0,tr("Error") , tr("Such a program already installed.") ,
                                  QMessageBox::Ok , QMessageBox::Ok );
             return;
         }

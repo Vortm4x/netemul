@@ -27,10 +27,10 @@ void abstractChip::resetStatics()
 QString abstractChip::staticsString() const
 {
     QString t;
-    t += QObject::trUtf8("Receive frames: %1\n").arg( myReceiveFrame ) +
-    QObject::trUtf8("Receive packets: %1\n").arg( myReceivePacket ) +
-    QObject::trUtf8("Send frames: %1\n").arg( mySendFrame ) +
-    QObject::trUtf8("Send packets: %1\n").arg( mySendPacket ) ;
+    t += QObject::tr("Receive frames: %1\n").arg( myReceiveFrame ) +
+    QObject::tr("Receive packets: %1\n").arg( myReceivePacket ) +
+    QObject::tr("Send frames: %1\n").arg( mySendFrame ) +
+    QObject::tr("Send packets: %1\n").arg( mySendPacket ) ;
     return t;
 }
 

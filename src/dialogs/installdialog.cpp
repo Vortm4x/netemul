@@ -19,7 +19,7 @@ void installDialog::updateList()
 {
     list->clear();
     QStringList l;
-    l << trUtf8("RIP");
+    l << tr("RIP");
     list->addItems(l);
 }
 //-----------------------------------------------

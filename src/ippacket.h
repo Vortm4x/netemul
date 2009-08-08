@@ -44,9 +44,7 @@ public:
     void setSender(ipAddress a) { d->sender = a; }
     void setReceiver(ipAddress a) { d->receiver = a; }
     bool isBroadcast(const ipAddress mask) const;
-    bool isBroadcast(const QString str) const { return isBroadcast(ipAddress(str)); }
     void setBroadcast(const ipAddress mask);
-    void setBroadcast(const QString str) { setBroadcast(ipAddress(str)); }
     ipPacket& operator=(const ipPacket &other);
     void setUpProtocol(qint8 u) { d->upProtocol = u; }
     qint8 upProtocol() const { return d->upProtocol; }

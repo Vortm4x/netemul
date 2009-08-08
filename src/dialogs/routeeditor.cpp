@@ -23,14 +23,14 @@ routeEditor::routeEditor(smartDevice *s)
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     all->addWidget(table);
-    ip_dest = new ipEdit(trUtf8("Destination: "));
+    ip_dest = new ipEdit(tr("Destination: "));
     all->addWidget(ip_dest);
-    ip_mask = new ipEdit(trUtf8("Mask: "));
+    ip_mask = new ipEdit(tr("Mask: "));
     all->addWidget(ip_mask);
-    ip_gateway = new ipEdit(trUtf8("Gateway: "));
+    ip_gateway = new ipEdit(tr("Gateway: "));
     all->addWidget(ip_gateway);
     QHBoxLayout *temp = new QHBoxLayout;
-    temp->addWidget( new QLabel(trUtf8("Interface: ")) );
+    temp->addWidget( new QLabel(tr("Interface: ")) );
     cb_out = new QComboBox;
     cb_out->setFixedWidth(250);
     cb_out->addItems( dev->interfacesIp() );
@@ -38,7 +38,7 @@ routeEditor::routeEditor(smartDevice *s)
     temp->addStretch(1);
     all->addLayout(temp);
     QHBoxLayout *lay = new QHBoxLayout;
-    QLabel *lb = new QLabel(trUtf8("Metric: "));
+    QLabel *lb = new QLabel(tr("Metric: "));
     lay->addWidget(lb);
     sp_metr = new QSpinBox;
     sp_metr->setMinimum(0);
@@ -48,17 +48,17 @@ routeEditor::routeEditor(smartDevice *s)
     all->addLayout(lay);
 
     lay = new QHBoxLayout;
-    btn_add = new QPushButton( QIcon(":/im/images/edit_add.png"), trUtf8("Add"));
+    btn_add = new QPushButton( QIcon(":/im/images/edit_add.png"), tr("Add"));
     btn_add->setFixedWidth(150);
     connect( btn_add , SIGNAL(clicked()) , SLOT(addRecord()) );
     lay->addWidget( btn_add, 1, Qt::AlignLeft);
-    btn_remove = new QPushButton(QIcon(":/im/images/edit_remove.png"),trUtf8("Delete"));
+    btn_remove = new QPushButton(QIcon(":/im/images/edit_remove.png"),tr("Delete"));
     btn_remove->setFixedWidth(150);
     btn_remove->setEnabled(false);
     connect( btn_remove , SIGNAL(clicked()) ,SLOT(deleteRecord()) );
     lay->addWidget(btn_remove, 1, Qt::AlignLeft);
     lay->addStretch(2);
-    btn_close = new QPushButton(QIcon(":/im/images/not.png"), trUtf8("Close"));
+    btn_close = new QPushButton(QIcon(":/im/images/not.png"), tr("Close"));
     btn_close->setFixedWidth(150);
     lay->addWidget(btn_close, 1, Qt::AlignRight);
     all->addLayout(lay);

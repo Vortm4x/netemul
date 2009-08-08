@@ -28,7 +28,7 @@ routerProperty::routerProperty()
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
     te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(trUtf8("Description:")));
+    all->addWidget( new QLabel(tr("Description:")));
     all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);
