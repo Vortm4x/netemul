@@ -1,3 +1,5 @@
+#include <QtCore/QtDebug>
+#include <QtGui/QMessageBox>
 #include "smartdevice.h"
 #ifndef __TESTING__
 #include "routeeditor.h"
@@ -7,8 +9,7 @@
 #include "programmdialog.h"
 #include "udppacket.h"
 #include "tcppacket.h"
-#include <QtDebug>
-#include <QMessageBox>
+
 
 smartDevice::smartDevice() : myRouter(false)
 {
@@ -262,7 +263,6 @@ void smartDevice::adapterDialog()
     adapterSetting *set = new adapterSetting(this);
     adapterProperty *d = new adapterProperty(set);
     d->exec();
-    delete d;
     delete set;
 }
 
@@ -417,6 +417,14 @@ void smartDevice::installProgramm(programm p)
     myProgramms << p;
 }
 //-----------------------------------------------------------
+
+statistics smartDevice::deviceStatistics() const
+{
+    statistics s;
+    foreach ( interface *i , myInterfaces )
+        s += i->chipStatistics();
+    return s;
+}
 
 #endif
 

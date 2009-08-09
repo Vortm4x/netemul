@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 #include <QDataStream>
 #include "deviceimpl.h"
+#include "statistics.h"
 
 class cableDev;
 
@@ -19,6 +20,7 @@ public:
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
     enum { Type = UserType + 2 };
     int type() const { return Type; }
+    int deviceType() const { return impl->type(); }
     QRect devRect;
     QRect pixmapRect;
     device(int t);
@@ -50,6 +52,7 @@ public:
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
     bool isSharedBusy(cableDev *c) const { return impl->isSharedBusy(c); }
+    statistics deviceStatistics() const { return impl->deviceStatistics(); }
 
     static bool isConnectDevices(device *s, device *e);
     QList<cableDev*> cables() const { return myCableList; }

@@ -3,6 +3,7 @@
 
 
 #include <QtScript>
+#include "statistics.h"
 
 class cableDev;
 
@@ -48,6 +49,8 @@ public:
     virtual void addConnection(const QString &port , cableDev *c) = 0;
     virtual void deleteConnection(cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
+
+    virtual statistics deviceStatistics() const = 0;
 
     virtual bool isRouter() const { qFatal("No router!"); return false; }
     virtual void setRouter(bool) { qFatal("No router!"); }

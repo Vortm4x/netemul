@@ -1,6 +1,7 @@
 #ifndef ABSTRACTCHIP_H
 #define ABSTRACTCHIP_H
 
+#include "statistics.h"
 #ifndef __TESTING__
 #include "macaddress.h"
 #include "ipaddress.h"
@@ -23,7 +24,7 @@ public:
     abstractChip();
     virtual ~abstractChip() { }
 
-    QString staticsString() const;
+    QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
     void checkSender(frame &f);
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
@@ -36,17 +37,15 @@ public:
     void setMask(const QString str) { if ( !str.isEmpty() ) myMask.setIp(str); }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    statistics chipStatistics() { return myStatistics; }
 #endif
-    quint64 countRecFrame() { return myReceiveFrame; }
-    quint64 countRecPacket() { return myReceivePacket; }
-    quint64 countSendFrame() { return mySendFrame; }
-    quint64 countSendPacket() { return mySendPacket; }
+    quint64 countRecFrame() { return myStatistics.receiveFrames(); }
+    quint64 countRecPacket() { return myStatistics.receivePackets(); }
+    quint64 countSendFrame() { return myStatistics.sendFrames(); }
+    quint64 countSendPacket() { return myStatistics.sendPackets(); }
     void resetStatics();
 protected:
-    quint64 myReceiveFrame;
-    quint64 myReceivePacket;
-    quint64 mySendFrame;
-    quint64 mySendPacket;
+    statistics myStatistics;
 #ifndef __TESTING__
     ipAddress myIp;
     ipAddress myMask;

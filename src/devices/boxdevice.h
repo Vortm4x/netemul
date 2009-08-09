@@ -22,6 +22,7 @@ public:
     void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }
     bool isBusy() const { return chip->isBusy(); }
+    statistics deviceStatistics() const { return chip->chipStatistics(); }
 public slots:
     void setSocketsCount(int n) { chip->setSocketsCount(n); }
 protected:

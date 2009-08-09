@@ -14,7 +14,8 @@ src/dialogs/settingdialog.h \
 src/dialogs/switchproperty.h \
 src/dialogs/tablearp.h \
 src/dialogs/tableswitch.h \
-src/dialogs/testdialog.h
+src/dialogs/testdialog.h \
+src/dialogs/staticsdialog.h
 SOURCES += \
 src/dialogs/adapterproperty.cpp \
 src/dialogs/computerproperty.cpp \
@@ -31,4 +32,5 @@ src/dialogs/settingdialog.cpp \
 src/dialogs/switchproperty.cpp \
 src/dialogs/tablearp.cpp \
 src/dialogs/tableswitch.cpp \
-src/dialogs/testdialog.cpp
+src/dialogs/testdialog.cpp \
+src/dialogs/staticsdialog.cpp

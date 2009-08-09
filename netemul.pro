@@ -10,6 +10,7 @@ include(src/dialogs/dialogs.pri)
 include(src/other/other.pri)
 include(src/graphics/graphics.pri)
 include(src/forms/forms.pri)
+include(src/tools/tools.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -25,7 +26,8 @@ INCLUDEPATH += . \
     src/models \
     src/dialogs \
     src/other \
-    src/graphics
+    src/graphics \
+    src/tools
 QT += script
 win32 { 
     message("Static link ...")

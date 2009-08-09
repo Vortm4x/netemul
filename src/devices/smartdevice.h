@@ -31,6 +31,8 @@ public:
     virtual void arpDialog();
 
     virtual bool canManageInterface() const = 0;
+
+    virtual statistics deviceStatistics() const;
     bool isSmart() const { return true; }
     bool isReady() const;
     void checkReady() const;

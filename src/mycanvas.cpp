@@ -616,6 +616,12 @@ deviceImpl* myCanvas::addSwitch(int x,int y)
     return t->contentDevice();
 }
 
+textItem* myCanvas::addNote(int x, int y)
+{
+    QPointF p( x*50 , y*50 );
+    return createTextItem(p);
+}
+
 void myCanvas::addConnection(deviceImpl *s,deviceImpl *e, const QString &sp,const QString &se)
 {
     device *st = deviceWithImpl(s);

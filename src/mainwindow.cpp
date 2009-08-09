@@ -1,25 +1,27 @@
+#include <QtGui/QGraphicsView>
+#include <QApplication>
+#include <QtGui/QDockWidget>
+#include <QtGui/QMenu>
+#include <QtGui/QAction>
+#include <QtGui/QActionGroup>
+#include <QtGui/QStatusBar>
+#include <QtGui/QMessageBox>
+#include <QtGui/QMenuBar>
+#include <QtCore/QEvent>
+#include <QtGui/QCloseEvent>
+#include <QtCore/QSettings>
+#include <QtGui/QFileDialog>
+#include <QtGui/QToolBar>
+#include <QtGui/QComboBox>
 #include "mainwindow.h"
 #include "scenecontrol.h"
 #include "settingdialog.h"
 #include "testdialog.h"
 #include "mycanvas.h"
 #include "appsetting.h"
-#include <QGraphicsView>
-#include <QApplication>
-#include <QDockWidget>
-#include <QMenu>
-#include <QAction>
-#include <QActionGroup>
-#include <QStatusBar>
-#include <QMessageBox>
-#include <QMenuBar>
-#include <QEvent>
-#include <QCloseEvent>
-#include <QSettings>
-#include <QFileDialog>
-#include <QtDebug>
-#include <QToolBar>
-#include <QComboBox>
+#include "staticsdialog.h"
+#include "statisticsscene.h"
+
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -45,10 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
-#if USER != frost
-    view->setViewport(new QGLWidget(QGLFormat(QGL::DoubleBuffer)));
-#endif
-#else
+    //view->setViewport(new QGLWidget(QGLFormat(QGL::DoubleBuffer)));
 #endif
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
@@ -172,6 +171,7 @@ void MainWindow::createAction()
     connect( settingAct , SIGNAL(triggered()) , SLOT(setting()));
 
     staticsAct = createOneAction();
+    connect( staticsAct , SIGNAL(triggered()) , SLOT(statistics()) );
 
     moveAct = createOneAction(QIcon(":/im/images/arrow.png"),true);
     moveAct->setData( myCanvas::move*10 + myCanvas::noDev );
@@ -507,6 +507,16 @@ void MainWindow::playBack()
     }
 }
 //--------------------------------------------------
+
+/*!
+  * Выводит на экран статистику программы.
+  */
+void MainWindow::statistics()
+{
+    statisticsScene s(canva);
+    staticsDialog *d = new staticsDialog(&s);
+    d->exec();
+}
 
 void MainWindow::changeEvent(QEvent *e)
 {

@@ -17,22 +17,9 @@ abstractChip::abstractChip()
 */
 void abstractChip::resetStatics()
 {
-    myReceiveFrame = 0;
-    myReceivePacket = 0;
-    mySendFrame = 0 ;
-    mySendPacket = 0;
+    myStatistics.clear();
 }
 //------------------------------------------------
-
-QString abstractChip::staticsString() const
-{
-    QString t;
-    t += QObject::tr("Receive frames: %1\n").arg( myReceiveFrame ) +
-    QObject::tr("Receive packets: %1\n").arg( myReceivePacket ) +
-    QObject::tr("Send frames: %1\n").arg( mySendFrame ) +
-    QObject::tr("Send packets: %1\n").arg( mySendPacket ) ;
-    return t;
-}
 
 #ifndef __TESTING__
 void abstractChip::write(QDataStream &stream) const
@@ -40,10 +27,7 @@ void abstractChip::write(QDataStream &stream) const
     stream << myMac;
     stream << myIp;
     stream << myMask;
-    stream << myReceiveFrame;
-    stream << mySendFrame;
-    stream << myReceivePacket;
-    stream << mySendPacket;
+    stream << myStatistics;
 }
 
 void abstractChip::read(QDataStream &stream)
@@ -51,23 +35,20 @@ void abstractChip::read(QDataStream &stream)
     stream >> myMac;
     stream >> myIp;
     stream >> myMask;
-    stream >> myReceiveFrame;
-    stream >> mySendFrame;
-    stream >> myReceivePacket;
-    stream >> mySendPacket;
+    stream >> myStatistics;
 }
 #endif
 
 void abstractChip::checkReceive(frame &f)
 {
-    myReceiveFrame++;
-    if ( f.type() == frame::ip ) myReceivePacket++;
+    myStatistics.incReceiveFrames();;
+    if ( f.type() == frame::ip ) myStatistics.incReceivePackets();
 }
 
 void abstractChip::checkSender(frame &f)
 {
-    mySendFrame++;
-    if ( f.type() == frame::ip ) mySendPacket++;
+    myStatistics.incSendFrames();;
+    if ( f.type() == frame::ip ) myStatistics.incSendPackets();;
 }
 
 

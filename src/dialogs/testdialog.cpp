@@ -14,6 +14,17 @@ void ObjectFromScript(const QScriptValue &object, deviceImpl* &out)
     out = qobject_cast<deviceImpl*>(object.toQObject());
 }
 
+QScriptValue ObjectToScriptItem(QScriptEngine *engine, textItem* const &in)
+{
+    return engine->newQObject(in);
+}
+
+void ObjectFromScriptItem(const QScriptValue &object, textItem* &out)
+{
+    out = qobject_cast<textItem*>(object.toQObject());
+}
+
+
 testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
@@ -31,6 +42,7 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
 #endif
     engine.globalObject().setProperty("scene",p);
     qScriptRegisterMetaType(&engine, ObjectToScript, ObjectFromScript);
+    qScriptRegisterMetaType(&engine, ObjectToScriptItem, ObjectFromScriptItem);
     connect( startButton , SIGNAL(clicked()), this , SLOT(start()));
     connect( checkBox , SIGNAL(toggled(bool)) , SLOT(selectAll(bool)));
 }

@@ -1,12 +1,13 @@
+#include <QtGui/QTabBar>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QCheckBox>
+#include <QtGui/QMessageBox>
 #include "adapterproperty.h"
 #include "smartdevice.h"
 #include "ipedit.h"
 #include "interfacedialog.h"
-#include <QTabBar>
-#include <QLabel>
-#include <QLineEdit>
-#include <QCheckBox>
-#include <QMessageBox>
+
 
 /*!
   Конструктор создает основной интерфейс диалога.
@@ -74,6 +75,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     connect( tab_interfaces , SIGNAL(currentChanged(int)) , SLOT(changeTab(int)));
     btn_apply->setEnabled(false);
     updateTab(0);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 //-----------------------------------------------------------
 /*!

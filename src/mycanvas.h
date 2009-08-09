@@ -1,8 +1,8 @@
 #ifndef MYCANVAS_H
 #define MYCANVAS_H
 
-#include <QGraphicsScene>
-#include <QGraphicsLineItem>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsLineItem>
 #include "textitem.h"
 
 class QMenu;
@@ -16,6 +16,7 @@ class deviceImpl;
 class insertRect;
 class sendEllipse;
 class selectRect;
+//class statisticsScene;
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -28,6 +29,7 @@ class myCanvas : public QGraphicsScene
     Q_PROPERTY(bool open READ isOpen WRITE setOpen)
     Q_PROPERTY(int animateSpeed READ animateSpeed WRITE setAnimateSpeed)
 public:
+    friend class statisticsScene;
     // режимы : нет файла , перемещение , вставка провода , вставка устройства
     enum { noFile = -1 , move = 0 , cable = 1 , insert = 2 , send = 6 , text = 8};
     enum { width = 2000 , height = 2000 };
@@ -51,6 +53,8 @@ public:
     device* oneSelectedDevice();
     device* deviceInPoint(QPointF p);
     QPointF calibrate(QPointF c);
+    int devicesCount() const { return myDevices.size(); }
+    int cablesCount() const { return connections.size(); }
     ~myCanvas();
 signals:
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
@@ -73,6 +77,7 @@ public slots:
     deviceImpl* addSwitch(int x,int y);
     deviceImpl* addHub(int x,int y);
     deviceImpl* addRouter(int x,int y);
+    textItem* addNote(int x, int y);
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
     device* deviceWithImpl(deviceImpl *d);

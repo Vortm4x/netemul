@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QtGui/QMainWindow>
 #if QT_VERSION < 0x040500
 #include <QIcon>
 #endif
@@ -46,6 +46,7 @@ public slots:
     void uncheck();
     void helpDialog();
     void playBack();
+    void statistics();
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);
