@@ -22,10 +22,8 @@
 #include "staticsdialog.h"
 #include "statisticsscene.h"
 
-
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
-#else
 #endif
 
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
@@ -47,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
-    view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+   // view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
 #endif
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар

@@ -29,7 +29,7 @@ void installDialog::updateList()
 */
 void installDialog::install()
 {
-    int p;
+    int p = 0;
     switch (list->currentRow() ) {
         case 0:
             p = programm::RIP;
