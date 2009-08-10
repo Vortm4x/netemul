@@ -21,6 +21,7 @@ public:
     tableArp();
     void setDevice(smartDevice *dev);
     void updateTable();
+    void addItem(int r, int c, QString s);
 private:
     smartDevice *device;
     QTableWidget *table;

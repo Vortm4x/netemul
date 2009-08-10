@@ -19,7 +19,7 @@ void hubChip::receiveEvent(frame &fr,devicePort *sender)
         if ( i != sender && i->isConnect() ) {
             checkSender(fr);
             i->pushToSend( fr );
-        }
+        }   
 }
 
 void hubChip::addSocket(int n)

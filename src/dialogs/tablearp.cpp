@@ -84,16 +84,11 @@ void tableArp::updateTable()
         for ( int j = 0; j < p->size(); j++ ) {
             r = p->recordAt(j);
             table->insertRow(table->rowCount());
-            QTableWidgetItem *ti_mac = new QTableWidgetItem(r->mac.toString());
-            QTableWidgetItem *ti_ip = new QTableWidgetItem(r->ip.toString());
-            QTableWidgetItem *ti_mode = new QTableWidgetItem(r->modeString());
-            QTableWidgetItem *ti_name = new QTableWidgetItem(s.at(i));
-            QTableWidgetItem *ti_time = new QTableWidgetItem( QString::number(r->time) );
-            table->setItem( table->rowCount()-1, 0, ti_mac);
-            table->setItem( table->rowCount()-1, 1, ti_ip);
-            table->setItem( table->rowCount()-1, 2, ti_mode);
-            table->setItem( table->rowCount()-1, 3, ti_name);
-            table->setItem( table->rowCount()-1, 4, ti_time);
+            addItem( table->rowCount()-1, 0, r->mac.toString());
+            addItem( table->rowCount()-1, 1, r->ip.toString());
+            addItem( table->rowCount()-1, 2, r->modeString());
+            addItem( table->rowCount()-1, 3, s.at(i));
+            addItem( table->rowCount()-1, 4, QString::number(r->time));
         }
         i++;
     }
@@ -130,4 +125,10 @@ void tableArp::checkSelection()
 {
     if ( table->currentRow() == -1 ) btn_del->setEnabled(false);
     else btn_del->setEnabled(true);
+}
+
+void tableArp::addItem(int r, int c, QString s)
+{
+    QTableWidgetItem *item = new QTableWidgetItem( s );
+    table->setItem( r, c, item);
 }

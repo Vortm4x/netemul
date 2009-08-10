@@ -17,12 +17,12 @@ public:
     void clear();
     quint64 receiveFrames() { return myReceiveFrames; }
     quint64 sendFrames() { return mySendFrames; }
-    quint64 sendPackets() { return myReceivePackets; }
-    quint64 receivePackets() { return mySendPackets; }
+    quint64 sendPackets() { return mySendPackets; }
+    quint64 receivePackets() { return myReceivePackets; }
     void incReceiveFrames() { myReceiveFrames++; }
     void incSendFrames() { mySendFrames++; }
-    void incSendPackets() { myReceivePackets++; }
-    void incReceivePackets() { mySendPackets++; }
+    void incSendPackets() { mySendPackets++; }
+    void incReceivePackets() { myReceivePackets++; }
 private:
     quint64 myReceiveFrames;
     quint64 mySendFrames;

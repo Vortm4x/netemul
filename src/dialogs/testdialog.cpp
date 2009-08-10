@@ -1,6 +1,6 @@
+#include <QtCore/QtDebug>
+#include <QtCore/QFile>
 #include "testdialog.h"
-#include <QtDebug>
-#include <QFile>
 #include "mycanvas.h"
 #include "deviceimpl.h"
 
@@ -45,6 +45,7 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
     qScriptRegisterMetaType(&engine, ObjectToScriptItem, ObjectFromScriptItem);
     connect( startButton , SIGNAL(clicked()), this , SLOT(start()));
     connect( checkBox , SIGNAL(toggled(bool)) , SLOT(selectAll(bool)));
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 testDialog::~testDialog()

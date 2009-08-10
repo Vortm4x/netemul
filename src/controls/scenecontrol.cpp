@@ -61,3 +61,11 @@ bool sceneControl::isSelect() const
     if ( scene->oneSelectedDevice() ) return true;
     return false;
 }
+
+QIcon sceneControl::tableIcon() const
+{
+    device *t = scene->oneSelectedDevice();
+    if ( !t->hasTable() ) return QIcon();
+    if ( t->isSmart() ) return QIcon(":/im/images/table_route.png");
+    else return QIcon(":/im/images/table_arp.png");
+}

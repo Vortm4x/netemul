@@ -1,5 +1,5 @@
 #include <QtGui/QGraphicsView>
-#include <QApplication>
+#include <QtGui/QApplication>
 #include <QtGui/QDockWidget>
 #include <QtGui/QMenu>
 #include <QtGui/QAction>
@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
-    //view->setViewport(new QGLWidget(QGLFormat(QGL::DoubleBuffer)));
+    view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
 #endif
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
@@ -367,6 +367,7 @@ void MainWindow::setEnabledFileItems(bool cur)
 void MainWindow::selectionChange()
 {
     if ( sceneControler->isSelect() ) {
+        tableAct->setIcon( sceneControler->tableIcon() );
         tableAct->setText( sceneControler->tableName() );
         tableAct->setToolTip( sceneControler->tableName() );
     }
@@ -480,7 +481,6 @@ void MainWindow::test()
 {
     testDialog *t = new testDialog(canva);
     t->exec();
-    delete t;
 }
 
 //Help=)

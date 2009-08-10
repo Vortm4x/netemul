@@ -1,7 +1,8 @@
 #ifndef SCENECONTROL_H
 #define SCENECONTROL_H
 
-#include <QObject>
+#include <QtCore/QObject>
+#include <QtGui/QIcon>
 
 class myCanvas;
 
@@ -12,6 +13,7 @@ public:
     sceneControl(QObject *parent,myCanvas *s);
     bool isSelect() const;
     QString tableName() const;
+    QIcon tableIcon() const;
 private:
     myCanvas *scene;
 public slots:

@@ -41,14 +41,15 @@ void abstractChip::read(QDataStream &stream)
 
 void abstractChip::checkReceive(frame &f)
 {
-    myStatistics.incReceiveFrames();;
+    myStatistics.incReceiveFrames();
     if ( f.type() == frame::ip ) myStatistics.incReceivePackets();
 }
 
 void abstractChip::checkSender(frame &f)
 {
-    myStatistics.incSendFrames();;
-    if ( f.type() == frame::ip ) myStatistics.incSendPackets();;
+    myStatistics.incSendFrames();
+    if ( f.type() == frame::ip ) myStatistics.incSendPackets();
 }
+
 
 

@@ -2,8 +2,8 @@
 #define TESTDIALOG_H
 
 #include <QtGui/QDialog>
+#include <Qt/QtScript>
 #include "ui_testdialog.h"
-#include <QtScript>
 //#define __NO_TOOLS__ 0
 
 #ifdef __NO_TOOLS__

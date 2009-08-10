@@ -1,10 +1,10 @@
+#include <QtCore/QList>
+#include <QtGui/QMessageBox>
 #include "interface.h"
 #include "frame.h"
 #include "deviceport.h"
 #include "appsetting.h"
 #include "arpmodel.h"
-#include <QList>
-#include <QMessageBox>
 //#include <QtDebug>
 
 interface::interface(const QString &name) : myName(name)

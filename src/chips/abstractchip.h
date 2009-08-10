@@ -2,6 +2,7 @@
 #define ABSTRACTCHIP_H
 
 #include "statistics.h"
+
 #ifndef __TESTING__
 #include "macaddress.h"
 #include "ipaddress.h"
@@ -23,11 +24,10 @@ class abstractChip
 public:
     abstractChip();
     virtual ~abstractChip() { }
-
+    virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
     void checkSender(frame &f);
-    virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
 #ifndef __TESTING__
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
@@ -38,11 +38,11 @@ public:
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
     statistics chipStatistics() { return myStatistics; }
-#endif
     quint64 countRecFrame() { return myStatistics.receiveFrames(); }
     quint64 countRecPacket() { return myStatistics.receivePackets(); }
     quint64 countSendFrame() { return myStatistics.sendFrames(); }
     quint64 countSendPacket() { return myStatistics.sendPackets(); }
+#endif
     void resetStatics();
 protected:
     statistics myStatistics;
