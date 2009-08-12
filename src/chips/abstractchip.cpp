@@ -1,5 +1,4 @@
 #include "abstractchip.h"
-#include "frame.h"
 
 /*!
   Задает устройству случайный Mac-адрес, пустой ip и маску подсети.
@@ -41,12 +40,14 @@ void abstractChip::read(QDataStream &stream)
 
 void abstractChip::checkReceive(frame &f)
 {
+    emit receiveData(f.toData());
     myStatistics.incReceiveFrames();
     if ( f.type() == frame::ip ) myStatistics.incReceivePackets();
 }
 
-void abstractChip::checkSender(frame &f)
+void abstractChip::checkSend(frame &f)
 {
+    emit sendData(f.toData());
     myStatistics.incSendFrames();
     if ( f.type() == frame::ip ) myStatistics.incSendPackets();
 }

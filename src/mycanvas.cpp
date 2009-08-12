@@ -7,8 +7,8 @@
 #include "insertrect.h"
 #include "sendellipse.h"
 #include "selectrect.h"
-#include <QGraphicsSceneMouseEvent>
-#include <QKeyEvent>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QKeyEvent>
 #include <QMenu>
 #include <QAction>
 #include <QPainter>

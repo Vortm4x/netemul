@@ -6,6 +6,7 @@
 #ifndef __TESTING__
 #include "macaddress.h"
 #include "ipaddress.h"
+#include "frame.h"
 #else
 #include <QDataStream>
 #endif
@@ -19,15 +20,16 @@ class ipPacket;
   Являеться предком для interface и boxDevice этот класс уже дает возможность вести статистику
   входящих кадров и пакетов, поддерживает обработку и передачу кадров на уровень выше.
 */
-class abstractChip
+class abstractChip : public QObject
 {
+    Q_OBJECT
 public:
     abstractChip();
     virtual ~abstractChip() { }
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
-    void checkSender(frame &f);
+    void checkSend(frame &f);
 #ifndef __TESTING__
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
@@ -44,6 +46,9 @@ public:
     quint64 countSendPacket() { return myStatistics.sendPackets(); }
 #endif
     void resetStatics();
+signals:
+    void sendData(frame);
+    void receiveData(frame);
 protected:
     statistics myStatistics;
 #ifndef __TESTING__

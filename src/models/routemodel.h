@@ -47,6 +47,8 @@ public:
     routeRecord* recordAt(int i) const { return table.at(i); }
     void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
     bool isConnectedMode(QModelIndex curr);
+    void write(QDataStream &stream) const;
+    void read(QDataStream &stream);
 signals:
     void recordAdding(routeRecord*,int);
     void recordDeleting(routeRecord*,int);

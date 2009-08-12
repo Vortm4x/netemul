@@ -197,3 +197,25 @@ void routeModel::deleteOldRecord(int time)
     foreach ( routeRecord *i , table )
         if ( i->time >= time && i->mode != connectMode && i->mode != staticMode ) deleteFromTable(i);
 }
+
+void routeModel::write(QDataStream &stream) const
+{
+    QList<routeRecord*> temp;
+    foreach (routeRecord *i , table )
+        if ( i->mode == routeModel::staticMode ) temp << i;
+    stream << temp.size();
+    foreach ( routeRecord *i , temp )
+        stream << *i;
+}
+
+void routeModel::read(QDataStream &stream)
+{
+    table.clear();
+    int n;
+    stream >> n;
+    for ( int i = 0 ; i < n ; i++ ) {
+        routeRecord *t = new routeRecord;
+        stream >> *t;
+        addToTable(t);
+    }
+}

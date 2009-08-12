@@ -7,17 +7,12 @@ hubChip::hubChip(int n /* = 4 */) : boxChip(n)
         i->setShared(true);
 }
 
-hubChip::~hubChip()
-{
-
-}
-
 void hubChip::receiveEvent(frame &fr,devicePort *sender)
 {
     checkReceive(fr);
     foreach ( devicePort *i , mySockets )
         if ( i != sender && i->isConnect() ) {
-            checkSender(fr);
+            checkSend(fr);
             i->pushToSend( fr );
         }   
 }

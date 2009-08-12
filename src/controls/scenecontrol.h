@@ -5,6 +5,7 @@
 #include <QtGui/QIcon>
 
 class myCanvas;
+class logDialog;
 
 class sceneControl : public QObject
 {
@@ -23,6 +24,7 @@ public slots:
     void adapterDialog() const;
     void programmsDialog() const;
     void arpDialog() const;
+    void showLogDialog(logDialog *log) const;
 signals:
     void selectOneDevice(bool);
     void selectTableDevice(bool);

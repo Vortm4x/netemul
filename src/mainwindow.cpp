@@ -21,6 +21,7 @@
 #include "appsetting.h"
 #include "staticsdialog.h"
 #include "statisticsscene.h"
+#include "logdialog.h"
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -32,7 +33,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.8.1");
+    QCoreApplication::setApplicationVersion("0.8.4");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -114,6 +115,7 @@ void MainWindow::retranslate()
     UPDATEACTION( testAct , tr("Execute scripts") , tr("Run existing scripts")  )
     UPDATEACTION( aboutQtAct , tr("About Qt") , tr("About Qt") )
     UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
+    UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     fileMenu->setTitle(tr("File"));
     viewMenu->setTitle(tr("View"));
     itemMenu->setTitle(tr("Object"));
@@ -228,6 +230,10 @@ void MainWindow::createAction()
 
     arpAct = createOneAction( QIcon(":/im/images/table_arp.png"));
     arpAct->setShortcut(tr("Ctrl+Shift+A"));
+
+    logAct = createOneAction( QIcon(":/im/images/log.png"));
+    logAct->setVisible(false);
+    arpAct->setShortcut(tr("Ctrl+L"));
 }
 
 //Создаем меню
@@ -255,6 +261,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(adapterAct);
     itemMenu->addAction(progAct);
     itemMenu->addAction(arpAct);
+    itemMenu->addAction(logAct);
     itemMenu->setEnabled(false);
 
     settingMenu = menuBar()->addMenu( QString() );
@@ -296,6 +303,7 @@ void MainWindow::createTools()
     controlBar->addAction(progAct);
     controlBar->addAction(tableAct);
     controlBar->addAction(arpAct);
+    controlBar->addAction(logAct);
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }
@@ -319,6 +327,7 @@ void MainWindow::createScene()
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
+    //connect( sceneControler , SIGNAL(selectOneDevice(bool)) , logAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );
@@ -328,8 +337,20 @@ void MainWindow::createScene()
     connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );
     connect( progAct , SIGNAL(triggered()) , sceneControler , SLOT(programmsDialog()) );
     connect( arpAct , SIGNAL(triggered()) , sceneControler , SLOT(arpDialog()) );
+    connect( logAct , SIGNAL(triggered()) , SLOT(showLogDialog()) );
 }
 //------------------------------------------------------------------
+
+void MainWindow::showLogDialog()
+{
+    QDockWidget *dock = new QDockWidget( tr("Log") );
+    dock->setAttribute(Qt::WA_DeleteOnClose);
+    logDialog *d = new logDialog;
+    dock->setWidget(d);
+    sceneControler->showLogDialog(d);
+    addDockWidget(Qt::BottomDockWidgetArea ,dock);
+}
+
 /*!
   Подготавливает окно для работы.
 */

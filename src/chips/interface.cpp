@@ -1,7 +1,6 @@
 #include <QtCore/QList>
 #include <QtGui/QMessageBox>
 #include "interface.h"
-#include "frame.h"
 #include "deviceport.h"
 #include "appsetting.h"
 #include "arpmodel.h"
@@ -21,7 +20,7 @@ interface::~interface()
 
 void interface::pushToSocket(frame &f)
 {
-    checkSender(f);
+    checkSend(f);
     mySocket->pushToSend(f);
 }
 

@@ -23,7 +23,7 @@ appSetting::appSetting()
 void appSetting::readSetting()
 {
     for ( int i = 0 ; i < 2 ; i++ ) mas[i] = new QTranslator;
-    if ( !mas[1]->load("netemul_ru" , QString("translation") ) ) ;//qFatal("123");
+    mas[1]->load("netemul_ru" , QString("translation") );
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;

@@ -3,11 +3,11 @@
 
 #include "boxchip.h"
 
-class frame;
 class switchModel;
 
 class switchChip : public boxChip
 {
+    Q_OBJECT
 public:
     switchChip(int c = 4);
     ~switchChip();

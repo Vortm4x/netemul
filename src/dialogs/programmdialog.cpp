@@ -4,8 +4,7 @@
 #include "installdialog.h"
 #include <QCheckBox>
 
-programmDialog::programmDialog(QWidget *parent) :
-    QDialog(parent)
+programmDialog::programmDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
 }

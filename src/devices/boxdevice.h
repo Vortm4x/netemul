@@ -5,7 +5,6 @@
 #include "boxchip.h"
 #include "abstractchip.h"
 
-
 class boxDevice : public deviceImpl
 {
 public:
@@ -21,6 +20,7 @@ public:
     bool isManual() { return myManual; }
     void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }
+    virtual void showLogDialog(logDialog *log) const;
     bool isBusy() const { return chip->isBusy(); }
     statistics deviceStatistics() const { return chip->chipStatistics(); }
 public slots:

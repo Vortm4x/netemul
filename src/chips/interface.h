@@ -8,13 +8,13 @@
 #include "ippacket.h"
 #include "arppacket.h"
 
-class frame;
 struct arpRecord;
 class cableDev;
 class arpModel;
 
 class interface : public abstractChip
 {
+    Q_OBJECT
 public:
     interface(const QString &name);
     interface() { }

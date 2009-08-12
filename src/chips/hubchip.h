@@ -3,16 +3,16 @@
 
 #include "boxchip.h"
 #include <QVector>
-#include "frame.h"
+
 
 class hubChip : public boxChip
 {
+    Q_OBJECT
 public:
     void receiveEvent(frame &fr,devicePort *sender);
     void addSocket(int n);
     bool isSharedBusy(cableDev *c) const;
     hubChip(int n = 4);
-    ~hubChip();
 };
 
 #endif // HUBCHIP_H

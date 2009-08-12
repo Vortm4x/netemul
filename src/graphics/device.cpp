@@ -95,7 +95,8 @@ void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     scene()->clearSelection(); // Снять все выделения на сцене
     setSelected(true); // Выделить текущуе устройство
-    popUpMenu->exec(event->screenPos()); // Запустить контекстное меню в текущей позиции
+    if ( !popUpMenu->exec(event->screenPos()) )
+        scene()->clearSelection(); // Запустить контекстное меню в текущей позиции
 }
 
 void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

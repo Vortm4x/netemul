@@ -9,6 +9,7 @@ class devicePort;
 
 class boxChip : public abstractChip
 {
+    Q_OBJECT
 public:
     boxChip(int n = 4);
     virtual ~boxChip();

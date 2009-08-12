@@ -7,6 +7,7 @@
 #include "statistics.h"
 
 class cableDev;
+class logDialog;
 
 /*!
   Устройство, это основная единица с которой мы имеем дело в программе,
@@ -42,6 +43,7 @@ public:
     void adapterDialog() const { impl->adapterDialog(); }
     void programmsDialog() const { impl->programmsDialog(); }
     void arpDialog() const { impl->arpDialog(); }
+    void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isConnectSocket(const QString &str) { return impl->isConnectSocket(str); }
     QStringList sockets() const { return impl->sockets(); }

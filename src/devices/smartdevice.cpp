@@ -9,6 +9,7 @@
 #include "programmdialog.h"
 #include "udppacket.h"
 #include "tcppacket.h"
+#include "logdialog.h"
 
 
 smartDevice::smartDevice() : myRouter(false)
@@ -114,6 +115,7 @@ void smartDevice::write(QDataStream &stream) const
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         myInterfaces[i]->write(stream);
     stream << myRouter; // Включена или нет маршрутизация.
+    myRouteTable->write(stream);
     stream << myProgramms.count(); // Количество программ.
     foreach ( programm i , myProgramms )  // И сами программы.
         stream << i;
@@ -131,6 +133,7 @@ void smartDevice::read(QDataStream &stream)
         p->read(stream);
     }
     stream >> myRouter;
+    myRouteTable->read(stream);
     stream >> n;
     for ( i = 0 ; i < n; i++ ) {
         programm p(stream);
@@ -222,10 +225,9 @@ programm smartDevice::programmAt(const QString n) const
 */
 ipAddress smartDevice::findInterfaceIp(ipAddress a)
 {
-    for ( int i = 0 ; i < myInterfaces.size() ; ++i ) {
-        if ( !myInterfaces[i]->isConnect() ) continue;
-        if ( (myInterfaces[i]->ip() & myInterfaces[i]->mask() ) == ( a & myInterfaces[i]->mask() ) )
-            return myInterfaces[i]->ip();
+    foreach ( interface *i , myInterfaces ) {
+        if ( !i->isConnect() ) continue;
+        if ( (i->mask() & a ) == ( i->ip() & i->mask() ) ) return i->ip();
     }
     return ipAddress();
 }
@@ -256,6 +258,15 @@ void smartDevice::tableDialog()
     routeEditor *d = new routeEditor(this);
     d->exec();
     delete d;
+}
+
+void smartDevice::showLogDialog(logDialog *log) const
+{
+    connect( this , SIGNAL(routerChanged(bool)) , log , SLOT(routerChange(bool)) );
+    foreach ( interface *i , myInterfaces ) {
+        connect( i , SIGNAL(sendData(frame)) , log , SLOT(sendData(frame) ) );
+        connect( i , SIGNAL(receiveData(frame)) , log , SLOT(receiveData(frame) ) );
+    }
 }
 
 void smartDevice::adapterDialog()
@@ -424,6 +435,13 @@ statistics smartDevice::deviceStatistics() const
     foreach ( interface *i , myInterfaces )
         s += i->chipStatistics();
     return s;
+}
+
+void smartDevice::setRouter(bool n)
+{
+    if ( n == myRouter ) return;
+    myRouter = n;
+    emit routerChanged(n);
 }
 
 #endif

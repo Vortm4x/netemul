@@ -1,7 +1,6 @@
 #include "switchchip.h"
 #include "deviceport.h"
 #include "switchmodel.h"
-#include "frame.h"
 
 switchChip::switchChip(int c /* = 4 */ ) : boxChip(c)
 {
@@ -21,13 +20,13 @@ void switchChip::receiveEvent(frame &fr,devicePort *sender)
 
     devicePort *t = switchTable->portWithMac( fr.receiver() );
     if ( t && t->isConnect() ) {
-        checkSender(fr);
+        checkSend(fr);
         t->pushToSend(fr);
         return;
     }
     foreach ( devicePort *i , mySockets ) {
         if ( i != sender && i->isConnect() ) {
-            checkSender(fr);
+            checkSend(fr);
             i->pushToSend(fr);
         }
     }

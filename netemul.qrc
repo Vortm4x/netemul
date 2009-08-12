@@ -26,5 +26,7 @@
         <file>images/computer.png</file>
         <file>images/not.png</file>
         <file>images/hub.png</file>
+        <file>images/log.png</file>
+        <file>images/clean.png</file>
     </qresource>
 </RCC>
