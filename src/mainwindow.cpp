@@ -232,7 +232,6 @@ void MainWindow::createAction()
     arpAct->setShortcut(tr("Ctrl+Shift+A"));
 
     logAct = createOneAction( QIcon(":/im/images/log.png"));
-    logAct->setVisible(false);
     arpAct->setShortcut(tr("Ctrl+L"));
 }
 
@@ -327,7 +326,7 @@ void MainWindow::createScene()
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
-    //connect( sceneControler , SIGNAL(selectOneDevice(bool)) , logAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectOneDevice(bool)) , logAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectTableDevice(bool)) , tableAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );

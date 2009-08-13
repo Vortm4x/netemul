@@ -18,9 +18,13 @@ public  slots:
     void routerChange(bool isRouter);    
 protected:
     void changeEvent(QEvent *e);
+    void timerEvent(QTimerEvent*);
+private:
+    QString temp;
+    int count;
     void printRecord( int c, frame fr );
-    QString parseIp(int c, frame fr);
-    QString parseArp(int c, frame fr);
+    QString parseIp(frame fr);
+    QString parseArp(frame fr);
 };
 
 #endif // LOGDIALOG_H

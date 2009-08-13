@@ -7,6 +7,9 @@
 logDialog::logDialog()
 {
     setupUi(this);
+    startTimer(100);
+    count = 0;
+    temp = "";
 }
 
 logDialog::~logDialog()
@@ -16,106 +19,87 @@ logDialog::~logDialog()
 
 void logDialog::receiveData(frame fr)
 {
-    Q_UNUSED(fr);
+    printRecord(receive,fr);
 }
 
 void logDialog::sendData(frame fr)
 {
-    QString receiver;
-    QString sender;
-    QString s;
-    if ( cb_type->currentIndex() == 0 ) {
-        if ( fr.type() == frame::ip ) {
-            ipPacket p(fr.unpack());
-            s.append("send: ip-packet to ");
-            receiver = p.receiver().toString();
-            sender = p.sender().toString();
-        } else {
-            arpPacket p(fr.unpack());
-            if ( p.type() == arpPacket::request) s.append("send: arp-request to ");
-            else s.append("send: arp-response to ");
-            receiver = p.receiverIp().toString();
-            sender = p.senderIp().toString();
-        }        
-    }
-    if ( cb_type->currentIndex() == 1 )
-        if ( fr.type() == frame::arp ) {
-            arpPacket p(fr.unpack());
-            if ( p.type() == arpPacket::request) s.append("receive: arp-request to ");
-            else s.append("receive: arp-response to ");
-            receiver = p.receiverIp().toString();
-            sender = p.senderIp().toString();
-        }
-    if ( cb_type->currentIndex() == 2 )
-        if ( fr.type() == frame::ip ) {
-            ipPacket p(fr.unpack());
-            s.append("receive: ip-packet to ");
-            receiver = p.receiver().toString();
-            sender = p.sender().toString();
-        }
-    s.append(receiver + " (" + fr.receiver().toString() + ") by  " + sender + " (" + fr.sender().toString() + ") ");
-    te_log->append(s);
+    printRecord(send,fr);
 }
 
 void logDialog::routerChange(bool isRouter)
 {
-    if ( isRouter ) te_log->append("Routing has been <b>enabled</b>");
-    else te_log->append("Routing has been <b>disabled</b>");
+    if ( isRouter ) te_log->append(tr("Routing has been <b>enabled</b>"));
+    else te_log->append(tr("Routing has been <b>disabled</b>"));
 }
 
 void logDialog::printRecord(int c, frame fr)
 {
-//    QString receiver;
-//    QString sender;
-//    QString s;
-//    if ( cb_type->currentIndex() == 0 ) {
-//        if ( fr.type() == frame::ip ) {
-//            te_log->append(parseIp(c,fr));
-//        } else {
-//
-//            receiver = p.receiverIp().toString();
-//            sender = p.senderIp().toString();
-//        }
-//    }
-//    if ( cb_type->currentIndex() == 1 )
-//        if ( fr.type() == frame::arp ) {
-//            arpPacket p(fr.unpack());
-//            if ( p.type() == arpPacket::request) s.append("receive: arp-request to ");
-//            else s.append("receive: arp-response to ");
-//            receiver = p.receiverIp().toString();
-//            sender = p.senderIp().toString();
-//        }
-//    if ( cb_type->currentIndex() == 2 )
-//        if ( fr.type() == frame::ip ) {
-//            ipPacket p(fr.unpack());
-//            s.append("receive: ip-packet to ");
-//            receiver = p.receiver().toString();
-//            sender = p.sender().toString();
-//        }
-//    s.append(receiver + " (" + fr.receiver().toString() + ") by  " + sender + " (" + fr.sender().toString() + ") ");
-//}
-//
-//QString logDialog::parseIp(int c, frame fr)
-//{
-//    QString s;
-//    ipPacket p(fr.unpack());
-//    if ( c == send ) s.append("send: ip-packet to ");
-//    else s.append("receive: ip-packet by ");
-//    s.append(p.receiver().toString() + " (" + fr.receiver().toString() + ") ");
-//    if ( c == send) s.append("by ");
-//    else s.append("to ");
-//    s.append(p.sender().toString() + " (" + fr.sender().toString() + ") ");
-//    return s;
+    QString s;
+    if ( cb_type->currentIndex() == 0 ) {
+        if ( c == send ) s.append("send "); else s.append("receive ");
+        if ( fr.type() == frame::ip ) s.append(parseIp(fr)); else s.append(parseArp(fr));
+    }
+    if ( cb_type->currentIndex() == 1 ) {
+        if ( fr.type() != frame::arp ) return;
+        if ( c == send ) s.append("send "); else s.append("receive ");
+        s.append(parseArp(fr));
+    }
+    if ( cb_type->currentIndex() == 2 ) {
+        if ( fr.type() != frame::ip ) return;
+        if ( c == send ) s.append("send "); else s.append("receive ");
+        s.append(parseIp(fr));
+    }
+    if ( temp.isEmpty() ) temp = s;
+    else {
+        if ( temp == s ) count++;
+        else {
+            if ( count ) temp += tr("Count: %1").arg(count+1);
+            te_log->append(temp);
+            temp = "";
+            count = 0;
+            te_log->append(s);
+        }
+    }
 }
 
-QString logDialog::parseArp(int c,frame fr)
+QString logDialog::parseIp(frame fr)
+{
+    QString s;
+    ipPacket p(fr.unpack());
+    s.append("ip-packet: <b>");
+    s.append(p.sender().toString() + "</b> ");
+    if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
+    s.append(">>  <b>" + p.receiver().toString() + "</b> ");
+    if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+    return s;
+}
+
+QString logDialog::parseArp(frame fr)
 {
     QString s;
     arpPacket p(fr.unpack());
-    if (c == send) s.append("send: ");
-    else s.append("receive: ");
-    if ( p.type() == arpPacket::request) s.append("arp-request to ");
-    else s.append("arp-response to ");
+    if ( p.type() == arpPacket::request) {
+        s.append("arp-request: <b>" + p.senderIp().toString() + "</b> ");
+        if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
+        s.append("search <b>" + p.receiverIp().toString() + "</b> " );
+        if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+    }
+    else { s.append("arp-response: <b>" + p.receiverIp().toString() + "</b> ");
+        if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
+        s.append("found <b>" + p.senderIp().toString() + "</b> ");
+        if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+    }
+    return s;
+}
+
+void logDialog::timerEvent(QTimerEvent*)
+{
+    if ( temp.isEmpty() ) return;
+    if ( count ) temp += tr("Count: %1").arg(count+1);
+    te_log->append(temp);
+    temp = "";
+    count = 0;
 }
 
 void logDialog::changeEvent(QEvent *e)
