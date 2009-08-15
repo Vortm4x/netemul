@@ -12,6 +12,22 @@ udpPacket::udpPacket(const QByteArray &b)
     s >> d->receiver >> d->sender >> d->data;
 }
 
+QString udpPacket::typeToString() const
+{
+    switch ( d->receiver ) {
+        case User: return QObject::tr("UDP Message user");
+        case RIP: return QObject::tr("RIP");
+        default: return QObject::tr("None");
+    }
+}
+
+QString udpPacket::toString() const
+{
+    QString temp;
+    temp.append("UDP, "+QObject::tr("sender port: %1, receiver port: %2").arg(d->sender).arg(d->receiver) );
+    return temp;
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 

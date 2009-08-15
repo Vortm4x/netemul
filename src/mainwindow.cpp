@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
 #ifndef QT_NO_OPENGL
-   // view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
+    //view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
 #endif
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
@@ -342,9 +342,10 @@ void MainWindow::createScene()
 
 void MainWindow::showLogDialog()
 {
-    QDockWidget *dock = new QDockWidget( tr("Log") );
+    QString str = sceneControler->note();
+    QDockWidget *dock = new QDockWidget( str.remove(QRegExp("<[^>]+>")) );
     dock->setAttribute(Qt::WA_DeleteOnClose);
-    logDialog *d = new logDialog;
+    logDialog *d = new logDialog( sceneControler->sockets() );
     dock->setWidget(d);
     sceneControler->showLogDialog(d);
     addDockWidget(Qt::BottomDockWidgetArea ,dock);

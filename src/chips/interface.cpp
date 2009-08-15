@@ -21,12 +21,14 @@ interface::~interface()
 void interface::pushToSocket(frame &f)
 {
     checkSend(f);
+    emit sendData(f,myName);
     mySocket->pushToSend(f);
 }
 
 void interface::receiveEvent(frame &fr,devicePort*)
 {
     checkReceive(fr);
+    emit receiveData(fr,myName);
     if ( fr.type() == frame::ip ) {
         ipPacket p(fr.unpack());
         receiveIp(p);

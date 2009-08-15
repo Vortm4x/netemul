@@ -29,7 +29,7 @@ public:
 #ifndef __TESTING__
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-#endif
+#endif  
 protected:
     QVector<devicePort*> mySockets;
 };

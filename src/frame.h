@@ -44,6 +44,7 @@ public:
     int type() const { return d->type; }
     void setType(int t) { d->type = t; }
     QByteArray toData() const;
+    QString toString() const;
     void pack(const QByteArray &b) { d->data = b; }
     QByteArray unpack() const { return d->data; }
 private:

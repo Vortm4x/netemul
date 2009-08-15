@@ -68,10 +68,22 @@ bool sceneControl::isSelect() const
     return false;
 }
 
+QString sceneControl::note() const
+{
+    device *t = scene->oneSelectedDevice();
+    return t->toolTip();
+}
+
 QIcon sceneControl::tableIcon() const
 {
     device *t = scene->oneSelectedDevice();
     if ( !t->hasTable() ) return QIcon();
     if ( t->isSmart() ) return QIcon(":/im/images/table_route.png");
     else return QIcon(":/im/images/table_arp.png");
+}
+
+QStringList sceneControl::sockets() const
+{
+    device *t = scene->oneSelectedDevice();
+    return t->sockets();
 }

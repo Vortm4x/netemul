@@ -4,27 +4,33 @@
 #include "ui_logdialog.h"
 #include "frame.h"
 
+static const QColor cl_frame = "#fbec5d";
+static const QColor cl_ipInternal = "#efaf8c";
+static const QColor cl_udpInternal = "#ccccff";
+static const QColor cl_rip = "#f78d9d";
+static const QColor cl_user = "#badbad";
+static const QColor cl_undef = "#f984e5";
+static const QColor cl_arp = "#7fc7ff";
+static const QColor cl_arpInternal = "#c0c0c0";
+
 class logDialog : public QWidget , private Ui::logDialog
 {
     Q_OBJECT
     Q_DISABLE_COPY(logDialog)
 public:
-    logDialog();    
+    logDialog(QStringList list);
     ~logDialog();
     enum { send = 0, receive = 1 };
+    enum { all = 0 , arp = 1 , ip = 2 };
 public  slots:
-    void receiveData(frame fr);
-    void sendData(frame fr);
-    void routerChange(bool isRouter);    
+    void receiveData(frame fr,QString port);
+    void sendData(frame fr,QString port);
 protected:
     void changeEvent(QEvent *e);
-    void timerEvent(QTimerEvent*);
 private:
-    QString temp;
-    int count;
     void printRecord( int c, frame fr );
-    QString parseIp(frame fr);
-    QString parseArp(frame fr);
+    QString parseIp(frame fr,QTreeWidgetItem *parent);
+    QString parseArp(frame fr,QTreeWidgetItem *parent);
 };
 
 #endif // LOGDIALOG_H

@@ -30,6 +30,13 @@ QByteArray ipPacket::toData() const
     return d->toData();
 }
 
+QString ipPacket::toString() const
+{
+    QString temp;
+    temp.append(QObject::tr("IP packet, sender: %1, receiver: %2").arg(d->sender.toString()).arg(d->receiver.toString()));
+    return temp;
+}
+
 //----------------------------------------------------
 //----------------------------------------------------
 

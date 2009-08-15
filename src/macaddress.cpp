@@ -3,6 +3,8 @@
 
 macAddress::macAddress()
 {
+    for ( int i = 0 ; i < 6 ; i++ )
+        myMac[i] = 0;
 }
 
 macAddress::macAddress(QString str)

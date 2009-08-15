@@ -39,6 +39,7 @@ public:
     ~ipPacket() { }
     ipPacket(const ipPacket &other) : d(other.d) { }
     QByteArray toData() const;
+    QString toString() const;
     ipAddress sender() const { return d->sender; }
     ipAddress receiver() const { return d->receiver; }
     void setSender(ipAddress a) { d->sender = a; }

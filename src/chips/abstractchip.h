@@ -47,8 +47,8 @@ public:
 #endif
     void resetStatics();
 signals:
-    void sendData(frame);
-    void receiveData(frame);
+    void sendData(frame,QString);
+    void receiveData(frame,QString);
 protected:
     statistics myStatistics;
 #ifndef __TESTING__

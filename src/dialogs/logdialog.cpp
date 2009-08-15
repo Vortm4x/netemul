@@ -1,15 +1,16 @@
+#include <QtCore/QTime>
 #include "logdialog.h"
 #include "frame.h"
 #include "ippacket.h"
 #include "arppacket.h"
-#include <QtDebug>
+#include "appsetting.h"
+#include "udppacket.h"
 
-logDialog::logDialog()
+logDialog::logDialog(QStringList list)
 {
     setupUi(this);
-    startTimer(100);
-    count = 0;
-    temp = "";
+    cb_sockets->addItems(list);
+    startTimer(10*appSetting::animateSpeed());
 }
 
 logDialog::~logDialog()
@@ -17,89 +18,96 @@ logDialog::~logDialog()
 
 }
 
-void logDialog::receiveData(frame fr)
+void logDialog::receiveData(frame fr,QString port)
 {
+    if ( cb_sockets->currentText() != port ) return;
     printRecord(receive,fr);
 }
 
-void logDialog::sendData(frame fr)
+void logDialog::sendData(frame fr,QString port)
 {
+    if ( cb_sockets->currentText() != port ) return;
     printRecord(send,fr);
-}
-
-void logDialog::routerChange(bool isRouter)
-{
-    if ( isRouter ) te_log->append(tr("Routing has been <b>enabled</b>"));
-    else te_log->append(tr("Routing has been <b>disabled</b>"));
 }
 
 void logDialog::printRecord(int c, frame fr)
 {
+    /* ЗДЕСЬ!!!! */
+    if ( cb_type->currentIndex() != all ) {
+        if ( cb_type->currentIndex() == arp && fr.type() != frame::arp ) return;
+        if ( cb_type->currentIndex() == ip && fr.type() != frame::ip ) return;
+    }
     QString s;
-    if ( cb_type->currentIndex() == 0 ) {
-        if ( c == send ) s.append("send "); else s.append("receive ");
-        if ( fr.type() == frame::ip ) s.append(parseIp(fr)); else s.append(parseArp(fr));
-    }
-    if ( cb_type->currentIndex() == 1 ) {
-        if ( fr.type() != frame::arp ) return;
-        if ( c == send ) s.append("send "); else s.append("receive ");
-        s.append(parseArp(fr));
-    }
-    if ( cb_type->currentIndex() == 2 ) {
-        if ( fr.type() != frame::ip ) return;
-        if ( c == send ) s.append("send "); else s.append("receive ");
-        s.append(parseIp(fr));
-    }
-    if ( temp.isEmpty() ) temp = s;
-    else {
-        if ( temp == s ) count++;
-        else {
-            if ( count ) temp += tr("Count: %1").arg(count+1);
-            te_log->append(temp);
-            temp = "";
-            count = 0;
-            te_log->append(s);
-        }
-    }
+    QTreeWidgetItem *main = new QTreeWidgetItem(lw_log);
+    if ( cb_time->isChecked() ) s.append( QTime::currentTime().toString("hh:mm:ss.z")+ " " );
+    if ( c == send ) s.append(tr("sent ")); else s.append(tr("received "));
+    if ( fr.type() == frame::ip ) s.append(parseIp(fr,main)); else s.append(parseArp(fr,main));
+    main->setText(0,s);
+    lw_log->scrollToBottom();
 }
 
-QString logDialog::parseIp(frame fr)
+QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
 {
     QString s;
     ipPacket p(fr.unpack());
-    s.append("ip-packet: <b>");
-    s.append(p.sender().toString() + "</b> ");
-    if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
-    s.append(">>  <b>" + p.receiver().toString() + "</b> ");
-    if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+    s.append( p.sender().toString() + " >> " + p.receiver().toString() + tr(" Type: "));
+    QTreeWidgetItem *item = new QTreeWidgetItem(parent);
+    item->setText(0,fr.toString());
+    item->setBackgroundColor(0,cl_frame);
+    item = new QTreeWidgetItem(parent);
+    item->setText(0,p.toString());
+    item->setBackgroundColor(0,cl_ipInternal);
+    if ( p.upProtocol() == ipPacket::udp ) {
+        udpPacket udp(p.unpack());
+        s.append( udp.typeToString());
+        QTreeWidgetItem *t = new QTreeWidgetItem(parent);
+        t->setText(0,udp.toString());
+        t->setBackgroundColor(0,cl_udpInternal);
+        switch ( udp.receiver() ) {
+            case udpPacket::User : parent->setBackgroundColor(0,cl_user); break;
+            case udpPacket::RIP: parent->setBackgroundColor(0,cl_rip); break;
+            default: parent->setBackgroundColor(0,cl_undef);
+        }
+    }
     return s;
 }
 
-QString logDialog::parseArp(frame fr)
+QString logDialog::parseArp(frame fr,QTreeWidgetItem *parent)
 {
     QString s;
+    QString type;
+    parent->setBackgroundColor(0, cl_arp );
     arpPacket p(fr.unpack());
+    if ( p.type() == arpPacket::request ) type = tr("request");
+    else type = tr("response");
     if ( p.type() == arpPacket::request) {
-        s.append("arp-request: <b>" + p.senderIp().toString() + "</b> ");
-        if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
-        s.append("search <b>" + p.receiverIp().toString() + "</b> " );
-        if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+        s.append( p.senderIp().toString());
+        s.append(tr(" search ") + p.receiverIp().toString() );
     }
-    else { s.append("arp-response: <b>" + p.receiverIp().toString() + "</b> ");
-        if ( chb_mac->isChecked() ) s.append("( " + fr.sender().toString() + ") ");
-        s.append("found <b>" + p.senderIp().toString() + "</b> ");
-        if ( chb_mac->isChecked() ) s.append("( " + fr.receiver().toString() + ") ");
+    else {
+        s.append( p.receiverIp().toString());
+        s.append(tr(" found ") + p.senderIp().toString());
     }
+    s.append(tr(" Type: ")+"ARP "+type);
+    QTreeWidgetItem *item = new QTreeWidgetItem(parent);
+    item->setText(0,fr.toString());
+    item->setBackgroundColor(0,cl_frame);
+    item = new QTreeWidgetItem(parent);
+    item->setText(0,tr("ARP-%1:").arg(type));
+    item->setBackgroundColor(0, cl_arpInternal);
+    QTreeWidgetItem *t = new QTreeWidgetItem(item);
+    t->setText(0,tr("sender IP address: %1").arg( p.senderIp().toString() ));
+    t->setBackgroundColor(0, cl_arpInternal);
+    t = new QTreeWidgetItem(item);
+    t->setText(0,tr("sender MAC address: %1").arg( p.senderMac().toString() ));
+    t->setBackgroundColor(0, cl_arpInternal);
+    t = new QTreeWidgetItem(item);
+    t->setText(0,tr("target IP address: %1").arg( p.receiverIp().toString() ));
+    t->setBackgroundColor(0, cl_arpInternal);
+    t = new QTreeWidgetItem(item);
+    t->setText(0,tr("target MAC address: %1").arg( p.receiverMac().toString() ));
+    t->setBackgroundColor(0, cl_arpInternal);
     return s;
-}
-
-void logDialog::timerEvent(QTimerEvent*)
-{
-    if ( temp.isEmpty() ) return;
-    if ( count ) temp += tr("Count: %1").arg(count+1);
-    te_log->append(temp);
-    temp = "";
-    count = 0;
 }
 
 void logDialog::changeEvent(QEvent *e)

@@ -66,7 +66,7 @@ public:
     int socketsCount() const { return myInterfaces.count(); }
     QList<programm> programms() { return myProgramms; }
     QVector<interface*> interfaces() { return myInterfaces; }
-    void setRouter(bool n);
+    void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
     ipAddress gateway() const;
@@ -83,8 +83,6 @@ public slots:
     virtual quint64 receivePacketCount(const QString &name) { return adapter(name)->countRecPacket(); }
     virtual quint64 sendFrameCount(const QString &name) { return adapter(name)->countSendFrame(); }
     virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
-signals:
-    void routerChanged(bool);
 private:
     interface* adapter(const QString &name);
 protected:

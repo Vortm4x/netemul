@@ -12,6 +12,13 @@ QByteArray frame::toData() const
     return d->toArray();
 }
 
+QString frame::toString() const
+{
+    QString temp;
+    temp.append(QObject::tr("Ethernet, sender: %1 receiver: %2").arg(d->sender.toString()).arg(d->receiver.toString()));
+    return temp;
+}
+
 //-------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------
 

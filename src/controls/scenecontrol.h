@@ -14,6 +14,8 @@ public:
     sceneControl(QObject *parent,myCanvas *s);
     bool isSelect() const;
     QString tableName() const;
+    QString note() const;
+    QStringList sockets() const;
     QIcon tableIcon() const;
 private:
     myCanvas *scene;

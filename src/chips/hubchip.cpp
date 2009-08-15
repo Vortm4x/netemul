@@ -10,9 +10,11 @@ hubChip::hubChip(int n /* = 4 */) : boxChip(n)
 void hubChip::receiveEvent(frame &fr,devicePort *sender)
 {
     checkReceive(fr);
+    emit receiveData(fr,tr("LAN%1").arg(sender->num()));
     foreach ( devicePort *i , mySockets )
         if ( i != sender && i->isConnect() ) {
             checkSend(fr);
+            emit sendData(fr, tr("LAN%1").arg(i->num()) );
             i->pushToSend( fr );
         }   
 }

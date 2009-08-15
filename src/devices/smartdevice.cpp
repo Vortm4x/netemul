@@ -174,6 +174,10 @@ void smartDevice::sendMessage( const QString &a , int size ,int)
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     ipPacket t(r->out,a);
+    udpPacket udp;
+    udp.setReceiver(udpPacket::User);
+    udp.setSender(udpPacket::User);
+    t.pack(udp.toData());
     for ( int i = 0 ; i < size ; i++)
         ipToAdapter(r->out)->sendPacket(t,gw);
 }
@@ -262,10 +266,9 @@ void smartDevice::tableDialog()
 
 void smartDevice::showLogDialog(logDialog *log) const
 {
-    connect( this , SIGNAL(routerChanged(bool)) , log , SLOT(routerChange(bool)) );
     foreach ( interface *i , myInterfaces ) {
-        connect( i , SIGNAL(sendData(frame)) , log , SLOT(sendData(frame) ) );
-        connect( i , SIGNAL(receiveData(frame)) , log , SLOT(receiveData(frame) ) );
+        connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
+        connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
     }
 }
 
@@ -282,7 +285,6 @@ void smartDevice::programmsDialog()
     programmDialog *d = new programmDialog;
     d->setDevice(this);
     d->exec();
-    delete d;
 }
 
 void smartDevice::arpDialog()
@@ -290,7 +292,6 @@ void smartDevice::arpDialog()
     tableArp *d = new tableArp;
     d->setDevice(this);
     d->exec();
-    delete d;
 }
 
 QStringList smartDevice::sockets() const
@@ -435,13 +436,6 @@ statistics smartDevice::deviceStatistics() const
     foreach ( interface *i , myInterfaces )
         s += i->chipStatistics();
     return s;
-}
-
-void smartDevice::setRouter(bool n)
-{
-    if ( n == myRouter ) return;
-    myRouter = n;
-    emit routerChanged(n);
 }
 
 #endif

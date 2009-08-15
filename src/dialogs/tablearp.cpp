@@ -59,6 +59,7 @@ tableArp::tableArp()
     temp->addWidget(btn_close);
     all->addLayout(temp);
     setLayout(all);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 //------------------------------------------------------------------
 void tableArp::setDevice(smartDevice *dev)

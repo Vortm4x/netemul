@@ -29,8 +29,8 @@ void boxDevice::deciSecondTimerEvent()
 
 void boxDevice::showLogDialog(logDialog *log) const
 {
-    connect( chip , SIGNAL(receiveData(frame)) , log , SLOT(receiveData(frame)) );
-    connect( chip , SIGNAL(sendData(frame)) , log , SLOT(sendData(frame)) );
+    connect( chip , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
+    connect( chip , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
 }
 
 
