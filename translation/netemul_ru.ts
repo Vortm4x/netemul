@@ -46,7 +46,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="91"/>
-        <location filename="../src/mainwindow.cpp" line="421"/>
+        <location filename="../src/mainwindow.cpp" line="422"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -226,6 +226,11 @@
         <translation>Показать свойства</translation>
     </message>
     <message>
+        <location filename="../src/mainwindow.cpp" line="544"/>
+        <source>&lt;h2&gt;NetEmul 0.8.5&lt;/h2&gt;&lt;p&gt;NetEmul is a program for the simulation of the computer network.</source>
+        <translation>&lt;h2&gt;NetEmul 0.8.5&lt;/h2&gt;&lt;p&gt;NetEmul программа для симуляции работы компьютерной сети.</translation>
+    </message>
+    <message>
         <source>Routing Table</source>
         <translation type="obsolete">Таблица маршрутизации</translation>
     </message>
@@ -245,6 +250,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="543"/>
         <source>About NetEmul</source>
         <translation>О программе NetEmul</translation>
     </message>
@@ -270,13 +276,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="101"/>
-        <location filename="../src/mainwindow.cpp" line="524"/>
+        <location filename="../src/mainwindow.cpp" line="525"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="101"/>
-        <location filename="../src/mainwindow.cpp" line="525"/>
+        <location filename="../src/mainwindow.cpp" line="526"/>
         <source>Stop simulation</source>
         <translation>Остановить симуляцию</translation>
     </message>
@@ -346,7 +352,7 @@
         <translation>Управление</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="235"/>
+        <location filename="../src/mainwindow.cpp" line="236"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
@@ -355,40 +361,40 @@
         <translation type="obsolete">Log</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="409"/>
-        <location filename="../src/mainwindow.cpp" line="434"/>
+        <location filename="../src/mainwindow.cpp" line="410"/>
+        <location filename="../src/mainwindow.cpp" line="435"/>
         <source>Save file as ...</source>
         <translation>Сохранить файл как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="411"/>
-        <location filename="../src/mainwindow.cpp" line="422"/>
-        <location filename="../src/mainwindow.cpp" line="435"/>
+        <location filename="../src/mainwindow.cpp" line="412"/>
+        <location filename="../src/mainwindow.cpp" line="423"/>
+        <location filename="../src/mainwindow.cpp" line="436"/>
         <source>Networks(*.net)</source>
         <translation>Сети(*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="519"/>
+        <location filename="../src/mainwindow.cpp" line="520"/>
         <source>Play</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="520"/>
+        <location filename="../src/mainwindow.cpp" line="521"/>
         <source>Start simulation</source>
         <translation>Запустить симуляцию</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="223"/>
+        <location filename="../src/mainwindow.cpp" line="224"/>
         <source>Ctrl+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="229"/>
+        <location filename="../src/mainwindow.cpp" line="230"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="232"/>
+        <location filename="../src/mainwindow.cpp" line="233"/>
         <source>Ctrl+Shift+A</source>
         <translation></translation>
     </message>

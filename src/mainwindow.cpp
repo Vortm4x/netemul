@@ -214,6 +214,7 @@ void MainWindow::createAction()
     connect( aboutQtAct , SIGNAL(triggered()) , qApp ,SLOT(aboutQt()) );
 
     aboutAct = createOneAction();
+    connect( aboutAct , SIGNAL(triggered()) , SLOT(aboutDialog()));
 
     helpAct = createOneAction();
     helpAct->setShortcut(QKeySequence::HelpContents);
@@ -535,6 +536,14 @@ void MainWindow::statistics()
     statisticsScene s(canva);
     staticsDialog *d = new staticsDialog(&s);
     d->exec();
+}
+
+void MainWindow::aboutDialog()
+{
+    QMessageBox::about(this, tr("About NetEmul"),
+                       tr("<h2>NetEmul 0.8.5</h2>"
+                          "<p>NetEmul is a program for the simulation"
+                          " of the computer network."));
 }
 
 void MainWindow::changeEvent(QEvent *e)

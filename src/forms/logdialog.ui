@@ -116,5 +116,22 @@
  <resources>
   <include location="../../netemul.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>btn_clear</sender>
+   <signal>clicked()</signal>
+   <receiver>lw_log</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>223</x>
+     <y>99</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

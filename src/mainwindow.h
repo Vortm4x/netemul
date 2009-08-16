@@ -48,6 +48,7 @@ public slots:
     void playBack();
     void statistics();
     void showLogDialog();
+    void aboutDialog();
 protected:
       void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
       bool eventFilter(QObject *obj, QEvent *event);
