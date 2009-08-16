@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>608</width>
+    <width>618</width>
     <height>326</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
       <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="dragDropMode">
-      <enum>QAbstractItemView::NoDragDrop</enum>
+      <enum>QAbstractItemView::DragDrop</enum>
      </property>
      <property name="iconSize">
       <size>
@@ -221,6 +221,11 @@
            <item>
             <property name="text">
              <string>Russian</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Brazillian Portuguese</string>
             </property>
            </item>
           </widget>

@@ -22,8 +22,9 @@ appSetting::appSetting()
 
 void appSetting::readSetting()
 {
-    for ( int i = 0 ; i < 2 ; i++ ) mas[i] = new QTranslator;
+    for ( int i = 0 ; i < 3 ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , QString("translation") );
+    mas[2]->load("netemul_pt_BR" , QString("translation") );
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;
@@ -57,14 +58,7 @@ void appSetting::setLanguage(int n)
 {
     if ( n == _language ) return;
     _language = n;
-    switch (_language) {
-        case 0:
-            QCoreApplication::removeTranslator(mas[1]);
-            QCoreApplication::installTranslator(mas[0]);
-            break;
-        case 1:
-            QCoreApplication::installTranslator(mas[1]);
-            break;
-        default: break;
-    }
+    for ( int i = 0 ; i < 3 ; i++)
+        if ( i != n ) QCoreApplication::removeTranslator(mas[i]);
+    QCoreApplication::installTranslator(mas[n]);
 }

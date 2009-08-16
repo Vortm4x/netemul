@@ -1199,7 +1199,7 @@
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="151"/>
-        <location filename="../src/forms/settingdialog.ui" line="467"/>
+        <location filename="../src/forms/settingdialog.ui" line="472"/>
         <source> s</source>
         <translation> сек</translation>
     </message>
@@ -1224,32 +1224,29 @@
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="252"/>
+        <location filename="../src/forms/settingdialog.ui" line="228"/>
+        <source>Brazillian Portuguese</source>
+        <translation>Бразильский португальский</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="257"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>Количество интерфейсов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="266"/>
+        <location filename="../src/forms/settingdialog.ui" line="271"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="271"/>
-        <location filename="../src/forms/settingdialog.ui" line="518"/>
+        <location filename="../src/forms/settingdialog.ui" line="276"/>
+        <location filename="../src/forms/settingdialog.ui" line="523"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="276"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/forms/settingdialog.ui" line="281"/>
-        <location filename="../src/forms/settingdialog.ui" line="334"/>
-        <location filename="../src/forms/settingdialog.ui" line="407"/>
-        <location filename="../src/forms/settingdialog.ui" line="523"/>
-        <source>4</source>
+        <source>3</source>
         <translation></translation>
     </message>
     <message>
@@ -1257,88 +1254,96 @@
         <location filename="../src/forms/settingdialog.ui" line="339"/>
         <location filename="../src/forms/settingdialog.ui" line="412"/>
         <location filename="../src/forms/settingdialog.ui" line="528"/>
-        <source>5</source>
+        <source>4</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="291"/>
         <location filename="../src/forms/settingdialog.ui" line="344"/>
+        <location filename="../src/forms/settingdialog.ui" line="417"/>
+        <location filename="../src/forms/settingdialog.ui" line="533"/>
+        <source>5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="296"/>
+        <location filename="../src/forms/settingdialog.ui" line="349"/>
         <source>6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="320"/>
+        <location filename="../src/forms/settingdialog.ui" line="325"/>
         <source>Number of ports by default</source>
         <translation>Количество портов по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="349"/>
-        <location filename="../src/forms/settingdialog.ui" line="417"/>
-        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <location filename="../src/forms/settingdialog.ui" line="354"/>
+        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="543"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="354"/>
-        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="359"/>
+        <location filename="../src/forms/settingdialog.ui" line="427"/>
         <source>12</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="359"/>
-        <location filename="../src/forms/settingdialog.ui" line="432"/>
+        <location filename="../src/forms/settingdialog.ui" line="364"/>
+        <location filename="../src/forms/settingdialog.ui" line="437"/>
         <source>24</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="364"/>
-        <location filename="../src/forms/settingdialog.ui" line="442"/>
+        <location filename="../src/forms/settingdialog.ui" line="369"/>
+        <location filename="../src/forms/settingdialog.ui" line="447"/>
         <source>48</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="393"/>
-        <location filename="../src/forms/settingdialog.ui" line="504"/>
+        <location filename="../src/forms/settingdialog.ui" line="398"/>
+        <location filename="../src/forms/settingdialog.ui" line="509"/>
         <source>Number of ports by default: </source>
         <translation>Количество портов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="432"/>
         <source>16</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="437"/>
+        <location filename="../src/forms/settingdialog.ui" line="442"/>
         <source>32</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="454"/>
+        <location filename="../src/forms/settingdialog.ui" line="459"/>
         <source>Lifetime records of table switching</source>
         <translation>Время жизни записей таблицы коммутации</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="533"/>
+        <location filename="../src/forms/settingdialog.ui" line="538"/>
         <source>7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="543"/>
+        <location filename="../src/forms/settingdialog.ui" line="548"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="588"/>
+        <location filename="../src/forms/settingdialog.ui" line="593"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="599"/>
+        <location filename="../src/forms/settingdialog.ui" line="604"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="616"/>
+        <location filename="../src/forms/settingdialog.ui" line="621"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
