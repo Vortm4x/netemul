@@ -32,7 +32,6 @@ void logDialog::sendData(frame fr,QString port)
 
 void logDialog::printRecord(int c, frame fr)
 {
-    /* ЗДЕСЬ!!!! */
     if ( cb_type->currentIndex() != all ) {
         if ( cb_type->currentIndex() == arp && fr.type() != frame::arp ) return;
         if ( cb_type->currentIndex() == ip && fr.type() != frame::ip ) return;

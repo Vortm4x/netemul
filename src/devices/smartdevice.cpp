@@ -174,6 +174,7 @@ void smartDevice::sendMessage( const QString &a , int size ,int)
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     ipPacket t(r->out,a);
+    t.setUpProtocol(ipPacket::udp);
     udpPacket udp;
     udp.setReceiver(udpPacket::User);
     udp.setSender(udpPacket::User);

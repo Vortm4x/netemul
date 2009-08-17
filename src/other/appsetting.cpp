@@ -4,6 +4,8 @@
 #include <QTranslator>
 #include <QLocale>
 
+#include <iostream>
+
 int appSetting::_defaultComputerCount = 0;
 int appSetting::_defaultHubCount = 0;
 int appSetting::_defaultRouterCount = 0;
@@ -14,7 +16,7 @@ bool appSetting::_defaultHubManual = false;
 bool appSetting::_defaultSwitchManual = false;
 int appSetting::_speed = 100;
 int appSetting::_language = 0;
-QTranslator* appSetting::mas[2];
+QTranslator* appSetting::mas[LANGUAGE_COUNT];
 
 appSetting::appSetting()
 {
@@ -22,7 +24,7 @@ appSetting::appSetting()
 
 void appSetting::readSetting()
 {
-    for ( int i = 0 ; i < 3 ; i++ ) mas[i] = new QTranslator;
+    for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , QString("translation") );
     mas[2]->load("netemul_pt_BR" , QString("translation") );
     QSettings setting("FROST","netemul");
@@ -40,7 +42,7 @@ void appSetting::readSetting()
 
 void appSetting::writeSetting()
 {
-    for ( int i = 0 ; i < 2 ; i++ ) delete mas[i];
+    for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) delete mas[i];
     QSettings setting("FROST","netemul");
     setting.setValue("computer/socketCount" , _defaultComputerCount );
     setting.setValue("hub/socketCount" , _defaultHubCount );
@@ -58,7 +60,7 @@ void appSetting::setLanguage(int n)
 {
     if ( n == _language ) return;
     _language = n;
-    for ( int i = 0 ; i < 3 ; i++)
+    for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
         if ( i != n ) QCoreApplication::removeTranslator(mas[i]);
     QCoreApplication::installTranslator(mas[n]);
 }

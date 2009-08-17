@@ -3,6 +3,8 @@
 
 class QTranslator;
 
+static const int LANGUAGE_COUNT = 3;
+
 class appSetting
 {
 public:
@@ -29,7 +31,7 @@ public:
     static void readSetting();
     static void writeSetting();
 private:
-    static QTranslator *mas[2];
+    static QTranslator *mas[LANGUAGE_COUNT];
     static int _defaultComputerCount;
     static int _defaultHubCount;
     static int _defaultRouterCount;

@@ -30,6 +30,7 @@ INCLUDEPATH += . \
     src/tools
 QT += script
 win32 { 
+    DESTDIR = ../trunk
     message("Static link ...")
     DEFINES += QT_NO_DEBUG_OUTPUT
     CONFIG += static
