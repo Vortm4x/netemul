@@ -8,6 +8,7 @@ class QCheckBox;
 class QLineEdit;
 class QLabel;
 class QPlainTextEdit;
+class QPushButton;
 
 class ipEdit;
 class hubSetting;

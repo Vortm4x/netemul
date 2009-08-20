@@ -11,11 +11,12 @@ logDialog::logDialog(QStringList list)
     setupUi(this);
     cb_sockets->addItems(list);
     startTimer(10*appSetting::animateSpeed());
+    connect( cb_sockets ,SIGNAL(currentIndexChanged(QString)) , this , SIGNAL(changeInterface(QString)) );
 }
 
 logDialog::~logDialog()
 {
-
+    emit changeInterface("");
 }
 
 void logDialog::receiveData(frame fr,QString port)
@@ -107,6 +108,12 @@ QString logDialog::parseArp(frame fr,QTreeWidgetItem *parent)
     t->setText(0,tr("target MAC address: %1").arg( p.receiverMac().toString() ));
     t->setBackgroundColor(0, cl_arpInternal);
     return s;
+}
+
+void logDialog::focusOutEvent(QFocusEvent*)
+{
+    emit changeInterface("");
+    qDebug("Lost!!");
 }
 
 void logDialog::changeEvent(QEvent *e)

@@ -286,6 +286,7 @@ void smartDevice::tableDialog()
 
 void smartDevice::showLogDialog(logDialog *log) const
 {
+    connect( log ,SIGNAL(changeInterface(QString)) , this ,SLOT(setCheckedSocket(QString)) );
     foreach ( interface *i , myInterfaces ) {
         connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
         connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );

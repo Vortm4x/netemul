@@ -22,10 +22,13 @@ public:
     ~logDialog();
     enum { send = 0, receive = 1 };
     enum { all = 0 , arp = 1 , ip = 2 };
+signals:
+    void changeInterface(QString);
 public  slots:
     void receiveData(frame fr,QString port);
     void sendData(frame fr,QString port);
 protected:
+    void focusOutEvent(QFocusEvent*);
     void changeEvent(QEvent *e);
 private:
     void printRecord( int c, frame fr );

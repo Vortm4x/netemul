@@ -46,7 +46,6 @@ hubProperty::hubProperty()
 
     lb_statics= new QLabel;
     all->addWidget(lb_statics);
-    all->addStretch(1);
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);

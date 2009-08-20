@@ -19,7 +19,6 @@ public:
 
     virtual int type() const = 0;
 
-    virtual void setCheckedSocket(const QString&) {  }
     virtual QStringList sockets() const = 0;
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
@@ -57,6 +56,7 @@ public:
     virtual void setRouter(bool) { qFatal("No router!"); }
     virtual void detectCollision() { }
 public slots:
+    virtual void setCheckedSocket(const QString&) {  }
     virtual void setIp(const QString&, const QString&) { }
     virtual void setMask(const QString&, const QString&) { }
     virtual void setGateway(const QString&) { }

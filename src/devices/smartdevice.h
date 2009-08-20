@@ -57,7 +57,6 @@ public:
     void connectedNet(interface *p);
     void deciSecondTimerEvent();
     void secondTimerEvent();
-    void setCheckedSocket(const QString &str);
     ipAddress findInterfaceIp(ipAddress a);
     programm programmAt(const quint16 p) const;
     programm programmAt(const QString n) const;
@@ -77,6 +76,7 @@ public:
     QList<arpModel*> arpModels();
     friend class tcpSocket;
 public slots:
+    void setCheckedSocket(const QString &str);
     void tableChanged(routeRecord*,int n);
     void setIp(const QString &a, const QString &ip);
     void setMask(const QString &a, const QString &ip);
