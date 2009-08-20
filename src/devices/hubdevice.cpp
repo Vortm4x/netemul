@@ -9,6 +9,7 @@ hubDevice::hubDevice(int c /* = 0 */ )
     myManual = appSetting::defaultHubManual();
     chip = new hubChip(c);
     setNote(tr( "<b>Hub</b><!--You can use HTML.-->" ) );
+    collision = 0;
 }
 
 hubDevice::~hubDevice()
@@ -17,28 +18,31 @@ hubDevice::~hubDevice()
 }
 
 
+void hubDevice::detectCollision()
+{
+    collision++;
+    chip->detectCollision();
+}
+
 void hubDevice::read(QDataStream &stream)
 {
     boxDevice::read(stream);
+    stream >> collision;
 }
 
 void hubDevice::write(QDataStream &stream) const
 {
     stream << hubDev;
     boxDevice::write(stream);
+    stream << collision;
 }
 
 void hubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
-    boxSetting *set = new boxSetting(this);
+    hubSetting *set = new hubSetting(this);
     d->setHub(set);
     d->exec();
-    delete d;
     delete set;
 }
 
-bool hubDevice::isSharedBusy(cableDev *c) const
-{
-    return chip->isSharedBusy(c);
-}

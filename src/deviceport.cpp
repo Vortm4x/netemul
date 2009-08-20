@@ -39,7 +39,7 @@ bool devicePort::isCableBusy() const
 void devicePort::queueEvent()
 {
     if ( senderQueue.isEmpty() ) return;
-    if ( myCable->isShared() && myCable->isBusy(this) ) return;
+    if ( !myShared && myCable->isShared() && myCable->isBusy(this) ) return;
     frame t = senderQueue.dequeue();
     myCable->input(t.toData(),this);
 }
@@ -71,6 +71,11 @@ void devicePort::receiveFrame(QByteArray &b)
 {
     frame f(b);
     receiveQueue.enqueue(f);
+}
+
+void devicePort::startCollision()
+{
+    if ( myConnect && !myCable->isCollisionCable() ) myCable->startCollision();
 }
 #endif
 

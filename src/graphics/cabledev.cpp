@@ -9,6 +9,7 @@ cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
     myStartPort = 0;
     myEndPort = 0;
     myChecked = false;
+    isCollision = false;
     myStartDev = start;
     myEndDev = end;
     myStartDev->addConnection(sp,this);
@@ -37,21 +38,11 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     setLine(centerLine); // И мы её и ставим
     painter->drawLine(line()); // А потом рисуем заново
     if ( isSelected() ) painter->setPen(QPen(Qt::blue,1.7)); // Если выделен рисуем синим
+    else if ( isCollision ) painter->setPen(QPen(Qt::red,1.7));
     else if ( myChecked ) painter->setPen(QPen(Qt::magenta,1.7));
     else painter->setPen(QPen(Qt::black,1.7)); // Иначе черным
     painter->drawLine(line());
     painter->setPen(QPen(Qt::black,1));
-
-
-//    if ( myStreams.isEmpty() ) return ;
-//    qreal min = 1;
-//    qreal max = 0;
-//    foreach ( bitStream *i , myStreams ) {
-//        if ( i->pos > max ) max = i->pos;
-//        if ( i->pos < min ) min = i->pos;
-//    }
-//    painter->setPen(QPen(Qt::red,2));
-//    painter->drawLine( line().pointAt(min) , line().pointAt(max) );
 
     foreach ( bitStream *i , fromEndQueue ) {
         painter->setBrush(i->color);
@@ -100,6 +91,12 @@ void cableDev::input(QByteArray b,devicePort *cur )
 */
 void cableDev::motion()
 {
+    static int n = 0;
+    if ( isCollision && ++n >= TIME_BEFORE_DEAD ) {
+        killCurrentPackets();
+        n = 0;
+    }
+
        qreal speed = mySpeed / line().length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
        foreach ( bitStream *i , fromStartQueue )
@@ -114,6 +111,17 @@ void cableDev::motion()
                 startPort()->receiveFrame( t->data );
                 delete t;
            }
+       if ( myShared ) {
+           if ( isCollision && fromEndQueue.isEmpty() && fromStartQueue.isEmpty() ) isCollision = false;
+           if ( !isCollision ) {
+               if ( !fromStartQueue.isEmpty() && !fromEndQueue.isEmpty() &&
+                    fromStartQueue.head()->pos > fromEndQueue.head()->pos ) {
+                        startCollision();
+                        if ( endPort()->isShared() ) end()->detectCollision();
+                        if ( startPort()->isShared() ) start()->detectCollision();
+                    }
+           }
+       }
        update();
 }
 //-----------------------------------------------------------
@@ -141,16 +149,39 @@ void cableDev::insertInPort(devicePort *p)
     else qFatal("ERROR in cable!");
 }
 
-
 bool cableDev::isBusy(const devicePort *d)
 {
-    if ( myStartPort == d ) {
-        if ( fromEndQueue.size() ) return true;
-        if ( myEndPort->isShared() ) return myEndDev->isSharedBusy(this);
-    }
-    else {
-        if ( fromStartQueue.size() ) return true;
-        if ( myStartPort->isShared() ) return myStartDev->isSharedBusy(this);
-    }
-    return false;
+    if ( myStartPort == d ) return !fromEndQueue.isEmpty();
+    else return !fromStartQueue.isEmpty();
 }
+
+void cableDev::killRandomPackets(QQueue<bitStream*> stream)
+{
+    if ( stream.size() <= MINIMUM_DEAD ) foreach ( bitStream *i , stream ) i->color = Qt::blue;
+    else foreach ( bitStream *i , stream )
+        if ( qrand()%100 >= 100-PERCENT_DEAD ) i->color = Qt::blue;
+}
+
+void cableDev::killCurrentPackets()
+{
+    foreach ( bitStream *i , fromEndQueue )
+        if ( i->color == Qt::blue ) {
+            fromEndQueue.removeOne(i);
+            delete i;
+        }
+    foreach ( bitStream *i , fromStartQueue )
+        if ( i->color == Qt::blue ) {
+            fromStartQueue.removeOne(i);
+            delete i;
+        }
+}
+
+void cableDev::startCollision()
+{
+    if ( fromEndQueue.isEmpty() && fromStartQueue.isEmpty() ) return;
+    killRandomPackets(fromEndQueue);
+    killRandomPackets(fromStartQueue);
+    isCollision = true;
+}
+
+

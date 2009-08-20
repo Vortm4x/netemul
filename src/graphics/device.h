@@ -53,9 +53,9 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
-    bool isSharedBusy(cableDev *c) const { return impl->isSharedBusy(c); }
     statistics deviceStatistics() const { return impl->deviceStatistics(); }
 
+    void detectCollision() { impl->detectCollision(); }
     static bool isConnectDevices(device *s, device *e);
     QList<cableDev*> cables() const { return myCableList; }
     bool hasTable() const { return impl->hasTable(); }

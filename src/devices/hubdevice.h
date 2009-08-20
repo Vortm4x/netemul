@@ -14,12 +14,23 @@ public:
     hubDevice(int c = 0);
     ~hubDevice();
     void dialog();
-    bool isSharedBusy(cableDev *c) const;
+    void detectCollision();
+    friend class hubSetting;
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+private:
+    quint32 collision;
 };
 
+class hubSetting : public boxSetting
+{
+public:
+    hubSetting(hubDevice *d) : boxSetting(d) , hd(d) { }
+    quint32 collisions() const { return hd->collision; }
+private:
+    hubDevice *hd;
+};
 
 
 #endif // HUBDEVICE_H

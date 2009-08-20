@@ -26,6 +26,7 @@ public:
     bool isBusy() const;
     virtual void addSocket(int n);
     virtual bool isSharedBusy(cableDev*) const { return false; }
+    virtual void detectCollision() { }
 #ifndef __TESTING__
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

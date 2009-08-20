@@ -40,11 +40,9 @@ contains(QT_CONFIG, opengl) {
     message("OpenGL connected ...")
     QT += opengl
 }
-debug {
-    contains(QT_CONFIG, scripttools) {
-        message("Debugger connected ...")
-        QT += scripttools
-    }
+debug:contains(QT_CONFIG, scripttools) { 
+    message("Debugger connected ...")
+    QT += scripttools
 }
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -61,7 +59,8 @@ HEADERS += src/arppacket.h \
     src/mainwindow.h \
     src/mycanvas.h \
     src/udppacket.h \
-    src/tcppacket.h
+    src/tcppacket.h \
+    src/tcpsocket.h
 SOURCES += src/arppacket.cpp \
     src/deviceport.cpp \
     src/frame.cpp \
@@ -73,7 +72,8 @@ SOURCES += src/arppacket.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp \
     src/udppacket.cpp \
-    src/tcppacket.cpp
+    src/tcppacket.cpp \
+    src/tcpsocket.cpp
 RESOURCES += netemul.qrc
 TRANSLATIONS += translation/netemul_ru.ts \
-		translation/netemul_pt_BR.ts
+    translation/netemul_pt_BR.ts

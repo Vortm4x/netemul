@@ -24,7 +24,6 @@ public:
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
     virtual bool isBusy() const = 0;
-    virtual bool isSharedBusy(cableDev*) const { return false; }
 
     const QString& note() const { return myNote; }
     void setNote(const QString &n) { myNote = n; }
@@ -56,6 +55,7 @@ public:
 
     virtual bool isRouter() const { qFatal("No router!"); return false; }
     virtual void setRouter(bool) { qFatal("No router!"); }
+    virtual void detectCollision() { }
 public slots:
     virtual void setIp(const QString&, const QString&) { }
     virtual void setMask(const QString&, const QString&) { }
@@ -80,11 +80,5 @@ private:
 };
 
 Q_DECLARE_METATYPE(deviceImpl*)
-
-
-
-
-
-
 
 #endif // DEVICEIMPL_H

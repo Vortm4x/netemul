@@ -14,6 +14,10 @@ struct bitStream {
     qreal pos;
 };
 
+static const int MINIMUM_DEAD = 3;
+static const int TIME_BEFORE_DEAD = 10;
+static const int PERCENT_DEAD = 25;
+
 class cableDev : public QGraphicsLineItem
 {
 public:
@@ -23,6 +27,7 @@ public:
     QRectF boundingRect() const {
         return QRectF(line().p1(),line().p2()).normalized().adjusted(-5,-5,5,5);
     }
+    bool isCollisionCable() const { return isCollision; }
     cableDev(device *start,device *end,QString sp, QString ep,int s = 5);
     ~cableDev();
     void updatePosition(); // Обновление прорисовки
@@ -41,7 +46,11 @@ public:
     QString startSocketName() const;
     QString endSocketName() const;
     void deleteConnect();
+    void killRandomPackets(QQueue<bitStream*> stream);
+    void killCurrentPackets();
+    void startCollision();
 private:
+    bool isCollision;
     bool myChecked;
     bool myShared;
     QQueue<bitStream*> fromStartQueue;

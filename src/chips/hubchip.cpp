@@ -19,17 +19,15 @@ void hubChip::receiveEvent(frame &fr,devicePort *sender)
         }   
 }
 
+void hubChip::detectCollision()
+{
+    foreach ( devicePort *i , mySockets ) i->startCollision();
+}
+
 void hubChip::addSocket(int n)
 {
     boxChip::addSocket(n);
     mySockets[n-1]->setShared(true);
 }
 
-bool hubChip::isSharedBusy(cableDev *c) const
-{
-    foreach ( devicePort *i , mySockets ) {
-        if ( !i->isCableConnect(c) && i->isCableBusy() ) return true;
-    }
-    return false;
-}
 

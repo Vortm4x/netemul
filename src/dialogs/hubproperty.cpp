@@ -1,12 +1,12 @@
-#include "hubproperty.h"
-#include "hubdevice.h"
-#include "ipedit.h"
-#include <QLabel>
+#include <QtGui/QLabel>
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPlainTextEdit>
+#include "hubproperty.h"
+#include "hubdevice.h"
+#include "ipedit.h"
 
 hubProperty::hubProperty()
 {
@@ -24,6 +24,9 @@ hubProperty::hubProperty()
     chk_manual = new QCheckBox(tr("Manage via SNMP: "));
     connect( chk_manual , SIGNAL(clicked(bool)) , SLOT(check(bool)));
     all->addWidget(chk_manual);
+
+    lb_conflict = new QLabel;
+    all->addWidget( lb_conflict );
 
     temp = new QHBoxLayout;
     lb_mac = new QLabel(tr("Mac-address: "));
@@ -53,6 +56,7 @@ hubProperty::hubProperty()
     all->addStretch(1);
     all->addLayout(lay);
     setLayout(all);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 hubProperty::~hubProperty()
@@ -70,10 +74,11 @@ void hubProperty::check(bool p)
     applyEnable();
 }
 
-void hubProperty::setHub(boxSetting *s)
+void hubProperty::setHub(hubSetting *s)
 {
     st = s;
     cb_count->setCurrentIndex( cb_count->findText( QString::number(st->socketsCount() ) ));
+    lb_conflict->setText( tr("Number of collisions: %1").arg( st->collisions() ) );
     le_mac->setText( st->snmpMac() );
     le_ip->setText( st->snmpIp() );
     le_mask->setText( st->snmpMask() );

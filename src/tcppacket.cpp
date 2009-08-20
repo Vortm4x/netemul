@@ -1,12 +1,10 @@
 #include "tcppacket.h"
 
-tcpPacket::tcpPacket()
+tcpPacket::tcpPacket(const QByteArray &b)
 {
-}
-
-tcpPacket::tcpPacket(const QByteArray &b) : udpPacket(b)
-{
-
+    d = new tcpPacketData;
+    QDataStream s(b);
+    s >> d->sender >> d->receiver >> d->sequence >> d->ack >> d->flag >> d->window >> d->data;
 }
 
 /*!
@@ -21,3 +19,22 @@ QDataStream& operator<<( QDataStream &stream, const tcpPacket &p )
     return stream;
 }
 //-------------------------------------------------------
+
+tcpPacketData::tcpPacketData(const tcpPacketData &u) : QSharedData(u)
+{
+    sender = u.sender;
+    receiver = u.receiver;
+    sequence = u.sequence;
+    ack = u.ack;
+    flag = u.flag;
+    window = u.window;
+    data = u.data;
+}
+
+QByteArray tcpPacketData::toData() const
+{
+    QByteArray t;
+    QDataStream s(&t,QIODevice::WriteOnly);
+    s << receiver << sender << sequence << ack << flag << window << data;
+    return t;
+}

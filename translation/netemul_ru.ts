@@ -676,32 +676,37 @@
         <translation>Управляемый через SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="29"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="32"/>
         <source>Mac-address: </source>
         <translation>Мас-адрес: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="36"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="39"/>
         <source>Ip-address: </source>
         <translation>Ip-адрес: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="40"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="43"/>
         <source>Mask: </source>
         <translation>Маска:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="51"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="54"/>
         <source>Description:</source>
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="92"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="81"/>
+        <source>Number of collisions: %1</source>
+        <translation>Количество коллизий: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/hubproperty.cpp" line="97"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="93"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="98"/>
         <source>First, remove the cables!</source>
         <translation>Сначала отсоедините кабеля от устройства!</translation>
     </message>
@@ -799,63 +804,63 @@
         <translation type="obsolete">получаю</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="43"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
         <source>sent </source>
         <translation>послал </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="43"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
         <source>received </source>
         <translation>получил </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="53"/>
-        <location filename="../src/dialogs/logdialog.cpp" line="91"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="52"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="90"/>
         <source> Type: </source>
         <translation> Тип: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="81"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="80"/>
         <source>request</source>
         <translation>запрос</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="82"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="81"/>
         <source>response</source>
         <translation>ответ</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="85"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="84"/>
         <source> search </source>
         <translation> ищет </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="89"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="88"/>
         <source> found </source>
         <translation> нашел </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="96"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="95"/>
         <source>ARP-%1:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="99"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="98"/>
         <source>sender IP address: %1</source>
         <translation>IP адрес отправителя: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="102"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="101"/>
         <source>sender MAC address: %1</source>
         <translation>MAC адрес отправителя: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="105"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="104"/>
         <source>target IP address: %1</source>
         <translation>IP адрес назначения: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="108"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="107"/>
         <source>target MAC address: %1</source>
         <translation>MAC адрес назначения: %1</translation>
     </message>
@@ -1351,22 +1356,22 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="392"/>
+        <location filename="../src/devices/smartdevice.cpp" line="412"/>
         <source>eth%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="424"/>
+        <location filename="../src/devices/smartdevice.cpp" line="444"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="424"/>
+        <location filename="../src/devices/smartdevice.cpp" line="444"/>
         <source>Such a program already installed.</source>
         <translation>Такая программа уже установлена.</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.h" line="27"/>
+        <location filename="../src/devices/smartdevice.h" line="28"/>
         <source>Routing Table</source>
         <translation>Таблица маршрутизации</translation>
     </message>

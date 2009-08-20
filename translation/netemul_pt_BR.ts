@@ -664,32 +664,37 @@
         <translation>Gerenciar via SNMP: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="29"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="32"/>
         <source>Mac-address: </source>
         <translation>Endereço Mac: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="36"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="39"/>
         <source>Ip-address: </source>
         <translation>Endereço IP: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="40"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="43"/>
         <source>Mask: </source>
         <translation>Máscara de rede: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="51"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="54"/>
         <source>Description:</source>
         <translation>Descrição:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="92"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="81"/>
+        <source>Number of collisions: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/hubproperty.cpp" line="97"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="93"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="98"/>
         <source>First, remove the cables!</source>
         <translation>Primeiro, remova os cabos da interface!</translation>
     </message>
@@ -763,63 +768,63 @@
 <context>
     <name>logDialog</name>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="43"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
         <source>sent </source>
         <translation>enviado </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="43"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
         <source>received </source>
         <translation>recebido </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="53"/>
-        <location filename="../src/dialogs/logdialog.cpp" line="91"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="52"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="90"/>
         <source> Type: </source>
         <translation> Type: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="81"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="80"/>
         <source>request</source>
         <translation>pedido</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="82"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="81"/>
         <source>response</source>
         <translation>resposta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="85"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="84"/>
         <source> search </source>
         <translation> localizar </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="89"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="88"/>
         <source> found </source>
         <translation> encontrar </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="96"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="95"/>
         <source>ARP-%1:</source>
         <translation>ARP-%1:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="99"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="98"/>
         <source>sender IP address: %1</source>
         <translation>Endereço IP do transmissor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="102"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="101"/>
         <source>sender MAC address: %1</source>
         <translation>Endereço MAC do transmissor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="105"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="104"/>
         <source>target IP address: %1</source>
         <translation>Endereço IP do alvo: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="108"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="107"/>
         <source>target MAC address: %1</source>
         <translation>Endereço MAC do alvo: %1</translation>
     </message>
@@ -1131,7 +1136,7 @@
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="151"/>
-        <location filename="../src/forms/settingdialog.ui" line="467"/>
+        <location filename="../src/forms/settingdialog.ui" line="472"/>
         <source> s</source>
         <translation> segundo</translation>
     </message>
@@ -1156,121 +1161,126 @@
         <translation>Russo</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="252"/>
+        <location filename="../src/forms/settingdialog.ui" line="228"/>
+        <source>Brazillian Portuguese</source>
+        <translation>português brasileiro</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="257"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>O número de interfaces por padrão:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="266"/>
+        <location filename="../src/forms/settingdialog.ui" line="271"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="271"/>
-        <location filename="../src/forms/settingdialog.ui" line="518"/>
+        <location filename="../src/forms/settingdialog.ui" line="276"/>
+        <location filename="../src/forms/settingdialog.ui" line="523"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="276"/>
+        <location filename="../src/forms/settingdialog.ui" line="281"/>
         <source>3</source>
         <translation>3</translation>
-    </message>
-    <message>
-        <location filename="../src/forms/settingdialog.ui" line="281"/>
-        <location filename="../src/forms/settingdialog.ui" line="334"/>
-        <location filename="../src/forms/settingdialog.ui" line="407"/>
-        <location filename="../src/forms/settingdialog.ui" line="523"/>
-        <source>4</source>
-        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="286"/>
         <location filename="../src/forms/settingdialog.ui" line="339"/>
         <location filename="../src/forms/settingdialog.ui" line="412"/>
         <location filename="../src/forms/settingdialog.ui" line="528"/>
-        <source>5</source>
-        <translation>5</translation>
+        <source>4</source>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="291"/>
         <location filename="../src/forms/settingdialog.ui" line="344"/>
+        <location filename="../src/forms/settingdialog.ui" line="417"/>
+        <location filename="../src/forms/settingdialog.ui" line="533"/>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="296"/>
+        <location filename="../src/forms/settingdialog.ui" line="349"/>
         <source>6</source>
         <translation>6</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="320"/>
+        <location filename="../src/forms/settingdialog.ui" line="325"/>
         <source>Number of ports by default</source>
         <translation>O número de portas por padrão</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="349"/>
-        <location filename="../src/forms/settingdialog.ui" line="417"/>
-        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <location filename="../src/forms/settingdialog.ui" line="354"/>
+        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="543"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="354"/>
-        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="359"/>
+        <location filename="../src/forms/settingdialog.ui" line="427"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="359"/>
-        <location filename="../src/forms/settingdialog.ui" line="432"/>
+        <location filename="../src/forms/settingdialog.ui" line="364"/>
+        <location filename="../src/forms/settingdialog.ui" line="437"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="364"/>
-        <location filename="../src/forms/settingdialog.ui" line="442"/>
+        <location filename="../src/forms/settingdialog.ui" line="369"/>
+        <location filename="../src/forms/settingdialog.ui" line="447"/>
         <source>48</source>
         <translation>48</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="393"/>
-        <location filename="../src/forms/settingdialog.ui" line="504"/>
+        <location filename="../src/forms/settingdialog.ui" line="398"/>
+        <location filename="../src/forms/settingdialog.ui" line="509"/>
         <source>Number of ports by default: </source>
         <translation>O número de portas por padrão: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="432"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="437"/>
+        <location filename="../src/forms/settingdialog.ui" line="442"/>
         <source>32</source>
         <translation>32</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="454"/>
+        <location filename="../src/forms/settingdialog.ui" line="459"/>
         <source>Lifetime records of table switching</source>
         <translation>Registros do tempo de vida da tabela do switch</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="533"/>
+        <location filename="../src/forms/settingdialog.ui" line="538"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="543"/>
+        <location filename="../src/forms/settingdialog.ui" line="548"/>
         <source>9</source>
         <translation>9</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="588"/>
+        <location filename="../src/forms/settingdialog.ui" line="593"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="599"/>
+        <location filename="../src/forms/settingdialog.ui" line="604"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="616"/>
+        <location filename="../src/forms/settingdialog.ui" line="621"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1278,22 +1288,22 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="392"/>
+        <location filename="../src/devices/smartdevice.cpp" line="412"/>
         <source>eth%1</source>
         <translation>eth%1</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="424"/>
+        <location filename="../src/devices/smartdevice.cpp" line="444"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="424"/>
+        <location filename="../src/devices/smartdevice.cpp" line="444"/>
         <source>Such a program already installed.</source>
         <translation>Esse programa já está instalado.</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.h" line="27"/>
+        <location filename="../src/devices/smartdevice.h" line="28"/>
         <source>Routing Table</source>
         <translation>Tabela de roteamento</translation>
     </message>

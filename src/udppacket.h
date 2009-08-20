@@ -26,7 +26,7 @@ public:
     enum { User = 777 , RIP = 520 } ;
     udpPacket() { d = new udpPacketData; }
     udpPacket(const QByteArray &b);
-    udpPacket(const udpPacket &u);
+    udpPacket(const udpPacket &u) : d(u.d) { }
     ~udpPacket() { }
     QByteArray toData() const;
     int size() const { return d->data.size(); }
@@ -38,8 +38,9 @@ public:
     QByteArray unpack() const { return d->data; }
     QString typeToString() const;
     QString toString() const;
-protected:
+private:
     QSharedDataPointer<udpPacketData> d;
+protected:
     friend QDataStream& operator<<( QDataStream &stream, const udpPacket &p );
 };
 //-----------------------------------------------------

@@ -35,6 +35,7 @@ public:
     void setChecked(bool c);
     bool hasReceive() const { return !receiveQueue.isEmpty(); }
     bool isCableBusy() const;
+    void startCollision();
 #endif
 private:
     int myNum;

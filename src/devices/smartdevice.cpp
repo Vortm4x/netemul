@@ -10,6 +10,7 @@
 #include "udppacket.h"
 #include "tcppacket.h"
 #include "logdialog.h"
+#include "tcpsocket.h"
 
 
 smartDevice::smartDevice() : myRouter(false)
@@ -17,6 +18,7 @@ smartDevice::smartDevice() : myRouter(false)
     myReady = false;
     isDirty = true;
     myInterfaces.clear();
+    myTcpSockets.clear();
     myRouteTable = new routeModel(this);
     connect( myRouteTable , SIGNAL(recordAdding(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
     connect( myRouteTable , SIGNAL(recordDeleting(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
@@ -163,12 +165,19 @@ ipAddress smartDevice::gateway() const
 }
 /*!
   Отправляет сообщение посланное из интерфейса программы.
-  @param dest - Адрес назначения.
+  @param a - Адрес назначения.
   @param size - Размер сообщения в кб(на деле сколько пакетов).
-  @param pr - Протокол с помощью которого происходит отправка.
+  @param type - Протокол с помощью которого происходит отправка.
 */
-void smartDevice::sendMessage( const QString &a , int size ,int)
+void smartDevice::sendMessage( const QString &a , int size ,int type)
 {
+    if ( type == TCP )  {
+        tcpSocket *tcp = new tcpSocket(this,a);
+        tcp->setSize(size);
+        tcp->setConnection();
+        myTcpSockets << tcp;
+        return;
+    }
     ipAddress gw;
     routeRecord *r = myRouteTable->recordAt(a);
     if ( !r ) return;
@@ -189,6 +198,16 @@ void smartDevice::sendMessage( const QString &a , int size ,int)
 */
 void smartDevice::treatPacket(ipPacket &p)
 {
+    if ( p.upProtocol() == TCP ) {
+        foreach ( tcpSocket *i, myTcpSockets ){
+            if ( i->destination() == p.receiver() ) i->treatPacket(p);
+            return;
+        }
+        tcpSocket *tcp = new tcpSocket(this,p.sender());
+        tcp->confirmConnection(p);
+        myTcpSockets << tcp;
+        return;
+    }
     udpPacket u(p.unpack());
     int v = u.receiver();
     foreach ( programm i , myProgramms ) {

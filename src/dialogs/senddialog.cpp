@@ -67,8 +67,8 @@ void sendDialog::prepare()
         QVBoxLayout *btn = new QVBoxLayout;
         rtn_udp = new QRadioButton(tr("UDP"));
         rtn_udp->setChecked(true);
-        rtn_tcp = new QRadioButton(tr("TCP"));
-        rtn_tcp->setEnabled(false);
+        rtn_tcp = new QRadioButton(tr("TCP"));        
+        rtn_tcp->setEnabled(false); //!!!!!!!!!!!!!!!!1
         btn->addWidget(rtn_udp);
         btn->addWidget(rtn_tcp);
         box->setLayout(btn);
