@@ -200,7 +200,7 @@ void smartDevice::treatPacket(ipPacket &p)
 {
     if ( p.upProtocol() == TCP ) {
         foreach ( tcpSocket *i, myTcpSockets ){
-            if ( i->destination() == p.receiver() ) i->treatPacket(p);
+            if ( i->destination() == p.sender() ) i->treatPacket(p);
             return;
         }
         tcpSocket *tcp = new tcpSocket(this,p.sender());

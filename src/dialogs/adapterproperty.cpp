@@ -37,6 +37,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     lbl_temp = new QLabel(tr("Mac-address: "));
     le_mac = new QLineEdit;
     le_mac->setInputMask("HH:HH:HH:HH:HH:HH;_");
+    le_mac->setDragEnabled(true);
     temp->addWidget(lbl_temp);
     temp->addWidget(le_mac);
     all->addLayout(temp);

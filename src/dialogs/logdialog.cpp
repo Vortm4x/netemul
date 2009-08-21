@@ -113,7 +113,6 @@ QString logDialog::parseArp(frame fr,QTreeWidgetItem *parent)
 void logDialog::focusOutEvent(QFocusEvent*)
 {
     emit changeInterface("");
-    qDebug("Lost!!");
 }
 
 void logDialog::changeEvent(QEvent *e)

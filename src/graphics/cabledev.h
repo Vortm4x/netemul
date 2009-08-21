@@ -8,15 +8,18 @@
 class device;
 class devicePort;
 
+static const qreal NORMAL_SIZE = 2.5;
+static const qreal COLLISION_SIZE = 5.0;
+static const int MINIMUM_DEAD = 3;
+static const int TIME_BEFORE_DEAD = 17;
+static const int PERCENT_DEAD = 25;
+
 struct bitStream {
     QByteArray data;
     QBrush color;
     qreal pos;
+    qreal size;
 };
-
-static const int MINIMUM_DEAD = 3;
-static const int TIME_BEFORE_DEAD = 10;
-static const int PERCENT_DEAD = 25;
 
 class cableDev : public QGraphicsLineItem
 {

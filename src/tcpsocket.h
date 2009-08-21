@@ -19,7 +19,7 @@ public:
     ipAddress destination() { return dest; }
 private:    
     void sendMessage(ipPacket p) const;
-    tcpPacket createPacket(quint16 s, quint16 r, quint32 seq, quint32 a, quint8 f) const;
+    tcpPacket createPacket(quint16 sender, quint16 receiver, quint32 sequence, quint32 ack, quint8 flag) const;
     smartDevice *dev;
     int size;
     ipAddress dest;

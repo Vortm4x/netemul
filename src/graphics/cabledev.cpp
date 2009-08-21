@@ -46,12 +46,12 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 
     foreach ( bitStream *i , fromEndQueue ) {
         painter->setBrush(i->color);
-        painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
+        painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
     }
 
     foreach ( bitStream *i , fromStartQueue ) {
         painter->setBrush(i->color);
-        painter->drawEllipse( line().pointAt( i->pos ) ,2.5 ,2.5);
+        painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
     }
 
 }
@@ -76,6 +76,7 @@ void cableDev::input(QByteArray b,devicePort *cur )
         case broadcast: t->color = Qt::yellow; break;
         default: t->color = Qt::green; break;
     }
+    t->size = NORMAL_SIZE;
     t->data = b;
     if ( cur == myStartPort ) {
         fromStartQueue.enqueue(t);
@@ -102,13 +103,13 @@ void cableDev::motion()
        foreach ( bitStream *i , fromStartQueue )
            if ( (i->pos += speed) > 1.0 ) {
                 bitStream *t = fromStartQueue.dequeue();
-                endPort()->receiveFrame( t->data );
+                if (t->color != Qt::blue) endPort()->receiveFrame( t->data );
                 delete t;
            }
        foreach ( bitStream *i , fromEndQueue )
            if ( (i->pos -= speed) <= 0.0 ) {
                 bitStream *t = fromEndQueue.dequeue();
-                startPort()->receiveFrame( t->data );
+                if ( t->color != Qt::blue ) startPort()->receiveFrame( t->data );
                 delete t;
            }
        if ( myShared ) {
@@ -116,6 +117,10 @@ void cableDev::motion()
            if ( !isCollision ) {
                if ( !fromStartQueue.isEmpty() && !fromEndQueue.isEmpty() &&
                     fromStartQueue.head()->pos > fromEndQueue.head()->pos ) {
+                        fromStartQueue.head()->color = Qt::blue;
+                        fromEndQueue.head()->color = Qt::blue;
+                        fromStartQueue.head()->size = COLLISION_SIZE;
+                        fromEndQueue.head()->size = COLLISION_SIZE;
                         startCollision();
                         if ( endPort()->isShared() ) end()->detectCollision();
                         if ( startPort()->isShared() ) start()->detectCollision();

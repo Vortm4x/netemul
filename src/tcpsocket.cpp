@@ -32,18 +32,20 @@ void tcpSocket::sendMessage(ipPacket p) const
 void tcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
-    if ( tcp.flag() == tcpPacket::NO_FLAGS ) {
+    if ( tcp.flag() == tcpPacket::ACK ) {
+        ipPacket a;
+        for ( int i = 0; i < size; i++ ) sendMessage(a);
     }
 }
 
-tcpPacket tcpSocket::createPacket(quint16 s, quint16 r, quint32 seq, quint32 a, quint8 f) const
+tcpPacket tcpSocket::createPacket(quint16 sender, quint16 receiver, quint32 sequence, quint32 ack, quint8 flag) const
 {
     tcpPacket t;
-    t.setSender(s);
-    t.setReceiver(r);
-    t.setSequence( seq );
-    t.setAck(a);
-    t.setFlag(f);
+    t.setSender(sender);
+    t.setReceiver(receiver);
+    t.setSequence( sequence );
+    t.setAck(ack);
+    t.setFlag(flag);
     t.setWindow(tcpPacket::Window);
     return t;
 }
