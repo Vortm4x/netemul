@@ -17,8 +17,6 @@ smartDevice::smartDevice() : myRouter(false)
 {
     myReady = false;
     isDirty = true;
-    myInterfaces.clear();
-    myTcpSockets.clear();
     myRouteTable = new routeModel(this);
     connect( myRouteTable , SIGNAL(recordAdding(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
     connect( myRouteTable , SIGNAL(recordDeleting(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
@@ -26,6 +24,8 @@ smartDevice::smartDevice() : myRouter(false)
 
 smartDevice::~smartDevice()
 {
+    qDeleteAll(myTcpSockets);
+    qDeleteAll(myInterfaces);
 }
 
 const interface* smartDevice::adapter(const QString &s) const
@@ -172,7 +172,7 @@ ipAddress smartDevice::gateway() const
 void smartDevice::sendMessage( const QString &a , int size ,int type)
 {
     if ( type == TCP )  {
-        tcpSocket *tcp = new tcpSocket(this,a);
+        tcpSocket *tcp = new tcpSocket(this,a,tcpPacket::User,tcpPacket::User);
         tcp->setSize(size);
         tcp->setConnection();
         myTcpSockets << tcp;
@@ -199,11 +199,13 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
 void smartDevice::treatPacket(ipPacket &p)
 {
     if ( p.upProtocol() == TCP ) {
-        foreach ( tcpSocket *i, myTcpSockets ){
-            if ( i->destination() == p.sender() ) i->treatPacket(p);
-            return;
-        }
-        tcpSocket *tcp = new tcpSocket(this,p.sender());
+        foreach ( tcpSocket *i, myTcpSockets )
+            if ( i->destination() == p.sender() ) {
+                i->treatPacket(p);
+                return;
+            }
+        qDebug("Confirm connection");
+        tcpSocket *tcp = new tcpSocket(this,p.sender(),tcpPacket::User,tcpPacket::User);
         tcp->confirmConnection(p);
         myTcpSockets << tcp;
         return;
@@ -326,7 +328,7 @@ QStringList smartDevice::sockets() const
 void smartDevice::setCheckedSocket(const QString &str)
 {
     foreach ( interface *i , myInterfaces )
-        if ( i->isConnect() ) i->setChecked( i->name() == str );
+        i->setChecked( i->name() == str );
 }
 
 QStringList smartDevice::interfacesIp() const
@@ -360,6 +362,8 @@ void smartDevice::secondTimerEvent()
     foreach ( programm i , myProgramms )
         i->incTime();
     foreach ( interface *i , myInterfaces )
+        i->secondEvent();
+    foreach ( tcpSocket *i, myTcpSockets )
         i->secondEvent();
 }
 

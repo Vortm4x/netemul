@@ -24,7 +24,7 @@ class sendDialog : public QDialog
     Q_OBJECT
 public:
     enum aim { sender = 0 , receiver = 1 };
-    enum { UDP = 25 ,TCP = 26 };
+    enum { UDP = 0 ,TCP = 1 };
     sendDialog(aim cur,device *t);
     void prepare();
     QString dest() const { return myDest; }

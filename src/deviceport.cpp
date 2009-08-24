@@ -64,7 +64,7 @@ void devicePort::setConnect(bool cur,cableDev *cable)
 
 void devicePort::setChecked(bool c)
 {
-    myCable->setChecked(c);
+    if ( myConnect ) myCable->setChecked(c);
 }
 
 void devicePort::receiveFrame(QByteArray &b)

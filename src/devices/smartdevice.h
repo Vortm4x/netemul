@@ -21,7 +21,7 @@ class smartDevice : public deviceImpl
 public:
     /*! Источники записи таблицы маршрутизации. */    
     enum { addNet = 100 , delNet = 101 };
-    enum { UDP = 25 ,TCP = 26 };
+    enum { UDP = 0 ,TCP = 1 };
     /*! Значения для флага записи из таблицы маршрутизации. */    
     smartDevice();
     virtual ~smartDevice();

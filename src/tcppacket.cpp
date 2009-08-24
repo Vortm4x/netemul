@@ -4,7 +4,7 @@ tcpPacket::tcpPacket(const QByteArray &b)
 {
     d = new tcpPacketData;
     QDataStream s(b);
-    s >> d->sender >> d->receiver >> d->sequence >> d->ack >> d->flag >> d->window >> d->data;
+    s >> d->receiver >> d->sender >> d->sequence >> d->ack >> d->flag >> d->window >> d->data;
 }
 
 /*!
@@ -19,6 +19,13 @@ QDataStream& operator<<( QDataStream &stream, const tcpPacket &p )
     return stream;
 }
 //-------------------------------------------------------
+
+QString tcpPacket::toString() const
+{
+    QString temp;
+    temp.append("TCP, "+QObject::tr("sender port: %1, receiver port: %2").arg(d->sender).arg(d->receiver) );
+    return temp;
+}
 
 tcpPacketData::tcpPacketData(const tcpPacketData &u) : QSharedData(u)
 {

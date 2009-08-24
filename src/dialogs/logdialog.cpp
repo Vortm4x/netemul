@@ -5,11 +5,13 @@
 #include "arppacket.h"
 #include "appsetting.h"
 #include "udppacket.h"
+#include "tcppacket.h"
 
 logDialog::logDialog(QStringList list)
 {
     setupUi(this);
     cb_sockets->addItems(list);
+    cb_sockets->installEventFilter(this);
     startTimer(10*appSetting::animateSpeed());
     connect( cb_sockets ,SIGNAL(currentIndexChanged(QString)) , this , SIGNAL(changeInterface(QString)) );
 }
@@ -69,6 +71,24 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
             default: parent->setBackgroundColor(0,cl_undef);
         }
     }
+    else {
+        tcpPacket tcp(p.unpack());
+        s.append(" TCP ");
+        parent->setBackgroundColor(0,Qt::magenta);
+        QTreeWidgetItem *item = new QTreeWidgetItem(parent);
+        item->setText(0, tcp.toString());
+        item->setBackgroundColor(0, cl_tcpInternal);
+        QTreeWidgetItem *t = new QTreeWidgetItem(item);
+        t->setText(0, tr("sequence number %1 ack number %2").arg(tcp.sequence()).arg(tcp.ack()));
+        t->setBackgroundColor(0, cl_tcpData);
+        t = new QTreeWidgetItem(item);
+        if ( tcp.flag() == tcpPacket::NO_FLAGS )
+            t->setText(0, tr("flag: No flags"));
+        else if ( tcp.flag() == tcpPacket::ACK )
+            t->setText(0, tr("flag: Ack"));
+        else t->setText(0, tr("flag: Fin"));
+        t->setBackgroundColor(0, cl_tcpData);
+    }
     return s;
 }
 
@@ -110,9 +130,12 @@ QString logDialog::parseArp(frame fr,QTreeWidgetItem *parent)
     return s;
 }
 
-void logDialog::focusOutEvent(QFocusEvent*)
+bool logDialog::eventFilter(QObject *obj, QEvent *e)
 {
-    emit changeInterface("");
+    if ( obj == cb_sockets ) {
+        if ( e->type() == QEvent::FocusOut ) emit changeInterface("");
+    }
+    return QWidget::eventFilter(obj,e);
 }
 
 void logDialog::changeEvent(QEvent *e)

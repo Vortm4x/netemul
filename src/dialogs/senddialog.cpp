@@ -1,5 +1,3 @@
-#include "senddialog.h"
-#include "device.h"
 #include <QPushButton>
 #include <QRadioButton>
 #include <QGroupBox>
@@ -11,6 +9,9 @@
 #include <QtDebug>
 #include <QCheckBox>
 #include <QMessageBox>
+#include "senddialog.h"
+#include "device.h"
+
 
 sendDialog::sendDialog(aim cur,device* t)
 {

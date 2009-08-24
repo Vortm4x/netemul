@@ -12,6 +12,8 @@ static const QColor cl_user = "#badbad";
 static const QColor cl_undef = "#f984e5";
 static const QColor cl_arp = "#7fc7ff";
 static const QColor cl_arpInternal = "#c0c0c0";
+static const QColor cl_tcpInternal = "#008080";
+static const QColor cl_tcpData = "#c0c0c0";
 
 class logDialog : public QWidget , private Ui::logDialog
 {
@@ -28,7 +30,7 @@ public  slots:
     void receiveData(frame fr,QString port);
     void sendData(frame fr,QString port);
 protected:
-    void focusOutEvent(QFocusEvent*);
+    bool eventFilter(QObject *obj,QEvent *e);
     void changeEvent(QEvent *e);
 private:
     void printRecord( int c, frame fr );

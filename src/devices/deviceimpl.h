@@ -56,7 +56,7 @@ public:
     virtual void setRouter(bool) { qFatal("No router!"); }
     virtual void detectCollision() { }
 public slots:
-    virtual void setCheckedSocket(const QString&) {  }
+    virtual void setCheckedSocket(const QString&) { }
     virtual void setIp(const QString&, const QString&) { }
     virtual void setMask(const QString&, const QString&) { }
     virtual void setGateway(const QString&) { }

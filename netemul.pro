@@ -35,6 +35,9 @@ win32 {
     DEFINES += QT_NO_DEBUG_OUTPUT
     CONFIG += static
 }
+macx {
+    message("You have MACX...")
+}
 CONFIG += warn_on
 contains(QT_CONFIG, opengl) { 
     message("OpenGL connected ...")

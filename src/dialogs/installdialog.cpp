@@ -10,19 +10,7 @@ installDialog::installDialog(QWidget *parent) : QDialog(parent)
 void installDialog::setDevice(smartDevice *d)
 {
     smart = d;
-    updateList();
 }
-/*!
-  Обновляет список программ.
-*/
-void installDialog::updateList()
-{
-    list->clear();
-    QStringList l;
-    l << tr("RIP");
-    list->addItems(l);
-}
-//-----------------------------------------------
 /*!
   Слот устанавливает выбранную программу,
   закрывает диалог.

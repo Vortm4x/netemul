@@ -3,16 +3,33 @@
 #include "smartdevice.h"
 #include "routemodel.h"
 
-tcpSocket::tcpSocket(smartDevice *d,ipAddress a)
+tcpSocket::tcpSocket(smartDevice *d,ipAddress a, quint16 sp, quint16 rp)
 {
+    sender = sp;
+    receiver = rp;
     dev = d;
     dest = a;
+    seq = qrand()%Sequence;
+    inputTime = 0;
+    lastNum = 0;
 }
 
-void tcpSocket::setConnection() const
+void tcpSocket::setSize(int s)
 {
+    for ( quint32 i = seq; i < seq + s-1; i++ ) {
+        tcpPacket p = createPacket( i, 0, tcpPacket::NO_FLAGS);
+        buffer.insert(i,p);
+    }
+    tcpPacket p = createPacket(seq + s, 0, tcpPacket::FIN);
+    buffer.insert(seq + s, p);
+}
+
+void tcpSocket::setConnection()
+{
+    time = 0;
+    timeout = 0;
     ipPacket p;
-    tcpPacket t = createPacket(tcpPacket::User, tcpPacket::User, qrand()%Sequence, 0, tcpPacket::NO_FLAGS);
+    tcpPacket t = createPacket(seq, 0, tcpPacket::NO_FLAGS);
     p.pack(t.toData());
     sendMessage(p);
 }
@@ -33,12 +50,30 @@ void tcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
     if ( tcp.flag() == tcpPacket::ACK ) {
-        ipPacket a;
-        for ( int i = 0; i < size; i++ ) sendMessage(a);
+        if ( seq == tcp.ack() ) timeout = 2*time;
+        QMap<quint32,tcpPacket>::iterator i = buffer.begin();
+        while( i != buffer.end() ) {
+            if ( i.key() < tcp.ack() ) buffer.remove(i.key());
+            ++i;
+        }
+        if ( buffer.isEmpty() ) {
+            timeout = 0;
+            return;
+        }
+        for ( int j = 0; j < tcpPacket::Window; j++ ) {
+            tcpPacket t = buffer.value( j + tcp.ack() );
+            ipPacket a;
+            a.pack( t.toData() );
+            sendMessage(a);
+        }
+    }
+    else {
+        inputTime = time;
+        lastNum = tcp.sequence();
     }
 }
 
-tcpPacket tcpSocket::createPacket(quint16 sender, quint16 receiver, quint32 sequence, quint32 ack, quint8 flag) const
+tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
 {
     tcpPacket t;
     t.setSender(sender);
@@ -53,8 +88,21 @@ tcpPacket tcpSocket::createPacket(quint16 sender, quint16 receiver, quint32 sequ
 void tcpSocket::confirmConnection(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
-    tcpPacket t = createPacket(tcpPacket::User, tcpPacket::User, 0, tcp.sequence()+1, tcpPacket::ACK);
+    tcpPacket t = createPacket(0, tcp.sequence(), tcpPacket::ACK);
     ipPacket a;
     a.pack(t.toData());
     sendMessage(a);
+}
+
+void tcpSocket::secondEvent()
+{
+    time++;
+    if ( lastNum && (time - inputTime) >= 2 ) {
+        tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
+        ipPacket a;
+        a.pack(t.toData());
+        sendMessage(a);
+        inputTime = 0;
+        lastNum = 0;
+    }
 }

@@ -25,6 +25,7 @@ public:
     statistics deviceStatistics() const { return chip->chipStatistics(); }
 public slots:
     void setSocketsCount(int n) { chip->setSocketsCount(n); }
+    void setCheckedSocket(const QString &port);
 protected:
     bool myManual;
     boxChip *chip;

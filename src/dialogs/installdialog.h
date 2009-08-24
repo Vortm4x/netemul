@@ -14,7 +14,6 @@ public:
     installDialog(QWidget *parent = 0);
     void setDevice(smartDevice *d);
 protected:
-    void updateList();
     void changeEvent(QEvent *e);
 private:
     smartDevice *smart; //!< Указатель на устройство
