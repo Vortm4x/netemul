@@ -20,7 +20,6 @@ private:
     programmRep *rep;
 protected:
     friend QDataStream& operator<<(QDataStream &stream,const programm &p);
-    friend QDataStream& operator>>(QDataStream &stream,programm &p);
 };
 /*!
   Записывает программу в поток.

@@ -1,6 +1,7 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 #include "udppacket.h"
+#include "udpsocket.h"
 #include "routemodel.h"
 #include <QtDebug>
 
@@ -60,7 +61,7 @@ void ripProgramm::execute(ipPacket &p)
     QByteArray b = u.unpack();
     QDataStream d(b);
     int count = u.size() / 9;
-    for ( int i = 0; i < count ; i++ ){
+    for ( int i = 0; i < count ; i++ ) {
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
@@ -101,16 +102,20 @@ void ripProgramm::sendUpdate(bool isAll)
                 d << j->dest << j->mask << j->metric;
             }
         }
-        ipPacket p;
-        p.setSender( i->ip() );
-        p.setBroadcast( i->mask() );
-        p.setUpProtocol( ipPacket::udp );
-        udpPacket u;
-        u.setSender( mySocket );
-        u.setReceiver( mySocket );
-        u.pack(b);
-        p.pack( u.toData() );
-        i->sendPacket( p );
+        ipAddress temp = i->ip() | ~i->mask();
+        udpSocket sock(sd, temp , mySocket );
+        sock.write(b);
+//      Так было до прихода сокетов.
+//        ipPacket p;
+//        p.setSender( i->ip() );
+//        p.setBroadcast( i->mask() );
+//        p.setUpProtocol( ipPacket::udp );
+//        udpPacket u;
+//        u.setSender( mySocket );
+//        u.setReceiver( mySocket );
+//        u.pack(b);
+//        p.pack( u.toData() );
+//        i->sendPacket( p );
     }
     if (tempList.size()) clearTemp();
     model->deleteOldRecord(ttl);

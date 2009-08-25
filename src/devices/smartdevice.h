@@ -9,7 +9,7 @@
 class routeModel;
 class arpModel;
 class routeRecord;
-class tcpSocket;
+class abstractSocket;
 
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
@@ -70,11 +70,12 @@ public:
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
     ipAddress gateway() const;
-    friend class ripProgramm;
-    friend class adapterSetting;
     routeModel* routeTable() { return myRouteTable; }
     QList<arpModel*> arpModels();
     friend class tcpSocket;
+    friend class udpSocket;
+    friend class ripProgramm;
+    friend class adapterSetting;
 public slots:
     void setCheckedSocket(const QString &str);
     void tableChanged(routeRecord*,int n);
@@ -95,7 +96,7 @@ protected:
     mutable bool isDirty;
     QVector<interface*> myInterfaces;
     QList<programm> myProgramms; //!< Программы установленные на устройстве.
-    QList<tcpSocket*> myTcpSockets; //!< Список установленных соединений.
+    QList<abstractSocket*> mySockets; //!< Список установленных соединений.
     routeModel *myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

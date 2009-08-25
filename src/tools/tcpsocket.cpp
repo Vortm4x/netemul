@@ -3,11 +3,10 @@
 #include "smartdevice.h"
 #include "routemodel.h"
 
-tcpSocket::tcpSocket(smartDevice *d,ipAddress a, quint16 sp, quint16 rp)
+tcpSocket::tcpSocket(smartDevice *d,ipAddress a, quint16 sp, quint16 rp) : abstractSocket(d)
 {
     sender = sp;
     receiver = rp;
-    dev = d;
     dest = a;
     seq = qrand()%Sequence;
     inputTime = 0;

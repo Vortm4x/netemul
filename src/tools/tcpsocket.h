@@ -1,14 +1,11 @@
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
 
-#include "ipaddress.h"
-#include "ippacket.h"
+#include "abstractsocket.h"
 #include "tcppacket.h"
 #include <QMap>
 
-class smartDevice;
-
-class tcpSocket
+class tcpSocket : public abstractSocket
 {
 public:
     enum { Sequence = 5000 };
@@ -17,13 +14,10 @@ public:
     void setConnection();
     void treatPacket(ipPacket p);
     void confirmConnection(ipPacket p);
-    ipAddress destination() { return dest; }
     void secondEvent();
 private:    
     void sendMessage(ipPacket p) const;
     tcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;
-    smartDevice *dev;
-    ipAddress dest;
     quint16 sender;
     quint16 receiver;
     quint32 seq;

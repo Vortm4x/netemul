@@ -62,8 +62,7 @@ HEADERS += src/arppacket.h \
     src/mainwindow.h \
     src/mycanvas.h \
     src/udppacket.h \
-    src/tcppacket.h \
-    src/tcpsocket.h
+    src/tcppacket.h
 SOURCES += src/arppacket.cpp \
     src/deviceport.cpp \
     src/frame.cpp \
@@ -75,8 +74,7 @@ SOURCES += src/arppacket.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp \
     src/udppacket.cpp \
-    src/tcppacket.cpp \
-    src/tcpsocket.cpp
+    src/tcppacket.cpp
 RESOURCES += netemul.qrc
 TRANSLATIONS += translation/netemul_ru.ts \
     translation/netemul_pt_BR.ts

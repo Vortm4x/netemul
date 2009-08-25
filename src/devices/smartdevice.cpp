@@ -11,7 +11,7 @@
 #include "tcppacket.h"
 #include "logdialog.h"
 #include "tcpsocket.h"
-
+#include "udpsocket.h"
 
 smartDevice::smartDevice() : myRouter(false)
 {
@@ -24,7 +24,7 @@ smartDevice::smartDevice() : myRouter(false)
 
 smartDevice::~smartDevice()
 {
-    qDeleteAll(myTcpSockets);
+    qDeleteAll(mySockets);
     qDeleteAll(myInterfaces);
 }
 
@@ -175,21 +175,26 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
         tcpSocket *tcp = new tcpSocket(this,a,tcpPacket::User,tcpPacket::User);
         tcp->setSize(size);
         tcp->setConnection();
-        myTcpSockets << tcp;
+        mySockets << tcp;
         return;
     }
-    ipAddress gw;
-    routeRecord *r = myRouteTable->recordAt(a);
-    if ( !r ) return;
-    if ( r->gateway != r->out ) gw = r->gateway;
-    ipPacket t(r->out,a);
-    t.setUpProtocol(ipPacket::udp);
-    udpPacket udp;
-    udp.setReceiver(udpPacket::User);
-    udp.setSender(udpPacket::User);
-    t.pack(udp.toData());
-    for ( int i = 0 ; i < size ; i++)
-        ipToAdapter(r->out)->sendPacket(t,gw);
+    udpSocket socket(this ,a ,udpPacket::User );
+    QByteArray temp( size*1024 , '0');
+    socket.write(temp);
+//  Вот так было раньше, до того как появились сокеты.
+//  Теперь все изменилось.
+//    ipAddress gw;
+//    routeRecord *r = myRouteTable->recordAt(a);
+//    if ( !r ) return;
+//    if ( r->gateway != r->out ) gw = r->gateway;
+//    ipPacket t(r->out,a);
+//    t.setUpProtocol(ipPacket::udp);
+//    udpPacket udp;
+//    udp.setReceiver(udpPacket::User);
+//    udp.setSender(udpPacket::User);
+//    t.pack(udp.toData());
+//    for ( int i = 0 ; i < size ; i++)
+//        ipToAdapter(r->out)->sendPacket(t,gw);
 }
 //---------------------------------------------------------------
 /*!
@@ -199,15 +204,14 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
 void smartDevice::treatPacket(ipPacket &p)
 {
     if ( p.upProtocol() == TCP ) {
-        foreach ( tcpSocket *i, myTcpSockets )
+        foreach ( abstractSocket *i, mySockets )
             if ( i->destination() == p.sender() ) {
                 i->treatPacket(p);
                 return;
             }
-        qDebug("Confirm connection");
         tcpSocket *tcp = new tcpSocket(this,p.sender(),tcpPacket::User,tcpPacket::User);
         tcp->confirmConnection(p);
-        myTcpSockets << tcp;
+        mySockets << tcp;
         return;
     }
     udpPacket u(p.unpack());
@@ -220,18 +224,6 @@ void smartDevice::treatPacket(ipPacket &p)
     }
 }
 //--------------------------------------------------
-/*!
-  Ищет программу по номеру её порта.
-  @param p - номер порта.
-  @return Указатель на программу, либо NULL если такой программы нет.
-*/
-programm smartDevice::programmAt(const quint16 p) const
-{
-    foreach ( programm i , myProgramms )
-        if ( i->socket() == p ) return i;
-    return programm();
-}
-//----------------------------------------------------
 /*!
   Ищет программу по ее названию.
   @param n - название программы.
@@ -359,12 +351,12 @@ void smartDevice::deciSecondTimerEvent()
 
 void smartDevice::secondTimerEvent()
 {
-    foreach ( programm i , myProgramms )
-        i->incTime();
     foreach ( interface *i , myInterfaces )
         i->secondEvent();
-    foreach ( tcpSocket *i, myTcpSockets )
+    foreach ( abstractSocket *i, mySockets )
         i->secondEvent();
+    foreach ( programm i , myProgramms )
+        i->incTime();
 }
 
 void smartDevice::setIp(const QString &a, const QString &ip)
