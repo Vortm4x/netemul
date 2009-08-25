@@ -22,6 +22,7 @@ public:
     /*! Источники записи таблицы маршрутизации. */    
     enum { addNet = 100 , delNet = 101 };
     enum { UDP = 0 ,TCP = 1 };
+    enum { User = 7777 };
     /*! Значения для флага записи из таблицы маршрутизации. */    
     smartDevice();
     virtual ~smartDevice();

@@ -28,7 +28,7 @@ private:
 class tcpPacket
 {
 public:
-    enum { User = 777 , Window = 10 };
+    enum { User = 7777 , Window = 10 };
     enum { NO_FLAGS = 0, ACK = 1, FIN = 2 };
     tcpPacket() { d = new tcpPacketData; }
     tcpPacket(const QByteArray &b);

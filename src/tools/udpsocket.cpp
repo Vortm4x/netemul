@@ -3,16 +3,15 @@
 #include "routemodel.h"
 #include "udppacket.h"
 
-udpSocket::udpSocket(smartDevice *d ,ipAddress address, quint16 port) : abstractSocket(d)
+udpSocket::udpSocket(smartDevice *d, quint16 port) : abstractSocket(d)
 {
-    dest = address;
-    myPort = port;
+    myBind = port;
 }
 
-void udpSocket::write(QByteArray data)
+void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
 {
     ipAddress gw;
-    routeRecord *r = dev->myRouteTable->recordAt(dest);
+    routeRecord *r = dev->myRouteTable->recordAt(address);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     while ( quint32 size = data.size() ) {
@@ -20,11 +19,11 @@ void udpSocket::write(QByteArray data)
         if ( size >= PACKET_SIZE ) tempArray = data.left(PACKET_SIZE);
         else tempArray = data;
         data.remove(0,tempArray.size());
-        ipPacket p( r->out, dest );
+        ipPacket p( r->out, address );
         p.setUpProtocol(ipPacket::udp);
         udpPacket udp;
-        udp.setReceiver(myPort);
-        udp.setSender(myPort);
+        udp.setReceiver(port);
+        udp.setSender(myBind);
         udp.pack(tempArray);
         p.pack(udp.toData());
         dev->ipToAdapter(r->out)->sendPacket(p,gw);

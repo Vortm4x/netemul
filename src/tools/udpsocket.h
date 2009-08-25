@@ -7,10 +7,10 @@ class udpSocket : public abstractSocket
 {
 public:
     enum { PACKET_SIZE = 1024 };
-    udpSocket(smartDevice *d,ipAddress address, quint16 port);
-    void write(QByteArray data);
+    udpSocket(smartDevice *d, quint16 port);
+    void write(ipAddress address, quint16 port, QByteArray data);
 private:
-    quint32 myPort;
+    quint16 myBind;
 };
 
 #endif // UDPSOCKET_H

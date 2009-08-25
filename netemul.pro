@@ -77,4 +77,5 @@ SOURCES += src/arppacket.cpp \
     src/tcppacket.cpp
 RESOURCES += netemul.qrc
 TRANSLATIONS += translation/netemul_ru.ts \
-    translation/netemul_pt_BR.ts
+    translation/netemul_pt_BR.ts \
+    translation/netemul_es.ts

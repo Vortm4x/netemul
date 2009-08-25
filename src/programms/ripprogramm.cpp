@@ -60,7 +60,10 @@ void ripProgramm::execute(ipPacket &p)
     udpPacket u(p.unpack());
     QByteArray b = u.unpack();
     QDataStream d(b);
-    int count = u.size() / 9;
+    ipAddress temp;
+    qint16 tint;
+    d >> tint >> temp;
+    int count = (u.size()-6) / 9;
     for ( int i = 0; i < count ; i++ ) {
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
@@ -86,6 +89,8 @@ void ripProgramm::sendUpdate(bool isAll)
         if ( !i->isConnect() ) continue;
         QByteArray b;
         QDataStream d(&b, QIODevice::WriteOnly );
+        d << qint16(0);
+        d << i->ip();
         if ( isAll ) {
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
                 routeRecord *t = model->recordAt(j);
@@ -102,9 +107,11 @@ void ripProgramm::sendUpdate(bool isAll)
                 d << j->dest << j->mask << j->metric;
             }
         }
+        d.device()->seek(0);
+        d << (qint16)b.size();
         ipAddress temp = i->ip() | ~i->mask();
-        udpSocket sock(sd, temp , mySocket );
-        sock.write(b);
+        udpSocket sock(sd, mySocket);
+        sock.write(temp,mySocket,b);
 //      Так было до прихода сокетов.
 //        ipPacket p;
 //        p.setSender( i->ip() );

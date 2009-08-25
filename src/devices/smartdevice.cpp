@@ -178,9 +178,9 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
         mySockets << tcp;
         return;
     }
-    udpSocket socket(this ,a ,udpPacket::User );
+    udpSocket socket(this, udpPacket::User );
     QByteArray temp( size*1024 , '0');
-    socket.write(temp);
+    socket.write(a,udpPacket::User,temp);
 //  Вот так было раньше, до того как появились сокеты.
 //  Теперь все изменилось.
 //    ipAddress gw;

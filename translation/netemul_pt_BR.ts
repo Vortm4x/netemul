@@ -397,7 +397,7 @@
     </message>
     <message>
         <location filename="../src/models/routemodel.cpp" line="159"/>
-        <location filename="../src/programms/ripprogramm.cpp" line="13"/>
+        <location filename="../src/programms/ripprogramm.cpp" line="14"/>
         <location filename="../src/udppacket.cpp" line="19"/>
         <source>RIP</source>
         <translation>RIP</translation>
@@ -503,6 +503,7 @@
         <translation>Sem</translation>
     </message>
     <message>
+        <location filename="../src/tcppacket.cpp" line="26"/>
         <location filename="../src/udppacket.cpp" line="27"/>
         <source>sender port: %1, receiver port: %2</source>
         <translation>Porta do transmissor: %1, porta do receptor: %2</translation>
@@ -521,45 +522,53 @@
         <translation>Endereço Mac: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="45"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="46"/>
         <source>Ip-address: </source>
         <translation>Endereço IP: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="49"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="50"/>
         <source>Mask: </source>
         <translation>Máscara de rede: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="61"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="62"/>
         <source>Add</source>
         <translation>Adicionar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="62"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="63"/>
         <source>Delete</source>
         <translation>Excluir</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="68"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="69"/>
         <source>Reset statistics</source>
         <translation>Restaurar estatísticas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="155"/>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="162"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="156"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="156"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="157"/>
         <source>First, remove the cable!</source>
         <translation>Primeiro, remova o cabo da interface!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="162"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
         <source>Must be at least one netcard</source>
         <translation>Deve ser pelo menos um adaptador</translation>
+    </message>
+</context>
+<context>
+    <name>boxChip</name>
+    <message>
+        <location filename="../src/chips/boxchip.cpp" line="108"/>
+        <source>LAN%1</source>
+        <translation type="unfinished">LAN%1</translation>
     </message>
 </context>
 <context>
@@ -679,22 +688,22 @@
         <translation>Máscara de rede: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="54"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="53"/>
         <source>Description:</source>
         <translation>Descrição:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="81"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="80"/>
         <source>Number of collisions: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="97"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="96"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="98"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="97"/>
         <source>First, remove the cables!</source>
         <translation>Primeiro, remova os cabos da interface!</translation>
     </message>
@@ -702,7 +711,7 @@
 <context>
     <name>installDialog</name>
     <message>
-        <location filename="../src/dialogs/installdialog.cpp" line="22"/>
+        <location filename="../src/forms/installdialog.ui" line="39"/>
         <source>RIP</source>
         <translation>RIP</translation>
     </message>
@@ -717,12 +726,22 @@
         <translation>Programas disponíveis:</translation>
     </message>
     <message>
-        <location filename="../src/forms/installdialog.ui" line="55"/>
+        <location filename="../src/forms/installdialog.ui" line="44"/>
+        <source>DHCP client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/installdialog.ui" line="52"/>
+        <source>DHCP server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/installdialog.ui" line="80"/>
         <source>Install</source>
         <translation>Instalar</translation>
     </message>
     <message>
-        <location filename="../src/forms/installdialog.ui" line="66"/>
+        <location filename="../src/forms/installdialog.ui" line="91"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
@@ -768,63 +787,83 @@
 <context>
     <name>logDialog</name>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="45"/>
         <source>sent </source>
         <translation>enviado </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="42"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="45"/>
         <source>received </source>
         <translation>recebido </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="52"/>
-        <location filename="../src/dialogs/logdialog.cpp" line="90"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="55"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="111"/>
         <source> Type: </source>
         <translation> Type: </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="80"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="82"/>
+        <source>sequence number %1 ack number %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/logdialog.cpp" line="86"/>
+        <source>flag: No flags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/logdialog.cpp" line="88"/>
+        <source>flag: Ack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/logdialog.cpp" line="89"/>
+        <source>flag: Fin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/logdialog.cpp" line="101"/>
         <source>request</source>
         <translation>pedido</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="81"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="102"/>
         <source>response</source>
         <translation>resposta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="84"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="105"/>
         <source> search </source>
         <translation> localizar </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="88"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="109"/>
         <source> found </source>
         <translation> encontrar </translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="95"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="116"/>
         <source>ARP-%1:</source>
         <translation>ARP-%1:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="98"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="119"/>
         <source>sender IP address: %1</source>
         <translation>Endereço IP do transmissor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="101"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="122"/>
         <source>sender MAC address: %1</source>
         <translation>Endereço MAC do transmissor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="104"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="125"/>
         <source>target IP address: %1</source>
         <translation>Endereço IP do alvo: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="107"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="128"/>
         <source>target MAC address: %1</source>
         <translation>Endereço MAC do alvo: %1</translation>
     </message>
@@ -1042,57 +1081,57 @@
 <context>
     <name>sendDialog</name>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="58"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="59"/>
         <source> KB</source>
         <translation> KB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="19"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="20"/>
         <source>Sending</source>
         <translation>Enviando</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="51"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="54"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="55"/>
         <source>Size KB</source>
         <translation>O tamanho em KB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="62"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="63"/>
         <source>Broadcast</source>
         <translation>Broadcast</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="65"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="66"/>
         <source>Next</source>
         <translation>Próximo</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="66"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="67"/>
         <source>Choose protocol:</source>
         <translation>Escolher protocolo:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="68"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="69"/>
         <source>UDP</source>
         <translation>UDP</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="70"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="71"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="92"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="93"/>
         <source>Select the network card receiver</source>
         <translation>Selecionar a placa de rede do receptor</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="93"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="94"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
@@ -1288,22 +1327,22 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="412"/>
+        <location filename="../src/devices/smartdevice.cpp" line="409"/>
         <source>eth%1</source>
         <translation>eth%1</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="444"/>
+        <location filename="../src/devices/smartdevice.cpp" line="441"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="444"/>
+        <location filename="../src/devices/smartdevice.cpp" line="441"/>
         <source>Such a program already installed.</source>
         <translation>Esse programa já está instalado.</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.h" line="28"/>
+        <location filename="../src/devices/smartdevice.h" line="29"/>
         <source>Routing Table</source>
         <translation>Tabela de roteamento</translation>
     </message>
