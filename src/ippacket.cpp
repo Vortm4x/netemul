@@ -37,6 +37,14 @@ QString ipPacket::toString() const
     return temp;
 }
 
+quint16 ipPacket::receiverSocket() const
+{
+    QDataStream stream(d->data);
+    quint16 t;
+    stream >> t;
+    return t;
+}
+
 //----------------------------------------------------
 //----------------------------------------------------
 

@@ -45,6 +45,7 @@ public:
     void setSender(ipAddress a) { d->sender = a; }
     void setReceiver(ipAddress a) { d->receiver = a; }
     bool isBroadcast(const ipAddress mask) const;
+    quint16 receiverSocket() const;
     void setBroadcast(const ipAddress mask);
     void setUpProtocol(qint8 u) { d->upProtocol = u; }
     qint8 upProtocol() const { return d->upProtocol; }

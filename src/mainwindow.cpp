@@ -22,6 +22,7 @@
 #include "staticsdialog.h"
 #include "statisticsscene.h"
 #include "logdialog.h"
+#include "aboutwindow.h"
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -33,7 +34,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.8.4");
+    QCoreApplication::setApplicationVersion("0.8.5");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
@@ -64,7 +65,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // При попытке закрыть главное окно выводим запрос на подтверждение
-    int res = QMessageBox::question(this,tr("Exit"),tr("You want to go?"),
+    int res = QMessageBox::question(this,tr("Exit"),tr("Do you really want to exit the program?"),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     if (res == QMessageBox::Yes) {
         writeSetting();
@@ -96,7 +97,7 @@ void MainWindow::retranslate()
     UPDATEACTION( showGridAct , tr("Show grid"),tr("Show grid") )
     UPDATEACTION( arpAct , tr("Arp table"), tr("Arp table") );
     UPDATEACTION( deleteAct , tr("Delete"),tr("Deleting object") )
-    UPDATEACTION( progAct , tr("Programms"), tr("Programms installed on device") )
+    UPDATEACTION( progAct , tr("Programs"), tr("Programs installed on device") )
     UPDATEACTION( settingAct ,  tr("Setting") , tr("Setting") )
     UPDATEACTION( playAct , tr("Stop") , tr("Stop simulation") )
     UPDATEACTION( staticsAct , tr("Statistics ") , tr("Show scene statistics ") )
@@ -540,10 +541,12 @@ void MainWindow::statistics()
 
 void MainWindow::aboutDialog()
 {
-    QMessageBox::about(this, tr("About NetEmul"),
-                       tr("<h2>NetEmul 0.8.5</h2>"
-                          "<p>NetEmul is a program for the simulation"
-                          " of the computer network."));
+    aboutWindow *w = new aboutWindow;
+    w->show();
+//    QMessageBox::about(this, tr("About NetEmul"),
+//                       tr("<h2>NetEmul 0.8.5</h2>"
+//                          "<p>NetEmul is a program for the simulation"
+//                          " of the computer network.</p>"));
 }
 
 void MainWindow::changeEvent(QEvent *e)

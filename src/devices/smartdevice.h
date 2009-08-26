@@ -75,6 +75,7 @@ public:
     QList<arpModel*> arpModels();
     friend class tcpSocket;
     friend class udpSocket;
+    friend class abstractSocket;
     friend class ripProgramm;
     friend class adapterSetting;
 public slots:

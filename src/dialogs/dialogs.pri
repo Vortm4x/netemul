@@ -15,7 +15,8 @@ HEADERS += src/dialogs/adapterproperty.h \
     src/dialogs/tableswitch.h \
     src/dialogs/testdialog.h \
     src/dialogs/staticsdialog.h \
-    src/dialogs/logdialog.h
+    src/dialogs/logdialog.h \
+    src/dialogs/aboutwindow.h
 SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/computerproperty.cpp \
     src/dialogs/connectdialog.cpp \
@@ -33,4 +34,5 @@ SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/tableswitch.cpp \
     src/dialogs/testdialog.cpp \
     src/dialogs/staticsdialog.cpp \
-    src/dialogs/logdialog.cpp
+    src/dialogs/logdialog.cpp \
+    src/dialogs/aboutwindow.cpp

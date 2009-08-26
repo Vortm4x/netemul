@@ -1,6 +1,5 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
-#include "udppacket.h"
 #include "udpsocket.h"
 #include "routemodel.h"
 #include <QtDebug>
@@ -21,6 +20,7 @@ ripProgramm::ripProgramm()
 ripProgramm::~ripProgramm()
 {
     clearTemp();
+    delete receiver;
 }
 
 void ripProgramm::clearTemp()
@@ -33,6 +33,8 @@ void ripProgramm::setDevice(smartDevice *s)
 {
     sd = s;
     model = sd->routeTable();
+    receiver = new udpSocket(s,mySocket);
+    receiver->setBind("0.0.0.0");
 }
 /*!
   Отсчитывает интервалы, по истечении которых
@@ -41,6 +43,11 @@ void ripProgramm::setDevice(smartDevice *s)
 void ripProgramm::incTime()
 {
     if ( !sd->isRouter() ) return;
+    while ( receiver->sizeReceiveData() ) {
+        QByteArray data;
+        receiver->read(data);
+        execute(data);
+    }
     timer++;
     if ( timer >= interval ) {
         sendUpdate(true);
@@ -55,22 +62,21 @@ void ripProgramm::incTime()
   маршрутизаторов
   @param b - Полученное сообщение.
 */
-void ripProgramm::execute(ipPacket &p)
+void ripProgramm::execute(QByteArray data)
 {
-    udpPacket u(p.unpack());
-    QByteArray b = u.unpack();
-    QDataStream d(b);
-    ipAddress temp;
-    qint16 tint;
-    d >> tint >> temp;
-    int count = (u.size()-6) / 9;
+    ipAddress sender;
+    quint16 size;
+    QDataStream d(data);
+    d >> size;
+    d >> sender;
+    int count = (size-4)/9;
     for ( int i = 0; i < count ; i++ ) {
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
         t->metric++;
-        t->out = sd->findInterfaceIp( p.sender() );
-        t->gateway = p.sender();
+        t->out = sd->findInterfaceIp( sender );
+        t->gateway = sender;
         t->time = 0;
         t->mode = routeModel::ripMode;
         t->change = routeModel::noChanged;
@@ -89,7 +95,7 @@ void ripProgramm::sendUpdate(bool isAll)
         if ( !i->isConnect() ) continue;
         QByteArray b;
         QDataStream d(&b, QIODevice::WriteOnly );
-        d << qint16(0);
+        d << quint16(0);
         d << i->ip();
         if ( isAll ) {
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
@@ -108,21 +114,10 @@ void ripProgramm::sendUpdate(bool isAll)
             }
         }
         d.device()->seek(0);
-        d << (qint16)b.size();
+        d << quint16(b.size()-2);
         ipAddress temp = i->ip() | ~i->mask();
         udpSocket sock(sd, mySocket);
         sock.write(temp,mySocket,b);
-//      Так было до прихода сокетов.
-//        ipPacket p;
-//        p.setSender( i->ip() );
-//        p.setBroadcast( i->mask() );
-//        p.setUpProtocol( ipPacket::udp );
-//        udpPacket u;
-//        u.setSender( mySocket );
-//        u.setReceiver( mySocket );
-//        u.pack(b);
-//        p.pack( u.toData() );
-//        i->sendPacket( p );
     }
     if (tempList.size()) clearTemp();
     model->deleteOldRecord(ttl);

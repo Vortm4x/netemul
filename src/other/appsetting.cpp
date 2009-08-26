@@ -4,7 +4,6 @@
 #include <QTranslator>
 #include <QLocale>
 
-#include <iostream>
 
 int appSetting::_defaultComputerCount = 0;
 int appSetting::_defaultHubCount = 0;
@@ -27,6 +26,7 @@ void appSetting::readSetting()
     for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , QString("translation") );
     mas[2]->load("netemul_pt_BR" , QString("translation") );
+    mas[3]->load("netemul_es" , QString("translation") );
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;

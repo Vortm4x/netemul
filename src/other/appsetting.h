@@ -3,7 +3,7 @@
 
 class QTranslator;
 
-static const int LANGUAGE_COUNT = 3;
+static const int LANGUAGE_COUNT = 4;
 
 class appSetting
 {

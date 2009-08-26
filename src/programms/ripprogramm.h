@@ -6,7 +6,7 @@
 class smartDevice;
 class routeModel;
 class routeRecord;
-class ipPacket;
+class udpSocket;
 
 static const qint8 infinity = 16;
 
@@ -20,7 +20,7 @@ public:
     ripProgramm();
     ~ripProgramm();
     void setDevice(smartDevice *s);
-    void execute(ipPacket &p);
+    void execute(QByteArray data);
     void checkTable( routeRecord *r );
     void incTime();
     void sendUpdate(bool isAll);
@@ -28,6 +28,8 @@ public:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
+    quint16 mySocket;
+    udpSocket *receiver;
     void addToTemp(routeRecord *r);
     void clearTemp();
     QList<routeRecord*> tempList;

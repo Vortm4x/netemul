@@ -7,8 +7,8 @@
 #include "adapterproperty.h"
 #include "tablearp.h"
 #include "programmdialog.h"
-#include "udppacket.h"
-#include "tcppacket.h"
+//#include "udppacket.h"
+//#include "tcppacket.h"
 #include "logdialog.h"
 #include "tcpsocket.h"
 #include "udpsocket.h"
@@ -175,26 +175,11 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
         tcpSocket *tcp = new tcpSocket(this,a,tcpPacket::User,tcpPacket::User);
         tcp->setSize(size);
         tcp->setConnection();
-        mySockets << tcp;
         return;
     }
-    udpSocket socket(this, udpPacket::User );
+    udpSocket socket(this, User );
     QByteArray temp( size*1024 , '0');
-    socket.write(a,udpPacket::User,temp);
-//  Вот так было раньше, до того как появились сокеты.
-//  Теперь все изменилось.
-//    ipAddress gw;
-//    routeRecord *r = myRouteTable->recordAt(a);
-//    if ( !r ) return;
-//    if ( r->gateway != r->out ) gw = r->gateway;
-//    ipPacket t(r->out,a);
-//    t.setUpProtocol(ipPacket::udp);
-//    udpPacket udp;
-//    udp.setReceiver(udpPacket::User);
-//    udp.setSender(udpPacket::User);
-//    t.pack(udp.toData());
-//    for ( int i = 0 ; i < size ; i++)
-//        ipToAdapter(r->out)->sendPacket(t,gw);
+    socket.write(a,User,temp);
 }
 //---------------------------------------------------------------
 /*!
@@ -203,25 +188,15 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
 */
 void smartDevice::treatPacket(ipPacket &p)
 {
-    if ( p.upProtocol() == TCP ) {
-        foreach ( abstractSocket *i, mySockets )
-            if ( i->destination() == p.sender() ) {
-                i->treatPacket(p);
-                return;
-            }
-        tcpSocket *tcp = new tcpSocket(this,p.sender(),tcpPacket::User,tcpPacket::User);
-        tcp->confirmConnection(p);
-        mySockets << tcp;
-        return;
-    }
-    udpPacket u(p.unpack());
-    int v = u.receiver();
-    foreach ( programm i , myProgramms ) {
-        if ( i->socket() == v && i->isEnable() ) {
-            i->execute(p);
-            break;
+    quint16 port = p.receiverSocket();
+    foreach ( abstractSocket *i, mySockets )
+        if ( i->isOurData(p.sender(),port) ) {
+            i->treatPacket(p);
+            return;
         }
-    }
+    if ( p.upProtocol() == UDP ) return;
+    tcpSocket *tcp = new tcpSocket(this,p.sender(),User,User);
+    tcp->confirmConnection(p);
 }
 //--------------------------------------------------
 /*!

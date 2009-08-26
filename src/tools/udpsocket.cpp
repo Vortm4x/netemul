@@ -5,7 +5,7 @@
 
 udpSocket::udpSocket(smartDevice *d, quint16 port) : abstractSocket(d)
 {
-    myBind = port;
+    myBindPort = port;
 }
 
 void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
@@ -23,10 +23,21 @@ void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
         p.setUpProtocol(ipPacket::udp);
         udpPacket udp;
         udp.setReceiver(port);
-        udp.setSender(myBind);
+        udp.setSender(myBindPort);
         udp.pack(tempArray);
         p.pack(udp.toData());
         dev->ipToAdapter(r->out)->sendPacket(p,gw);
     }
+}
+
+void udpSocket::treatPacket(ipPacket p)
+{
+    udpPacket udp(p.unpack());
+    buffer.enqueue(udp.unpack());
+}
+
+void udpSocket::read(QByteArray &data)
+{
+    data = buffer.dequeue();
 }
 
