@@ -1,3 +1,4 @@
+#include <QtGui/QMessageBox>
 #include "installdialog.h"
 #include "ripprogramm.h"
 #include "smartdevice.h"
@@ -17,6 +18,11 @@ void installDialog::setDevice(smartDevice *d)
 */
 void installDialog::install()
 {
+    if ( smart->hasProgramm( list->currentItem()->text() ) ) {
+            QMessageBox::warning(0,tr("Error") , tr("Program already installed.") ,
+                                 QMessageBox::Ok , QMessageBox::Ok );
+            return;
+    }
     int p = 0;
     switch (list->currentRow() ) {
         case 0:

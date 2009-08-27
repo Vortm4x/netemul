@@ -1,5 +1,4 @@
 #include <QtCore/QtDebug>
-#include <QtGui/QMessageBox>
 #include "smartdevice.h"
 #ifndef __TESTING__
 #include "routeeditor.h"
@@ -7,8 +6,6 @@
 #include "adapterproperty.h"
 #include "tablearp.h"
 #include "programmdialog.h"
-//#include "udppacket.h"
-//#include "tcppacket.h"
 #include "logdialog.h"
 #include "tcpsocket.h"
 #include "udpsocket.h"
@@ -411,12 +408,6 @@ void smartDevice::tableChanged(routeRecord *r,int n)
   */
 void smartDevice::installProgramm(programm p)
 {
-    foreach ( programm i , myProgramms )
-        if ( i->name() == p->name() )  {
-            QMessageBox::warning(0,tr("Error") , tr("Such a program already installed.") ,
-                                 QMessageBox::Ok , QMessageBox::Ok );
-            return;
-        }
     p->setDevice(this);
     myProgramms << p;
 }
@@ -428,6 +419,13 @@ statistics smartDevice::deviceStatistics() const
     foreach ( interface *i , myInterfaces )
         s += i->chipStatistics();
     return s;
+}
+
+bool smartDevice::hasProgramm(const QString name)
+{
+    foreach ( programm i , myProgramms )
+        if ( i->name() == name ) return true;
+    return false;
 }
 
 #endif

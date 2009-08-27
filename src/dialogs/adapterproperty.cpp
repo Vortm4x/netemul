@@ -160,7 +160,7 @@ void adapterProperty::deleteInterface()
     }
 
     if ( tab_interfaces->count() == 1 ) {
-        QMessageBox::warning(this,tr("Error") , tr("Must be at least one netcard") ,
+        QMessageBox::warning(this,tr("Error") , tr("At least a netcard must exist") ,
                              QMessageBox::Ok , QMessageBox::Ok );
         return;
     }

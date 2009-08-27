@@ -79,7 +79,7 @@ void testDialog::start()
         label->setText(tr("Script finished correctly"));
         label->setStyleSheet("background : green");
     } else {
-        label->setText(tr("Script finished is not correctly"));
+        label->setText(tr("Script not correctly finished"));
         label->setStyleSheet("background : red");
     }
     startButton->setEnabled(true);

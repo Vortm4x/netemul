@@ -461,7 +461,7 @@
          <item>
           <widget class="QLabel" name="label_5">
            <property name="text">
-            <string>Lifetime records of table switching</string>
+            <string>Switching table's records lifetime:</string>
            </property>
           </widget>
          </item>

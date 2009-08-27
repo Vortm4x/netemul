@@ -461,8 +461,12 @@
     </message>
     <message>
         <location filename="../src/chips/interface.cpp" line="94"/>
+        <source>The network found a matching IP address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>The network found a match ip-address! </source>
-        <translation>A rede encontrada corresponde ao endereço IP!</translation>
+        <translation type="obsolete">A rede encontrada corresponde ao endereço IP!</translation>
     </message>
     <message>
         <location filename="../src/tools/statistics.cpp" line="52"/>
@@ -523,7 +527,7 @@
     <name>aboutWindow</name>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="14"/>
-        <source>Dialog</source>
+        <source>About program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -532,24 +536,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="29"/>
+        <location filename="../src/forms/aboutwindow.ui" line="30"/>
+        <source>Program for simulating computer networks.
+
+(C) 2009 Semenov Pavel and Omilaeva Anastasia
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="42"/>
         <source>Authors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="34"/>
+        <location filename="../src/forms/aboutwindow.ui" line="48"/>
+        <source>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Home Page&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Semenov Pavel - Project admin. Developer.&lt;br&gt;
+&lt;br&gt;
+Omilaeva Anastasia - Developer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="59"/>
         <source>Thanks to</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../src/forms/aboutwindow.ui" line="39"/>
-        <source>Translation</source>
+    <message utf8="true">
+        <location filename="../src/forms/aboutwindow.ui" line="65"/>
+        <source>Konstantin Andreev - Author of the idea and creator of the icons, 
+
+Lisandro Damián Nicanor Pérez Meyer
+Márcio Moraes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="62"/>
-        <source>PushButton</source>
+        <location filename="../src/forms/aboutwindow.ui" line="76"/>
+        <source>Translation</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="../src/forms/aboutwindow.ui" line="82"/>
+        <source>Семенов Павел - Русский
+Márcio Moraes - Português brasileiro
+Lisandro Damián Nicanor Pérez Meyer - Español</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="110"/>
+        <source>Close</source>
+        <translation type="unfinished">Fechar</translation>
     </message>
 </context>
 <context>
@@ -602,8 +638,12 @@
     </message>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
+        <source>At least a netcard must exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Must be at least one netcard</source>
-        <translation>Deve ser pelo menos um adaptador</translation>
+        <translation type="obsolete">Deve ser pelo menos um adaptador</translation>
     </message>
 </context>
 <context>
@@ -787,6 +827,16 @@
         <location filename="../src/forms/installdialog.ui" line="91"/>
         <source>Close</source>
         <translation>Fechar</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/installdialog.cpp" line="22"/>
+        <source>Error</source>
+        <translation type="unfinished">Erro</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/installdialog.cpp" line="22"/>
+        <source>Program already installed.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1218,7 +1268,7 @@
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="151"/>
-        <location filename="../src/forms/settingdialog.ui" line="472"/>
+        <location filename="../src/forms/settingdialog.ui" line="477"/>
         <source> s</source>
         <translation> segundo</translation>
     </message>
@@ -1248,121 +1298,130 @@
         <translation>português brasileiro</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="257"/>
+        <location filename="../src/forms/settingdialog.ui" line="233"/>
+        <source>Spanish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="262"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>O número de interfaces por padrão:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="271"/>
+        <location filename="../src/forms/settingdialog.ui" line="276"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="276"/>
-        <location filename="../src/forms/settingdialog.ui" line="523"/>
+        <location filename="../src/forms/settingdialog.ui" line="281"/>
+        <location filename="../src/forms/settingdialog.ui" line="528"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="281"/>
+        <location filename="../src/forms/settingdialog.ui" line="286"/>
         <source>3</source>
         <translation>3</translation>
-    </message>
-    <message>
-        <location filename="../src/forms/settingdialog.ui" line="286"/>
-        <location filename="../src/forms/settingdialog.ui" line="339"/>
-        <location filename="../src/forms/settingdialog.ui" line="412"/>
-        <location filename="../src/forms/settingdialog.ui" line="528"/>
-        <source>4</source>
-        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="291"/>
         <location filename="../src/forms/settingdialog.ui" line="344"/>
         <location filename="../src/forms/settingdialog.ui" line="417"/>
         <location filename="../src/forms/settingdialog.ui" line="533"/>
-        <source>5</source>
-        <translation>5</translation>
+        <source>4</source>
+        <translation>4</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="296"/>
         <location filename="../src/forms/settingdialog.ui" line="349"/>
+        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="301"/>
+        <location filename="../src/forms/settingdialog.ui" line="354"/>
         <source>6</source>
         <translation>6</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="325"/>
+        <location filename="../src/forms/settingdialog.ui" line="330"/>
         <source>Number of ports by default</source>
         <translation>O número de portas por padrão</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="354"/>
-        <location filename="../src/forms/settingdialog.ui" line="422"/>
-        <location filename="../src/forms/settingdialog.ui" line="543"/>
+        <location filename="../src/forms/settingdialog.ui" line="359"/>
+        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="548"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="359"/>
-        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="364"/>
+        <location filename="../src/forms/settingdialog.ui" line="432"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="364"/>
-        <location filename="../src/forms/settingdialog.ui" line="437"/>
+        <location filename="../src/forms/settingdialog.ui" line="369"/>
+        <location filename="../src/forms/settingdialog.ui" line="442"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="369"/>
-        <location filename="../src/forms/settingdialog.ui" line="447"/>
+        <location filename="../src/forms/settingdialog.ui" line="374"/>
+        <location filename="../src/forms/settingdialog.ui" line="452"/>
         <source>48</source>
         <translation>48</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="398"/>
-        <location filename="../src/forms/settingdialog.ui" line="509"/>
+        <location filename="../src/forms/settingdialog.ui" line="403"/>
+        <location filename="../src/forms/settingdialog.ui" line="514"/>
         <source>Number of ports by default: </source>
         <translation>O número de portas por padrão: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="432"/>
+        <location filename="../src/forms/settingdialog.ui" line="437"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="442"/>
+        <location filename="../src/forms/settingdialog.ui" line="447"/>
         <source>32</source>
         <translation>32</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="459"/>
-        <source>Lifetime records of table switching</source>
-        <translation>Registros do tempo de vida da tabela do switch</translation>
+        <location filename="../src/forms/settingdialog.ui" line="464"/>
+        <source>Switching table&apos;s records lifetime:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <source>Lifetime records of table switching</source>
+        <translation type="obsolete">Registros do tempo de vida da tabela do switch</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="543"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="548"/>
+        <location filename="../src/forms/settingdialog.ui" line="553"/>
         <source>9</source>
         <translation>9</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="593"/>
+        <location filename="../src/forms/settingdialog.ui" line="598"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="604"/>
+        <location filename="../src/forms/settingdialog.ui" line="609"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="621"/>
+        <location filename="../src/forms/settingdialog.ui" line="626"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1370,19 +1429,17 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="384"/>
+        <location filename="../src/devices/smartdevice.cpp" line="381"/>
         <source>eth%1</source>
         <translation>eth%1</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="416"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation type="obsolete">Erro</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="416"/>
         <source>Such a program already installed.</source>
-        <translation>Esse programa já está instalado.</translation>
+        <translation type="obsolete">Esse programa já está instalado.</translation>
     </message>
     <message>
         <location filename="../src/devices/smartdevice.h" line="29"/>
@@ -1483,14 +1540,18 @@
 <context>
     <name>switchDevice</name>
     <message>
-        <location filename="../src/devices/switchdevice.h" line="29"/>
         <source>Table switching</source>
-        <translation>Tabela do switch</translation>
+        <translation type="obsolete">Tabela do switch</translation>
     </message>
     <message>
         <location filename="../src/devices/switchdevice.cpp" line="12"/>
         <source>&lt;b&gt;Switch&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Switch&lt;/b&gt;&lt;!--Você pode utilizar HTML.--&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/devices/switchdevice.h" line="29"/>
+        <source>Switching table</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1630,9 +1691,13 @@
         <translation>LAN%1</translation>
     </message>
     <message>
-        <location filename="../src/forms/tableswitch.ui" line="14"/>
         <source>Table switching</source>
-        <translation>Tabela do switch</translation>
+        <translation type="obsolete">Tabela do switch</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/tableswitch.ui" line="14"/>
+        <source>Switching table</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/tableswitch.ui" line="44"/>
@@ -1679,8 +1744,12 @@
     </message>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="82"/>
+        <source>Script not correctly finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Script finished is not correctly</source>
-        <translation>O script não foi finalizado corretamente</translation>
+        <translation type="obsolete">O script não foi finalizado corretamente</translation>
     </message>
     <message>
         <location filename="../src/forms/testdialog.ui" line="14"/>

@@ -102,12 +102,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Programs</source>
-        <translation type="unfinished"></translation>
+        <translation>Программы</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Programs installed on device</source>
-        <translation type="unfinished"></translation>
+        <translation>Установленные программы</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="101"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="68"/>
         <source>Do you really want to exit the program?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите выйти?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="231"/>
@@ -473,8 +473,12 @@
     </message>
     <message>
         <location filename="../src/chips/interface.cpp" line="94"/>
+        <source>The network found a matching IP address</source>
+        <translation>В сети обнаружено совпадение IP адресов</translation>
+    </message>
+    <message>
         <source>The network found a match ip-address! </source>
-        <translation>В сети обнаружены совпадающие ip адреса!</translation>
+        <translation type="obsolete">В сети обнаружены совпадающие ip адреса!</translation>
     </message>
     <message>
         <location filename="../src/tools/statistics.cpp" line="52"/>
@@ -534,34 +538,80 @@
 <context>
     <name>aboutWindow</name>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation type="obsolete">Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="14"/>
+        <source>About program</source>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="24"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="29"/>
+        <location filename="../src/forms/aboutwindow.ui" line="30"/>
+        <source>Program for simulating computer networks.
+
+(C) 2009 Semenov Pavel and Omilaeva Anastasia
+
+</source>
+        <translation>Программа для симуляции компьютерной сети.
+
+(C) 2009 Семенов Павел и Омилаева Анастасия
+
+</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="42"/>
         <source>Authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Авторы</translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="34"/>
+        <location filename="../src/forms/aboutwindow.ui" line="48"/>
+        <source>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Home Page&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Semenov Pavel - Project admin. Developer.&lt;br&gt;
+&lt;br&gt;
+Omilaeva Anastasia - Developer.</source>
+        <translation>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Домашняя страница&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Семенов павел - Администратор проекта, Разработчик.&lt;br&gt;
+&lt;br&gt;
+Омилаева Анастасия - Разработчик.</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/aboutwindow.ui" line="59"/>
         <source>Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>Благодарности</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../src/forms/aboutwindow.ui" line="65"/>
+        <source>Konstantin Andreev - Author of the idea and creator of the icons, 
+
+Lisandro Damián Nicanor Pérez Meyer
+Márcio Moraes</source>
+        <translation>Константин Андреев - Автор идеи проекта и создатель иконок, 
+
+Lisandro Damián Nicanor Pérez Meyer
+Márcio Moraes</translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="39"/>
+        <location filename="../src/forms/aboutwindow.ui" line="76"/>
         <source>Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевод</translation>
+    </message>
+    <message utf8="true">
+        <location filename="../src/forms/aboutwindow.ui" line="82"/>
+        <source>Семенов Павел - Русский
+Márcio Moraes - Português brasileiro
+Lisandro Damián Nicanor Pérez Meyer - Español</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/aboutwindow.ui" line="62"/>
-        <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/forms/aboutwindow.ui" line="110"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -614,8 +664,12 @@
     </message>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
+        <source>At least a netcard must exist</source>
+        <translation>Должен быть хотя бы один адаптер</translation>
+    </message>
+    <message>
         <source>Must be at least one netcard</source>
-        <translation>Должен остаться хотя бы один адаптер</translation>
+        <translation type="obsolete">Должен остаться хотя бы один адаптер</translation>
     </message>
 </context>
 <context>
@@ -623,7 +677,7 @@
     <message>
         <location filename="../src/chips/boxchip.cpp" line="108"/>
         <source>LAN%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -787,12 +841,12 @@
     <message>
         <location filename="../src/forms/installdialog.ui" line="44"/>
         <source>DHCP client</source>
-        <translation type="unfinished"></translation>
+        <translation>DHCP клиент</translation>
     </message>
     <message>
         <location filename="../src/forms/installdialog.ui" line="52"/>
         <source>DHCP server</source>
-        <translation type="unfinished"></translation>
+        <translation>DHCP сервер</translation>
     </message>
     <message>
         <location filename="../src/forms/installdialog.ui" line="80"/>
@@ -803,6 +857,16 @@
         <location filename="../src/forms/installdialog.ui" line="91"/>
         <source>Close</source>
         <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/installdialog.cpp" line="22"/>
+        <source>Error</source>
+        <translation>Ошибка</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/installdialog.cpp" line="22"/>
+        <source>Program already installed.</source>
+        <translation>Программа уже установлена.</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1350,7 @@
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="151"/>
-        <location filename="../src/forms/settingdialog.ui" line="472"/>
+        <location filename="../src/forms/settingdialog.ui" line="477"/>
         <source> s</source>
         <translation> сек</translation>
     </message>
@@ -1316,32 +1380,29 @@
         <translation>Бразильский португальский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="257"/>
+        <location filename="../src/forms/settingdialog.ui" line="233"/>
+        <source>Spanish</source>
+        <translation>Испанский</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="262"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>Количество интерфейсов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="271"/>
+        <location filename="../src/forms/settingdialog.ui" line="276"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="276"/>
-        <location filename="../src/forms/settingdialog.ui" line="523"/>
+        <location filename="../src/forms/settingdialog.ui" line="281"/>
+        <location filename="../src/forms/settingdialog.ui" line="528"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="281"/>
-        <source>3</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../src/forms/settingdialog.ui" line="286"/>
-        <location filename="../src/forms/settingdialog.ui" line="339"/>
-        <location filename="../src/forms/settingdialog.ui" line="412"/>
-        <location filename="../src/forms/settingdialog.ui" line="528"/>
-        <source>4</source>
+        <source>3</source>
         <translation></translation>
     </message>
     <message>
@@ -1349,88 +1410,100 @@
         <location filename="../src/forms/settingdialog.ui" line="344"/>
         <location filename="../src/forms/settingdialog.ui" line="417"/>
         <location filename="../src/forms/settingdialog.ui" line="533"/>
-        <source>5</source>
+        <source>4</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="296"/>
         <location filename="../src/forms/settingdialog.ui" line="349"/>
+        <location filename="../src/forms/settingdialog.ui" line="422"/>
+        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <source>5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="301"/>
+        <location filename="../src/forms/settingdialog.ui" line="354"/>
         <source>6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="325"/>
+        <location filename="../src/forms/settingdialog.ui" line="330"/>
         <source>Number of ports by default</source>
         <translation>Количество портов по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="354"/>
-        <location filename="../src/forms/settingdialog.ui" line="422"/>
-        <location filename="../src/forms/settingdialog.ui" line="543"/>
+        <location filename="../src/forms/settingdialog.ui" line="359"/>
+        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="548"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="359"/>
-        <location filename="../src/forms/settingdialog.ui" line="427"/>
+        <location filename="../src/forms/settingdialog.ui" line="364"/>
+        <location filename="../src/forms/settingdialog.ui" line="432"/>
         <source>12</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="364"/>
-        <location filename="../src/forms/settingdialog.ui" line="437"/>
+        <location filename="../src/forms/settingdialog.ui" line="369"/>
+        <location filename="../src/forms/settingdialog.ui" line="442"/>
         <source>24</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="369"/>
-        <location filename="../src/forms/settingdialog.ui" line="447"/>
+        <location filename="../src/forms/settingdialog.ui" line="374"/>
+        <location filename="../src/forms/settingdialog.ui" line="452"/>
         <source>48</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="398"/>
-        <location filename="../src/forms/settingdialog.ui" line="509"/>
+        <location filename="../src/forms/settingdialog.ui" line="403"/>
+        <location filename="../src/forms/settingdialog.ui" line="514"/>
         <source>Number of ports by default: </source>
         <translation>Количество портов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="432"/>
+        <location filename="../src/forms/settingdialog.ui" line="437"/>
         <source>16</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="442"/>
+        <location filename="../src/forms/settingdialog.ui" line="447"/>
         <source>32</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="459"/>
-        <source>Lifetime records of table switching</source>
-        <translation>Время жизни записей таблицы коммутации</translation>
+        <location filename="../src/forms/settingdialog.ui" line="464"/>
+        <source>Switching table&apos;s records lifetime:</source>
+        <translation>Время жизни записей таблицы коммутации:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="538"/>
+        <source>Lifetime records of table switching</source>
+        <translation type="obsolete">Время жизни записей таблицы коммутации</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="543"/>
         <source>7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="548"/>
+        <location filename="../src/forms/settingdialog.ui" line="553"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="593"/>
+        <location filename="../src/forms/settingdialog.ui" line="598"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="604"/>
+        <location filename="../src/forms/settingdialog.ui" line="609"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="621"/>
+        <location filename="../src/forms/settingdialog.ui" line="626"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1438,19 +1511,17 @@
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="384"/>
+        <location filename="../src/devices/smartdevice.cpp" line="381"/>
         <source>eth%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="416"/>
         <source>Error</source>
-        <translation>Ошибка</translation>
+        <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="416"/>
         <source>Such a program already installed.</source>
-        <translation>Такая программа уже установлена.</translation>
+        <translation type="obsolete">Такая программа уже установлена.</translation>
     </message>
     <message>
         <location filename="../src/devices/smartdevice.h" line="29"/>
@@ -1551,14 +1622,18 @@
 <context>
     <name>switchDevice</name>
     <message>
-        <location filename="../src/devices/switchdevice.h" line="29"/>
         <source>Table switching</source>
-        <translation>Таблица коммутации</translation>
+        <translation type="obsolete">Таблица коммутации</translation>
     </message>
     <message>
         <location filename="../src/devices/switchdevice.cpp" line="12"/>
         <source>&lt;b&gt;Switch&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Коммутатор&lt;/b&gt;&lt;!--Вы можете использовать HTML.--&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/devices/switchdevice.h" line="29"/>
+        <source>Switching table</source>
+        <translation>Таблица коммутации</translation>
     </message>
 </context>
 <context>
@@ -1698,8 +1773,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/tableswitch.ui" line="14"/>
         <source>Table switching</source>
+        <translation type="obsolete">Таблица коммутации</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/tableswitch.ui" line="14"/>
+        <source>Switching table</source>
         <translation>Таблица коммутации</translation>
     </message>
     <message>
@@ -1747,8 +1826,12 @@
     </message>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="82"/>
-        <source>Script finished is not correctly</source>
+        <source>Script not correctly finished</source>
         <translation>Скрипт завершился не корректно</translation>
+    </message>
+    <message>
+        <source>Script finished is not correctly</source>
+        <translation type="obsolete">Скрипт завершился не корректно</translation>
     </message>
     <message>
         <location filename="../src/forms/testdialog.ui" line="14"/>

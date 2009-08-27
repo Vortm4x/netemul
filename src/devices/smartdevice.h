@@ -70,6 +70,7 @@ public:
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
+    bool hasProgramm(const QString name);
     ipAddress gateway() const;
     routeModel* routeTable() { return myRouteTable; }
     QList<arpModel*> arpModels();

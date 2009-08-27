@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>About program</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -45,7 +45,10 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>TextLabel</string>
+          <string>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Home Page&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Semenov Pavel - Project admin. Developer.&lt;br&gt;
+&lt;br&gt;
+Omilaeva Anastasia - Developer.</string>
          </property>
         </widget>
        </item>
@@ -55,11 +58,34 @@
       <attribute name="title">
        <string>Thanks to</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEdit">
+         <property name="plainText">
+          <string>Konstantin Andreev - Author of the idea and creator of the icons, 
+
+Lisandro Damián Nicanor Pérez Meyer
+Márcio Moraes</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tab_4">
       <attribute name="title">
        <string>Translation</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEdit_2">
+         <property name="plainText">
+          <string>Семенов Павел - Русский
+Márcio Moraes - Português brasileiro
+Lisandro Damián Nicanor Pérez Meyer - Español</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -84,7 +110,7 @@
         <string>Close</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -93,7 +119,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>Close</sender>
