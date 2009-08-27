@@ -83,6 +83,7 @@ public slots:
     void setCheckedSocket(const QString &str);
     void tableChanged(routeRecord*,int n);
     void setIp(const QString &a, const QString &ip);
+    QString ipaddress(const QString &name) const;
     void setMask(const QString &a, const QString &ip);
     void setGateway(const QString &str);
     virtual quint64 sendPacketCount(const QString &name) { return adapter(name)->countSendPacket(); }

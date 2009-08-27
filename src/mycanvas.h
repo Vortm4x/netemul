@@ -78,6 +78,7 @@ public slots:
     deviceImpl* addHub(int x,int y);
     deviceImpl* addRouter(int x,int y);
     textItem* addNote(int x, int y);
+    QObjectList computerList();
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
     device* deviceWithImpl(deviceImpl *d);

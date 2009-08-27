@@ -338,6 +338,11 @@ void smartDevice::setIp(const QString &a, const QString &ip)
     connectedNet(adapter(a));
 }
 
+QString smartDevice::ipaddress(const QString &name) const
+{
+    return adapter(name)->ip().toString();
+}
+
 void smartDevice::setMask(const QString &a, const QString &ip)
 {
     isDirty = true;

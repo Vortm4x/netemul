@@ -653,6 +653,13 @@ void myCanvas::play()
     myTimer = startTimer( appSetting::animateSpeed() );
 }
 
+QObjectList myCanvas::computerList()
+{
+    QObjectList temp;
+    foreach ( device *i , myDevices )
+        if ( i->isCanSend() ) temp << i->contentDevice();
+    return temp;
+}
 
 
 

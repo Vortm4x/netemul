@@ -9,7 +9,7 @@ class abstractSocket
 {
 public:
     abstractSocket(smartDevice *d);
-    ~abstractSocket();
+    virtual ~abstractSocket();
     bool isOurData(ipAddress address, quint16 port);
     void setBind(ipAddress address) { myBind = address; }
     ipAddress destination() { return dest; }
