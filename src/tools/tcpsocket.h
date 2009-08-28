@@ -8,16 +8,17 @@
 class tcpSocket : public abstractSocket
 {
 public:
-    enum { Sequence = 5000 };
-    tcpSocket(smartDevice *d,ipAddress a,quint16 sp,quint16 rp);
-    void setSize(int s);
+    enum { Sequence = 5000, PACKET_SIZE = 1024 };
+    tcpSocket(smartDevice *d,quint16 port);
     void setConnection();
     void treatPacket(ipPacket p);
     void confirmConnection(ipPacket p);
     void secondEvent();
-private:    
+    void write(ipAddress a, quint16 p, QByteArray data);
+protected:
     void sendMessage(ipPacket p) const;
     tcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;
+private:    
     quint16 sender;
     quint16 receiver;
     quint32 seq;

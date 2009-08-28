@@ -169,8 +169,9 @@ ipAddress smartDevice::gateway() const
 void smartDevice::sendMessage( const QString &a , int size ,int type)
 {
     if ( type == TCP )  {
-        tcpSocket *tcp = new tcpSocket(this,a,tcpPacket::User,tcpPacket::User);
-        tcp->setSize(size);
+        tcpSocket *tcp = new tcpSocket(this,User);
+        QByteArray temp(size*1024, '0');
+        tcp->write(a,User,temp);
         tcp->setConnection();
         return;
     }
@@ -192,7 +193,7 @@ void smartDevice::treatPacket(ipPacket &p)
             return;
         }
     if ( p.upProtocol() == UDP ) return;
-    tcpSocket *tcp = new tcpSocket(this,p.sender(),User,User);
+    tcpSocket *tcp = new tcpSocket(this,User);
     tcp->confirmConnection(p);
 }
 //--------------------------------------------------

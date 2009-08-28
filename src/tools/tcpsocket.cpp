@@ -3,24 +3,31 @@
 #include "smartdevice.h"
 #include "routemodel.h"
 
-tcpSocket::tcpSocket(smartDevice *d,ipAddress a, quint16 sp, quint16 rp) : abstractSocket(d)
+tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
 {
-    sender = sp;
-    receiver = rp;
-    dest = a;
+    myBindPort = port;
     seq = qrand()%Sequence;
     inputTime = 0;
     lastNum = 0;
+    buffer.clear();
 }
 
-void tcpSocket::setSize(int s)
+void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
 {
-    for ( quint32 i = seq; i < seq + s-1; i++ ) {
-        tcpPacket p = createPacket( i, 0, tcpPacket::NO_FLAGS);
-        buffer.insert(i,p);
+    dest = a;
+    receiver = p;
+    quint32 count = 0;
+    while ( quint32 size = data.size() )
+        if ( size >= PACKET_SIZE ) {
+            count++;
+            data.remove(0,PACKET_SIZE);            
+        }
+    for ( quint32 i = seq; i < seq + count-1; i++ ) {
+        tcpPacket t = createPacket( i, 0, tcpPacket::NO_FLAGS);
+        buffer.insert(i,t);
     }
-    tcpPacket p = createPacket(seq + s, 0, tcpPacket::FIN);
-    buffer.insert(seq + s, p);
+        tcpPacket t = createPacket(seq + count-1, 0, tcpPacket::FIN);
+        buffer.insert(seq + count-1, t);
 }
 
 void tcpSocket::setConnection()
@@ -60,6 +67,7 @@ void tcpSocket::treatPacket(ipPacket p)
             return;
         }
         for ( int j = 0; j < tcpPacket::Window; j++ ) {
+            if ( j == buffer.size() ) return;
             tcpPacket t = buffer.value( j + tcp.ack() );
             ipPacket a;
             a.pack( t.toData() );
@@ -75,7 +83,7 @@ void tcpSocket::treatPacket(ipPacket p)
 tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
 {
     tcpPacket t;
-    t.setSender(sender);
+    t.setSender(myBindPort);
     t.setReceiver(receiver);
     t.setSequence( sequence );
     t.setAck(ack);
@@ -87,6 +95,8 @@ tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) co
 void tcpSocket::confirmConnection(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
+    receiver = tcp.sender();
+    dest = p.sender();
     tcpPacket t = createPacket(0, tcp.sequence(), tcpPacket::ACK);
     ipPacket a;
     a.pack(t.toData());

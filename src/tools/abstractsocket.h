@@ -15,7 +15,7 @@ public:
     ipAddress destination() { return dest; }
     virtual void treatPacket(ipPacket) { }
     virtual void secondEvent() { }
-    virtual void write(QByteArray) { }
+    virtual void write(ipAddress, quint16, QByteArray) { }
     virtual void read(QByteArray,int) { }
 protected:
     quint16 myBindPort;

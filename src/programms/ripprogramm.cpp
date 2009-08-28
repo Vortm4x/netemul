@@ -1,8 +1,8 @@
+#include <QtDebug>
 #include "ripprogramm.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
 #include "routemodel.h"
-#include <QtDebug>
 
 /*!
   Инициализирует программу стандартными настройками.
