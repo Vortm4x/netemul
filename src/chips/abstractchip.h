@@ -27,6 +27,7 @@ public:
     abstractChip();
     virtual ~abstractChip() { }
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
+    virtual int trafficDigit() const = 0;
     QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
     void checkSend(frame &f);

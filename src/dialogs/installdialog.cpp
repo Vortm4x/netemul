@@ -6,6 +6,7 @@
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void installDialog::setDevice(smartDevice *d)

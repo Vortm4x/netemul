@@ -18,12 +18,15 @@ class testDialog : public QDialog , private Ui::testDialog {
 public:
     explicit testDialog(myCanvas *c,QWidget *parent = 0);
     virtual ~testDialog();
-public slots:
-    void start();
-    void selectAll(bool c);
 protected:
     virtual void changeEvent(QEvent *e);
+private slots:
+    void start();
+    void selectAll(bool c);
+    void selectChange();
+    void setScriptPath();
 private:
+    void updateList();
     QScriptEngine engine;
 #ifdef __NO_TOOLS__
     QScriptEngineDebugger debugger;

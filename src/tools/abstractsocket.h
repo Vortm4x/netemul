@@ -5,22 +5,23 @@
 
 class smartDevice;
 
-class abstractSocket
+class abstractSocket : public QObject
 {
+    Q_OBJECT
 public:
+    abstractSocket() { dev = 0; }
     abstractSocket(smartDevice *d);
     virtual ~abstractSocket();
     bool isOurData(ipAddress address, quint16 port);
     void setBind(ipAddress address) { myBind = address; }
-    ipAddress destination() { return dest; }
     virtual void treatPacket(ipPacket) { }
     virtual void secondEvent() { }
     virtual void write(ipAddress, quint16, QByteArray) { }
-    virtual void read(QByteArray,int) { }
+signals:
+    void readyRead(QByteArray);
 protected:
     quint16 myBindPort;
     ipAddress myBind;
-    ipAddress dest;
     smartDevice *dev;
 };
 

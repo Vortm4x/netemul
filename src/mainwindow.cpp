@@ -38,6 +38,11 @@ MainWindow::MainWindow(QWidget *parent)
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
+// Create label
+    sendCaption = new QLabel("HELLO");
+    sendCaption->setStyleSheet("color : red");
+    statusBar()->addPermanentWidget(sendCaption);
+//------------------------
     createScene(); // Создаем сцену
     setEnabledFileItems( myFile.length() );
     view = new QGraphicsView(canva,this);
@@ -325,6 +330,7 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
+    connect( canva , SIGNAL(sendStateChange(QString)), sendCaption , SLOT(setText(QString)));
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
@@ -507,7 +513,18 @@ void MainWindow::test()
 //Help=)
 void MainWindow::helpDialog()
 {
-
+    QString t;
+    switch ( appSetting::language() ) {
+        case 1: t = "ru"; break;
+        default: t = "en";
+    }
+#ifdef Q_WS_MACX
+    QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
+                                   + "/../../../doc/"+t+"/index.html"));
+#else
+    QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
+                                   +"/doc/"+t+"/index.html"));
+#endif
 }
 
 /*!

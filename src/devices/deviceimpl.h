@@ -51,6 +51,7 @@ public:
     virtual bool isCanSend() const { return false; }
 
     virtual statistics deviceStatistics() const = 0;
+    virtual int trafficDigit() const = 0;
 
     virtual bool isRouter() const { qFatal("No router!"); return false; }
     virtual void setRouter(bool) { qFatal("No router!"); }

@@ -53,7 +53,7 @@ void programmDialog::add()
     installDialog *d = new installDialog;
     d->setDevice( s );
     d->exec();
-    delete d;
+    btn_ok->setFocus();
     updateList();
 }
 //-----------------------------------------------------

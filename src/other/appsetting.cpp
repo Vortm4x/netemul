@@ -15,6 +15,8 @@ bool appSetting::_defaultHubManual = false;
 bool appSetting::_defaultSwitchManual = false;
 int appSetting::_speed = 100;
 int appSetting::_language = 0;
+int appSetting::_arpResponceTime = 45;
+QString appSetting::_scriptPath = "";
 QTranslator* appSetting::mas[LANGUAGE_COUNT];
 
 appSetting::appSetting()
@@ -33,7 +35,9 @@ void appSetting::readSetting()
     _defaultSwitchCount = setting.value("switch/socketCount",4).toInt() ;
     _defaultRouterCount = setting.value("router/socketCount",4).toInt() ;
     _defaultHubManual = setting.value("hub/manual",false).toBool() ;
+    _arpResponceTime = setting.value("netcard/responcetime",45).toInt();
     _defaultSwitchManual = setting.value("switch/manual",false).toBool() ;
+    _scriptPath = setting.value("main/scriptPath","./test").toString();
     _ttlArp = setting.value("ttl/Arp",1200).toInt() ;
     _ttlMac = setting.value("ttl/Mac",300).toInt();
     _speed = setting.value("main/speed",100).toInt();
@@ -50,10 +54,12 @@ void appSetting::writeSetting()
     setting.setValue("router/socketCount" , _defaultRouterCount );
     setting.setValue("hub/manual", _defaultHubManual );
     setting.setValue("switch/manual", _defaultSwitchManual );
+    setting.setValue("netcard/responcetime",_arpResponceTime);
     setting.setValue("ttl/Arp", _ttlArp );
     setting.setValue("ttl/Mac", _ttlMac );
     setting.setValue("main/speed",_speed);
     setting.setValue("main/language", _language);
+    setting.setValue("main/scriptPath",_scriptPath);
 }
 
 void appSetting::setLanguage(int n)

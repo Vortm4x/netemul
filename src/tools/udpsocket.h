@@ -7,15 +7,14 @@
 
 class udpSocket : public abstractSocket
 {
+    Q_OBJECT
 public:
     enum { PACKET_SIZE = 1024 };
+    udpSocket() { }
     udpSocket(smartDevice *d, quint16 port);
+    ~udpSocket() { }
     void treatPacket(ipPacket p);
-    int sizeReceiveData() const { return buffer.size(); }
     void write(ipAddress address, quint16 port, QByteArray data);
-    void read(QByteArray &data);
-private:
-    QQueue<QByteArray> buffer;
 };
 
 #endif // UDPSOCKET_H

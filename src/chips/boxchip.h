@@ -19,6 +19,7 @@ public:
     bool isConnectSocket(const QString &str) const;
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
+    int trafficDigit() const;
     QString socketName(const cableDev *c) const;
     virtual void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }

@@ -33,11 +33,6 @@ void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
 void udpSocket::treatPacket(ipPacket p)
 {
     udpPacket udp(p.unpack());
-    buffer.enqueue(udp.unpack());
-}
-
-void udpSocket::read(QByteArray &data)
-{
-    data = buffer.dequeue();
+    emit readyRead( udp.unpack() );
 }
 

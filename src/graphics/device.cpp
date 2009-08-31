@@ -89,6 +89,12 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     }
     else painter->setBrush(Qt::red);
     painter->drawEllipse(-17,-17,6,6);
+    int traffic = impl->trafficDigit();
+    if ( !traffic ) return;
+    traffic = traffic/5+1;
+    traffic = qMin( traffic , 40 );
+    painter->setPen(QPen(Qt::green,3));
+    painter->drawLine(-20, 19, -20+traffic, 19);
 }
 
 void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

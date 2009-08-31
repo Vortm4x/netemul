@@ -108,6 +108,14 @@ void boxChip::setCheckedSocket(const QString &port)
         i->setChecked( tr("LAN%1").arg(i->num()) == port );
 }
 
+int boxChip::trafficDigit() const
+{
+    int sum = 0;
+    foreach ( devicePort *i, mySockets )
+        sum += i->trafficDigit();
+    return sum;
+}
+
 #ifndef __TESTING__
 void boxChip::write(QDataStream &stream) const
 {

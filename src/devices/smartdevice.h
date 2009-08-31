@@ -52,12 +52,12 @@ public:
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a, int size ,int type);
-    void receivePacket(ipPacket &p,interface *f);
     void treatPacket(ipPacket &p);
     void routePacket(ipPacket &p);
     void connectedNet(interface *p);
     void deciSecondTimerEvent();
     void secondTimerEvent();
+    int trafficDigit() const;
     ipAddress findInterfaceIp(ipAddress a);
     programm programmAt(const quint16 p) const;
     programm programmAt(const QString n) const;
@@ -80,6 +80,7 @@ public:
     friend class ripProgramm;
     friend class adapterSetting;
 public slots:
+    void receivePacket(ipPacket p);
     void setCheckedSocket(const QString &str);
     void tableChanged(routeRecord*,int n);
     void setIp(const QString &a, const QString &ip);

@@ -4,7 +4,6 @@
 #include "deviceport.h"
 #include "appsetting.h"
 #include "arpmodel.h"
-//#include <QtDebug>
 
 interface::interface(const QString &name) : myName(name)
 {
@@ -16,6 +15,7 @@ interface::~interface()
 {
     delete mySocket;
     delete myArpTable;
+    qDeleteAll(myWaits);
 }
 
 void interface::pushToSocket(frame &f)
@@ -31,7 +31,7 @@ void interface::receiveEvent(frame &fr,devicePort*)
     emit receiveData(fr,myName);
     if ( fr.type() == frame::ip ) {
         ipPacket p(fr.unpack());
-        receiveIp(p);
+        emit receivedPacket(p);
     }
     if ( fr.type() == frame::arp ) {
         arpPacket p(fr.unpack());
@@ -64,12 +64,13 @@ void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */
         pushToSocket(f);
         return;
     }
-    if ( myWaits.contains( t ) ) {
-        myWaits.insert(t,p);
-        return;
-    }
+    foreach ( waitPacket *i , myWaits )
+        if ( i->dest == t ) {
+            i->insert(p);
+            return;
+        }
     sendArpRequest(t);
-    myWaits.insert(t,p);
+    myWaits << waitPacket::create(t,p);
 }
 
 frame interface::createFrame( macAddress receiverMac, int t)
@@ -81,11 +82,6 @@ frame interface::createFrame( macAddress receiverMac, int t)
     return f;
 }
 
-void interface::receiveIp(ipPacket &ip)
-{
-    buffer.enqueue(ip);
-}
-
 void interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
@@ -95,9 +91,13 @@ void interface::receiveArp(arpPacket &arp)
                                  QMessageBox::Ok, QMessageBox::Ok);
         }
         myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
-        QList<ipPacket> packets = myWaits.values( arp.senderIp() );
-        for ( int i = 0; i < packets.size() ; i++ ) sendPacket( packets[i] , arp.senderIp() );
-        Q_ASSERT( packets.size() == myWaits.remove( arp.senderIp() ) );
+        foreach ( waitPacket *i , myWaits )
+            if ( i->dest == arp.senderIp() ) {
+                foreach ( ipPacket p, i->packets ) sendPacket(p,arp.senderIp());
+                myWaits.removeOne(i);
+                delete i;
+                break;
+            }
     }
     else {
         arpRecord *t = myArpTable->addToTable(arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
@@ -137,6 +137,18 @@ void interface::deciSecondEvent()
 void interface::secondEvent()
 {
     myArpTable->update();
+    int time = appSetting::arpResponceTime()+qrand()%20;
+    foreach ( waitPacket *i , myWaits ) {
+        if ( ++i->time < time ) continue;
+        if ( i->count <= COUNT_AGAINST_SEND ) {
+            i->time = 0;
+            i->count++;
+            sendArpRequest( i->dest );
+        } else {
+            myWaits.removeOne(i);
+            delete i;
+        }
+    }
 }
 
 void interface::sendArpRequest(ipAddress a)
@@ -174,7 +186,24 @@ void interface::read(QDataStream &stream)
 
 bool interface::isBusy() const
 {
-    return mySocket->isBusy() || !buffer.isEmpty();
+    return mySocket->isBusy();
 }
 
+int interface::trafficDigit() const
+{
+    int sum = 0;
+    foreach ( waitPacket *i , myWaits ) sum += i->packets.size();
+    return mySocket->trafficDigit() + sum;
+}
+//-------------------------------------------------------
+//-------------------------------------------------------
+
+waitPacket* waitPacket::create(ipAddress a,ipPacket p)
+{
+    waitPacket *t = new waitPacket;
+    t->dest = a;
+    t->packets << p;
+    t->time = t->count = 0;
+    return t;
+}
 

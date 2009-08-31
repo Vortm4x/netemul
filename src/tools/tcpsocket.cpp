@@ -9,13 +9,20 @@ tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
     seq = qrand()%Sequence;
     inputTime = 0;
     lastNum = 0;
+    isEnd = false;
+    isConnected = false;
     buffer.clear();
+}
+
+tcpSocket::~tcpSocket()
+{
+
 }
 
 void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
 {
-    dest = a;
-    receiver = p;
+    myBind = a;
+    myReceiverPort = p;
     quint32 count = 0;
     while ( quint32 size = data.size() )
         if ( size >= PACKET_SIZE ) {
@@ -24,10 +31,11 @@ void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
         }
     for ( quint32 i = seq; i < seq + count-1; i++ ) {
         tcpPacket t = createPacket( i, 0, tcpPacket::NO_FLAGS);
-        buffer.insert(i,t);
+        buffer << t;
     }
-        tcpPacket t = createPacket(seq + count-1, 0, tcpPacket::FIN);
-        buffer.insert(seq + count-1, t);
+    tcpPacket t = createPacket(seq + count-1, 0, tcpPacket::FIN);
+    buffer << t;
+    if ( !isConnected ) setConnection();
 }
 
 void tcpSocket::setConnection()
@@ -43,11 +51,11 @@ void tcpSocket::setConnection()
 void tcpSocket::sendMessage(ipPacket p) const
 {
     ipAddress gw;
-    routeRecord *r = dev->myRouteTable->recordAt(dest);
+    routeRecord *r = dev->myRouteTable->recordAt(myBind);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     p.setSender(r->out);
-    p.setReceiver(dest);
+    p.setReceiver(myBind);
     p.setUpProtocol(smartDevice::TCP);
     dev->ipToAdapter(r->out)->sendPacket(p,gw);
 }
@@ -55,28 +63,32 @@ void tcpSocket::sendMessage(ipPacket p) const
 void tcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
-    if ( tcp.flag() == tcpPacket::ACK ) {
-        if ( seq == tcp.ack() ) timeout = 2*time;
-        QMap<quint32,tcpPacket>::iterator i = buffer.begin();
+    if ( tcp.flag() == tcpPacket::ACK) {
+        panicTime = 0;
+        if ( seq == tcp.ack() ) {
+            timeout = 2*time;
+            isConnected = true;
+        }
+        QList<tcpPacket>::iterator i = buffer.begin();
         while( i != buffer.end() ) {
-            if ( i.key() < tcp.ack() ) buffer.remove(i.key());
+            if ( i->sequence() < tcp.ack() ) buffer.erase(i);
             ++i;
         }
         if ( buffer.isEmpty() ) {
             timeout = 0;
+            emit writeEnd();
             return;
         }
-        for ( int j = 0; j < tcpPacket::Window; j++ ) {
-            if ( j == buffer.size() ) return;
-            tcpPacket t = buffer.value( j + tcp.ack() );
-            ipPacket a;
-            a.pack( t.toData() );
-            sendMessage(a);
-        }
+        sendWindow();
     }
     else {
+        if ( !isConnected ) {
+            confirmConnection(p);
+            return;
+        }
         inputTime = time;
         lastNum = tcp.sequence();
+        if ( tcp.flag() == tcpPacket::FIN ) isEnd = true;
     }
 }
 
@@ -84,7 +96,7 @@ tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) co
 {
     tcpPacket t;
     t.setSender(myBindPort);
-    t.setReceiver(receiver);
+    t.setReceiver(myReceiverPort);
     t.setSequence( sequence );
     t.setAck(ack);
     t.setFlag(flag);
@@ -94,18 +106,35 @@ tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) co
 
 void tcpSocket::confirmConnection(ipPacket p)
 {
+    isConnected = true;
     tcpPacket tcp(p.unpack());
-    receiver = tcp.sender();
-    dest = p.sender();
+    myReceiverPort = tcp.sender();
+    myBind = p.sender();
     tcpPacket t = createPacket(0, tcp.sequence(), tcpPacket::ACK);
     ipPacket a;
     a.pack(t.toData());
     sendMessage(a);
 }
 
+void tcpSocket::sendWindow()
+{
+    for ( int j = 0; j < tcpPacket::Window; j++ ) {
+        if ( j == buffer.size() ) return;
+        tcpPacket t = buffer.at(j);
+        ipPacket a;
+        a.pack( t.toData() );
+        sendMessage(a);
+    }
+}
+
 void tcpSocket::secondEvent()
 {
     time++;
+    if ( time > 45 && !isConnected ) {
+        deleteLater();
+        return;
+    }
+    if ( ++panicTime == timeout ) sendWindow();
     if ( lastNum && (time - inputTime) >= 2 ) {
         tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
         ipPacket a;
@@ -113,5 +142,6 @@ void tcpSocket::secondEvent()
         sendMessage(a);
         inputTime = 0;
         lastNum = 0;
+        if (isEnd) emit receiveEnd();
     }
 }

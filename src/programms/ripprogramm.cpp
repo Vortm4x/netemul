@@ -10,7 +10,7 @@
 */
 ripProgramm::ripProgramm()
 {
-    myName = QObject::tr("RIP");
+    myName = tr("RIP");
     mySocket = 520;
     interval = defaultTtl;
     timer = qrand()%30;
@@ -35,6 +35,7 @@ void ripProgramm::setDevice(smartDevice *s)
     model = sd->routeTable();
     receiver = new udpSocket(s,mySocket);
     receiver->setBind("0.0.0.0");
+    connect( receiver , SIGNAL(readyRead(QByteArray)) , SLOT(execute(QByteArray)) );
 }
 /*!
   Отсчитывает интервалы, по истечении которых
@@ -43,11 +44,6 @@ void ripProgramm::setDevice(smartDevice *s)
 void ripProgramm::incTime()
 {
     if ( !sd->isRouter() ) return;
-    while ( receiver->sizeReceiveData() ) {
-        QByteArray data;
-        receiver->read(data);
-        execute(data);
-    }
     timer++;
     if ( timer >= interval ) {
         sendUpdate(true);
@@ -117,7 +113,7 @@ void ripProgramm::sendUpdate(bool isAll)
         d << quint16(b.size()-2);
         ipAddress temp = i->ip() | ~i->mask();
         udpSocket sock(sd, mySocket);
-        sock.write(temp,mySocket,b);
+        sock.write(temp,mySocket,b);        
     }
     if (tempList.size()) clearTemp();
     model->deleteOldRecord(ttl);

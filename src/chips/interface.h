@@ -1,16 +1,24 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include <QMultiMap>
-#include <QQueue>
-
 #include "abstractchip.h"
 #include "ippacket.h"
 #include "arppacket.h"
 
-struct arpRecord;
 class cableDev;
 class arpModel;
+
+static const quint8 COUNT_AGAINST_SEND = 5;
+
+struct waitPacket
+{
+    ipAddress dest;
+    int time;
+    quint8 count;
+    QList<ipPacket> packets;
+    void insert(ipPacket p) { packets << p; }
+    static waitPacket* create(ipAddress a,ipPacket p);
+};
 
 class interface : public abstractChip
 {
@@ -32,12 +40,10 @@ public:
     void secondEvent();
     void sendArpRequest(ipAddress a);
     void sendArpResponse(macAddress m, ipAddress a);
+    int trafficDigit() const;
     bool isBusy() const;
 
-    ipPacket popPacket() { return buffer.dequeue(); }    
     frame createFrame( macAddress receiverMac , int t);
-    bool hasReceive() const { return !buffer.isEmpty(); }
-    ipPacket popFromReceive() { return buffer.dequeue(); }
     void setChecked(bool b);
     arpModel* arpTable() const { return myArpTable; }
 
@@ -45,13 +51,14 @@ public:
     virtual void read(QDataStream &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
+signals:
+    void receivedPacket(ipPacket);
 private:
     void pushToSocket(frame &f);
     QString myName;
-    QQueue<ipPacket> buffer; //!< Очередь входящих ip-пакетов.
     devicePort *mySocket;
     arpModel *myArpTable;
-    QMultiMap<ipAddress,ipPacket> myWaits;
+    QList<waitPacket*> myWaits;
 };
 
 #endif // INTERFACE_H

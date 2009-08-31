@@ -5,6 +5,8 @@ settingDialog::settingDialog()
 {
     setupUi(this);
 
+    sp_arpResponce->setValue( appSetting::arpResponceTime() );
+
     sp_ttlArp->setValue( appSetting::ttlArp() );
 
     computerComboBox->setCurrentIndex( computerComboBox->findText(QString::number(
@@ -21,7 +23,7 @@ settingDialog::settingDialog()
     routerComboBox->setCurrentIndex( routerComboBox->findText(QString::number(
             appSetting::defaultRouterCount() ) ) );
 
-    int s = 10000 / appSetting::animateSpeed() / 20;
+    int s = main_digit / appSetting::animateSpeed() / little_digit;
     sl_speed->setValue(s);
 
     languageBox->setCurrentIndex( appSetting::language() );
@@ -44,8 +46,9 @@ void settingDialog::apply()
     appSetting::setDefaultSwitchCount(  switchComboBox->currentText().toInt() );
     appSetting::setDefaultRouterCount(  routerComboBox->currentText().toInt() );
     appSetting::setTtlArp( sp_ttlArp->value() );
+    appSetting::setArpResponceTime( sp_arpResponce->value() );
     appSetting::setTtlMac( sp_ttlMac->value() );
-    int s = 10000 / (sl_speed->value()*20);
+    int s = main_digit / (sl_speed->value()*little_digit);
     appSetting::setAnimateSpeed(s);
     appSetting::setLanguage( languageBox->currentIndex() );
     if ( sender() == btn_ok ) accept();

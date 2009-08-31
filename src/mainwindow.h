@@ -16,6 +16,7 @@ class QComboBox;
 class QMenu;
 class QAction;
 class QGraphicsView;
+class QLabel;
 
 /*!
     Реализует главное окно программы.
@@ -54,6 +55,7 @@ protected:
       bool eventFilter(QObject *obj, QEvent *event);
       void changeEvent(QEvent *e);
 private:
+        QLabel *sendCaption;
         QString myFile; // Имя текущего файла
         myCanvas *canva;
         sceneControl *sceneControler;

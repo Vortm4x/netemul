@@ -21,6 +21,7 @@ smartDevice::smartDevice() : myRouter(false)
 
 smartDevice::~smartDevice()
 {
+    myProgramms.clear();
     qDeleteAll(mySockets);
     qDeleteAll(myInterfaces);
 }
@@ -43,6 +44,7 @@ interface* smartDevice::addInterface(const QString &name)
 {
     interface *t = new interface(name);
     myInterfaces << t;
+    connect( t, SIGNAL(receivedPacket(ipPacket)) , SLOT(receivePacket(ipPacket)) );
     return t;
 }
 
@@ -53,8 +55,9 @@ interface* smartDevice::ipToAdapter(const ipAddress a)
     return NULL;
 }
 
-void smartDevice::receivePacket(ipPacket &p, interface *f)
+void smartDevice::receivePacket(ipPacket p)
 {
+    interface *f = qobject_cast<interface*>(sender());
     if ( p.receiver() == f->ip() || p.isBroadcast(f->mask()) ) treatPacket(p);
     else routePacket(p);
 }
@@ -172,7 +175,7 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
         tcpSocket *tcp = new tcpSocket(this,User);
         QByteArray temp(size*1024, '0');
         tcp->write(a,User,temp);
-        tcp->setConnection();
+        connect(tcp, SIGNAL(writeEnd()), tcp, SLOT(deleteLater()));
         return;
     }
     udpSocket socket(this, User );
@@ -189,12 +192,13 @@ void smartDevice::treatPacket(ipPacket &p)
     quint16 port = p.receiverSocket();
     foreach ( abstractSocket *i, mySockets )
         if ( i->isOurData(p.sender(),port) ) {
-            i->treatPacket(p);
+            i->treatPacket(p);            
             return;
         }
     if ( p.upProtocol() == UDP ) return;
     tcpSocket *tcp = new tcpSocket(this,User);
-    tcp->confirmConnection(p);
+    tcp->treatPacket(p);
+    connect(tcp, SIGNAL(receiveEnd()), tcp, SLOT(deleteLater()));
 }
 //--------------------------------------------------
 /*!
@@ -313,13 +317,8 @@ QString smartDevice::socketName(const cableDev *c) const
 
 void smartDevice::deciSecondTimerEvent()
 {
-    foreach ( interface *i , myInterfaces ) {
-        if ( i->hasReceive() ) {
-            ipPacket p = i->popFromReceive();
-            receivePacket(p,i);
-        }
+    foreach ( interface *i , myInterfaces )
         i->deciSecondEvent();
-    }
 }
 
 void smartDevice::secondTimerEvent()
@@ -432,6 +431,14 @@ bool smartDevice::hasProgramm(const QString name)
     foreach ( programm i , myProgramms )
         if ( i->name() == name ) return true;
     return false;
+}
+
+int smartDevice::trafficDigit() const
+{
+    int sum = 0;
+    foreach ( interface *i , myInterfaces )
+        sum += i->trafficDigit();
+    return sum;
 }
 
 #endif

@@ -6,8 +6,9 @@
 class device;
 class smartDevice;
 
-class programmRep
+class programmRep : public QObject
 {
+    Q_OBJECT
 public:
     friend class programm;
     programmRep();

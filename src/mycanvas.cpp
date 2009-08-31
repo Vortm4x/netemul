@@ -9,6 +9,7 @@
 #include "selectrect.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QGraphicsView>
 #include <QMenu>
 #include <QAction>
 #include <QPainter>
@@ -151,6 +152,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         } else {
                             myState = oneSendItem;
                             SendEllipse->chooseOneDevice();
+                            emit sendStateChange(tr("Choose receiver!"));
                         }
                     }
                     delete temp;
@@ -161,6 +163,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         senderDevice->sendMessage(receiverIp,messageSize,protocol);
                         emit uncheck();
                         setMode( myCanvas::move , myCanvas::noDev);
+                        emit sendStateChange("");
                     }
                     delete temp;
                 }
@@ -357,6 +360,7 @@ void myCanvas::setMode(int modScene,int curDev)
     nowMode = modScene;
     nowType = curDev;
     myState = noSendItem;
+    views().first()->setCursor(Qt::ArrowCursor);
     setSelectionArea( QPainterPath() );
     if ( InsertRect ) {
         removeItem(InsertRect);
@@ -374,6 +378,8 @@ void myCanvas::setMode(int modScene,int curDev)
             addItem(InsertRect);
             break;
         case send:
+            views().first()->setCursor(Qt::PointingHandCursor);
+            emit sendStateChange(tr("Choose sender!"));
             SendEllipse = new sendEllipse;
             addItem(SendEllipse);
             break;

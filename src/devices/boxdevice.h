@@ -19,6 +19,7 @@ public:
     void setManual(bool c) { myManual = c; }
     bool isManual() { return myManual; }
     void deciSecondTimerEvent();
+    int trafficDigit() const { return chip->trafficDigit(); }
     virtual void secondTimerEvent() { }
     virtual void showLogDialog(logDialog *log) const;
     bool isBusy() const { return chip->isBusy(); }

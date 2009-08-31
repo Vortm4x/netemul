@@ -43,6 +43,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>Set path</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="checkBox">
          <property name="text">
           <string>All</string>
@@ -84,8 +91,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>106</y>
+     <x>352</x>
+     <y>78</y>
     </hint>
     <hint type="destinationlabel">
      <x>377</x>
@@ -93,5 +100,41 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>testDialog</receiver>
+   <slot>setScriptPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>303</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>336</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>startButton</sender>
+   <signal>clicked()</signal>
+   <receiver>testDialog</receiver>
+   <slot>start()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>35</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>252</x>
+     <y>9</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>setScriptPath()</slot>
+  <slot>start()</slot>
+ </slots>
 </ui>

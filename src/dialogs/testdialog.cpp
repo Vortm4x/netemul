@@ -1,8 +1,10 @@
 #include <QtCore/QtDebug>
 #include <QtCore/QFile>
+#include <QtGui/QFileDialog>
 #include "testdialog.h"
 #include "mycanvas.h"
 #include "deviceimpl.h"
+#include "appsetting.h"
 
 QScriptValue ObjectToScript(QScriptEngine *engine, deviceImpl* const &in)
 {
@@ -28,13 +30,8 @@ void ObjectFromScriptItem(const QScriptValue &object, textItem* &out)
 testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
-    canva = c;
-    QDir t("test");
-    QStringList h;
-    h << "*.js";
-    QStringList s = t.entryList(h);
-    foreach ( QString i , s)
-        listWidget->addItem( i.remove(".js") );
+    canva = c;   
+    updateList();
     QScriptValue p = engine.newQObject(c);
 #ifdef __NO_TOOLS__
     debugger.attachTo(&engine);
@@ -43,9 +40,20 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
     engine.globalObject().setProperty("scene",p);
     qScriptRegisterMetaType(&engine, ObjectToScript, ObjectFromScript);
     qScriptRegisterMetaType(&engine, ObjectToScriptItem, ObjectFromScriptItem);
-    connect( startButton , SIGNAL(clicked()), this , SLOT(start()));
     connect( checkBox , SIGNAL(toggled(bool)) , SLOT(selectAll(bool)));
+    connect( listWidget , SIGNAL(currentRowChanged(int)) , SLOT(selectChange()));
     setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void testDialog::updateList()
+{
+    listWidget->clear();
+    QDir t(appSetting::scriptPath());
+    QStringList h;
+    h << "*.js";
+    QStringList s = t.entryList(h);
+    foreach ( QString i , s)
+        listWidget->addItem( i.remove(".js") );
 }
 
 testDialog::~testDialog()
@@ -113,5 +121,20 @@ void testDialog::selectAll(bool c)
     else {
         if (listWidget->count() ) listWidget->setCurrentRow(0);
     }
+}
+
+void testDialog::setScriptPath()
+{
+    QString name = QFileDialog::getExistingDirectory( this,
+                   tr("Choose a directory with scripts"), appSetting::scriptPath() );
+    if ( name.isEmpty() ) return;
+    appSetting::setScriptPath(name);
+    updateList();
+}
+
+void testDialog::selectChange()
+{
+    label->setText(tr("Click start"));
+    label->setStyleSheet("");
 }
 

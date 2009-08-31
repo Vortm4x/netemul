@@ -5,6 +5,7 @@
 
 class dhcpClientProgramm : public programmRep
 {
+    Q_OBJECT
 public:
     dhcpClientProgramm();
 };

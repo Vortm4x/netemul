@@ -16,7 +16,7 @@ class deviceImpl;
 class insertRect;
 class sendEllipse;
 class selectRect;
-//class statisticsScene;
+
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
     вся графическая функциональность программы. Наследник от QGraphicsScene, он получил
@@ -36,7 +36,6 @@ public:
     enum sendState { noSendItem = 0 , oneSendItem = 1 };
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
-   // int getMode() { return nowMode; } // Получить текущий режим
     device* addDeviceOnScene(QPointF coor, int myType); // Добавить устройство на сцену
     void deleteConnection(cableDev *cable);
     void hideInsertRect();
@@ -57,6 +56,7 @@ public:
     int cablesCount() const { return connections.size(); }
     ~myCanvas();
 signals:
+    void sendStateChange(QString);
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
     void fileClosed(); //!< Сообщает главному окну о закрытии файла

@@ -28,6 +28,7 @@ public:
     void pushToSend(frame &f) { senderQueue.enqueue(f); }
     bool isCableConnect(const cableDev *c) const;
 #ifndef __TESTING__
+    int trafficDigit() const { return senderQueue.size(); }
     void setConnect(bool cur,cableDev *cable);
     frame popFromReceive() { return receiveQueue.dequeue(); }
     void receiveFrame(QByteArray &b);

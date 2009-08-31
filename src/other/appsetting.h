@@ -1,6 +1,7 @@
 #ifndef APPSETTING_H
 #define APPSETTING_H
 
+#include <QString>
 class QTranslator;
 
 static const int LANGUAGE_COUNT = 4;
@@ -20,8 +21,12 @@ public:
     static bool defaultHubManual() { return _defaultHubManual; }
     static void setDefaultSwitchManual(bool b) { _defaultSwitchManual = b; }
     static bool defaultSwitchManual() { return _defaultSwitchManual; }
+    static void setScriptPath(const QString path) { _scriptPath = path; }
+    static QString scriptPath() { return _scriptPath; }
     static void setTtlArp(int n) { _ttlArp = n; }
     static int ttlArp() { return _ttlArp; }
+    static void setArpResponceTime(int n) { _arpResponceTime = n; }
+    static int arpResponceTime() { return _arpResponceTime; }
     static void setTtlMac(int n) { _ttlMac = n; }
     static int ttlMac() { return _ttlMac; }
     static void setAnimateSpeed(int n) { _speed = n; }
@@ -42,6 +47,8 @@ private:
     static int _language;
     static bool _defaultHubManual;
     static bool _defaultSwitchManual;
+    static int _arpResponceTime;
+    static QString _scriptPath;
 protected:
     appSetting();
     ~appSetting();
