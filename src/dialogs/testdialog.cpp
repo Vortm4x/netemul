@@ -96,7 +96,7 @@ void testDialog::start()
 bool testDialog::test(QString s)
 {
     qDebug() << s << " started";
-    QString g = appSetting::scriptPath()+s+".js";
+    QString g = appSetting::scriptPath()+"/"+s+".js";
     QFile file(g);
     file.open(QIODevice::ReadOnly);
     QString temporary = file.readAll();
