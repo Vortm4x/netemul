@@ -74,11 +74,6 @@ public:
     ipAddress gateway() const;
     routeModel* routeTable() { return myRouteTable; }
     QList<arpModel*> arpModels();
-    friend class tcpSocket;
-    friend class udpSocket;
-    friend class abstractSocket;
-    friend class ripProgramm;
-    friend class adapterSetting;
 public slots:
     void receivePacket(ipPacket p);
     void setCheckedSocket(const QString &str);
@@ -105,6 +100,15 @@ protected:
     routeModel *myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+// FRIENDS:
+public:
+    friend class tcpSocket;
+    friend class udpSocket;
+    friend class abstractSocket;
+    friend class ripProgramm;
+    friend class adapterSetting;
+    friend class dhcpClientProgramm;
+    friend class dhcpServerProgramm;
 };
 //-------------------------------------------------------------------
 /*!

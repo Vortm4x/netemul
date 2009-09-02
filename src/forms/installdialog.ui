@@ -43,16 +43,10 @@
         <property name="text">
          <string>DHCP client</string>
         </property>
-        <property name="flags">
-         <set>ItemIsDragEnabled|ItemIsUserCheckable</set>
-        </property>
        </item>
        <item>
         <property name="text">
          <string>DHCP server</string>
-        </property>
-        <property name="flags">
-         <set>ItemIsDragEnabled|ItemIsUserCheckable</set>
         </property>
        </item>
       </widget>
@@ -80,7 +74,7 @@
         <string>Install</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
       </widget>
@@ -91,7 +85,7 @@
         <string>Close</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -100,9 +94,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../netemul.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>btn_close</sender>

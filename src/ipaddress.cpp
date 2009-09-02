@@ -81,9 +81,16 @@ ipAddress ipAddress::operator |(const ipAddress &e1) const
 
 bool ipAddress::isEmpty() const
 {
-    int i,d = 0;
-    for ( i = 0 ; i < 4 ; i++ ) d += myIp[i];
+    int d = 0;
+    for ( int i = 0 ; i < 4 ; i++ ) d += myIp[i];
     return !d;
+}
+
+bool ipAddress::isFull() const
+{
+    for ( int i = 0 ; i < 4 ; i++ )
+        if ( myIp[i] != 255 ) return false;
+    return true;
 }
 
 ipAddress ipAddress::operator ~() const

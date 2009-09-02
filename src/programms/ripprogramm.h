@@ -35,7 +35,6 @@ private:
     void addToTemp(routeRecord *r);
     void clearTemp();
     QList<routeRecord*> tempList;
-    smartDevice *sd;
     int timer;
     int interval;
     routeModel *model;

@@ -24,13 +24,8 @@ void installDialog::install()
                                  QMessageBox::Ok , QMessageBox::Ok );
             return;
     }
-    int p = 0;
-    switch (list->currentRow() ) {
-        case 0:
-            p = programm::RIP;
-            break;
-    }
-    programm a(p);
+    if ( list->currentRow() < 0 ) return;
+    programm a(list->currentRow()+50);
     smart->installProgramm(a);
     accept();
 }

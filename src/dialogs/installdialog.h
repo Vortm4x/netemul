@@ -5,6 +5,8 @@
 
 class smartDevice;
 
+static const int MAGIC_START_PROGRAMM_NUMBER = 50;
+
 /*!
   Реализует диалог установки программ.
 */

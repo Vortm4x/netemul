@@ -27,7 +27,7 @@
        <item>
         <widget class="QLabel" name="lb_prog">
          <property name="text">
-          <string>Installed programms</string>
+          <string>Installed programs</string>
          </property>
         </widget>
        </item>
@@ -60,7 +60,7 @@
           <string>Add</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../netemul.qrc">
            <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
          </property>
         </widget>
@@ -71,7 +71,7 @@
           <string>Delete</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../netemul.qrc">
            <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
          </property>
         </widget>
@@ -95,7 +95,7 @@
           <string>Ok</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../netemul.qrc">
            <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
          </property>
         </widget>
@@ -106,7 +106,7 @@
           <string>Cancel</string>
          </property>
          <property name="icon">
-          <iconset>
+          <iconset resource="../../netemul.qrc">
            <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
          </property>
         </widget>
@@ -117,7 +117,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btn_cancel</sender>

@@ -56,7 +56,6 @@ public:
     int cablesCount() const { return connections.size(); }
     ~myCanvas();
 signals:
-    void sendStateChange(QString);
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
     void fileClosed(); //!< Сообщает главному окну о закрытии файла

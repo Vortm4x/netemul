@@ -38,11 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню
-// Create label
-    sendCaption = new QLabel("HELLO");
-    sendCaption->setStyleSheet("color : red");
-    statusBar()->addPermanentWidget(sendCaption);
-//------------------------
     createScene(); // Создаем сцену
     setEnabledFileItems( myFile.length() );
     view = new QGraphicsView(canva,this);
@@ -330,7 +325,6 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
-    connect( canva , SIGNAL(sendStateChange(QString)), sendCaption , SLOT(setText(QString)));
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
@@ -406,7 +400,6 @@ void MainWindow::setting()
     settingDialog *d = new settingDialog;
     d->applyDisable();
     d->exec();
-    delete d ;
     canva->setAnimateSpeed( appSetting::animateSpeed() );
 }
 
@@ -560,10 +553,6 @@ void MainWindow::aboutDialog()
 {
     aboutWindow *w = new aboutWindow;
     w->show();
-//    QMessageBox::about(this, tr("About NetEmul"),
-//                       tr("<h2>NetEmul 0.8.5</h2>"
-//                          "<p>NetEmul is a program for the simulation"
-//                          " of the computer network.</p>"));
 }
 
 void MainWindow::changeEvent(QEvent *e)

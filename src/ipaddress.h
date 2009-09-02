@@ -16,6 +16,7 @@ public:
     QString toString() const;
     bool isEmpty() const;
     bool isLoopBack() const { return myIp[0] == 127; }
+    bool isFull() const;
     unsigned int toInt() const;
     quint8 at(int i) const { return myIp[i]; }
     ipAddress& operator=(const ipAddress &other);

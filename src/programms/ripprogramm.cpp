@@ -189,7 +189,7 @@ void ripProgramm::addToTemp(routeRecord *r)
 */
 void ripProgramm::write(QDataStream &stream) const
 {
-    stream << (int)RIP;
+    stream << RIP;
     programmRep::write(stream);
 }
 //---------------------------------------------------

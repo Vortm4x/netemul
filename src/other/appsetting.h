@@ -5,6 +5,8 @@
 class QTranslator;
 
 static const int LANGUAGE_COUNT = 4;
+static const int main_digit = 10000;
+static const int little_digit = 20;
 
 class appSetting
 {
@@ -29,8 +31,9 @@ public:
     static int arpResponceTime() { return _arpResponceTime; }
     static void setTtlMac(int n) { _ttlMac = n; }
     static int ttlMac() { return _ttlMac; }
-    static void setAnimateSpeed(int n) { _speed = n; }
-    static int animateSpeed() { return _speed; }
+    static void setAnimateSpeed(int n) { _speed = main_digit / (n*little_digit); }
+    static int animateSpeed() { return main_digit / _speed / little_digit; }
+    static int realAnimateSpeed() { return _speed; }
     static void setLanguage(int n);
     static int language() { return _language; }
     static void readSetting();

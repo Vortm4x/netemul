@@ -17,6 +17,7 @@ QString udpPacket::typeToString() const
     switch ( d->receiver ) {
         case User: return QObject::tr("UDP Message user");
         case RIP: return QObject::tr("RIP");
+        case DHCPClient: case DHCPServer: return QObject::tr("DHCP message");
         default: return QObject::tr("None");
     }
 }

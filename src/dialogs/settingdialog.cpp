@@ -23,10 +23,12 @@ settingDialog::settingDialog()
     routerComboBox->setCurrentIndex( routerComboBox->findText(QString::number(
             appSetting::defaultRouterCount() ) ) );
 
-    int s = main_digit / appSetting::animateSpeed() / little_digit;
+    int s = appSetting::animateSpeed();
     sl_speed->setValue(s);
 
     languageBox->setCurrentIndex( appSetting::language() );
+
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void settingDialog::applyDisable()
@@ -48,8 +50,7 @@ void settingDialog::apply()
     appSetting::setTtlArp( sp_ttlArp->value() );
     appSetting::setArpResponceTime( sp_arpResponce->value() );
     appSetting::setTtlMac( sp_ttlMac->value() );
-    int s = main_digit / (sl_speed->value()*little_digit);
-    appSetting::setAnimateSpeed(s);
+    appSetting::setAnimateSpeed(sl_speed->value());
     appSetting::setLanguage( languageBox->currentIndex() );
     if ( sender() == btn_ok ) accept();
 }

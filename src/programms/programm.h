@@ -7,7 +7,7 @@
 class programm
 {
 public:
-    enum { RIP = 50 };
+    enum { RIP = 50 , DHCPClient = 51 , DHCPServer = 52 };
     programm() { qFatal("Error programm constructor!"); }
     programm(int n);
     programm(QDataStream &stream);

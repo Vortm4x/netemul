@@ -33,6 +33,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     p2Rect = QPoint();
     InsertRect = 0 ;
     SendEllipse = 0;
+    myTimer = 0;
     myState = noSendItem;
     prevMode = move;
     prevType = noDev;
@@ -152,7 +153,6 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         } else {
                             myState = oneSendItem;
                             SendEllipse->chooseOneDevice();
-                            emit sendStateChange(tr("Choose receiver!"));
                         }
                     }
                     delete temp;
@@ -163,7 +163,6 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                         senderDevice->sendMessage(receiverIp,messageSize,protocol);
                         emit uncheck();
                         setMode( myCanvas::move , myCanvas::noDev);
-                        emit sendStateChange("");
                     }
                     delete temp;
                 }
@@ -379,7 +378,6 @@ void myCanvas::setMode(int modScene,int curDev)
             break;
         case send:
             views().first()->setCursor(Qt::PointingHandCursor);
-            emit sendStateChange(tr("Choose sender!"));
             SendEllipse = new sendEllipse;
             addItem(SendEllipse);
             break;
@@ -649,14 +647,15 @@ int myCanvas::animateSpeed() const
 
 void myCanvas::setAnimateSpeed(int n)
 {
+    if (!myTimer ) return;
     killTimer(myTimer);
-    myTimer = startTimer(n);
     appSetting::setAnimateSpeed(n);
+    myTimer = startTimer(appSetting::realAnimateSpeed());
 }
 
 void myCanvas::play()
 {
-    myTimer = startTimer( appSetting::animateSpeed() );
+    myTimer = startTimer( appSetting::realAnimateSpeed() );
 }
 
 QObjectList myCanvas::computerList()

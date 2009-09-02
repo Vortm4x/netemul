@@ -23,7 +23,7 @@ private:
 class udpPacket
 {
 public:
-    enum { User = 7777 , RIP = 520 } ;
+    enum { User = 7777 , RIP = 520 , DHCPClient = 67, DHCPServer = 68 } ;
     udpPacket() { d = new udpPacketData; }
     udpPacket(const QByteArray &b);
     udpPacket(const udpPacket &u) : d(u.d) { }

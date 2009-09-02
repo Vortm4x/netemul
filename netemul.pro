@@ -8,16 +8,12 @@ include(src/other/other.pri)
 include(src/graphics/graphics.pri)
 include(src/forms/forms.pri)
 include(src/tools/tools.pri)
-
 TEMPLATE = app
-
 TARGET = netemul
-
 DEPENDPATH += . \
     src \
     ui \
     src/chips
-
 INCLUDEPATH += . \
     src \
     src/chips \
@@ -29,29 +25,23 @@ INCLUDEPATH += . \
     src/other \
     src/graphics \
     src/tools
-
 QT += script
-
-win32 {
+win32 { 
     DESTDIR = ../trunk
     message("Static link ...")
     DEFINES += QT_NO_DEBUG_OUTPUT
     CONFIG += static
 }
-macx {
-    message("You have MACX...")
-}
-
+macx:message("You have MACX...")
 CONFIG += warn_on
-contains(QT_CONFIG, opengl) {
+contains(QT_CONFIG, opengl) { 
     message("OpenGL connected ...")
     QT += opengl
 }
-debug:contains(QT_CONFIG, scripttools) {
+debug:contains(QT_CONFIG, scripttools) { 
     message("Debugger connected ...")
     QT += scripttools
 }
-
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = src
@@ -68,7 +58,6 @@ HEADERS += src/arppacket.h \
     src/mycanvas.h \
     src/udppacket.h \
     src/tcppacket.h
-
 SOURCES += src/arppacket.cpp \
     src/deviceport.cpp \
     src/frame.cpp \
@@ -81,37 +70,25 @@ SOURCES += src/arppacket.cpp \
     src/mycanvas.cpp \
     src/udppacket.cpp \
     src/tcppacket.cpp
-
 RESOURCES += netemul.qrc
-
 TRANSLATIONS += translation/netemul_ru.ts \
     translation/netemul_pt_BR.ts \
     translation/netemul_es.ts
-
-unix {
+unix { 
     CONFIG += debug
-
+    
     # Prefix: base instalation directory
-    isEmpty( PREFIX ){
-        PREFIX = /usr/local
-    }
-
+    isEmpty( PREFIX ):PREFIX = /usr/local
     DEB_BUILD = $$system(echo \$DEB_BUILD_OPTIONS)
-    contains(DEB_BUILD, nostrip){
-        QMAKE_STRIP =:
-    }
-
+    contains(DEB_BUILD, nostrip):QMAKE_STRIP = :
     DEFINES += PREFIX=\\\"$${PREFIX}\\\"
     target.path = $${PREFIX}/bin
     INSTALLS = target
-
+    
     # Translations
     translations.path = $${PREFIX}/share/netemul
-    translations.files = \
-    ../translation/netemul_es.qm \
-    ../translation/netemul_pt_BR.qm \
-    ../translation/netemul_ru.qm
-
+    translations.files = ../translation/netemul_es.qm \
+        ../translation/netemul_pt_BR.qm \
+        ../translation/netemul_ru.qm
     INSTALLS += translations
-
 }

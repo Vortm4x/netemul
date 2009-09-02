@@ -10,6 +10,10 @@ udpSocket::udpSocket(smartDevice *d, quint16 port) : abstractSocket(d)
 
 void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
 {
+    if ( address.isFull() ) {
+        writeBroadcast(port,data);
+        return;
+    }
     ipAddress gw;
     routeRecord *r = dev->myRouteTable->recordAt(address);
     if ( !r ) return;
@@ -34,5 +38,21 @@ void udpSocket::treatPacket(ipPacket p)
 {
     udpPacket udp(p.unpack());
     emit readyRead( udp.unpack() );
+}
+
+void udpSocket::writeBroadcast(quint16 port, QByteArray data)
+{
+    Q_ASSERT( data.size() <= PACKET_SIZE ); // Нельзя рассылать широковешательно много данных
+    foreach ( interface *i , dev->myInterfaces ) {
+        if ( !i->isConnect() ) continue;
+        ipPacket p( i->ip() , ipAddress::full() );
+        p.setUpProtocol(ipPacket::udp);
+        udpPacket udp;
+        udp.setReceiver(port);
+        udp.setSender(myBindPort);
+        udp.pack(data);
+        p.pack(udp.toData());
+        i->sendPacket(p);
+    }
 }
 

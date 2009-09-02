@@ -5,9 +5,6 @@
 
 #include "ui_settingdialog.h"
 
-static const int main_digit = 10000;
-static const int little_digit = 20;
-
 class settingDialog : public QDialog , private Ui::settingDialog
 {
     Q_OBJECT
