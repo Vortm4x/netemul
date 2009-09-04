@@ -6,48 +6,73 @@
 </head>
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-<TR><TH COLSPAN="3" ALIGN="center">Руководство NetEmul</TH>
+<TR><TH COLSPAN="3" ALIGN="center">Manual NetEmul</TH>
 </TR>
-<TR><TD WIDTH="10%" ALIGN="left" VALIGN="bottom"><A HREF="mac.html">Пред.</A></TD>
+<TR><TD WIDTH="10%" ALIGN="left" VALIGN="bottom"><A HREF="mac.html">Prev.</A></TD>
 <TD WIDTH="80%" ALIGN="center" VALIGN="bottom"></TD>
-<TD WIDTH="10%" ALIGN="right" VALIGN="bottom"><A HREF="howto.html">След.</A></TD>
+<TD WIDTH="10%" ALIGN="right" VALIGN="bottom"><A HREF="howto.html">Next</A></TD>
 </TR>
 </table>
 <hr>
-<h1>Ip-адрес</h1>
-<p>IP-адрес (ай-пи адрес, сокращение от англ. Internet Protocol Address) — уникальный идентификатор (адрес) устройства (обычно компьютера), подключённого к локальной сети и (или) интернету.<br>
-IP-адрес представляет собой 32-битовое (по версии IPv4) или 128-битовое (по версии IPv6) двоичное число. Удобной формой записи IP-адреса (IPv4) является запись в виде четырёх десятичных чисел (от 0 до 255), разделённых точками, например, 192.168.0.1. (или 128.10.2.30 — традиционная десятичная форма представления адреса, а 10000000 00001010 00000010 00011110 — двоичная форма представления этого же адреса).<br>
-IP-адреса представляют собой основной тип адресов, на основании которых сетевой уровень протокола IP передаёт пакеты между сетями. IP-адрес назначается администратором во время конфигурирования компьютеров и маршрутизаторов.<br>
-IP-адрес состоит из двух частей: номера сети и номера узла. В случае изолированной сети её адрес может быть выбран администратором из специально зарезервированных для таких сетей блоков адресов (192.168.0.0/16, 172.16.0.0/12 или 10.0.0.0/8).<br>
-Номер узла в протоколе IP назначается независимо от локального адреса узла. Маршрутизатор по определению входит сразу в несколько сетей. Поэтому каждый порт маршрутизатора имеет собственный IP-адрес. Конечный узел также может входить в несколько IP-сетей. В этом случае компьютер должен иметь несколько IP-адресов, по числу сетевых связей. Таким образом, IP-адрес характеризует не отдельный компьютер или маршрутизатор, а одно сетевое соединение.</p>
-<p>В протоколе IP существует несколько соглашений об особой интерпретации IP-адресов:
-<ul><li>если весь IP-адрес состоит только из двоичных нулей, то он обозначает адрес того узла, который сгенерировал этот пакет; этот режим используется только в некоторых сообщениях ICMP;</li>
-<li>если в поле номера сети стоят только нули, то по умолчанию считается, что узел назначения принадлежит той же самой сети, что и узел, который отправил пакет; этот режим используется только в некоторых сообщениях ICMP;</li>
-<li>если все двоичные разряды IP-адреса равны 1, то пакет с таким адресом назначения должен рассылаться всем узлам, находящимся в той же сети, что и источник этого пакета. Такая рассылка называется ограниченным широковещательным сообщением (limited broadcast);</li>
-<li>если в поле номера узла назначения стоят только единицы, то пакет, имеющий такой адрес, рассылается всем узлам сети с заданным номером сети. Например, в сети 192.190.21.0 с маской 255.255.255.0 пакет с адресом 192.190.21.255 доставляется всем узлам этой сети. Такая рассылка называется широковещательным сообщением (broadcast).</li></ul>
+<h1>Ip-address</h1>
+<p>Ip-address - the unique identifier (address) devices (usually the computer), connected to a local area network and (or) to the Internet.<br>
+Ip-address represents 32-bit (under version IPv4) or 128-bit (under version IPv6) binary number. The convenient form of record of 
+ip-address (IPv4) is record in the form of four decimal numbers (from 0 to 255), divided by points, for example, 192.168.0.1. 
+(Or 128.10.2.30 — the traditional decimal form of representation of the address, and 10000000 00001010 00000010 00011110 — the binary 
+form of representation the same address).<br>
+Ip-addresses represent the main type of addresses on which basis IP protocol network layer transfers packages between networks. 
+Ip-address is assigned by network manager during configuration of computers and routers.<br>
+Ip-address consists of two parts: numbers of a network and site number. In case of the isolated network its address can be selected the 
+network manager from blocks of addresses specially reserved for such networks (192.168.0.0/16 172.16.0.0/12 or 10.0.0.0/8).<br>
+The host address in IP protocol is assigned irrespective of the address of the local interface. The router by definition 
+enters at once into some networks.Therefore each port of a router has own ip-address. The computer host also can enter into 
+some IP-networks. In this case the computer should have some ip-addresses, on number of network links. Thus, ip-address characterizes 
+not the separate computer or a router, and one network connection.</p>
+<p>In IP protocol there are some agreements on special interpretation of ip-addresses:
+<ul><li>If all ip-address consists only of binary zero it designates the address of that site which has generated this package, 
+this mode is used only in some messages ICMP;</li>
+<li>If in the field of network number there are only zero by default it is considered that the assignment site belongs to the same network, 
+as the site which has sent a package; this mode is used only in some messages ICMP;</li>
+<li>If all bits of ip-address are equal 1 the package with such address of assignment should be dispatched to all sites which are in the 
+same network, as a source of this package. Such dispatch is named as the limited broadcasting message (limited broadcast);</li>
+<li>If in the field of number of the site of assignment there are only units the package having such address, is dispatched to all net 
+points with set number of a network. For example, in a network 192.190.21.0 with a mask 255.255.255.0 package with 192.190.21.255 address 
+is supplied to all sites of this network. Such dispatch is named as the broadcasting message (broadcast).</li></ul>
 </p>
-<h1>Маска</h1>
-<p>В терминологии сетей TCP/IP маской подсети или маской сети называется битовая маска, определяющая, какая часть IP-адреса узла сети относится к адресу сети, а какая — к адресу самого узла в этой сети. Например, узел с IP-адресом 12.34.56.78 и маской подсети 255.255.255.0 находится в сети 12.34.56.0/24.<br>
-Другой вариант определения — это определение подсети IP-адресов. Например, с помощью маски подсети можно сказать, что один диапазон IP-адресов будет в одной подсети, а другой диапазон соответственно в другой подсети.<br>
-Чтобы получить адрес сети, зная IP-адрес и маску подсети, необходимо применить к ним операцию поразрядной конъюнкции (логическое И). Например, в случае более сложной маски (битовые операции в IPv6 выглядят идентично):</p>
+<h1>Network mask</h1>
+<p>In terminology of networks TCP/IP the bit pattern defining is named as a mask of a subnet or a network mask, what part of ip-address 
+of a net point concerns the network address, and what — to the address of the site in this network. For example, the site with ip-address 
+12.34.56.78 and a mask of a subnet 255.255.255.0 is in a network 12.34.56.0/24.<br>
+Other variant of definition is a definition of a subnet of ip-addresses. For example, by means of a subnet mask it is possible to tell that 
+one range of ip-addresses will be in one subnet, and other range accordingly in other subnet.<br>
+To receive the network address, knowing ip-address and a subnet mask, it is necessary to apply to them operation of digit-by-digit 
+conjunction (logical). For example, in case of more difficult mask (bit operations in IPv6 look identically):</p>
 <p>
 <table border="1" cellpadding="5" cellspacing="0">
-<tr><td>IP-адрес:</td><td>11000000 10101000 00000001 00000010</td><td>(192.168.1.2)</td></tr>
-<tr><td>Маска подсети:</td><td>11111111 11111111 11111111 00000000</td><td>(255.255.255.0)</td></tr>
-<tr><td>Адрес сети:</td><td>11000000 10101000 00000001 00000000</td><td>(192.168.1.0)</td></tr>
+<tr><td>IP-address:</td><td>11000000 10101000 00000001 00000010</td><td>(192.168.1.2)</td></tr>
+<tr><td>Subnet mask:</td><td>11111111 11111111 11111111 00000000</td><td>(255.255.255.0)</td></tr>
+<tr><td>Network address:</td><td>11000000 10101000 00000001 00000000</td><td>(192.168.1.0)</td></tr>
 </table>
 </p>
-<h1>Arp-протокол</h1>
-<p>ARP (англ. Address Resolution Protocol — протокол разрешения адресов) — сетевой протокол канального уровня, предназначенный для преобразования IP-адресов (адресов сетевого уровня) в MAC-адреса (адреса канального уровня) в сетях TCP/IP.</p>
-<p>ARP (протокол разрешения адресов) — очень распространённый и чрезвычайно важный протокол. Каждый узел сети имеет два адреса, физический адрес и логический адрес. В сети Ethernet для идентификации источника и получателя информации используются оба адреса. Информация пересылаемая от одного компьютера другому по сети содержит в себе физический адрес отправителя, IP-адрес отправителя, физический адрес получателя и IP-адрес получателя. ARP-протокол обеспечивает связь между этими двумя адресами. Существует четыре типа ARP-сообщений: ARP-запрос (ARP request), ARP-ответ (ARP reply), RARP-запрос (RARP-request) и RARP-ответ (RARP-reply). Локальный хост при помощи ARP-запроса запрашивает физический адрес хоста-получателя. Ответ (физический адрес хоста-получателя) приходит в виде ARP-ответа. Хост-получатель, вместе с ответом, шлёт также RARP-запрос, адресованный отправителю, для того, чтобы проверить его IP-адрес. После проверки IP-адреса отправителя начинается передача пакетов данных. Записи в ARP-кеше могут быть статическими и динамическими.</p>
+<h1>Arp-protocol</h1>
+<p>ARP (Address Resolution Protocol) — the network protocol of data link layer intended for conversion of ip-addresses (network layer) in 
+MAC-addresses (data link layer) in networks TCP/IP.</p>
+<p>ARP — very widespread and extremely important protocol. Each host has two addresses, the physical address and the logical address. 
+In network Ethernet for identification of a source and the receiver of the information both addresses are used. 
+The information transferred from one computer to another on a network comprises the physical address of the source and ip-address of the source,
+the physical address of the receiver and ip-address of the receiver. The ARP-report provides link between these two addresses. 
+There are four types of ARP-messages: ARP request, ARP reply, RARP request and the RARP reply. 
+The local host by means of ARP requests the physical address of a host-receiver. The answer (the physical address of a host-receiver) 
+comes in ARP-reply. The Host-receiver, together with the answer, sends also the RARP request addressed to the source to check up its ip-address. 
+After check of ip-address of the source transmission of packages of the data starts. Records in ARP table can be static and dynamic.</p>
 <hr>
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-<TR><TD WIDTH="33%" ALIGN="left"  VALIGN="top"><A HREF="mac.html">Пред.</A></TD>
-<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="index.html">Начало</A></TD>
-<TD WIDTH="33%" ALIGN="right" VALIGN="top"><A HREF="howto.html">След.</A></TD></TR>
-<TR><TD WIDTH="33%" ALIGN="left" VALIGN="top">Mac-адрес</TD>
-<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="intronet.html">На уровень выше</A></TD>
-<TD WIDTH="33%" ALIGN="right" VALIGN="top">Руководство пользоватля</TD></TR>
+<TR><TD WIDTH="33%" ALIGN="left"  VALIGN="top"><A HREF="mac.html">Prev.</A></TD>
+<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="index.html">Main</A></TD>
+<TD WIDTH="33%" ALIGN="right" VALIGN="top"><A HREF="howto.html">Next</A></TD></TR>
+<TR><TD WIDTH="33%" ALIGN="left" VALIGN="top">Mac-address</TD>
+<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="intronet.html">On layer above</A></TD>
+<TD WIDTH="33%" ALIGN="right" VALIGN="top">The user manual</TD></TR>
 </TABLE>
 </body>
 </html>
