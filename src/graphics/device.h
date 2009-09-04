@@ -36,6 +36,7 @@ public:
     void setMenu(QMenu *context) { popUpMenu = context; }
     QString tableName() { return impl->tableName(); }
     QString socketName(const cableDev *c) const { return impl->socketName(c); }
+    QString deviceName() const { return impl->deviceName(); }
     bool isSmart() const { return impl->isSmart(); }
     bool isConnect() const { return myCableList.count(); }
     void dialog() { impl->dialog(); setToolTip( impl->note() ); }

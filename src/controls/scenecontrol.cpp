@@ -82,6 +82,12 @@ QIcon sceneControl::tableIcon() const
     else return QIcon(":/im/images/table_arp.png");
 }
 
+QString sceneControl::deviceName() const
+{
+    device *t = scene->oneSelectedDevice();
+    return t->deviceName();
+}
+
 QStringList sceneControl::sockets() const
 {
     device *t = scene->oneSelectedDevice();

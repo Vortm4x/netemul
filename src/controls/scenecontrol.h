@@ -17,6 +17,7 @@ public:
     QString note() const;
     QStringList sockets() const;
     QIcon tableIcon() const;
+    QString deviceName() const;
 private:
     myCanvas *scene;
 public slots:

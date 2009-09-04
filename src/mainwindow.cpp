@@ -117,6 +117,7 @@ void MainWindow::retranslate()
     UPDATEACTION( aboutQtAct , tr("About Qt") , tr("About Qt") )
     UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
+    UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
     fileMenu->setTitle(tr("File"));
     viewMenu->setTitle(tr("View"));
     itemMenu->setTitle(tr("Object"));
@@ -217,7 +218,7 @@ void MainWindow::createAction()
     aboutAct = createOneAction();
     connect( aboutAct , SIGNAL(triggered()) , SLOT(aboutDialog()));
 
-    helpAct = createOneAction();
+    helpAct = createOneAction(QIcon(":/im/images/question.png"));
     helpAct->setShortcut(QKeySequence::HelpContents);
     connect(helpAct,SIGNAL(triggered()) , SLOT(helpDialog()));
 
@@ -235,6 +236,10 @@ void MainWindow::createAction()
 
     logAct = createOneAction( QIcon(":/im/images/log.png"));
     arpAct->setShortcut(tr("Ctrl+L"));
+
+    aboutDeviceAct = createOneAction(QIcon(":/im/images/question.png"));
+    aboutDeviceAct->setShortcut(tr("Ctrl+F1"));
+    connect( aboutDeviceAct , SIGNAL(triggered()), SLOT(helpDialog()) );
 }
 
 //Создаем меню
@@ -263,6 +268,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(progAct);
     itemMenu->addAction(arpAct);
     itemMenu->addAction(logAct);
+    itemMenu->addAction(aboutDeviceAct);
     itemMenu->setEnabled(false);
 
     settingMenu = menuBar()->addMenu( QString() );
@@ -506,6 +512,9 @@ void MainWindow::test()
 //Help=)
 void MainWindow::helpDialog()
 {
+    QString dest;
+    if ( sender() == aboutDeviceAct ) dest = sceneControler->deviceName();
+    else dest = "index";
     QString t;
     switch ( appSetting::language() ) {
         case 1: t = "ru"; break;
@@ -513,10 +522,10 @@ void MainWindow::helpDialog()
     }
 #ifdef Q_WS_MACX
     QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
-                                   + "/../../../doc/"+t+"/index.html"));
+                                   + "/../../../doc/"+t+"/"+dest+".html"));
 #else
     QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
-                                   +"/doc/"+t+"/index.html"));
+                                   +"/doc/"+t+"/"+dest+".html"));
 #endif
 }
 

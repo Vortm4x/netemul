@@ -28,5 +28,6 @@
         <file>images/hub.png</file>
         <file>images/log.png</file>
         <file>images/clean.png</file>
+        <file>images/question.png</file>
     </qresource>
 </RCC>

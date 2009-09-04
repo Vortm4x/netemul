@@ -4,7 +4,7 @@ var net1 = new Array();
 var net2 = new Array();
 var r1 = addRouter(7,1);
 r1.setSocketsCount(4);
-var r2 = addRouter(7,3);
+var r2 = addRouter(7,5);
 r2.setSocketsCount(4);
 var s1 = addSwitch(5,2);
 s1.setSocketsCount(8);

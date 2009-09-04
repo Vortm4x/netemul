@@ -20,6 +20,7 @@ public:
 
     void dialog();
 
+    QString deviceName() const { return "comp"; }
     bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
 protected:

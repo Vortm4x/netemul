@@ -41,6 +41,7 @@ public:
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 
+    virtual QString deviceName() const = 0;
     virtual void secondTimerEvent() { qDebug() << "123"; }
     virtual void deciSecondTimerEvent() { }
     virtual QString nameToIp(const QString &name) const { Q_UNUSED(name) return QString(); }

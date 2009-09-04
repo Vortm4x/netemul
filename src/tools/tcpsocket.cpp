@@ -15,8 +15,7 @@ tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
 }
 
 tcpSocket::~tcpSocket()
-{
-
+{   
 }
 
 void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
@@ -118,6 +117,7 @@ void tcpSocket::confirmConnection(ipPacket p)
 
 void tcpSocket::sendWindow()
 {
+    panicTime = 0;
     for ( int j = 0; j < tcpPacket::Window; j++ ) {
         if ( j == buffer.size() ) return;
         tcpPacket t = buffer.at(j);
@@ -134,7 +134,10 @@ void tcpSocket::secondEvent()
         deleteLater();
         return;
     }
-    if ( ++panicTime == timeout ) sendWindow();
+    if ( ++panicTime == timeout ) {
+        sendWindow();
+        return;
+    }
     if ( lastNum && (time - inputTime) >= 2 ) {
         tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
         ipPacket a;

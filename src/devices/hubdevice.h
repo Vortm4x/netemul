@@ -15,6 +15,7 @@ public:
     ~hubDevice();
     void dialog();
     void detectCollision();
+    QString deviceName() const { return "hub"; }
     friend class hubSetting;
 protected:
     void write(QDataStream &stream) const;

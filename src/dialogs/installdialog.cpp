@@ -3,9 +3,15 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 
+//#define DHCP_WORK
+
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
+#ifdef DHCP_WORK
+    list->item(1)->setFlags( list->item(1)->flags() | Qt::ItemIsEnabled );
+    list->item(2)->setFlags( list->item(2)->flags() | Qt::ItemIsEnabled );
+#endif
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

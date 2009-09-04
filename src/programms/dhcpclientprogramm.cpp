@@ -18,7 +18,7 @@ void dhcpClientProgramm::setEnable(bool b)
 
 void dhcpClientProgramm::incTime()
 {
-    if (  !hasSetting && !(time%FIVE_MINUTE) ) sendDiscover();
+    if (  !hasSetting && ++time%FIVE_MINUTE == 0 ) sendDiscover();
 }
 
 void dhcpClientProgramm::sendDiscover()

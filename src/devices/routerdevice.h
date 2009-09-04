@@ -10,6 +10,7 @@ public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
     routerDevice(int c = 0);
+    QString deviceName() const { return "router"; }
     bool canManageInterface() const { return false; }
     void dialog();
 protected:
