@@ -3,15 +3,14 @@
 
 #include "programmrep.h"
 
-static const int CLIENT_SOCKET = 67;
-static const int SERVER_SOCKET = 68;
 static const int FIVE_MINUTE = 300;
 
 class dhcpClientProgramm : public programmRep
 {
     Q_OBJECT
 public:
-    enum { DHCPClient = 51 };
+    enum { DHCPClient = 51 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
+    enum state { NONE = 0 , WAIT_VARIANT = 1 , WAIT_RESPONCE = 2 , ALL_RIGHT = 3 };
     dhcpClientProgramm();
     ~dhcpClientProgramm() { }
     void setEnable(bool b);
@@ -20,8 +19,9 @@ public:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
+    int xid;
+    state myState;
     void sendDiscover();
-    bool hasSetting;
     int time;
 };
 

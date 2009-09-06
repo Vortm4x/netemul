@@ -1,31 +1,34 @@
 #include "dhcpclientprogramm.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
+#include "dhcppacket.h"
 
 dhcpClientProgramm::dhcpClientProgramm()
 {
     myName = tr("DHCP client");
-    hasSetting = false;
+    myState = NONE;
     time = 0;
 }
 
 void dhcpClientProgramm::setEnable(bool b)
 {
     programmRep::setEnable(b);
-    if ( hasSetting && !b ) return; // Не нужно спрашивать настройки при выключении или если они уже есть.
+    if ( myState != NONE && !b ) return; // Не нужно спрашивать настройки при выключении или если они уже есть.
     sendDiscover();
 }
 
 void dhcpClientProgramm::incTime()
 {
-    if (  !hasSetting && ++time%FIVE_MINUTE == 0 ) sendDiscover();
+    time++;
+    if (  myState == NONE && time%FIVE_MINUTE == 0 ) sendDiscover();
 }
 
 void dhcpClientProgramm::sendDiscover()
 {
+    xid = qrand()%5000;
+    dhcpPacket p;
+    p.setXid(xid);
     QByteArray data;
-    QDataStream s(&data, QIODevice::WriteOnly);
-    s << tr("HELLO I'M DHCPClient, i want ip address!");
     udpSocket socket(sd, CLIENT_SOCKET);
     socket.write( ipAddress::full() , SERVER_SOCKET , data);
 }

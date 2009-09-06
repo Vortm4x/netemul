@@ -29,6 +29,7 @@ class hubSetting : public boxSetting
 public:
     hubSetting(hubDevice *d) : boxSetting(d) , hd(d) { }
     quint32 collisions() const { return hd->collision; }
+    void reset() { boxSetting::reset(); hd->collision = 0; }
 private:
     hubDevice *hd;
 };

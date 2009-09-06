@@ -8,6 +8,7 @@ include(src/other/other.pri)
 include(src/graphics/graphics.pri)
 include(src/forms/forms.pri)
 include(src/tools/tools.pri)
+include(src/packets/packets.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -24,7 +25,8 @@ INCLUDEPATH += . \
     src/dialogs \
     src/other \
     src/graphics \
-    src/tools
+    src/tools \
+    src/packets
 QT += script
 win32 { 
     DESTDIR = ../trunk

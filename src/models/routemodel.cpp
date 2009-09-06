@@ -1,7 +1,8 @@
 #include "routemodel.h"
 
 routeModel::routeModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
-{    
+{
+    lastRecord = 0;
 }
 
 routeModel::~routeModel()
@@ -131,9 +132,18 @@ void routeModel::deleteFromTable(routeRecord *r)
 */
 routeRecord* routeModel::recordAt(const ipAddress &a) const
 {
-    foreach ( routeRecord *i , table )
-        if ( i->dest == ( a & i->mask ) ) return i;
-    return NULL;
+// Оптимизация работы, запоминаем полседний адрес и если при новом поиске
+// он совпадает отправляем по той записи которая была последней =)
+    if ( lastRecord && lastIpAddress == a ) return lastRecord;
+    foreach ( routeRecord *i , table ) {
+        if ( i->dest == ( a & i->mask ) ) {
+            lastIpAddress = a;
+            lastRecord = i;
+            return i;
+        }
+    }
+// Иначе 0
+    return 0;
 }
 //---------------------------------------------
 
@@ -200,7 +210,7 @@ void routeModel::deleteOldRecord(int time)
 
 void routeModel::write(QDataStream &stream) const
 {
-    QList<routeRecord*> temp;
+    routeTable temp;
     foreach (routeRecord *i , table )
         if ( i->mode == routeModel::staticMode ) temp << i;
     stream << temp.size();

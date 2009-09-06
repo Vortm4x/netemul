@@ -5,7 +5,6 @@
 #include <QStringList>
 #include "ipaddress.h"
 
-
 struct routeRecord {
 public:
     ipAddress dest;
@@ -20,6 +19,8 @@ public:
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
 };
+
+typedef QList<routeRecord*> routeTable;
 
 class routeModel : public QAbstractTableModel
 {
@@ -53,7 +54,9 @@ signals:
     void recordAdding(routeRecord*,int);
     void recordDeleting(routeRecord*,int);
 private:
-    QList<routeRecord*> table;
+    mutable routeRecord *lastRecord;
+    mutable ipAddress lastIpAddress;
+    routeTable table;
 };
 
 inline QDataStream& operator<<(QDataStream &stream, const routeRecord &rec)

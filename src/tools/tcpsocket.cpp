@@ -21,7 +21,7 @@ tcpSocket::~tcpSocket()
 void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
 {
     myBind = a;
-    myReceiverPort = p;
+    myReceiverPort = p;    
     quint32 count = 0;
     while ( quint32 size = data.size() )
         if ( size >= PACKET_SIZE ) {
@@ -42,7 +42,7 @@ void tcpSocket::setConnection()
     time = 0;
     timeout = 0;
     ipPacket p;
-    tcpPacket t = createPacket(seq, 0, tcpPacket::NO_FLAGS);
+    tcpPacket t = createPacket(seq, 0, tcpPacket::SYN);
     p.pack(t.toData());
     sendMessage(p);
 }
@@ -62,18 +62,29 @@ void tcpSocket::sendMessage(ipPacket p) const
 void tcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
+    if ( tcp.flag() == (tcpPacket::ACK | tcpPacket::SYN) ) {
+        timeout = 2*time;
+        isConnected = true;
+        tcpPacket a = createPacket(0, tcp.ack(), tcpPacket::ACK);
+        ipPacket d;
+        d.pack(a.toData());
+        sendMessage(d);
+        sendWindow();
+        return;
+    }
+    if ( tcp.flag() == tcpPacket::SYN ) {
+        confirmConnection(p);
+        return;
+    }
     if ( tcp.flag() == tcpPacket::ACK) {
         panicTime = 0;
-        if ( seq == tcp.ack() ) {
-            timeout = 2*time;
-            isConnected = true;
-        }
         QList<tcpPacket>::iterator i = buffer.begin();
         while( i != buffer.end() ) {
             if ( i->sequence() < tcp.ack() ) buffer.erase(i);
             ++i;
         }
-        if ( buffer.isEmpty() ) {
+        if ( buffer.isEmpty() && !isConnected ) isConnected = true;
+        else {
             timeout = 0;
             emit writeEnd();
             return;
@@ -81,10 +92,6 @@ void tcpSocket::treatPacket(ipPacket p)
         sendWindow();
     }
     else {
-        if ( !isConnected ) {
-            confirmConnection(p);
-            return;
-        }
         inputTime = time;
         lastNum = tcp.sequence();
         if ( tcp.flag() == tcpPacket::FIN ) isEnd = true;
@@ -104,12 +111,11 @@ tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) co
 }
 
 void tcpSocket::confirmConnection(ipPacket p)
-{
-    isConnected = true;
+{    
     tcpPacket tcp(p.unpack());
     myReceiverPort = tcp.sender();
     myBind = p.sender();
-    tcpPacket t = createPacket(0, tcp.sequence(), tcpPacket::ACK);
+    tcpPacket t = createPacket(0, tcp.sequence(), tcpPacket::ACK | tcpPacket::SYN);
     ipPacket a;
     a.pack(t.toData());
     sendMessage(a);
@@ -144,7 +150,7 @@ void tcpSocket::secondEvent()
         a.pack(t.toData());
         sendMessage(a);
         inputTime = 0;
-        lastNum = 0;
-        if (isEnd) emit receiveEnd();
+        lastNum = 0;        
     }
+    if (isEnd) emit receiveEnd();
 }

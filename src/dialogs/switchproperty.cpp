@@ -1,13 +1,11 @@
+#include <QtGui/QLabel>
+#include <QtGui/QComboBox>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMessageBox>
+#include <QtGui/QPlainTextEdit>
 #include "switchproperty.h"
 #include "switchdevice.h"
 #include "ipedit.h"
-#include <QLabel>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPlainTextEdit>
-
 
 switchProperty::switchProperty()
 {
@@ -22,9 +20,6 @@ switchProperty::switchProperty()
     temp->addWidget(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
-    chk_manual = new QCheckBox(tr("Managed via SNMP: "));
-    connect( chk_manual , SIGNAL(clicked(bool)) , SLOT(check(bool)));
-    all->addWidget(chk_manual);
 
     temp = new QHBoxLayout;
     lb_mac = new QLabel(tr("Mac-address: "));
@@ -46,7 +41,10 @@ switchProperty::switchProperty()
     lb_statics = new QLabel;
     all->addWidget(lb_statics);
 
-    all->addStretch(1);
+    QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),tr("Reset statistics"));
+    connect( btn_reset , SIGNAL(clicked()), SLOT(reset()) );
+    all->addWidget(btn_reset , 0 , Qt::AlignRight );
+
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
@@ -66,10 +64,14 @@ void switchProperty::setSwitch(boxSetting *d)
     le_ip->setText( d->snmpIp() );
     le_mask->setText( d->snmpMask() );
     lb_statics->setText( d->statics() );
-    chk_manual->setChecked( d->isManual() );
-    check( d->isManual() );
     te_text->setPlainText(  d->note() );
     btn_apply->setEnabled(false);
+}
+
+void switchProperty::reset()
+{
+    sw->reset();
+    setSwitch(sw);
 }
 
 void switchProperty::apply()
@@ -82,22 +84,11 @@ void switchProperty::apply()
             cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }
-    sw->setManual( chk_manual->isChecked() );
     sw->setMac(le_mac->text());
     sw->setIp(le_ip->text());
     sw->setMask(le_mask->text());
     sw->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
-}
-
-void switchProperty::check(bool p)
-{
-    lb_mac->setVisible(p);
-    le_mac->setVisible(p);
-    le_ip->setVisible(p);
-    le_mask->setVisible(p);
-    lb_statics->setVisible(p);
-    applyEnable();
 }
 
 

@@ -47,6 +47,7 @@ public:
     QString statics() const { return box->chip->staticsString(); }
     bool isManual() const { return box->isManual(); }
     void setManual(bool b) { box->setManual(b); }
+    void reset() { box->chip->resetStatics(); }
     bool setSocketsCount(int n) { return box->chip->setSocketsCount(n); }
 private:
     boxDevice *box;

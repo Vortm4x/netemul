@@ -4,7 +4,6 @@
 #include "dialogtemplate.h"
 
 class QComboBox;
-class QCheckBox;
 class QLineEdit;
 class QLabel;
 class QPlainTextEdit;
@@ -22,7 +21,6 @@ public:
 private:
     boxSetting *sw;
     QComboBox *cb_count;    
-    QCheckBox *chk_manual;
     QLabel *lb_statics;
     QLabel *lb_mac;
     QLineEdit *le_mac;
@@ -30,7 +28,7 @@ private:
     ipEdit *le_ip;
     ipEdit *le_mask;
 public slots:
-    void check(bool p);
+    void reset();
     void apply();
 };
 

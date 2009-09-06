@@ -4,7 +4,6 @@
 #include "dialogtemplate.h"
 
 class QComboBox;
-class QCheckBox;
 class QLineEdit;
 class QLabel;
 class QPlainTextEdit;
@@ -23,7 +22,6 @@ public:
 private:
     hubSetting *st;
     QComboBox *cb_count;
-    QCheckBox *chk_manual;
     QLabel *lb_statics;
     QLabel *lb_mac;
     QLabel *lb_conflict;
@@ -32,8 +30,9 @@ private:
     ipEdit *le_ip;
     ipEdit *le_mask;
 public slots:
-    void check(bool p);
     void apply();
+private slots:
+    void reset();
 };
 
 #endif // HUBPROPERTY_H

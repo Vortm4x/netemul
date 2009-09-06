@@ -1,9 +1,8 @@
 #include <QtGui/QLabel>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QLineEdit>
-#include <QMessageBox>
-#include <QPlainTextEdit>
+#include <QtGui/QComboBox>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMessageBox>
+#include <QtGui/QPlainTextEdit>
 #include "hubproperty.h"
 #include "hubdevice.h"
 #include "ipedit.h"
@@ -21,12 +20,6 @@ hubProperty::hubProperty()
     temp->addWidget(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
-    chk_manual = new QCheckBox(tr("Manage via SNMP: "));
-    connect( chk_manual , SIGNAL(clicked(bool)) , SLOT(check(bool)));
-    all->addWidget(chk_manual);
-
-    lb_conflict = new QLabel;
-    all->addWidget( lb_conflict );
 
     temp = new QHBoxLayout;
     lb_mac = new QLabel(tr("Mac-address: "));
@@ -46,6 +39,14 @@ hubProperty::hubProperty()
 
     lb_statics= new QLabel;
     all->addWidget(lb_statics);
+
+    lb_conflict = new QLabel;
+    all->addWidget( lb_conflict );
+
+    QPushButton *btn_reset = new QPushButton(QIcon(":/im/images/refresh.png"),tr("Reset statistics"));
+    connect( btn_reset , SIGNAL(clicked()), SLOT(reset()) );
+    all->addWidget(btn_reset , 0 , Qt::AlignRight );
+
     te_text = new QPlainTextEdit;
     connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
     te_text->setFixedHeight(100);
@@ -60,17 +61,6 @@ hubProperty::hubProperty()
 
 hubProperty::~hubProperty()
 {
-
-}
-
-void hubProperty::check(bool p)
-{
-    lb_mac->setVisible(p);
-    le_mac->setVisible(p);
-    le_ip->setVisible(p);
-    le_mask->setVisible(p);
-    lb_statics->setVisible(p);
-    applyEnable();
 }
 
 void hubProperty::setHub(hubSetting *s)
@@ -82,10 +72,14 @@ void hubProperty::setHub(hubSetting *s)
     le_ip->setText( st->snmpIp() );
     le_mask->setText( st->snmpMask() );
     lb_statics->setText( st->statics() );
-    chk_manual->setChecked( st->isManual() );
-    check( st->isManual() );
     te_text->setPlainText( st->note() );
     btn_apply->setEnabled(false);
+}
+
+void hubProperty::reset()
+{
+    st->reset();
+    setHub(st);
 }
 
 void hubProperty::apply()
@@ -98,7 +92,6 @@ void hubProperty::apply()
             cb_count->setCurrentIndex( cb_count->findText( QString::number(t) ) );
             return;
         }
-    st->setManual( chk_manual->isChecked() );
     st->setMac(le_mac->text());
     st->setIp(le_ip->text());
     st->setIp(le_mask->text());
