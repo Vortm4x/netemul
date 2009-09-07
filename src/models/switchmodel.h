@@ -36,6 +36,8 @@ public:
     void contains(const macAddress &m , devicePort *s);
     devicePort* portWithMac(const macAddress &m);
 private:   
+    devicePort *lastPort;
+    macAddress lastMac;
     QList<macRecord*> table;
 };
 

@@ -28,8 +28,8 @@ private:
 class tcpPacket
 {
 public:
-    enum { User = 7777 , Window = 10 };
-    enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 3 };
+    enum { User = 7777 , Window = 10240 };
+    enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 3, RST = 4 };
     tcpPacket() { d = new tcpPacketData; }
     tcpPacket(const QByteArray &b);
     tcpPacket(const tcpPacket &other) : d(other.d) { }
@@ -49,7 +49,7 @@ public:
     quint8 flag() const { return d->flag; }
     quint16 window() const { return d->window; }
     QByteArray unpack() const { return d->data; }
-    void pack(QByteArray &b) { d->data = b; }
+    void pack(const QByteArray &b) { d->data = b; }
     QString toString() const;
 private:
     QSharedDataPointer<tcpPacketData> d;

@@ -21,19 +21,20 @@ signals:
     void writeEnd();
     void receiveEnd();
 private:
-    void sendMessage(ipPacket p) const;
+    void sendMessage(tcpPacket t) const;
     void sendWindow();
+    void sendAck();
     tcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;  
     quint16 myReceiverPort;
-    quint32 seq;
+    quint32 sendIsn;
+    quint32 receiveIsn;
+    quint32 isn;
     int timeout;
     int time;
     int inputTime;
     int panicTime;
     int lastNum;
-    bool isEnd;
-    bool isConnected;
-    QList<tcpPacket> buffer;
+    QByteArray buffer;
 };
 
 #endif // TCPSOCKET_H

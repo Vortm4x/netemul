@@ -12,7 +12,6 @@ logDialog::logDialog(QStringList list)
     setupUi(this);
     cb_sockets->addItems(list);
     cb_sockets->installEventFilter(this);
-    startTimer(10*appSetting::animateSpeed());
     connect( cb_sockets ,SIGNAL(currentIndexChanged(QString)) , this , SIGNAL(changeInterface(QString)) );
 }
 
@@ -36,8 +35,10 @@ void logDialog::sendData(frame fr,QString port)
 void logDialog::printRecord(int c, frame fr)
 {
     if ( cb_type->currentIndex() != all ) {
-        if ( cb_type->currentIndex() == arp && fr.type() != frame::arp ) return;
-        if ( cb_type->currentIndex() == ip && fr.type() != frame::ip ) return;
+        if ( (cb_type->currentIndex() == arp) != (fr.type() == frame::arp) ) return;
+        ipPacket p(fr.unpack());
+        if ( cb_type->currentIndex() == udp && p.upProtocol() != ipPacket::udp ) return;
+        if ( cb_type->currentIndex() == tcp && p.upProtocol() != ipPacket::tcp ) return;
     }
     QString s;
     QTreeWidgetItem *main = new QTreeWidgetItem(lw_log);
@@ -79,14 +80,16 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
         item->setText(0, tcp.toString());
         item->setBackgroundColor(0, cl_tcpInternal);
         QTreeWidgetItem *t = new QTreeWidgetItem(item);
-        t->setText(0, tr("sequence number %1 ack number %2").arg(tcp.sequence()).arg(tcp.ack()));
+        t->setText(0, tr("ISN %1, ACK %2").arg(tcp.sequence()).arg(tcp.ack()));
         t->setBackgroundColor(0, cl_tcpData);
         t = new QTreeWidgetItem(item);
         if ( tcp.flag() == tcpPacket::NO_FLAGS )
-            t->setText(0, tr("flag: No flags"));
+            t->setText(0, tr("flags: No flags"));
         else if ( tcp.flag() == tcpPacket::ACK )
-            t->setText(0, tr("flag: Ack"));
-        else t->setText(0, tr("flag: Fin"));
+            t->setText(0, tr("flags: Ack"));
+        else if (tcp.flag() == tcpPacket::SYN) t->setText(0,tr("flags: SYN"));
+        else if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK)) t->setText(0,tr("flags: SYN, ACK"));
+        else t->setText(0, tr("flags: Fin"));
         t->setBackgroundColor(0, cl_tcpData);
     }
     return s;

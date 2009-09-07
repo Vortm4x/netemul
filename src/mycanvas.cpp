@@ -1,12 +1,3 @@
-#include "mycanvas.h"
-#include "connectdialog.h"
-#include "device.h"
-#include "cabledev.h"
-#include "senddialog.h"
-#include "appsetting.h"
-#include "insertrect.h"
-#include "sendellipse.h"
-#include "selectrect.h"
 #include <QtGui/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QGraphicsView>
@@ -18,10 +9,19 @@
 #include <QDataStream>
 #include <QMessageBox>
 #include <QTextCursor>
+#include "mycanvas.h"
+#include "connectdialog.h"
+#include "device.h"
+#include "cabledev.h"
+#include "senddialog.h"
+#include "appsetting.h"
+#include "insertrect.h"
+#include "sendellipse.h"
+#include "selectrect.h"
 
 /*!
   Конструктор проводит начальную инициализацию сцены.
-  @param context - Контекстное устройств.
+  @param context - Контекстное menu устройств.
   @param parent - Объект родитель.
 */
 myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)

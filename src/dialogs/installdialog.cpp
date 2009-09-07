@@ -3,7 +3,7 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 
-//#define DHCP_WORK
+#define DHCP_WORK
 
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
 {

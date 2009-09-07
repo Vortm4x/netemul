@@ -80,7 +80,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Ip</string>
+         <string>TCP</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>UDP</string>
         </property>
        </item>
       </widget>

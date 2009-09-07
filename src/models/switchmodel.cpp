@@ -4,7 +4,7 @@
 
 switchModel::switchModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {
-
+    lastPort = 0;
 }
 
 int switchModel::rowCount(const QModelIndex &/* p */) const
@@ -95,11 +95,15 @@ void switchModel::contains(const macAddress &m , devicePort *s)
 
 devicePort* switchModel::portWithMac(const macAddress &m)
 {
-    foreach ( macRecord *i , table )
+    if ( lastPort && m == lastMac ) return lastPort;
+    foreach ( macRecord *i , table ) {
         if ( i->mac == m ) {
             i->time = 0;
+            lastMac = m;
+            lastPort = i->port;
             return i->port;
         }
+    }
     return 0;
 }
 

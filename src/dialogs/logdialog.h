@@ -23,7 +23,7 @@ public:
     logDialog(QStringList list);
     ~logDialog();
     enum { send = 0, receive = 1 };
-    enum { all = 0 , arp = 1 , ip = 2 };
+    enum { all = 0 , arp = 1 , tcp = 2 , udp = 3 };
 signals:
     void changeInterface(QString);
 public  slots:
