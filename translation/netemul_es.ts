@@ -96,17 +96,17 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="68"/>
         <source>Do you really want to exit the program?</source>
-        <translation type="unfinished"></translation>
+        <translation>¿Realmente desea salir del programa?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Programs</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="100"/>
         <source>Programs installed on device</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas instalados en el dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="101"/>
@@ -289,12 +289,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="120"/>
         <source>About device</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca del dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="120"/>
         <source>Information about device</source>
-        <translation type="unfinished"></translation>
+        <translation>Información sobre el dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="121"/>
@@ -384,7 +384,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="241"/>
         <source>Ctrl+F1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="416"/>
@@ -430,7 +430,7 @@
     <message>
         <location filename="../src/chips/interface.cpp" line="90"/>
         <source>The network found a matching IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>La red encontró una IP concordante</translation>
     </message>
     <message>
         <source>The network found a match ip-address! </source>
@@ -510,7 +510,7 @@
     <message>
         <location filename="../src/udppacket.cpp" line="20"/>
         <source>DHCP message</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensaje DHCP</translation>
     </message>
     <message>
         <location filename="../src/udppacket.cpp" line="21"/>
@@ -523,12 +523,12 @@
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="14"/>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca del programa</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="24"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Acerca de</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="30"/>
@@ -537,12 +537,15 @@
 (C) 2009 Semenov Pavel and Omilaeva Anastasia
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Programa para simular redes de computadoras
+
+(C) 2009 Semenov Pavel and Omilaeva Anastasia
+</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="42"/>
         <source>Authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Autores</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="48"/>
@@ -550,37 +553,45 @@
 Semenov Pavel - Project admin. Developer.&lt;br&gt;
 &lt;br&gt;
 Omilaeva Anastasia - Developer.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Página del proyecto&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Semenov Pavel - Administrador del proyecto. Desarrollador.&lt;br&gt;
+&lt;br&gt;
+Omilaeva Anastasia - Desarrollador.</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="59"/>
         <source>Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>Gracias a</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="65"/>
         <source>Konstantin Andreev - Author of the idea and creator of the icons, 
 
 Lisandro Damián Nicanor Pérez Meyer
 Márcio Moraes</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstantin Andreev - Autor de la idea de los iconos, 
+
+Lisandro Damián Nicanor Pérez Meyer
+Márcio Moraes</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="76"/>
         <source>Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Traducciones</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="82"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
 Lisandro Damián Nicanor Pérez Meyer - Español</source>
-        <translation type="unfinished"></translation>
+        <translation>Семенов Павел - Русский
+Márcio Moraes - Português brasileiro
+Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="110"/>
         <source>Close</source>
-        <translation type="unfinished">Cerrar</translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 <context>
@@ -634,7 +645,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
         <source>At least a netcard must exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Debe existir al menos una tarjeta de red</translation>
     </message>
     <message>
         <source>Must be at least one netcard</source>
@@ -709,7 +720,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/dhcpclientprogramm.cpp" line="8"/>
         <source>DHCP client</source>
-        <translation type="unfinished">Cliente DHCP</translation>
+        <translation>Cliente DHCP</translation>
     </message>
 </context>
 <context>
@@ -717,7 +728,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="7"/>
         <source>DHCP server</source>
-        <translation type="unfinished">Servidor DHCP</translation>
+        <translation>Servidor DHCP</translation>
     </message>
 </context>
 <context>
@@ -784,7 +795,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="46"/>
         <source>Reset statistics</source>
-        <translation type="unfinished">Limpiar estadísticas</translation>
+        <translation>Limpiar estadísticas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="54"/>
@@ -847,12 +858,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/installdialog.cpp" line="29"/>
         <source>Error</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/dialogs/installdialog.cpp" line="29"/>
         <source>Program already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Programa ya instalado</translation>
     </message>
 </context>
 <context>
@@ -930,32 +941,32 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="83"/>
         <source>ISN %1, ACK %2</source>
-        <translation type="unfinished"></translation>
+        <translation>ISN %1, ACK %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="87"/>
         <source>flags: No flags</source>
-        <translation type="unfinished"></translation>
+        <translation>banderas: sin banderas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="89"/>
         <source>flags: Ack</source>
-        <translation type="unfinished"></translation>
+        <translation>bandera: Ack</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="90"/>
         <source>flags: SYN</source>
-        <translation type="unfinished"></translation>
+        <translation>bandera: Ack</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="91"/>
         <source>flags: SYN, ACK</source>
-        <translation type="unfinished"></translation>
+        <translation>banderas: SYN, ACK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="92"/>
         <source>flags: Fin</source>
-        <translation type="unfinished"></translation>
+        <translation>bandera: Fin</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="104"/>
@@ -1025,12 +1036,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/logdialog.ui" line="83"/>
         <source>TCP</source>
-        <translation type="unfinished">TCP</translation>
+        <translation>TCP</translation>
     </message>
     <message>
         <location filename="../src/forms/logdialog.ui" line="88"/>
         <source>UDP</source>
-        <translation type="unfinished">UDP</translation>
+        <translation>UDP</translation>
     </message>
     <message>
         <source>Ip</source>
@@ -1080,7 +1091,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="30"/>
         <source>Installed programs</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas instalados</translation>
     </message>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="60"/>
@@ -1108,7 +1119,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/ripprogramm.cpp" line="13"/>
         <source>RIP</source>
-        <translation type="unfinished">RIP</translation>
+        <translation>RIP</translation>
     </message>
 </context>
 <context>
@@ -1339,7 +1350,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="120"/>
         <source>Netcard</source>
-        <translation type="unfinished">Tarjeta de red</translation>
+        <translation>Tarjeta de red</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="150"/>
@@ -1369,7 +1380,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="215"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation>Español</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="244"/>
@@ -1463,7 +1474,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="446"/>
         <source>Switching table&apos;s records lifetime:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar el tiempo de vida de la tabla de registros:</translation>
     </message>
     <message>
         <source>Lifetime records of table switching</source>
@@ -1482,7 +1493,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="606"/>
         <source>Expectation time for arp-responce</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiempo de respuesta de arp esperado</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="669"/>
@@ -1619,7 +1630,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/devices/switchdevice.h" line="30"/>
         <source>Switching table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabla de switcheo</translation>
     </message>
 </context>
 <context>
@@ -1679,7 +1690,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="44"/>
         <source>Reset statistics</source>
-        <translation type="unfinished">Limpiar estadísticas</translation>
+        <translation>Limpiar estadísticas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="52"/>
@@ -1769,7 +1780,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/tableswitch.ui" line="14"/>
         <source>Switching table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabla de switcheo</translation>
     </message>
     <message>
         <location filename="../src/forms/tableswitch.ui" line="44"/>
@@ -1817,12 +1828,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="90"/>
         <source>Script not correctly finished</source>
-        <translation type="unfinished"></translation>
+        <translation>El script no terminó correctamente</translation>
     </message>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="129"/>
         <source>Choose a directory with scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija un directorio con scripts</translation>
     </message>
     <message>
         <source>Script finished is not correctly</source>
@@ -1846,7 +1857,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/testdialog.ui" line="48"/>
         <source>Set path</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija el camino</translation>
     </message>
     <message>
         <location filename="../src/forms/testdialog.ui" line="55"/>
