@@ -10,11 +10,13 @@ tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
     inputTime = 0;
     lastNum = 0;
     receiveIsn = 0;
+    state = NONE;
     buffer.clear();
 }
 
 tcpSocket::~tcpSocket()
 {   
+    qDebug("I dead!");
 }
 
 void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
@@ -31,6 +33,7 @@ void tcpSocket::setConnection()
     timeout = 0;   
     tcpPacket t = createPacket(isn, 0, tcpPacket::SYN);
     sendMessage(t);
+    state = WAIT_RESPONSE;
 }
 
 void tcpSocket::sendMessage(tcpPacket t) const
@@ -50,37 +53,54 @@ void tcpSocket::sendMessage(tcpPacket t) const
 void tcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
-    if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK) ) {
-        timeout = 2*time;        
-        if ( tcp.ack() != isn ) return;
-        isn = tcp.sequence();
-        tcpPacket a = createPacket(0, tcp.sequence(), tcpPacket::ACK);
-        sendMessage(a);
-        sendWindow();
+    if ( state == NONE && tcp.flag() != tcpPacket::SYN ) { deleteLater(); return; }
+
+    if ( tcp.flag() == tcpPacket::ACK) { receiveAck(tcp); return; }
+
+    if ( tcp.flag() == tcpPacket::NO_FLAGS ) {
+        if ( state == R_WAIT ) {
+            tcpPacket a = createPacket(0,0,tcpPacket::RST);
+            sendMessage(a);
+            return;
+        }
+        inputTime = time;
+        lastNum = tcp.sequence();
         return;
     }
+    if ( tcp.flag() == tcpPacket::FIN ) { lastNum = tcp.sequence(); sendAck(); emit receiveEnd(); }
+    if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK) ) { receiveSynAck(tcp); return; }
     if ( tcp.flag() == tcpPacket::SYN ) {
         confirmConnection(p);
         return;
     }
-    if ( tcp.flag() == tcpPacket::ACK) {
-        panicTime = 0;
-        receiveIsn = tcp.ack();
-        int r = (receiveIsn-sendIsn)*1024;
-        buffer.remove(0,r);
-        if ( buffer.isEmpty() && !timeout) return; // Если мы принимающая сторона !!!ПЕРЕПИСАТЬ!!!
-        else if ( buffer.isEmpty() ) {
-            timeout = 0;
-            emit writeEnd();
-            return;
-        }
-        sendWindow();
+    if ( tcp.flag() == tcpPacket::RST ) { deleteLater(); return; }
+}
+
+void tcpSocket::receiveSynAck(tcpPacket t)
+{
+    if ( state != WAIT_RESPONSE ) return;
+    timeout = 2*time;
+    if ( t.ack() != isn ) return;
+    isn = t.sequence();
+    tcpPacket a = createPacket(0, t.sequence(), tcpPacket::ACK);
+    sendMessage(a);
+    sendWindow();
+}
+
+void tcpSocket::receiveAck(tcpPacket t)
+{
+    if ( state == R_WAIT ) { state = RECEIVE; return; }
+    if ( state != WAIT_ACK ) return;
+    panicTime = 0;
+    receiveIsn = t.ack();
+    int r = (receiveIsn-sendIsn)*1024;
+    buffer.remove(0,r);
+    if ( buffer.isEmpty() ) {
+        timeout = 0;
+        emit writeEnd();
+        return;
     }
-    else {
-        inputTime = time;
-        lastNum = tcp.sequence();
-        if ( tcp.flag() == tcpPacket::FIN ) { sendAck(); emit receiveEnd(); }
-    }
+    sendWindow();
 }
 
 tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
@@ -102,6 +122,7 @@ void tcpSocket::confirmConnection(ipPacket p)
     myBind = p.sender();
     tcpPacket t = createPacket(isn, tcp.sequence(), tcpPacket::SYN | tcpPacket::ACK);
     sendMessage(t);
+    state = R_WAIT;
 }
 
 void tcpSocket::sendWindow()
@@ -117,34 +138,33 @@ void tcpSocket::sendWindow()
     }
     for ( int j = 0; j < count; j++ ) {
         tcpPacket t = createPacket(isn,0,tcpPacket::NO_FLAGS);
-        //if ( buffer.size()<=tcpPacket::Window && j==count-1) t.setFlag(tcpPacket::FIN);
+        if ( buffer.size()<=tcpPacket::Window && j==count-1) t.setFlag(tcpPacket::FIN);
         t.pack(data.left(PACKET_SIZE));
         data.remove(0,PACKET_SIZE);
         sendMessage(t);
         isn++;
     }
+    state = WAIT_ACK;
 }
 
 void tcpSocket::sendAck()
 {
-    if ( lastNum && (time - inputTime) >= 2 ) {
-        tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
-        sendMessage(t);
-        inputTime = 0;
-        lastNum = 0;
-    }
+     tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
+     sendMessage(t);
+     inputTime = 0;
+     lastNum = 0;
 }
 
 void tcpSocket::secondEvent()
 {
     time++;
-//    if ( time > 45 && !isConnected ) {
-//        deleteLater();
-//        return;
-//    }
+    if ( time > 45 && state == WAIT_RESPONSE ) {
+        deleteLater();
+        return;
+    }
     if ( ++panicTime == timeout ) {
         sendWindow();
         return;
     }
-    sendAck();
+    if ( lastNum && (time - inputTime) >= 2 ) sendAck();
 }

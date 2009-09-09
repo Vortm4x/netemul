@@ -29,7 +29,7 @@ class tcpPacket
 {
 public:
     enum { User = 7777 , Window = 10240 };
-    enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 3, RST = 4 };
+    enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 4, RST = 8 };
     tcpPacket() { d = new tcpPacketData; }
     tcpPacket(const QByteArray &b);
     tcpPacket(const tcpPacket &other) : d(other.d) { }
