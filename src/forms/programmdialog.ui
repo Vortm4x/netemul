@@ -60,18 +60,35 @@
           <string>Add</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
          </property>
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="btn_settings">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Settings</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>:/im/images/setting.png</normaloff>:/im/images/setting.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="btn_remove">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Delete</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
          </property>
         </widget>
@@ -95,7 +112,7 @@
           <string>Ok</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
          </property>
         </widget>
@@ -106,7 +123,7 @@
           <string>Cancel</string>
          </property>
          <property name="icon">
-          <iconset resource="../../netemul.qrc">
+          <iconset>
            <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
          </property>
         </widget>
@@ -117,9 +134,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../netemul.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>btn_cancel</sender>
@@ -128,8 +143,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>341</x>
-     <y>281</y>
+     <x>393</x>
+     <y>243</y>
     </hint>
     <hint type="destinationlabel">
      <x>188</x>
@@ -144,8 +159,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>252</x>
-     <y>281</y>
+     <x>393</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
      <x>180</x>
@@ -176,12 +191,60 @@
    <slot>remove()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>310</x>
-     <y>91</y>
+     <x>393</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>315</x>
      <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_settings</sender>
+   <signal>clicked()</signal>
+   <receiver>programmDialog</receiver>
+   <slot>settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>386</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>list</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>programmDialog</receiver>
+   <slot>programmChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>140</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>list</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>programmDialog</receiver>
+   <slot>stateChanged(QListWidgetItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>232</x>
+     <y>109</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>335</x>
+     <y>30</y>
     </hint>
    </hints>
   </connection>
@@ -190,5 +253,8 @@
   <slot>apply()</slot>
   <slot>add()</slot>
   <slot>remove()</slot>
+  <slot>settings()</slot>
+  <slot>programmChanged()</slot>
+  <slot>stateChanged(QListWidgetItem*)</slot>
  </slots>
 </ui>

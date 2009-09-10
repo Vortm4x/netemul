@@ -17,21 +17,18 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#ifndef SENDELLIPSE_H
-#define SENDELLIPSE_H
+#ifndef DHCPCLIENTPROPERTY_H
+#define DHCPCLIENTPROPERTY_H
 
-#include <QGraphicsEllipseItem>
+#include "ui_dhcpclientproperty.h"
 
-class sendEllipse : public QGraphicsEllipseItem
+class dhcpClientProperty : public QDialog, private Ui::dhcpClientProperty
 {
+    Q_OBJECT
 public:
-    enum { noSendItem = 0 , oneSendItem = 1 };
-    sendEllipse();
-    void chooseOneDevice();
-    void moving(QPointF p);
-    void hideItem() { setPos(-100,-100); }
-    bool hasUnderDevice() { return collidingItems().count(); }
-    QGraphicsItem* underDevice() { return collidingItems().first(); }
+    dhcpClientProperty(QWidget *parent = 0);
+protected:
+    void changeEvent(QEvent *e);
 };
 
-#endif // SENDELLIPSE_H
+#endif // DHCPCLIENTPROPERTY_H

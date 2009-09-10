@@ -1,20 +1,33 @@
+/****************************************************************************************
+** NetEmul - program for simulating computer networks.
+** Copyright © 2009 Semenov Pavel and Omilaeva Anastasia
+**
+** NetEmul is free software; you can redistribute it and/or
+** modify it under the terms of the GNU Lesser General Public
+** License as published by the Free Software Foundation; either
+** version 2.1 of the License, or (at your option) any later version.
+**
+** NetEmul is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public
+** License along with the NetEmul; if not, write to the Free
+** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+** 02111-1307 USA.
+****************************************************************************************/
 #include "dhcpclientprogramm.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
 #include "dhcppacket.h"
+#include "dhcpclientproperty.h"
 
 dhcpClientProgramm::dhcpClientProgramm()
 {
     myName = tr("DHCP client");
     myState = NONE;
     time = 0;
-}
-
-void dhcpClientProgramm::setEnable(bool b)
-{
-    programmRep::setEnable(b);
-    if ( myState != NONE && !b ) return; // Не нужно спрашивать настройки при выключении или если они уже есть.
-    sendDiscover();
 }
 
 void dhcpClientProgramm::incTime()
@@ -31,6 +44,12 @@ void dhcpClientProgramm::sendDiscover()
     QByteArray data;
     udpSocket socket(sd, CLIENT_SOCKET);
     socket.write( ipAddress::full() , SERVER_SOCKET , data);
+}
+
+void dhcpClientProgramm::showProperty()
+{
+    dhcpClientProperty *d = new dhcpClientProperty;
+    d->exec();
 }
 
 /*!

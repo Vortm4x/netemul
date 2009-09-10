@@ -6,4 +6,5 @@ FORMS += src/forms/programmdialog.ui \
     src/forms/settingdialog.ui \
     src/forms/staticsdialog.ui \
     src/forms/logdialog.ui \
-    src/forms/aboutwindow.ui
+    src/forms/aboutwindow.ui \
+    src/forms/dhcpclientproperty.ui
