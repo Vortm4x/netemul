@@ -1,34 +1,42 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-  <title>Коммутатор</title>
+  <title>Switch</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-<TR><TH COLSPAN="3" ALIGN="center">Руководство NetEmul</TH>
+<TR><TH COLSPAN="3" ALIGN="center">Manual NetEmul</TH>
 </TR>
-<TR><TD WIDTH="10%" ALIGN="left" VALIGN="bottom"><A HREF="hub.html">Пред.</A></TD>
+<TR><TD WIDTH="10%" ALIGN="left" VALIGN="bottom"><A HREF="hub.html">Prev.</A></TD>
 <TD WIDTH="80%" ALIGN="center" VALIGN="bottom"></TD>
-<TD WIDTH="10%" ALIGN="right" VALIGN="bottom"><A HREF="router.html">След.</A></TD>
+<TD WIDTH="10%" ALIGN="right" VALIGN="bottom"><A HREF="router.html">Next</A></TD>
 </TR>
 </table>
 <hr>
-<h1>Коммутатор</h1>
-<p>Сетевой коммутатор или свитч — устройство, предназначенное для соединения нескольких узлов компьютерной сети в пределах одного сегмента. В отличие от концентратора, который распространяет трафик от одного подключенного устройства ко всем остальным, коммутатор передает данные только 
-непосредственно получателю. Это повышает производительность и безопасность сети, избавляя остальные сегменты сети от необходимости (и возможности) обрабатывать данные, которые им не предназначались. </p>
-<h3>Принцип работы.</h3>
-Коммутатор хранит в памяти таблицу, в которой указывается соответствие MAC-адреса узла порту коммутатора. При включении коммутатора эта таблица пуста, и он работает в режиме обучения. В этом режиме поступающие на какой-либо порт данные передаются на все остальные порты коммутатора. При этом коммутатор анализирует кадры и, определив MAC-адрес хоста-отправителя, заносит его в таблицу. Впоследствии, если на один из портов коммутатора поступит кадр, предназначенный для хоста, MAC-адрес которого уже есть в таблице, то этот кадр будет передан только через порт, указанный в таблице. <img src="img/switch.jpeg" align="left">Если MAC-адрес хоста-получателя еще не известен, то кадр будет продублирован на все интерфейсы. Со временем коммутатор строит полную таблицу для всех своих портов, и в результате трафик локализуется.</p>
-<p>Такой вид имеет коммутатор в нашей программе. Он выполняет все функции, описанные выше.<br> 
-У устройства есть возможность посмотреть таблицу коммутации.</p>
+<h1>Switch</h1>
+<p>The network commutator or свитч — the device intended for connection of several sites of a computer network within one segment. 
+Unlike the hub which extends the traffic from one online unit to all the rest, the commutator transfers given only to directly receiver. 
+It raises productivity and safety of a network, saving other segments of a network of necessity (and possibilities) to handle the data 
+which it did not intend. </p>
+<h3>Operation principle.</h3>
+The commutator stores the table in which correspondence of the MAC-address of the site to commutator port is underlined in memory. 
+At commutator inclusion this table is empty, and it works in a training mode. In this mode the data arriving on any port is transferred 
+to all other ports of the commutator. Thus the commutator parses frames and, having defined the host-remailer MAC-address, brings it in 
+the table. Subsequently, if on one of commutator ports the frame intended for a host which MAC-address already is in the table this frame 
+will be transferred only through the port specified in the table arrives. <img src="../shareimg/switch.jpeg" align="left">
+If the host-receiver MAC-address is yet known, the frame will be продублирован on all interfaces. In due course the commutator builds 
+the complete table for all ports and as a result the traffic is localised.</p>
+<p>Such sort has the commutator in our program. It fulfils all functions described above. <br> the device has a possibility to 
+look the switching table.</p>
 <hr>
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-<TR><TD WIDTH="33%" ALIGN="left"  VALIGN="top"><A HREF="hub.html">Пред.</A></TD>
-<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="index.html">Начало</A></TD>
-<TD WIDTH="33%" ALIGN="right" VALIGN="top"><A HREF="router.html">След.</A></TD></TR>
-<TR><TD WIDTH="33%" ALIGN="left" VALIGN="top">Концентратор</TD>
-<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="intronet.html">На уровень выше</A></TD>
-<TD WIDTH="33%" ALIGN="right" VALIGN="top">Маршрутизатор</TD></TR>
+<TR><TD WIDTH="33%" ALIGN="left"  VALIGN="top"><A HREF="hub.html">Prev.</A></TD>
+<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="index.html">Main</A></TD>
+<TD WIDTH="33%" ALIGN="right" VALIGN="top"><A HREF="router.html">Next</A></TD></TR>
+<TR><TD WIDTH="33%" ALIGN="left" VALIGN="top">Hub</TD>
+<TD WIDTH="34%" ALIGN="center" VALIGN="top"><A  HREF="intronet.html">On level above</A></TD>
+<TD WIDTH="33%" ALIGN="right" VALIGN="top">Router</TD></TR>
 </TABLE>
 </body>
 </html>

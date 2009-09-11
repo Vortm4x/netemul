@@ -19,8 +19,8 @@
 form and physical layout of computers under the ratio to each other. The network topology allows to compare and class various networks. 
 Select three main topology: a star, a ring and the bus.</p>
 <h3>Star</h3>
-Base topology of a computer network in which all computers of a network are attached with central office (usually network hub), 
-forming a physical segment of a network.
+Base topology of a computer network in which all computers of a network are attached with central office (usually network switch), 
+forming a broadcasting segment of a network.
 <dl><b>advantage</b>
 <dd>Failure of one workstation is not mirrored in operation of all network as a whole;</dd>
 <dd>Good scalability of a network;</dd>
@@ -28,14 +28,16 @@ forming a physical segment of a network.
 <dd>High efficiency of a network (under condition of correct designing);</dd>
 <dd>Flexible possibilities of administration.</dd></dl>
 <dl><b>lacks</b>
-<dd>Failure of the central hub will turn back network refusal (or a network segment) as a whole;</dd>
+<dd>Failure of the central switch will turn back network refusal (or a network segment) as a whole;</dd>
 <dd>For network laying frequently it is required more cable, than for the majority of other topology;</dd>
 <dd>The finite number of workstations in a network (or a network segment) is limited by quantity of ports in the central hub.</dd></dl>
-<p align="center"><img src="img/star.jpg" align="top"></p>
+<p align="center"><img src="../shareimg/star.jpeg" align="top"></p>
 
 <h3>Bus</h3>
-Represents the common cable (named the bus or the trunk) to which all workstations are connected. On the cable ends there are terminators, 
-for reflexion preventing.
+Initially "bus" represented the common cable to which are connected all Workstations. On the cable ends there are terminators, 
+for reflexion preventing. Later in this topology such network devices as HUB (hubs) have entered. Hubs represent multiport repeaters 
+and do not change topology basis though visually given connection is similar to topology "star". 
+The main problem in topology "bus" is collisions - arising at collision of signals in the physical environment.
 <dl><b>advantage</b>
 <dd>Small installation time of a network; </dd>
 <dd>Cheapness (it is required less cable and network devices);</dd>
@@ -49,16 +51,15 @@ for reflexion preventing.
 
 <h3>Ring</h3>
 Base topology of a computer network in which workstations are connected sequentially to each other, forming the closed network.
+The given topology is a little extended in local area networks and at present in program NetEmul practically it is not realised.
 <dl><b>advantage</b>
-<dd>Simplicity of installation;</dd>
-<dd>Practically a total absence of the additional equipment;</dd>
-<dd>Possibility of steady operation without essential falling of a transfer rate at intensive loading of a network as marker usage 
-eliminates possibility of occurrence of collisions.</dd></dl>
+<dd>Absence of collisions and therefore predicted capacity;</dd>
+<dd>Possibility of steady operation without essential falling of a transfer rate.</dd></dl>
 <dl><b>lacks</b>
 <dd>Failure of one workstation, and other malfunctions (cable breakaway), are mirrored in working capacity of all network;</dd>
 <dd>Complexity of configuration and customization;</dd>
 <dd>Complexity of search of faults;</dd></dl>
-<p align="center"><img src="img/ring.jpg" align="top"></p>
+<p align="center"><img src="../shareimg/ring.jpeg" align="top"></p>
 <hr>
 <TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
 <TR><TD WIDTH="33%" ALIGN="left"  VALIGN="top"><A HREF="router.html">Prev.</A></TD>
