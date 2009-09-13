@@ -19,6 +19,8 @@ public:
     bool hasReceive() { return false; }
     void setShared(bool) const { }
     bool isCableBusy() const { return false; }
+    void setChecked(bool) { }
+    int trafficDigit() const { return 0; }
 };
 
 #endif // DEVICEPORT_H

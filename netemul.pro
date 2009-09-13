@@ -94,3 +94,7 @@ unix {
         ../translation/netemul_ru.qm
     INSTALLS += translations
 }
+#if debug uncomment this lines
+#QMAKE_LFLAGS_DEBUG += -pg
+#QMAKE_CXXFLAGS_DEBUG = -pg
+

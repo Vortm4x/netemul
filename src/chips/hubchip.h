@@ -28,9 +28,11 @@ class hubChip : public boxChip
 {
     Q_OBJECT
 public:
-    void receiveEvent(frame &fr,devicePort *sender);
     void addSocket(int n);
+#ifndef __TESTING__
+    void receiveEvent(frame &fr,devicePort *sender);
     void detectCollision();
+#endif
     hubChip(int n = 4);
 };
 

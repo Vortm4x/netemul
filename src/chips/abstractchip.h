@@ -30,7 +30,6 @@
 #include <QDataStream>
 #endif
 
-class frame;
 class devicePort;
 class ipPacket;
 
@@ -45,12 +44,12 @@ class abstractChip : public QObject
 public:
     abstractChip();
     virtual ~abstractChip() { }
+#ifndef __TESTING__
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     virtual int trafficDigit() const = 0;
     QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
     void checkSend(frame &f);
-#ifndef __TESTING__
     macAddress mac() const { return myMac; }
     ipAddress ip() const { return myIp; }
     ipAddress mask() const { return myMask; }
@@ -64,14 +63,12 @@ public:
     quint64 countRecPacket() { return myStatistics.receivePackets(); }
     quint64 countSendFrame() { return myStatistics.sendFrames(); }
     quint64 countSendPacket() { return myStatistics.sendPackets(); }
-#endif
     void resetStatics();
 signals:
     void sendData(frame,QString);
     void receiveData(frame,QString);
 protected:
     statistics myStatistics;
-#ifndef __TESTING__
     ipAddress myIp;
     ipAddress myMask;
     macAddress myMac;

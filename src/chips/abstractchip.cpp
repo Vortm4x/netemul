@@ -26,9 +26,10 @@ abstractChip::abstractChip()
 {
 #ifndef __TESTING__
     myMac.setRandom();
-#endif
     resetStatics();
+#endif
 }
+#ifndef __TESTING__
 //--------------------------------------------------------------
 /*!
   Сбрасывает всю статистику, накопленную этим устройством.
@@ -38,8 +39,6 @@ void abstractChip::resetStatics()
     myStatistics.clear();
 }
 //------------------------------------------------
-
-#ifndef __TESTING__
 void abstractChip::write(QDataStream &stream) const
 {
     stream << myMac;
@@ -55,7 +54,6 @@ void abstractChip::read(QDataStream &stream)
     stream >> myMask;
     stream >> myStatistics;
 }
-#endif
 
 void abstractChip::checkReceive(frame &f)
 {
@@ -68,6 +66,7 @@ void abstractChip::checkSend(frame &f)
     myStatistics.incSendFrames();
     if ( f.type() == frame::ip ) myStatistics.incSendPackets();
 }
+#endif
 
 
 

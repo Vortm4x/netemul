@@ -121,12 +121,6 @@ bool boxChip::isBusy() const
     return false;
 }
 
-void boxChip::setCheckedSocket(const QString &port)
-{
-    foreach ( devicePort *i, mySockets )
-        i->setChecked( tr("LAN%1").arg(i->num()) == port );
-}
-
 int boxChip::trafficDigit() const
 {
     int sum = 0;
@@ -136,6 +130,12 @@ int boxChip::trafficDigit() const
 }
 
 #ifndef __TESTING__
+void boxChip::setCheckedSocket(const QString &port)
+{
+    foreach ( devicePort *i, mySockets )
+        i->setChecked( tr("LAN%1").arg(i->num()) == port );
+}
+
 void boxChip::write(QDataStream &stream) const
 {
     abstractChip::write(stream);

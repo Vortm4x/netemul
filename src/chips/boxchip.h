@@ -47,8 +47,8 @@ public:
     virtual void addSocket(int n);
     virtual bool isSharedBusy(cableDev*) const { return false; }
     virtual void detectCollision() { }
-    void setCheckedSocket(const QString &port);
 #ifndef __TESTING__
+    void setCheckedSocket(const QString &port);
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 #endif  
