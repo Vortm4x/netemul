@@ -90,13 +90,17 @@ macRecord* switchModel::addToTable(const macAddress &mac ,devicePort *p , int mo
 void switchModel::deleteFromTable(const macAddress &mac)
 {
     foreach ( macRecord *i , table )
-        if ( i->mac == mac ) deleteFromTable(i);
+        if ( i->mac == mac ) {
+            deleteFromTable(i);
+            return;
+        }
 }
 
 void switchModel::deleteFromTable(macRecord *r)
 {
     table.removeOne(r);
     delete r;
+    lastPort = 0;
     reset();
 }
 

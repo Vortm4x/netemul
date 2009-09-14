@@ -138,6 +138,7 @@ void routeModel::deleteFromTable(int n)
 void routeModel::deleteFromTable(routeRecord *r)
 {
     emit recordDeleting(r,delNet);
+    lastRecord = 0;
     table.removeOne(r);
     delete r;
     qStableSort(table.begin(),table.end(),routeGreat);
