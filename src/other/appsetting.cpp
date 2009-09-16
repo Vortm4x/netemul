@@ -34,6 +34,8 @@ bool appSetting::_defaultHubManual = false;
 bool appSetting::_defaultSwitchManual = false;
 int appSetting::_speed = 100;
 int appSetting::_language = 0;
+int appSetting::_sendingNum = 1;
+int appSetting::_waitingTime = 45;
 int appSetting::_arpResponceTime = 45;
 QString appSetting::_scriptPath = "";
 QTranslator* appSetting::mas[LANGUAGE_COUNT];
@@ -61,6 +63,8 @@ void appSetting::readSetting()
     _ttlMac = setting.value("ttl/Mac",300).toInt();
     _speed = setting.value("main/speed",100).toInt();
     setLanguage( setting.value("main/language",0).toInt() );
+    _sendingNum = setting.value("tcp/sendingNumber",1).toInt();
+    _waitingTime = setting.value("tcp/waitingTime",45).toInt();
 }
 
 void appSetting::writeSetting()
@@ -79,6 +83,8 @@ void appSetting::writeSetting()
     setting.setValue("main/speed",_speed);
     setting.setValue("main/language", _language);
     setting.setValue("main/scriptPath",_scriptPath);
+    setting.setValue("tcp/sendingNumber",_sendingNum);
+    setting.setValue("tcp/waitingTime",_waitingTime);
 }
 
 void appSetting::setLanguage(int n)

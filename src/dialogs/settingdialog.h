@@ -32,7 +32,6 @@ public:
     settingDialog();    
 public slots:
     void apply();
-    void applyDisable();
     void applyEnable();
 protected:
     virtual void changeEvent(QEvent *e);

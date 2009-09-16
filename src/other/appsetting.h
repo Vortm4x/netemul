@@ -55,6 +55,10 @@ public:
     static int realAnimateSpeed() { return _speed; }
     static void setLanguage(int n);
     static int language() { return _language; }
+    static void setSendingNum(int n) { _sendingNum = n; }
+    static int sendingNum() { return _sendingNum; }
+    static void setWaitingTime(int n) { _waitingTime = n; }
+    static int waitingTime() { return _waitingTime; }
     static void readSetting();
     static void writeSetting();
 private:
@@ -67,6 +71,8 @@ private:
     static int _ttlMac;
     static int _speed;
     static int _language;
+    static int _sendingNum;
+    static int _waitingTime;
     static bool _defaultHubManual;
     static bool _defaultSwitchManual;
     static int _arpResponceTime;

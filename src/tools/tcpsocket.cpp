@@ -17,11 +17,12 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QMessageBox>
+#include <QtGui/QMessageBox>
 #include "tcpsocket.h"
 #include "ippacket.h"
 #include "smartdevice.h"
 #include "routemodel.h"
+#include "appsetting.h"
 
 tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
 {
@@ -32,11 +33,11 @@ tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
     receiveIsn = 0;
     state = NONE;
     buffer.clear();
+    sendingNum = 0;     
 }
 
 tcpSocket::~tcpSocket()
-{   
-    qDebug("I dead!");
+{
 }
 
 void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
@@ -49,7 +50,7 @@ void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
 
 void tcpSocket::setConnection()
 {
-    time = 0;
+    waitingTime = 0;
     timeout = 0;   
     tcpPacket t = createPacket(isn, 0, tcpPacket::SYN);
     sendMessage(t);
@@ -95,9 +96,7 @@ void tcpSocket::treatPacket(ipPacket p)
         return;
     }
     if ( tcp.flag() == tcpPacket::RST ) {
-        QMessageBox::critical(0,tr("Error"), tr("Data transmition error") );
-
-        deleteLater();
+        error();
         return;
     }
 }
@@ -105,7 +104,7 @@ void tcpSocket::treatPacket(ipPacket p)
 void tcpSocket::receiveSynAck(tcpPacket t)
 {
     if ( state != WAIT_RESPONSE ) return;
-    timeout = 2*time;
+    timeout = 2*waitingTime;
     if ( t.ack() != isn ) return;
     isn = t.sequence();
     tcpPacket a = createPacket(0, t.sequence(), tcpPacket::ACK);
@@ -118,6 +117,7 @@ void tcpSocket::receiveAck(tcpPacket t)
     if ( state == R_WAIT ) { state = RECEIVE; return; }
     if ( state != WAIT_ACK ) return;
     panicTime = 0;
+    sendingNum = 0;
     receiveIsn = t.ack();
     int r = (receiveIsn-sendIsn)*1024;
     buffer.remove(0,r);
@@ -153,6 +153,7 @@ void tcpSocket::confirmConnection(ipPacket p)
 
 void tcpSocket::sendWindow()
 {
+    if ( sendingNum++ > appSetting::sendingNum() ) { error(); return; }
     panicTime = 0;
     sendIsn = isn;
     QByteArray data = buffer.left(tcpPacket::Window);
@@ -181,11 +182,17 @@ void tcpSocket::sendAck()
      lastNum = 0;
 }
 
+void tcpSocket::error()
+{
+    QMessageBox::critical(0,tr("Error"), tr("TCP: Data transmition error") );
+    deleteLater();
+}
+
 void tcpSocket::secondEvent()
 {
-    time++;
-    if ( time > 45 && state == WAIT_RESPONSE ) {
-        deleteLater();
+    waitingTime++;
+    if ( waitingTime > appSetting::waitingTime() && state == WAIT_RESPONSE ) {
+        error();
         return;
     }
     if ( ++panicTime == timeout ) {

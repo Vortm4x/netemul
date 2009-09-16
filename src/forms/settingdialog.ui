@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>624</width>
+    <width>768</width>
     <height>326</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <widget class="QListWidget" name="listWidget">
      <property name="minimumSize">
       <size>
-       <width>600</width>
+       <width>740</width>
        <height>70</height>
       </size>
      </property>
@@ -60,7 +60,7 @@
        <set>AlignLeft|AlignVCenter</set>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/setting.png</normaloff>:/im/images/setting.png</iconset>
       </property>
       <property name="flags">
@@ -72,7 +72,7 @@
        <string>Computer</string>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/computer.png</normaloff>:/im/images/computer.png</iconset>
       </property>
       <property name="flags">
@@ -84,7 +84,7 @@
        <string>Hub</string>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/hub.png</normaloff>:/im/images/hub.png</iconset>
       </property>
       <property name="flags">
@@ -96,7 +96,7 @@
        <string>Switch</string>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/switch.png</normaloff>:/im/images/switch.png</iconset>
       </property>
       <property name="flags">
@@ -108,7 +108,7 @@
        <string>Router</string>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/router.png</normaloff>:/im/images/router.png</iconset>
       </property>
       <property name="flags">
@@ -120,11 +120,20 @@
        <string>Netcard</string>
       </property>
       <property name="icon">
-       <iconset resource="../../netemul.qrc">
+       <iconset>
         <normaloff>:/im/images/network_nic.png</normaloff>:/im/images/network_nic.png</iconset>
       </property>
       <property name="flags">
        <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Tcp</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>:/im/images/tcp.png</normaloff>:/im/images/tcp.png</iconset>
       </property>
      </item>
     </widget>
@@ -643,6 +652,94 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tcp">
+      <layout class="QVBoxLayout" name="verticalLayout_18">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_17">
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Number of repeat sendings:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sb_send">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>10</number>
+           </property>
+           <property name="value">
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Waiting confirmation time:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sb_waitingTime">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>75</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="suffix">
+            <string> s</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>30</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>109</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -669,7 +766,7 @@
         <string>Apply</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/refresh.png</normaloff>:/im/images/refresh.png</iconset>
        </property>
       </widget>
@@ -680,7 +777,7 @@
         <string>Ok</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
        <property name="default">
@@ -697,7 +794,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -717,26 +814,8 @@
   <tabstop>routerComboBox</tabstop>
   <tabstop>listWidget</tabstop>
  </tabstops>
- <resources>
-  <include location="../../netemul.qrc"/>
- </resources>
+ <resources/>
  <connections>
-  <connection>
-   <sender>listWidget</sender>
-   <signal>currentRowChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>318</x>
-     <y>73</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>262</x>
-     <y>97</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>btn_cancel</sender>
    <signal>clicked()</signal>
@@ -770,22 +849,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>computerComboBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>settingDialog</receiver>
-   <slot>applyEnable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>78</x>
-     <y>98</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>258</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btn_apply</sender>
    <signal>clicked()</signal>
    <receiver>settingDialog</receiver>
@@ -798,6 +861,38 @@
     <hint type="destinationlabel">
      <x>269</x>
      <y>262</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>computerComboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>258</y>
     </hint>
    </hints>
   </connection>
@@ -850,18 +945,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>btn_apply</sender>
-   <signal>clicked()</signal>
+   <sender>languageBox</sender>
+   <signal>currentIndexChanged(int)</signal>
    <receiver>settingDialog</receiver>
-   <slot>applyDisable()</slot>
+   <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>238</x>
-     <y>310</y>
+     <x>90</x>
+     <y>238</y>
     </hint>
     <hint type="destinationlabel">
-     <x>216</x>
-     <y>273</y>
+     <x>40</x>
+     <y>290</y>
     </hint>
    </hints>
   </connection>
@@ -882,22 +977,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>languageBox</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>settingDialog</receiver>
-   <slot>applyEnable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>90</x>
-     <y>238</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>40</x>
-     <y>290</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>sl_speed</sender>
    <signal>valueChanged(int)</signal>
    <receiver>settingDialog</receiver>
@@ -910,6 +989,38 @@
     <hint type="destinationlabel">
      <x>104</x>
      <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sb_send</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sb_waitingTime</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>162</y>
     </hint>
    </hints>
   </connection>

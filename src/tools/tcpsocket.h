@@ -46,6 +46,7 @@ private:
     void sendAck();
     void receiveSynAck(tcpPacket t);
     void receiveAck(tcpPacket t);
+    void error();
     tcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;
     int state;
     quint16 myReceiverPort;
@@ -53,10 +54,11 @@ private:
     quint32 receiveIsn;
     quint32 isn;
     int timeout;
-    int time;
     int inputTime;
     int panicTime;
     int lastNum;
+    int sendingNum; // Число повторных отправлений
+    int waitingTime;
     QByteArray buffer;
 };
 

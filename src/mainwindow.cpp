@@ -422,8 +422,7 @@ void MainWindow::selectionChange()
 // Слот окна настроек
 void MainWindow::setting()
 {
-    settingDialog *d = new settingDialog;
-    d->applyDisable();
+    settingDialog *d = new settingDialog;    
     d->exec();
     canva->setAnimateSpeed( appSetting::animateSpeed() );
 }

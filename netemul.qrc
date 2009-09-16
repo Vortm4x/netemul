@@ -29,5 +29,6 @@
         <file>images/log.png</file>
         <file>images/clean.png</file>
         <file>images/question.png</file>
+        <file>images/tcp.png</file>
     </qresource>
 </RCC>

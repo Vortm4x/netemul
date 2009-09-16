@@ -136,10 +136,8 @@ void cableDev::motion()
            if ( !isCollision ) {
                if ( !fromStartQueue.isEmpty() && !fromEndQueue.isEmpty() &&
                     fromStartQueue.head()->pos > fromEndQueue.head()->pos ) {
-                        fromStartQueue.head()->color = Qt::blue;
-                        fromEndQueue.head()->color = Qt::blue;
-                        fromStartQueue.head()->size = COLLISION_SIZE;
-                        fromEndQueue.head()->size = COLLISION_SIZE;
+                        fromStartQueue.head()->color = fromEndQueue.head()->color = Qt::blue;
+                        fromStartQueue.head()->size = fromEndQueue.head()->size = COLLISION_SIZE;
                         startCollision();
                         if ( endPort()->isShared() ) end()->detectCollision();
                         if ( startPort()->isShared() ) start()->detectCollision();

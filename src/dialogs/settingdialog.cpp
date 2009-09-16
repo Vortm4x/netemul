@@ -47,11 +47,11 @@ settingDialog::settingDialog()
 
     languageBox->setCurrentIndex( appSetting::language() );
 
-    setAttribute(Qt::WA_DeleteOnClose);
-}
+    sb_send->setValue(appSetting::sendingNum());
 
-void settingDialog::applyDisable()
-{
+    sb_waitingTime->setValue(appSetting::waitingTime());
+
+    setAttribute(Qt::WA_DeleteOnClose);
     btn_apply->setEnabled(false);
 }
 
@@ -71,6 +71,9 @@ void settingDialog::apply()
     appSetting::setTtlMac( sp_ttlMac->value() );
     appSetting::setAnimateSpeed(sl_speed->value());
     appSetting::setLanguage( languageBox->currentIndex() );
+    appSetting::setSendingNum(sb_send->value());
+    appSetting::setWaitingTime(sb_waitingTime->value());
+    btn_apply->setEnabled(false);
     if ( sender() == btn_ok ) accept();
 }
 
