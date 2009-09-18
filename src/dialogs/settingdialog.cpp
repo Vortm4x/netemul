@@ -23,7 +23,13 @@
 settingDialog::settingDialog()
 {
     setupUi(this);
+    currentValues();
+    setAttribute(Qt::WA_DeleteOnClose);
+    btn_apply->setEnabled(false);
+}
 
+void settingDialog::currentValues()
+{
     sp_arpResponce->setValue( appSetting::arpResponceTime() );
 
     sp_ttlArp->setValue( appSetting::ttlArp() );
@@ -50,9 +56,6 @@ settingDialog::settingDialog()
     sb_send->setValue(appSetting::sendingNum());
 
     sb_waitingTime->setValue(appSetting::waitingTime());
-
-    setAttribute(Qt::WA_DeleteOnClose);
-    btn_apply->setEnabled(false);
 }
 
 void settingDialog::applyEnable()
@@ -75,6 +78,12 @@ void settingDialog::apply()
     appSetting::setWaitingTime(sb_waitingTime->value());
     btn_apply->setEnabled(false);
     if ( sender() == btn_ok ) accept();
+}
+
+void settingDialog::defaultSettings()
+{
+    appSetting::defaultNums();
+    currentValues();
 }
 
 void settingDialog::changeEvent(QEvent *e)

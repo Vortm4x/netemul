@@ -59,6 +59,7 @@ public:
     static int sendingNum() { return _sendingNum; }
     static void setWaitingTime(int n) { _waitingTime = n; }
     static int waitingTime() { return _waitingTime; }
+    static void defaultNums();
     static void readSetting();
     static void writeSetting();
 private:

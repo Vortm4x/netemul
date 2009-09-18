@@ -32,6 +32,7 @@
 
 routeEditor::routeEditor(smartDevice *s)
 {
+    setWindowTitle(tr("Routing table"));
     dev = s;    
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableView;

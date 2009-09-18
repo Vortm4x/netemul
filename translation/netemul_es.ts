@@ -4,8 +4,8 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="68"/>
-        <location filename="../src/mainwindow.cpp" line="96"/>
+        <location filename="../src/mainwindow.cpp" line="87"/>
+        <location filename="../src/mainwindow.cpp" line="115"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
@@ -15,73 +15,73 @@
         <translation type="obsolete">¿Realmente desea salir?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="91"/>
+        <location filename="../src/mainwindow.cpp" line="110"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="91"/>
+        <location filename="../src/mainwindow.cpp" line="110"/>
         <source>Create new network</source>
         <translation>Creaer nueva red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="92"/>
-        <location filename="../src/mainwindow.cpp" line="428"/>
+        <location filename="../src/mainwindow.cpp" line="111"/>
+        <location filename="../src/mainwindow.cpp" line="446"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="92"/>
+        <location filename="../src/mainwindow.cpp" line="111"/>
         <source>Open existing file</source>
         <translation>Abrir archivo existente</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="93"/>
+        <location filename="../src/mainwindow.cpp" line="112"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="93"/>
+        <location filename="../src/mainwindow.cpp" line="112"/>
         <source>Save network</source>
         <translation>Guardar red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="94"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>Save as...</source>
         <translation>Guardar como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="94"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>Save network as...</source>
         <translation>Guardar red como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="95"/>
+        <location filename="../src/mainwindow.cpp" line="114"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="95"/>
+        <location filename="../src/mainwindow.cpp" line="114"/>
         <source>Close current file</source>
         <translation>Cerrar archivo actual</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="97"/>
+        <location filename="../src/mainwindow.cpp" line="116"/>
         <source>Show grid</source>
         <translation>Mostrar grilla</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="98"/>
+        <location filename="../src/mainwindow.cpp" line="117"/>
         <source>Arp table</source>
         <translation>Tabla arp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="99"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="99"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
         <source>Deleting object</source>
         <translation>Borrando objeto</translation>
     </message>
@@ -94,318 +94,318 @@
         <translation type="obsolete">Programas instalados en el dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="68"/>
+        <location filename="../src/mainwindow.cpp" line="87"/>
         <source>Do you really want to exit the program?</source>
         <translation>¿Realmente desea salir del programa?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="100"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>Programs</source>
         <translation>Programas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="100"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>Programs installed on device</source>
         <translation>Programas instalados en el dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="101"/>
+        <location filename="../src/mainwindow.cpp" line="120"/>
         <source>Setting</source>
         <translation>Configuración</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="102"/>
-        <location filename="../src/mainwindow.cpp" line="545"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="563"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="102"/>
-        <location filename="../src/mainwindow.cpp" line="546"/>
+        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="564"/>
         <source>Stop simulation</source>
         <translation>Parar simulación</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="103"/>
+        <location filename="../src/mainwindow.cpp" line="122"/>
         <source>Statistics </source>
         <translation>Estadísticas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="103"/>
+        <location filename="../src/mainwindow.cpp" line="122"/>
         <source>Show scene statistics </source>
         <translation>Mostrar las estadísticas de la escena</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="104"/>
+        <location filename="../src/mainwindow.cpp" line="123"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="104"/>
+        <location filename="../src/mainwindow.cpp" line="123"/>
         <source>Move objects</source>
         <translation>Mover objetos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="105"/>
+        <location filename="../src/mainwindow.cpp" line="124"/>
         <source>Netcards</source>
         <translation>Tarjetas de red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="105"/>
+        <location filename="../src/mainwindow.cpp" line="124"/>
         <source>Edit netcards</source>
         <translation>Editar tarjetas de red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>Cable</source>
         <translation>Cable</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="125"/>
         <source>Create connection</source>
         <translation>Crear conexión</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="107"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>Note</source>
         <translation>Nota</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="107"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>Insert text comment</source>
         <translation>Insertar comentario de texto</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="108"/>
+        <location filename="../src/mainwindow.cpp" line="127"/>
         <source>NetEmul Help</source>
         <translation>Ayuda de NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="108"/>
+        <location filename="../src/mainwindow.cpp" line="127"/>
         <source>Full help system program</source>
         <translatorcomment>Really don&apos;t know if the english phrase is correct</translatorcomment>
         <translation>Ayuda completa del programa de sistema</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="109"/>
+        <location filename="../src/mainwindow.cpp" line="128"/>
         <source>Unibus</source>
         <translation>Unibus</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="109"/>
+        <location filename="../src/mainwindow.cpp" line="128"/>
         <source>Add unibus</source>
         <translation>Agregar unibus</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="129"/>
         <source>Computer</source>
         <translation>Computadora</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="110"/>
+        <location filename="../src/mainwindow.cpp" line="129"/>
         <source>Add computer</source>
         <translation>Agregar computadora</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="111"/>
+        <location filename="../src/mainwindow.cpp" line="130"/>
         <source>About NetEmul</source>
         <translation>Acerca de NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="112"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>Hub</source>
         <translation>Hub</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="112"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>Add hub</source>
         <translation>Agregar hub</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
         <source>Switch</source>
         <translation>Switch</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
         <source>Add switch</source>
         <translation>Agregar switch</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="114"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Router</source>
         <translation>Router</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="114"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Add router</source>
         <translation>Agregar router</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="115"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="115"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Send data</source>
         <translation>Enviar datos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="116"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Execute scripts</source>
         <translation>Ejecutar scripts</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="116"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Run existing scripts</source>
         <translation>Correr scripts existentes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="117"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="118"/>
+        <location filename="../src/mainwindow.cpp" line="137"/>
         <source>Properties</source>
         <translation>Propiedades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="118"/>
+        <location filename="../src/mainwindow.cpp" line="137"/>
         <source>Show properties</source>
         <translation>Mostrar propiedades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="119"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>Show log</source>
         <translation>Mostrar el registro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="119"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>Show device log file</source>
         <translation>Mostrar el archivo de registro del dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>About device</source>
         <translation>Acerca del dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="120"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>Information about device</source>
         <translation>Información sobre el dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="121"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="122"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>View</source>
         <translation>Ver</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
         <source>Object</source>
         <translation>Objeto</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="124"/>
+        <location filename="../src/mainwindow.cpp" line="143"/>
         <source>Service</source>
         <translation>Servicio</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="125"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>Scripts</source>
         <translation>Scripts</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="127"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Devices</source>
         <translation>Dispositivos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="128"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Controls</source>
         <translation>Controles</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="180"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="188"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="191"/>
         <source>Ctrl+Alt+S</source>
         <translation>Ctrl+Alt+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="210"/>
+        <location filename="../src/mainwindow.cpp" line="229"/>
         <source>Ctrl+Alt+P</source>
         <translation>Ctrl+Alt+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="213"/>
+        <location filename="../src/mainwindow.cpp" line="232"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="226"/>
+        <location filename="../src/mainwindow.cpp" line="245"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="232"/>
+        <location filename="../src/mainwindow.cpp" line="251"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="235"/>
+        <location filename="../src/mainwindow.cpp" line="254"/>
         <source>Ctrl+Shift+A</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="238"/>
+        <location filename="../src/mainwindow.cpp" line="257"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="241"/>
+        <location filename="../src/mainwindow.cpp" line="260"/>
         <source>Ctrl+F1</source>
         <translation>Ctrl+F1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="416"/>
-        <location filename="../src/mainwindow.cpp" line="441"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
+        <location filename="../src/mainwindow.cpp" line="459"/>
         <source>Save file as ...</source>
         <translation>Guardar archivo como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="418"/>
-        <location filename="../src/mainwindow.cpp" line="429"/>
-        <location filename="../src/mainwindow.cpp" line="442"/>
+        <location filename="../src/mainwindow.cpp" line="436"/>
+        <location filename="../src/mainwindow.cpp" line="447"/>
+        <location filename="../src/mainwindow.cpp" line="460"/>
         <source>Networks(*.net)</source>
         <translation>Redes (*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="540"/>
+        <location filename="../src/mainwindow.cpp" line="558"/>
         <source>Play</source>
         <translation>Ejecutar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="541"/>
+        <location filename="../src/mainwindow.cpp" line="559"/>
         <source>Start simulation</source>
         <translation>Empezar la simulación</translation>
     </message>
@@ -417,18 +417,18 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/chips/boxchip.cpp" line="23"/>
-        <location filename="../src/chips/boxchip.cpp" line="48"/>
+        <location filename="../src/chips/boxchip.cpp" line="42"/>
+        <location filename="../src/chips/boxchip.cpp" line="67"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
     <message>
-        <location filename="../src/chips/interface.cpp" line="89"/>
+        <location filename="../src/chips/interface.cpp" line="108"/>
         <source>The network is not working correctly</source>
         <translation>La red no está funcionando correctamente</translation>
     </message>
     <message>
-        <location filename="../src/chips/interface.cpp" line="90"/>
+        <location filename="../src/chips/interface.cpp" line="109"/>
         <source>The network found a matching IP address</source>
         <translation>La red encontró una IP concordante</translation>
     </message>
@@ -437,83 +437,83 @@
         <translation type="obsolete">¡La red encontró una IP concordante!</translation>
     </message>
     <message>
-        <location filename="../src/frame.cpp" line="18"/>
+        <location filename="../src/frame.cpp" line="37"/>
         <source>Ethernet, sender: %1 receiver: %2</source>
         <translation>Ethernet, transmisor: %1 receptor: %2</translation>
     </message>
     <message>
-        <location filename="../src/ippacket.cpp" line="36"/>
+        <location filename="../src/ippacket.cpp" line="55"/>
         <source>IP packet, sender: %1, receiver: %2</source>
         <translation>Paquete IP, transmisor: %1, receptor: %2</translation>
     </message>
     <message>
-        <location filename="../src/models/arpmodel.h" line="34"/>
-        <location filename="../src/models/routemodel.cpp" line="168"/>
-        <location filename="../src/models/switchmodel.h" line="15"/>
+        <location filename="../src/models/arpmodel.h" line="53"/>
+        <location filename="../src/models/routemodel.cpp" line="188"/>
+        <location filename="../src/models/switchmodel.h" line="34"/>
         <source>Static</source>
         <translation>Estático</translation>
     </message>
     <message>
-        <location filename="../src/models/arpmodel.h" line="35"/>
-        <location filename="../src/models/switchmodel.h" line="16"/>
+        <location filename="../src/models/arpmodel.h" line="54"/>
+        <location filename="../src/models/switchmodel.h" line="35"/>
         <source>Dinamic</source>
         <translation>Dinámico</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="169"/>
-        <location filename="../src/udppacket.cpp" line="19"/>
+        <location filename="../src/models/routemodel.cpp" line="189"/>
+        <location filename="../src/udppacket.cpp" line="38"/>
         <source>RIP</source>
         <translation>RIP</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="170"/>
+        <location filename="../src/models/routemodel.cpp" line="190"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/tcppacket.cpp" line="26"/>
-        <location filename="../src/udppacket.cpp" line="28"/>
+        <location filename="../src/tcppacket.cpp" line="45"/>
+        <location filename="../src/udppacket.cpp" line="47"/>
         <source>sender port: %1, receiver port: %2</source>
         <translation>puerto de envío: %1, puerto de recepción: %2</translation>
     </message>
     <message>
-        <location filename="../src/tools/statistics.cpp" line="52"/>
+        <location filename="../src/tools/statistics.cpp" line="71"/>
         <source>Received frames: %1
 </source>
         <translation>Frames recibidos: %1</translation>
     </message>
     <message>
-        <location filename="../src/tools/statistics.cpp" line="53"/>
+        <location filename="../src/tools/statistics.cpp" line="72"/>
         <source>Received packets: %1
 </source>
         <translation>Paquetes recibidos: %1</translation>
     </message>
     <message>
-        <location filename="../src/tools/statistics.cpp" line="54"/>
+        <location filename="../src/tools/statistics.cpp" line="73"/>
         <source>Sent frames: %1
 </source>
         <translation>Frames enviados: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statistics.cpp" line="55"/>
+        <location filename="../src/tools/statistics.cpp" line="74"/>
         <source>Sent packets: %1
 </source>
         <translation>Paquetes enviados: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/udppacket.cpp" line="18"/>
+        <location filename="../src/udppacket.cpp" line="37"/>
         <source>UDP Message user</source>
         <translation>Usuario de mensajes UDP</translation>
     </message>
     <message>
-        <location filename="../src/udppacket.cpp" line="20"/>
+        <location filename="../src/udppacket.cpp" line="39"/>
         <source>DHCP message</source>
         <translation>Mensaje DHCP</translation>
     </message>
     <message>
-        <location filename="../src/udppacket.cpp" line="21"/>
+        <location filename="../src/udppacket.cpp" line="40"/>
         <source>None</source>
         <translation>Ninguno</translation>
     </message>
@@ -563,7 +563,7 @@ Omilaeva Anastasia - Desarrollador.</translation>
         <source>Thanks to</source>
         <translation>Gracias a</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/aboutwindow.ui" line="65"/>
         <source>Konstantin Andreev - Author of the idea and creator of the icons, 
 
@@ -579,7 +579,7 @@ Márcio Moraes</translation>
         <source>Translation</source>
         <translation>Traducciones</translation>
     </message>
-    <message utf8="true">
+    <message>
         <location filename="../src/forms/aboutwindow.ui" line="82"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
@@ -597,53 +597,58 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>adapterProperty</name>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="27"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="35"/>
+        <source>Netcard</source>
+        <translation type="unfinished">Tarjeta de red</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="46"/>
         <source>Netcard name: </source>
         <translation>Nombre de la tarjeta de red:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="37"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="56"/>
         <source>Mac-address: </source>
         <translation>Dirección MAC:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="46"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="65"/>
         <source>Ip-address: </source>
         <translation>Dirección IP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="50"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="69"/>
         <source>Mask: </source>
         <translation>Máscara:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="62"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="81"/>
         <source>Add</source>
         <translation>Agregar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="63"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="82"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="69"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="88"/>
         <source>Reset statistics</source>
         <translation>Limpiar estadísticas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="156"/>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="175"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="182"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="157"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="176"/>
         <source>First, remove the cable!</source>
         <translation>Primero elimine el cable!</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/adapterproperty.cpp" line="163"/>
+        <location filename="../src/dialogs/adapterproperty.cpp" line="182"/>
         <source>At least a netcard must exist</source>
         <translation>Debe existir al menos una tarjeta de red</translation>
     </message>
@@ -656,7 +661,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>boxChip</name>
     <message>
-        <location filename="../src/chips/boxchip.cpp" line="108"/>
+        <location filename="../src/chips/boxchip.cpp" line="136"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
@@ -664,12 +669,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>computer</name>
     <message>
-        <location filename="../src/devices/computer.cpp" line="11"/>
+        <location filename="../src/devices/computer.cpp" line="30"/>
         <source>eth%1</source>
         <translation>eth%1</translation>
     </message>
     <message>
-        <location filename="../src/devices/computer.cpp" line="13"/>
+        <location filename="../src/devices/computer.cpp" line="32"/>
         <source>&lt;b&gt;Computer&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Computadora&lt;/b&gt;&lt;!--Puede utilizar HTML--&gt;</translation>
     </message>
@@ -677,17 +682,17 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>computerProperty</name>
     <message>
-        <location filename="../src/dialogs/computerproperty.cpp" line="13"/>
+        <location filename="../src/dialogs/computerproperty.cpp" line="32"/>
         <source>Default gateway:</source>
         <translation>Ruta de salida por defecto:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/computerproperty.cpp" line="17"/>
+        <location filename="../src/dialogs/computerproperty.cpp" line="36"/>
         <source>Enable routing</source>
         <translation>Activar el enrutado</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/computerproperty.cpp" line="24"/>
+        <location filename="../src/dialogs/computerproperty.cpp" line="43"/>
         <source>Description:</source>
         <translation>Descripción:</translation>
     </message>
@@ -718,15 +723,38 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>dhcpClientProgramm</name>
     <message>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="8"/>
+        <location filename="../src/programms/dhcpclientprogramm.cpp" line="28"/>
         <source>DHCP client</source>
         <translation>Cliente DHCP</translation>
     </message>
 </context>
 <context>
+    <name>dhcpClientProperty</name>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="14"/>
+        <source>DHCP client property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="20"/>
+        <source>Choose interfaces which must be under DHCP control: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="45"/>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="56"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+</context>
+<context>
     <name>dhcpServerProgramm</name>
     <message>
-        <location filename="../src/programms/dhcpserverprogramm.cpp" line="7"/>
+        <location filename="../src/programms/dhcpserverprogramm.cpp" line="26"/>
         <source>DHCP server</source>
         <translation>Servidor DHCP</translation>
     </message>
@@ -734,17 +762,17 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>dialogTemplate</name>
     <message>
-        <location filename="../src/dialogs/dialogtemplate.cpp" line="9"/>
+        <location filename="../src/dialogs/dialogtemplate.cpp" line="28"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dialogtemplate.cpp" line="12"/>
+        <location filename="../src/dialogs/dialogtemplate.cpp" line="31"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dialogtemplate.cpp" line="15"/>
+        <location filename="../src/dialogs/dialogtemplate.cpp" line="34"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
@@ -752,8 +780,8 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>hubChip</name>
     <message>
-        <location filename="../src/chips/hubchip.cpp" line="13"/>
-        <location filename="../src/chips/hubchip.cpp" line="17"/>
+        <location filename="../src/chips/hubchip.cpp" line="32"/>
+        <location filename="../src/chips/hubchip.cpp" line="36"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
@@ -761,7 +789,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>hubDevice</name>
     <message>
-        <location filename="../src/devices/hubdevice.cpp" line="11"/>
+        <location filename="../src/devices/hubdevice.cpp" line="30"/>
         <source>&lt;b&gt;Hub&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Hub&lt;/b&gt;&lt;!--Puede utilizar HTML--&gt;</translation>
     </message>
@@ -769,7 +797,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>hubProperty</name>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="14"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="33"/>
         <source>Number of ports: </source>
         <translation>Número de puertos:</translation>
     </message>
@@ -778,42 +806,42 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">Manejar a través de SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="25"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="44"/>
         <source>Mac-address: </source>
         <translation>Dirección MAC:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="32"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="51"/>
         <source>Ip-address: </source>
         <translation>Dirección IP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="36"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="55"/>
         <source>Mask: </source>
         <translation>Máscara:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="46"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="65"/>
         <source>Reset statistics</source>
         <translation>Limpiar estadísticas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="54"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="73"/>
         <source>Description:</source>
         <translation>Descripción:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="70"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="89"/>
         <source>Number of collisions: %1</source>
         <translation>Número de colisiones: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="90"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="109"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="91"/>
+        <location filename="../src/dialogs/hubproperty.cpp" line="110"/>
         <source>First, remove the cables!</source>
         <translation>Primero elimine los cables!</translation>
     </message>
@@ -856,12 +884,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/installdialog.cpp" line="29"/>
+        <location filename="../src/dialogs/installdialog.cpp" line="48"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/installdialog.cpp" line="29"/>
+        <location filename="../src/dialogs/installdialog.cpp" line="48"/>
         <source>Program already installed.</source>
         <translation>Programa ya instalado</translation>
     </message>
@@ -869,37 +897,37 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>interfaceDialog</name>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="28"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="47"/>
         <source>ethernet 10/100</source>
         <translation>ethernet 10/100</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="29"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="48"/>
         <source>ethernet 10/100/1000</source>
         <translation>ethernet 10/100/1000</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="31"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="50"/>
         <source>Add</source>
         <translation>Agregar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="33"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="52"/>
         <source>Add netcard</source>
         <translation>Agregar tarjeta de red</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="36"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="55"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="64"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="83"/>
         <source>Speed: 10/100 Mbit/s</source>
         <translation>Velocidad: 10/100 Mbit/s</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/interfacedialog.cpp" line="68"/>
+        <location filename="../src/dialogs/interfacedialog.cpp" line="87"/>
         <source>Speed: 10/100/1000 Mbit/s</source>
         <translation>Velocidad: 10/100/1000 Mbit/s</translation>
     </message>
@@ -907,18 +935,18 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>logDialog</name>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="46"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="65"/>
         <source>sent </source>
         <translation>enviado</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="46"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="65"/>
         <source>received </source>
         <translation>recibido</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="56"/>
-        <location filename="../src/dialogs/logdialog.cpp" line="114"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="75"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="133"/>
         <source> Type: </source>
         <translation>Tipo:</translation>
     </message>
@@ -939,77 +967,77 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">bandera: Fin</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="83"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="102"/>
         <source>ISN %1, ACK %2</source>
         <translation>ISN %1, ACK %2</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="87"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="106"/>
         <source>flags: No flags</source>
         <translation>banderas: sin banderas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="89"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="108"/>
         <source>flags: Ack</source>
         <translation>bandera: Ack</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="90"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="109"/>
         <source>flags: SYN</source>
         <translation>bandera: Ack</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="91"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="110"/>
         <source>flags: SYN, ACK</source>
         <translation>banderas: SYN, ACK</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="92"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="111"/>
         <source>flags: Fin</source>
         <translation>bandera: Fin</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="104"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="123"/>
         <source>request</source>
         <translation>pedir</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="105"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="124"/>
         <source>response</source>
         <translation>respuesta</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="108"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="127"/>
         <source> search </source>
         <translation>buscar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="112"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="131"/>
         <source> found </source>
         <translation>encontrado</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="119"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="138"/>
         <source>ARP-%1:</source>
         <translation>ARP-%1:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="122"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="141"/>
         <source>sender IP address: %1</source>
         <translation>dirección IP del transmisor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="125"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="144"/>
         <source>sender MAC address: %1</source>
         <translation>dirección MAC del transmisor: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="128"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="147"/>
         <source>target IP address: %1</source>
         <translation>dirección IP destino: %1</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/logdialog.cpp" line="131"/>
+        <location filename="../src/dialogs/logdialog.cpp" line="150"/>
         <source>target MAC address: %1</source>
         <translation>dirección MAC destino: %1</translation>
     </message>
@@ -1056,23 +1084,23 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>myCanvas</name>
     <message>
-        <location filename="../src/mycanvas.cpp" line="139"/>
-        <location filename="../src/mycanvas.cpp" line="412"/>
+        <location filename="../src/mycanvas.cpp" line="158"/>
+        <location filename="../src/mycanvas.cpp" line="431"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="139"/>
+        <location filename="../src/mycanvas.cpp" line="158"/>
         <source>The device can&apos;t transmit data!</source>
         <translation>¡El dispositivo no puede transmitir datos!</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="412"/>
+        <location filename="../src/mycanvas.cpp" line="431"/>
         <source>The outdated version of the file, file can&apos;t be opened</source>
         <translation>Versión vieja del archivo, no puede ser abierto</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.h" line="44"/>
+        <location filename="../src/mycanvas.h" line="63"/>
         <source>Commentary</source>
         <translation>Comentario</translation>
     </message>
@@ -1099,17 +1127,22 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Agregar</translation>
     </message>
     <message>
-        <location filename="../src/forms/programmdialog.ui" line="71"/>
+        <location filename="../src/forms/programmdialog.ui" line="74"/>
+        <source>Settings</source>
+        <translation type="unfinished">Configuraciones</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/programmdialog.ui" line="88"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/forms/programmdialog.ui" line="95"/>
+        <location filename="../src/forms/programmdialog.ui" line="112"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/forms/programmdialog.ui" line="106"/>
+        <location filename="../src/forms/programmdialog.ui" line="123"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1117,7 +1150,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>ripProgramm</name>
     <message>
-        <location filename="../src/programms/ripprogramm.cpp" line="13"/>
+        <location filename="../src/programms/ripprogramm.cpp" line="32"/>
         <source>RIP</source>
         <translation>RIP</translation>
     </message>
@@ -1125,42 +1158,42 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>routeEditor</name>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="26"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="45"/>
         <source>Destination: </source>
         <translation>Destino:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="28"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="47"/>
         <source>Mask: </source>
         <translation>Máscara:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="30"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="49"/>
         <source>Gateway: </source>
         <translation>Puerta de enlace:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="33"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="52"/>
         <source>Interface: </source>
         <translation>Inetrfaz:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="41"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="60"/>
         <source>Metric: </source>
         <translation>Métrica:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="51"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="70"/>
         <source>Add</source>
         <translation>Agregar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="55"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="74"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routeeditor.cpp" line="61"/>
+        <location filename="../src/dialogs/routeeditor.cpp" line="80"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
@@ -1168,37 +1201,37 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>routeModel</name>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="32"/>
+        <location filename="../src/models/routemodel.cpp" line="51"/>
         <source>Destination</source>
         <translation>Destino</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="33"/>
+        <location filename="../src/models/routemodel.cpp" line="52"/>
         <source>Mask</source>
         <translation>Máscara</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="34"/>
+        <location filename="../src/models/routemodel.cpp" line="53"/>
         <source>Gateway</source>
         <translation>Puerta de enlace</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="35"/>
+        <location filename="../src/models/routemodel.cpp" line="54"/>
         <source>Interface</source>
         <translation>Interfaz</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="36"/>
+        <location filename="../src/models/routemodel.cpp" line="55"/>
         <source>Metric</source>
         <translation>Métrica</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="37"/>
+        <location filename="../src/models/routemodel.cpp" line="56"/>
         <source>Source</source>
         <translation>Fuente</translation>
     </message>
     <message>
-        <location filename="../src/models/routemodel.cpp" line="178"/>
+        <location filename="../src/models/routemodel.cpp" line="198"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
@@ -1206,23 +1239,23 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>routerDevice</name>
     <message>
-        <location filename="../src/devices/routerdevice.cpp" line="11"/>
-        <location filename="../src/devices/routerdevice.cpp" line="47"/>
+        <location filename="../src/devices/routerdevice.cpp" line="30"/>
+        <location filename="../src/devices/routerdevice.cpp" line="66"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
     <message>
-        <location filename="../src/devices/routerdevice.cpp" line="12"/>
+        <location filename="../src/devices/routerdevice.cpp" line="31"/>
         <source>&lt;b&gt;Router&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Router&lt;/b&gt;&lt;!--Puede usar HTML--&gt;</translation>
     </message>
     <message>
-        <location filename="../src/devices/routerdevice.cpp" line="40"/>
+        <location filename="../src/devices/routerdevice.cpp" line="59"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/devices/routerdevice.cpp" line="40"/>
+        <location filename="../src/devices/routerdevice.cpp" line="59"/>
         <source>To change the number of ports, disconnect all cables!</source>
         <translation>¡Para cambiar el número de puertos, desconecte todos los cables!</translation>
     </message>
@@ -1230,17 +1263,17 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>routerProperty</name>
     <message>
-        <location filename="../src/dialogs/routerproperty.cpp" line="16"/>
+        <location filename="../src/dialogs/routerproperty.cpp" line="35"/>
         <source>Number of ports: </source>
         <translation>Número de puertos:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routerproperty.cpp" line="24"/>
+        <location filename="../src/dialogs/routerproperty.cpp" line="43"/>
         <source>Enable routing</source>
         <translation>Activar el enrutado</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/routerproperty.cpp" line="31"/>
+        <location filename="../src/dialogs/routerproperty.cpp" line="50"/>
         <source>Description:</source>
         <translation>Descripción:</translation>
     </message>
@@ -1248,57 +1281,57 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>sendDialog</name>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="20"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="39"/>
         <source>Sending</source>
         <translation>Enviando</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="52"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="71"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="55"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="74"/>
         <source>Size KB</source>
         <translation>Tamaño en KB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="59"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="78"/>
         <source> KB</source>
         <translation>KB</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="63"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="82"/>
         <source>Broadcast</source>
         <translation>Broadcast</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="66"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="85"/>
         <source>Next</source>
         <translation>Siguiente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="67"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="86"/>
         <source>Choose protocol:</source>
         <translation>Elija el protocolo:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="69"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="88"/>
         <source>UDP</source>
         <translation>UDP</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="71"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="90"/>
         <source>TCP</source>
         <translation>TCP</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="93"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="112"/>
         <source>Select the network card receiver</source>
         <translation>Elija la tarjeta de red receptora</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/senddialog.cpp" line="94"/>
+        <location filename="../src/dialogs/senddialog.cpp" line="113"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
@@ -1336,14 +1369,15 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Router</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="564"/>
+        <location filename="../src/forms/settingdialog.ui" line="573"/>
         <source>Lifetime arp-entries: </source>
         <translation>Tiempo de vida de las entradas arp:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="459"/>
-        <location filename="../src/forms/settingdialog.ui" line="589"/>
-        <location filename="../src/forms/settingdialog.ui" line="619"/>
+        <location filename="../src/forms/settingdialog.ui" line="468"/>
+        <location filename="../src/forms/settingdialog.ui" line="598"/>
+        <location filename="../src/forms/settingdialog.ui" line="628"/>
+        <location filename="../src/forms/settingdialog.ui" line="716"/>
         <source> s</source>
         <translation> s</translation>
     </message>
@@ -1353,126 +1387,131 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Tarjeta de red</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="150"/>
+        <location filename="../src/forms/settingdialog.ui" line="132"/>
+        <source>Tcp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="159"/>
         <source>Animation speed:</source>
         <translation>Velocidad de la animación:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="186"/>
+        <location filename="../src/forms/settingdialog.ui" line="195"/>
         <source>Language: </source>
         <translation>Idioma:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="200"/>
+        <location filename="../src/forms/settingdialog.ui" line="209"/>
         <source>English</source>
         <translation>Inglés</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="205"/>
+        <location filename="../src/forms/settingdialog.ui" line="214"/>
         <source>Russian</source>
         <translation>Ruso</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="210"/>
+        <location filename="../src/forms/settingdialog.ui" line="219"/>
         <source>Brazillian Portuguese</source>
         <translation>Portugués de Brasil</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="215"/>
+        <location filename="../src/forms/settingdialog.ui" line="224"/>
         <source>Spanish</source>
         <translation>Español</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="244"/>
+        <location filename="../src/forms/settingdialog.ui" line="253"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>Número de interfaces por defecto:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="258"/>
+        <location filename="../src/forms/settingdialog.ui" line="267"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="263"/>
-        <location filename="../src/forms/settingdialog.ui" line="510"/>
+        <location filename="../src/forms/settingdialog.ui" line="272"/>
+        <location filename="../src/forms/settingdialog.ui" line="519"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="268"/>
+        <location filename="../src/forms/settingdialog.ui" line="277"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="273"/>
-        <location filename="../src/forms/settingdialog.ui" line="326"/>
-        <location filename="../src/forms/settingdialog.ui" line="399"/>
-        <location filename="../src/forms/settingdialog.ui" line="515"/>
+        <location filename="../src/forms/settingdialog.ui" line="282"/>
+        <location filename="../src/forms/settingdialog.ui" line="335"/>
+        <location filename="../src/forms/settingdialog.ui" line="408"/>
+        <location filename="../src/forms/settingdialog.ui" line="524"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="278"/>
-        <location filename="../src/forms/settingdialog.ui" line="331"/>
-        <location filename="../src/forms/settingdialog.ui" line="404"/>
-        <location filename="../src/forms/settingdialog.ui" line="520"/>
+        <location filename="../src/forms/settingdialog.ui" line="287"/>
+        <location filename="../src/forms/settingdialog.ui" line="340"/>
+        <location filename="../src/forms/settingdialog.ui" line="413"/>
+        <location filename="../src/forms/settingdialog.ui" line="529"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="283"/>
-        <location filename="../src/forms/settingdialog.ui" line="336"/>
+        <location filename="../src/forms/settingdialog.ui" line="292"/>
+        <location filename="../src/forms/settingdialog.ui" line="345"/>
         <source>6</source>
         <translation>6</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="312"/>
+        <location filename="../src/forms/settingdialog.ui" line="321"/>
         <source>Number of ports by default</source>
         <translation>Número de puertos por defecto</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="341"/>
-        <location filename="../src/forms/settingdialog.ui" line="409"/>
-        <location filename="../src/forms/settingdialog.ui" line="530"/>
+        <location filename="../src/forms/settingdialog.ui" line="350"/>
+        <location filename="../src/forms/settingdialog.ui" line="418"/>
+        <location filename="../src/forms/settingdialog.ui" line="539"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="346"/>
-        <location filename="../src/forms/settingdialog.ui" line="414"/>
+        <location filename="../src/forms/settingdialog.ui" line="355"/>
+        <location filename="../src/forms/settingdialog.ui" line="423"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="351"/>
-        <location filename="../src/forms/settingdialog.ui" line="424"/>
+        <location filename="../src/forms/settingdialog.ui" line="360"/>
+        <location filename="../src/forms/settingdialog.ui" line="433"/>
         <source>24</source>
         <translation>24</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="356"/>
-        <location filename="../src/forms/settingdialog.ui" line="434"/>
+        <location filename="../src/forms/settingdialog.ui" line="365"/>
+        <location filename="../src/forms/settingdialog.ui" line="443"/>
         <source>48</source>
         <translation>48</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="385"/>
-        <location filename="../src/forms/settingdialog.ui" line="496"/>
+        <location filename="../src/forms/settingdialog.ui" line="394"/>
+        <location filename="../src/forms/settingdialog.ui" line="505"/>
         <source>Number of ports by default: </source>
         <translation>Número de puertos por defecto:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="419"/>
+        <location filename="../src/forms/settingdialog.ui" line="428"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="429"/>
+        <location filename="../src/forms/settingdialog.ui" line="438"/>
         <source>32</source>
         <translation>32</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="446"/>
+        <location filename="../src/forms/settingdialog.ui" line="455"/>
         <source>Switching table&apos;s records lifetime:</source>
         <translation>Cambiar el tiempo de vida de la tabla de registros:</translation>
     </message>
@@ -1481,32 +1520,42 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">Tiempo de vida de las entradas a la tabla de switcheo</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="525"/>
+        <location filename="../src/forms/settingdialog.ui" line="534"/>
         <source>7</source>
         <translation>7</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="535"/>
+        <location filename="../src/forms/settingdialog.ui" line="544"/>
         <source>9</source>
         <translation>9</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="606"/>
+        <location filename="../src/forms/settingdialog.ui" line="615"/>
         <source>Expectation time for arp-responce</source>
         <translation>Tiempo de respuesta de arp esperado</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="669"/>
+        <location filename="../src/forms/settingdialog.ui" line="662"/>
+        <source>Number of repeat sendings:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="691"/>
+        <source>Waiting confirmation time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="766"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="680"/>
+        <location filename="../src/forms/settingdialog.ui" line="777"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="697"/>
+        <location filename="../src/forms/settingdialog.ui" line="794"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1514,7 +1563,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="386"/>
+        <location filename="../src/devices/smartdevice.cpp" line="405"/>
         <source>eth%1</source>
         <translation>eth%1</translation>
     </message>
@@ -1527,7 +1576,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">Programa ya instalado.</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.h" line="29"/>
+        <location filename="../src/devices/smartdevice.h" line="48"/>
         <source>Routing Table</source>
         <translation>Tabla de ruteo</translation>
     </message>
@@ -1564,42 +1613,42 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>statisticsScene</name>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="25"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="44"/>
         <source>Number of devices: %1
 </source>
         <translation>Número de dispositivos: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="26"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="45"/>
         <source>Number of computers: %1
 </source>
         <translation>Número de computadoras: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="27"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="46"/>
         <source>Number of hubs: %1
 </source>
         <translation>Número de hubs: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="28"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="47"/>
         <source>Number of switchs: %1
 </source>
         <translation>Número de switchs: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="29"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="48"/>
         <source>Number of routers: %1
 </source>
         <translation>Número de routers: %1
 </translation>
     </message>
     <message>
-        <location filename="../src/tools/statisticsscene.cpp" line="30"/>
+        <location filename="../src/tools/statisticsscene.cpp" line="49"/>
         <source>Number of cables: %1
 </source>
         <translation>Número de cables: %1
@@ -1609,9 +1658,9 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>switchChip</name>
     <message>
-        <location filename="../src/chips/switchchip.cpp" line="18"/>
-        <location filename="../src/chips/switchchip.cpp" line="25"/>
-        <location filename="../src/chips/switchchip.cpp" line="32"/>
+        <location filename="../src/chips/switchchip.cpp" line="37"/>
+        <location filename="../src/chips/switchchip.cpp" line="44"/>
+        <location filename="../src/chips/switchchip.cpp" line="51"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
@@ -1619,7 +1668,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>switchDevice</name>
     <message>
-        <location filename="../src/devices/switchdevice.cpp" line="12"/>
+        <location filename="../src/devices/switchdevice.cpp" line="31"/>
         <source>&lt;b&gt;Switch&lt;/b&gt;&lt;!--You can use HTML.--&gt;</source>
         <translation>&lt;b&gt;Switch&lt;/b&gt;&lt;!--Puede usar HTML.--&gt;</translation>
     </message>
@@ -1628,7 +1677,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">Tabla de switcheo</translation>
     </message>
     <message>
-        <location filename="../src/devices/switchdevice.h" line="30"/>
+        <location filename="../src/devices/switchdevice.h" line="49"/>
         <source>Switching table</source>
         <translation>Tabla de switcheo</translation>
     </message>
@@ -1636,27 +1685,27 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>switchModel</name>
     <message>
-        <location filename="../src/models/switchmodel.cpp" line="33"/>
+        <location filename="../src/models/switchmodel.cpp" line="52"/>
         <source>Mac-address</source>
         <translation>Dirección MAC</translation>
     </message>
     <message>
-        <location filename="../src/models/switchmodel.cpp" line="34"/>
+        <location filename="../src/models/switchmodel.cpp" line="53"/>
         <source>Port</source>
         <translation>Puerto</translation>
     </message>
     <message>
-        <location filename="../src/models/switchmodel.cpp" line="35"/>
+        <location filename="../src/models/switchmodel.cpp" line="54"/>
         <source>Record type</source>
         <translation>Tipo de registro</translation>
     </message>
     <message>
-        <location filename="../src/models/switchmodel.cpp" line="36"/>
+        <location filename="../src/models/switchmodel.cpp" line="55"/>
         <source>TTL</source>
         <translation>TTL</translation>
     </message>
     <message>
-        <location filename="../src/models/switchmodel.cpp" line="49"/>
+        <location filename="../src/models/switchmodel.cpp" line="68"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
@@ -1664,7 +1713,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>switchProperty</name>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="14"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="33"/>
         <source>Number of ports: </source>
         <translation>Número de puertos:</translation>
     </message>
@@ -1673,37 +1722,37 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation type="obsolete">Manejar por SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="25"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="44"/>
         <source>Mac-address: </source>
         <translation>Dirección MAC:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="33"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="52"/>
         <source>Ip-address: </source>
         <translation>Dirección IP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="37"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="56"/>
         <source>Mask: </source>
         <translation>Máscara:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="44"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="63"/>
         <source>Reset statistics</source>
         <translation>Limpiar estadísticas</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="52"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="71"/>
         <source>Description:</source>
         <translation>Descripción:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="82"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="101"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="83"/>
+        <location filename="../src/dialogs/switchproperty.cpp" line="102"/>
         <source>First, remove the cables!</source>
         <translation>¡Primero elimine los cables!</translation>
     </message>
@@ -1711,57 +1760,57 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>tableArp</name>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="45"/>
         <source>Mac-address</source>
         <translation>Dirección MAC</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="45"/>
         <source>Ip-address</source>
         <translation>Dirección IP</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="45"/>
         <source>Record type</source>
         <translation>Tipo de registro</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="26"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="45"/>
         <source>Netcard name</source>
         <translation>Nombre de la tarjeta de red</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="27"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="46"/>
         <source>TTL</source>
         <translation>TTL</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="32"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="51"/>
         <source>Mac-address: </source>
         <translation>Dirección MAC:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="39"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="58"/>
         <source>Ip-address: </source>
         <translation>Dirección IP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="41"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="60"/>
         <source>Netcard</source>
         <translation>Tarjeta de red</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="48"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="67"/>
         <source>Add</source>
         <translation>Agregar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="50"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="69"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/tablearp.cpp" line="53"/>
+        <location filename="../src/dialogs/tablearp.cpp" line="72"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
@@ -1769,7 +1818,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>tableSwitch</name>
     <message>
-        <location filename="../src/dialogs/tableswitch.cpp" line="15"/>
+        <location filename="../src/dialogs/tableswitch.cpp" line="34"/>
         <source>LAN%1</source>
         <translation>LAN%1</translation>
     </message>
@@ -1819,19 +1868,32 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     </message>
 </context>
 <context>
+    <name>tcpSocket</name>
+    <message>
+        <location filename="../src/tools/tcpsocket.cpp" line="187"/>
+        <source>Error</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../src/tools/tcpsocket.cpp" line="187"/>
+        <source>TCP: Data transmition error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>testDialog</name>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="87"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="106"/>
         <source>Script finished correctly</source>
         <translation>Script finalizado correctamente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="90"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="109"/>
         <source>Script not correctly finished</source>
         <translation>El script no terminó correctamente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="129"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="148"/>
         <source>Choose a directory with scripts</source>
         <translation>Elija un directorio con scripts</translation>
     </message>
@@ -1865,7 +1927,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Todo</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="137"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="156"/>
         <location filename="../src/forms/testdialog.ui" line="79"/>
         <source>Click start</source>
         <translation>Haga click en Empezar</translation>

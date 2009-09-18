@@ -41,7 +41,8 @@ public:
     int size();
 private:
     QList<arpRecord*> myTable;
-
+    mutable arpRecord *lastRecord;
+    mutable ipAddress lastAddress;
 };
 
 struct arpRecord {

@@ -49,29 +49,21 @@ MOC_DIR = build
 UI_DIR = src
 
 # Input
-HEADERS += src/arppacket.h \
-    src/deviceport.h \
+HEADERS += src/deviceport.h \
     src/frame.h \
     src/ipaddress.h \
     src/ipedit.h \
-    src/ippacket.h \
     src/macaddress.h \
     src/mainwindow.h \
-    src/mycanvas.h \
-    src/udppacket.h \
-    src/tcppacket.h
-SOURCES += src/arppacket.cpp \
-    src/deviceport.cpp \
+    src/mycanvas.h
+SOURCES += src/deviceport.cpp \
     src/frame.cpp \
     src/ipaddress.cpp \
     src/ipedit.cpp \
-    src/ippacket.cpp \
     src/macaddress.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/mycanvas.cpp \
-    src/udppacket.cpp \
-    src/tcppacket.cpp
+    src/mycanvas.cpp
 RESOURCES += netemul.qrc
 TRANSLATIONS += translation/netemul_ru.ts \
     translation/netemul_pt_BR.ts \

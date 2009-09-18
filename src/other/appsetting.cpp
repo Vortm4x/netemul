@@ -44,6 +44,21 @@ appSetting::appSetting()
 {
 }
 
+void appSetting::defaultNums()
+{
+    _defaultComputerCount = 1;
+    _defaultHubCount = 4;
+    _defaultSwitchCount = 4;
+    _defaultRouterCount = 4;
+    _ttlArp = 1200;
+    _arpResponceTime = 45;
+    _ttlMac = 300;
+    _sendingNum = 1;
+    _waitingTime = 45;
+    _speed = 100;
+    _language = 0;
+}
+
 void appSetting::readSetting()
 {
     for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
@@ -89,7 +104,6 @@ void appSetting::writeSetting()
 
 void appSetting::setLanguage(int n)
 {
-    if ( n == _language ) return;
     _language = n;
     for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
         if ( i != n ) QCoreApplication::removeTranslator(mas[i]);

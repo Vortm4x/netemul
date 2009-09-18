@@ -60,7 +60,7 @@
        <set>AlignLeft|AlignVCenter</set>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/setting.png</normaloff>:/im/images/setting.png</iconset>
       </property>
       <property name="flags">
@@ -72,7 +72,7 @@
        <string>Computer</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/computer.png</normaloff>:/im/images/computer.png</iconset>
       </property>
       <property name="flags">
@@ -84,7 +84,7 @@
        <string>Hub</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/hub.png</normaloff>:/im/images/hub.png</iconset>
       </property>
       <property name="flags">
@@ -96,7 +96,7 @@
        <string>Switch</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/switch.png</normaloff>:/im/images/switch.png</iconset>
       </property>
       <property name="flags">
@@ -108,7 +108,7 @@
        <string>Router</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/router.png</normaloff>:/im/images/router.png</iconset>
       </property>
       <property name="flags">
@@ -120,7 +120,7 @@
        <string>Netcard</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/network_nic.png</normaloff>:/im/images/network_nic.png</iconset>
       </property>
       <property name="flags">
@@ -132,7 +132,7 @@
        <string>Tcp</string>
       </property>
       <property name="icon">
-       <iconset>
+       <iconset resource="../../netemul.qrc">
         <normaloff>:/im/images/tcp.png</normaloff>:/im/images/tcp.png</iconset>
       </property>
      </item>
@@ -758,6 +758,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_default">
+       <property name="text">
+        <string>Default</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_apply">
        <property name="enabled">
         <bool>false</bool>
@@ -766,7 +773,7 @@
         <string>Apply</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/refresh.png</normaloff>:/im/images/refresh.png</iconset>
        </property>
       </widget>
@@ -777,7 +784,7 @@
         <string>Ok</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
        <property name="default">
@@ -794,7 +801,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -814,7 +821,9 @@
   <tabstop>routerComboBox</tabstop>
   <tabstop>listWidget</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btn_cancel</sender>
@@ -823,8 +832,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>412</x>
-     <y>310</y>
+     <x>757</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -839,8 +848,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>312</x>
-     <y>310</y>
+     <x>661</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel">
      <x>349</x>
@@ -855,8 +864,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>238</x>
-     <y>310</y>
+     <x>570</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel">
      <x>269</x>
@@ -951,8 +960,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>90</x>
-     <y>238</y>
+     <x>100</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
      <x>40</x>
@@ -983,8 +992,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>37</x>
-     <y>171</y>
+     <x>47</x>
+     <y>147</y>
     </hint>
     <hint type="destinationlabel">
      <x>104</x>
@@ -999,8 +1008,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>56</x>
-     <y>132</y>
+     <x>65</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>383</x>
@@ -1015,8 +1024,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>56</x>
-     <y>190</y>
+     <x>65</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>383</x>
@@ -1024,10 +1033,58 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btn_default</sender>
+   <signal>clicked()</signal>
+   <receiver>settingDialog</receiver>
+   <slot>defaultSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>388</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>303</x>
+     <y>287</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sp_ttlArp</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>137</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sp_arpResponce</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>34</x>
+     <y>196</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>67</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>apply()</slot>
   <slot>applyEnable()</slot>
-  <slot>applyDisable()</slot>
+  <slot>defaultSettings()</slot>
  </slots>
 </ui>

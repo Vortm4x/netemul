@@ -34,6 +34,7 @@
 */
 tableArp::tableArp()
 {
+    setWindowTitle(tr("Arp table"));
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableWidget(0,5);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);

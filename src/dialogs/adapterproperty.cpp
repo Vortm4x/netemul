@@ -27,12 +27,12 @@
 #include "ipedit.h"
 #include "interfacedialog.h"
 
-
 /*!
   Конструктор создает основной интерфейс диалога.
 */
 adapterProperty::adapterProperty(adapterSetting *s)
 {
+    setWindowTitle(tr("Netcard"));
     sd = s;
     QVBoxLayout *all = new QVBoxLayout;
     tab_interfaces = new QTabBar;

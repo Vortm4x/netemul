@@ -22,6 +22,7 @@
 
 arpModel::arpModel()
 {
+    lastRecord = 0;
 }
 
 arpRecord* arpModel::addToTable(ipAddress ip , macAddress mac , int mode )
@@ -41,6 +42,7 @@ arpRecord* arpModel::addToTable(ipAddress ip , macAddress mac , int mode )
     t->mode = mode;
     t->time = 0;
     myTable << t;
+    lastRecord = 0;
     return t;
 }
 
@@ -48,12 +50,16 @@ void arpModel::deleteFromTable(const QString &ip)
 {
     ipAddress a(ip);
     foreach ( arpRecord *i, myTable )
-        if ( i->ip == a ) deleteFromTable(i);
+        if ( i->ip == a ) {
+            deleteFromTable(i);
+            return;
+        }
 }
 
 void arpModel::deleteFromTable(arpRecord *r)
 {
     myTable.removeOne(r);
+    lastRecord = 0;
     delete r;
 }
 
@@ -72,9 +78,15 @@ void arpModel::clear()
 
 arpRecord* arpModel::recordAt(const ipAddress &a) const
 {
-    foreach ( arpRecord *i, myTable )
-        if ( i->ip == a) return i;
-    return NULL;
+    if ( lastRecord && lastAddress == a ) return lastRecord;
+    foreach ( arpRecord *i, myTable ) {
+        if ( i->ip == a) {
+            lastRecord = i;
+            lastAddress = a;
+            return i;
+        }
+    }
+    return 0;
 }
 
 arpRecord* arpModel::recordAt(int u) const

@@ -28,6 +28,7 @@
 
 switchProperty::switchProperty()
 {
+    setWindowTitle(tr("Properies"));
     QVBoxLayout *all = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
     QLabel *t = new QLabel(tr("Number of ports: "));

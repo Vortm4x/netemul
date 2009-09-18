@@ -27,6 +27,7 @@
 
 interfaceDialog::interfaceDialog()
 {
+    setWindowTitle(tr("Add adapter"));
     QHBoxLayout *all = new QHBoxLayout;
     QVBoxLayout *temp = new QVBoxLayout;
     QVBoxLayout *tempL = new QVBoxLayout;

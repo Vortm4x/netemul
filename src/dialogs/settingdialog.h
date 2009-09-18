@@ -30,9 +30,11 @@ class settingDialog : public QDialog , private Ui::settingDialog
     Q_DISABLE_COPY( settingDialog )
 public:
     settingDialog();    
+    void currentValues();
 public slots:
     void apply();
     void applyEnable();
+    void defaultSettings();
 protected:
     virtual void changeEvent(QEvent *e);
 };

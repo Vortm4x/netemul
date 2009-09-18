@@ -104,10 +104,11 @@ frame interface::createFrame( macAddress receiverMac, int t)
 void interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
-        if ( arp.receiverIp() == arp.senderIp() ) {
+        if ( arp.senderIp() == myIp ) {
             QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
                                  QObject::tr("The network found a matching IP address"),
                                  QMessageBox::Ok, QMessageBox::Ok);
+            return;
         }
         myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
         foreach ( waitPacket *i , myWaits )

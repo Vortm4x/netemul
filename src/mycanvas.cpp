@@ -131,7 +131,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
         case text:
              createTextItem(event->scenePos());
              setMode( move , noDev );
-             uncheck();
+             emit uncheck();
              break;
         case insert: // Если режим вставки
             if ( InsertRect->pos().y() < 0 ) break;
