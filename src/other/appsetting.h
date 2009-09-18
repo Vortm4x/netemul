@@ -41,6 +41,8 @@ public:
     static void setDefaultHubManual(bool b) { _defaultHubManual = b; }
     static bool defaultHubManual() { return _defaultHubManual; }
     static void setDefaultSwitchManual(bool b) { _defaultSwitchManual = b; }
+    static bool hasOpengl() { return _hasOpengl; }
+    static void setHasOpengl(bool b) { _hasOpengl = b; }
     static bool defaultSwitchManual() { return _defaultSwitchManual; }
     static void setScriptPath(const QString path) { _scriptPath = path; }
     static QString scriptPath() { return _scriptPath; }
@@ -78,6 +80,7 @@ private:
     static bool _defaultSwitchManual;
     static int _arpResponceTime;
     static QString _scriptPath;
+    static bool _hasOpengl;
 protected:
     appSetting();
     ~appSetting();

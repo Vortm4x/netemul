@@ -56,6 +56,8 @@ void settingDialog::currentValues()
     sb_send->setValue(appSetting::sendingNum());
 
     sb_waitingTime->setValue(appSetting::waitingTime());
+
+    cb_opengl->setChecked( appSetting::hasOpengl() );
 }
 
 void settingDialog::applyEnable()
@@ -76,6 +78,7 @@ void settingDialog::apply()
     appSetting::setLanguage( languageBox->currentIndex() );
     appSetting::setSendingNum(sb_send->value());
     appSetting::setWaitingTime(sb_waitingTime->value());
+    appSetting::setHasOpengl( cb_opengl->isChecked() );
     btn_apply->setEnabled(false);
     if ( sender() == btn_ok ) accept();
 }

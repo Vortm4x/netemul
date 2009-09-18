@@ -62,17 +62,14 @@ MainWindow::MainWindow(QWidget *parent)
     view = new QGraphicsView(canva,this);
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
-//    view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
-#ifndef QT_NO_OPENGL
-    view->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
-#endif
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
     readSetting();
     setCentralWidget(view);
     retranslate();
+    setOpenglMode( appSetting::hasOpengl() );
 }
 
 MainWindow::~MainWindow()
@@ -425,6 +422,16 @@ void MainWindow::setting()
     settingDialog *d = new settingDialog;    
     d->exec();
     canva->setAnimateSpeed( appSetting::animateSpeed() );
+    setOpenglMode( appSetting::hasOpengl() );
+}
+
+void MainWindow::setOpenglMode(bool mode)
+{
+#ifndef QT_NO_OPENGL
+    QWidget *widget = 0;
+    if ( mode ) widget = new QGLWidget(QGLFormat(QGL::SampleBuffers));
+    view->setViewport(widget);
+#endif
 }
 
 //Слот сохранить

@@ -37,6 +37,7 @@ int appSetting::_language = 0;
 int appSetting::_sendingNum = 1;
 int appSetting::_waitingTime = 45;
 int appSetting::_arpResponceTime = 45;
+bool appSetting::_hasOpengl = false;
 QString appSetting::_scriptPath = "";
 QTranslator* appSetting::mas[LANGUAGE_COUNT];
 
@@ -57,6 +58,7 @@ void appSetting::defaultNums()
     _waitingTime = 45;
     _speed = 100;
     _language = 0;
+    _hasOpengl = false;
 }
 
 void appSetting::readSetting()
@@ -80,6 +82,7 @@ void appSetting::readSetting()
     setLanguage( setting.value("main/language",0).toInt() );
     _sendingNum = setting.value("tcp/sendingNumber",1).toInt();
     _waitingTime = setting.value("tcp/waitingTime",45).toInt();
+    _hasOpengl = setting.value("main/opengl",false).toBool();
 }
 
 void appSetting::writeSetting()
@@ -100,6 +103,7 @@ void appSetting::writeSetting()
     setting.setValue("main/scriptPath",_scriptPath);
     setting.setValue("tcp/sendingNumber",_sendingNum);
     setting.setValue("tcp/waitingTime",_waitingTime);
+    setting.setValue("main/opengl", _hasOpengl );
 }
 
 void appSetting::setLanguage(int n)
