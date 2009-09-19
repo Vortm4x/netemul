@@ -28,7 +28,11 @@ INCLUDEPATH += . \
     src/tools \
     src/packets
 QT += script
-win32 { 
+
+# Default translations path
+TRANSLATIONS_PATH = "translation"
+
+win32 {
     DESTDIR = ../trunk
     message("Static link ...")
     DEFINES += QT_NO_DEBUG_OUTPUT
@@ -36,11 +40,11 @@ win32 {
 }
 macx:message("You have MACX...")
 CONFIG += warn_on
-contains(QT_CONFIG, opengl) { 
+contains(QT_CONFIG, opengl) {
     message("OpenGL connected ...")
     QT += opengl
 }
-debug:contains(QT_CONFIG, scripttools) { 
+debug:contains(QT_CONFIG, scripttools) {
     message("Debugger connected ...")
     QT += scripttools
 }
@@ -68,9 +72,9 @@ RESOURCES += netemul.qrc
 TRANSLATIONS += translation/netemul_ru.ts \
     translation/netemul_pt_BR.ts \
     translation/netemul_es.ts
-unix { 
+unix {
     CONFIG += debug
-    
+
     # Prefix: base instalation directory
     isEmpty( PREFIX ):PREFIX = /usr/local
     DEB_BUILD = $$system(echo \$DEB_BUILD_OPTIONS)
@@ -78,14 +82,21 @@ unix {
     DEFINES += PREFIX=\\\"$${PREFIX}\\\"
     target.path = $${PREFIX}/bin
     INSTALLS = target
-    
+
+    # Default path for translations in *nix
+    TRANSLATIONS_PATH = $${PREFIX}/share/netemul/translation/
+
     # Translations
-    translations.path = $${PREFIX}/share/netemul
+    translations.path = $${TRANSLATIONS_PATH}
     translations.files = ../translation/netemul_es.qm \
         ../translation/netemul_pt_BR.qm \
         ../translation/netemul_ru.qm
     INSTALLS += translations
 }
+
+# Let the variable be available for compiling
+DEFINES += TRANSLATIONS_PATH=\\\"$${TRANSLATIONS_PATH}\\\"
+
 #if debug uncomment this lines
 #QMAKE_LFLAGS_DEBUG += -pg
 #QMAKE_CXXFLAGS_DEBUG = -pg

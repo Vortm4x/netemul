@@ -63,10 +63,11 @@ void appSetting::defaultNums()
 
 void appSetting::readSetting()
 {
+    QString translationsPath(TRANSLATIONS_PATH);
     for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
-    mas[1]->load("netemul_ru" , QString("translation") );
-    mas[2]->load("netemul_pt_BR" , QString("translation") );
-    mas[3]->load("netemul_es" , QString("translation") );
+    mas[1]->load("netemul_ru" , translationsPath);
+    mas[2]->load("netemul_pt_BR" , translationsPath);
+    mas[3]->load("netemul_es" , translationsPath);
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;
