@@ -37,7 +37,7 @@ public:
     QString name() const { return myName; }
     virtual void setDevice(smartDevice *s) { sd = s; }
     virtual bool interrupt(int u) = 0;
-    virtual void showProperty() { }
+    virtual void showProperty() = 0;
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

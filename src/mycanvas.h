@@ -65,9 +65,9 @@ public:
     void setOpen(bool c) { myOpen = c; }
     void ticTime();
     bool isEnd() const;
+    bool isModified() const { return myModified; }
     int animateSpeed() const;
     void setAnimateSpeed(int n);
-    bool isDevice(QGraphicsItem *t) const;
     device* oneSelectedDevice();
     device* deviceInPoint(QPointF p);
     QPointF calibrate(QPointF c);
@@ -99,8 +99,10 @@ public slots:
     QObjectList computerList();
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
+    bool isDevice(QGraphicsItem *t) const;
     device* deviceWithImpl(deviceImpl *d);
     bool myOpen;
+    bool myModified;
     int lastId;
     sendState myState;
     QGraphicsLineItem *line; // Временная линия для рисования

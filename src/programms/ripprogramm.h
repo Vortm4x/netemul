@@ -37,6 +37,7 @@ class ripProgramm : public programmRep
     Q_OBJECT
 public:
     enum { defaultTtl = 30 , RIP = 50 , ttl = 6 };
+    enum { SPLIT_NONE , SPLIT_HORIZONT , SPLIT_WIH_POISON };
     ripProgramm();
     ~ripProgramm();
     void setDevice(smartDevice *s);
@@ -44,11 +45,18 @@ public:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
     void incTime();
+    int splitMode() const { return mySplitMode; }
+    void setSplitMode(int mode) { mySplitMode = mode; }
+    bool hasTriggerUpdate() const { return myHasTriggerUpdate; }
+    void setHasTriggerUpdate(bool has) { myHasTriggerUpdate = has; }
+    void showProperty();
 private slots:
     void execute(QByteArray data);
 private:
     void checkTable( routeRecord *r );
     void sendUpdate(bool isAll);
+    int mySplitMode;
+    bool myHasTriggerUpdate;
     quint16 mySocket;
     udpSocket *receiver;
     void addToTemp(routeRecord *r);

@@ -32,6 +32,7 @@ public:
     dhcpServerProgramm();
     ~dhcpServerProgramm() { }
     void setDevice(smartDevice *s);
+    void showProperty() { }
     void incTime() { }
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;

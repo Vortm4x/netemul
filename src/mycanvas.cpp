@@ -57,6 +57,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     prevMode = move;
     prevType = noDev;
     myOpen = false;
+    myModified = false;
 }
 //------------------------------------------------------------------
 /*!
@@ -132,6 +133,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
              createTextItem(event->scenePos());
              setMode( move , noDev );
              emit uncheck();
+             myModified = true;
              break;
         case insert: // Если режим вставки
             if ( InsertRect->pos().y() < 0 ) break;
@@ -139,6 +141,7 @@ void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 addDeviceOnScene(event->scenePos(), nowType); // Добавляем устройство на сцену
                 prevMode = insert;
                 prevType = nowType;
+                myModified = true;
             }
             break;
         case cable: // А если кабель
@@ -207,6 +210,7 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     addItem(cable); // И добавляем его на сцену =)
     connections << cable;
     cable->updatePosition(); // Обновляем его положение
+    myModified = true;
     return cable;
 }
 //-------------------------------------------------------------------------
@@ -259,9 +263,10 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                          QList<QGraphicsItem*> underItems = i.key()->collidingItems();
                          foreach ( QGraphicsItem *j , underItems )
                              if ( j->type() == cableDev::Type ) underItems.removeOne(j);
-                         if ( i.key()->pos().x() < 0  || i.key()->pos().y() < 0 ||
-                               i.key()->pos().x() > myCanvas::width || i.key()->pos().y() >  myCanvas::height
-                                 || underItems.count() ) { needReturn = true; break; }
+                         if ( !sceneRect().contains( i.key()->pos()) || underItems.count() ) {
+                             needReturn = true;
+                             break;
+                         }
                     }
                     if ( needReturn ) {
                         i.toFront();
@@ -279,6 +284,7 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
                             d->updateCables();
                         }
                     }
+                    myModified = true;
                     coordMap.clear();
                 }
                 else {
@@ -316,6 +322,7 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
 */
 void myCanvas::removeDevice()
 {
+    myModified = true;
     QList<QGraphicsItem*> l = selectedItems(); // Получаем список выделенных элементов.
     foreach (QGraphicsItem *item, l ) {
         if ( isDevice(item) ) { // Если не кабель
@@ -365,6 +372,7 @@ void myCanvas::closeFile()
     if ( myTimer ) stop();
     myOpen = false;
     emit fileClosed();
+    myModified = false;
 }
 //---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
@@ -465,6 +473,7 @@ void myCanvas::openScene(QString fileName)
     QApplication::restoreOverrideCursor();
     emit fileOpened();
     qDebug() << QString("Scene was been open from %1").arg(fileName) ;
+    myModified = false;
 }
 //-----------------------------------------------------------------------
 /*!
@@ -499,6 +508,7 @@ void myCanvas::saveScene(QString fileName)
     file.close();
     QApplication::restoreOverrideCursor();
     qDebug() << QString("Scene was been saved in %1").arg(fileName) ;
+    myModified = false;
 }
 //-------------------------------------------------------------------------
 /*!

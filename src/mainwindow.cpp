@@ -81,13 +81,24 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // При попытке закрыть главное окно выводим запрос на подтверждение
-    int res = QMessageBox::question(this,tr("Exit"),tr("Do you really want to exit the program?"),
-                                    QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-    if (res == QMessageBox::Yes) {
+    if ( !canva->isModified() ) {
+        event->accept();
+        return;
+    }
+    int res = saveFileDialog();
+    if (res != QMessageBox::Cancel ) {
+        if ( res == QMessageBox::Save ) saveFile();
         writeSetting();
         event->accept();
+        return;
     }
     else event->ignore();
+}
+
+int MainWindow::saveFileDialog()
+{
+    return QMessageBox::question(this, tr("File was modified") , tr("File was modified, do you want to save changes?"),
+                                 QMessageBox::Save  | QMessageBox::Discard | QMessageBox::Cancel , QMessageBox::Save );
 }
 
 // Создать один Action
@@ -343,7 +354,6 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(uncheck()) , SLOT(uncheck()));
     connect( deleteAct , SIGNAL(triggered()) , canva , SLOT(removeDevice()));
     connect( newAct , SIGNAL(triggered()) , canva , SLOT(newFile()));
-    connect( closeAct , SIGNAL(triggered()) , canva , SLOT(closeFile()));
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
@@ -389,8 +399,15 @@ void MainWindow::newFile()
 */
 void MainWindow::closeFile()
 {
+    if ( !canva->isOpen() ) return;
+    if ( canva->isModified() ) {
+        int res = saveFileDialog();
+        if ( res == QMessageBox::Cancel ) return;
+        if ( res == QMessageBox::Save ) saveFile();
+    }
     setWindowTitle(myFile = tr(""));
     setEnabledFileItems(false);
+    canva->closeFile();
 }
 //-----------------------------------------------------------
 // Слот включает или отключает пункты меню в зависимости от того открыт файл или закрыт

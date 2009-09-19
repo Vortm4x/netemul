@@ -73,6 +73,7 @@ protected:
       bool eventFilter(QObject *obj, QEvent *event);
       void changeEvent(QEvent *e);
 private:
+      int saveFileDialog();
       void setOpenglMode(bool mode);
         QString myFile; // Имя текущего файла
         myCanvas *canva;

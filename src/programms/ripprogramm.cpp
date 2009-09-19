@@ -17,8 +17,8 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtDebug>
 #include "ripprogramm.h"
+#include "ripproperty.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
 #include "routemodel.h"
@@ -33,6 +33,8 @@ ripProgramm::ripProgramm()
     mySocket = 520;
     interval = defaultTtl;
     timer = qrand()%30;
+    myHasTriggerUpdate = true;
+    mySplitMode = SPLIT_HORIZONT;
 }
 //--------------------------------------------------------------
 
@@ -69,7 +71,7 @@ void ripProgramm::incTime()
         timer = 0;
         return;
     }
-    if ( timer != 0 && timer%5 == 0 && !tempList.isEmpty() ) sendUpdate(false);
+    if ( mySplitMode != SPLIT_NONE && timer != 0 && timer%5 == 0 && !tempList.isEmpty() ) sendUpdate(false);
 }
 //--------------------------------------------------
 /*!
@@ -116,16 +118,22 @@ void ripProgramm::sendUpdate(bool isAll)
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
                 routeRecord *t = model->recordAt(j);
                 if ( t->dest.isLoopBack() ) continue;
-                if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) continue;
-                d << t->dest << t->mask;
-                if ( t->time == ttl ) d << infinity;
-                else d << t->metric;
+                qint8 metric = ( t->time == ttl ) ? infinity : t->metric;
+                if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
+                    if ( mySplitMode == SPLIT_HORIZONT ) continue;
+                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < infinity ) continue;
+                }
+                d << t->dest << t->mask << metric;
             }
         }
         else {
             foreach ( routeRecord *j , tempList ) {
-                if ( ( j->gateway & i->mask()) == ( i->ip() & i->mask() ) ) continue;
-                d << j->dest << j->mask << j->metric;
+                qint8 metric = ( j->time == ttl ) ? infinity : j->metric;
+                if ( ( j->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
+                    if ( mySplitMode == SPLIT_HORIZONT ) continue;
+                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < infinity ) continue;
+                }
+                d << j->dest << j->mask << metric;
             }
         }
         d.device()->seek(0);
@@ -153,7 +161,7 @@ void ripProgramm::checkTable(routeRecord *r)
         delete r;
         return;
     }
-    if ( r->metric >= 16 ) {
+    if ( r->metric >= 16 && r->mode != routeModel::connectMode ) {
         model->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
         delete r;
         return;
@@ -179,6 +187,7 @@ void ripProgramm::checkTable(routeRecord *r)
 */
 bool ripProgramm::interrupt(int u)
 {
+    if ( mySplitMode == SPLIT_NONE ) return false;
     routeRecord *t = 0;
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
@@ -196,6 +205,13 @@ bool ripProgramm::interrupt(int u)
 }
 //---------------------------------------------------
 
+void ripProgramm::showProperty()
+{
+    ripProperty *d = new ripProperty;
+    d->setProgramm(this);
+    d->exec();
+}
+
 void ripProgramm::addToTemp(routeRecord *r)
 {
     routeRecord *t = new routeRecord;
@@ -210,6 +226,7 @@ void ripProgramm::write(QDataStream &stream) const
 {
     stream << RIP;
     programmRep::write(stream);
+    stream << mySplitMode << myHasTriggerUpdate;
 }
 //---------------------------------------------------
 /*!
@@ -219,6 +236,7 @@ void ripProgramm::write(QDataStream &stream) const
 void ripProgramm::read(QDataStream &stream)
 {
     programmRep::read(stream);
+    stream >> mySplitMode >> myHasTriggerUpdate;
 }
 //---------------------------------------------------
 

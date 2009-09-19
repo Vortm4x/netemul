@@ -1047,8 +1047,8 @@
    <slot>defaultSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>388</x>
-     <y>299</y>
+     <x>479</x>
+     <y>312</y>
     </hint>
     <hint type="destinationlabel">
      <x>303</x>
@@ -1063,8 +1063,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>62</x>
-     <y>137</y>
+     <x>71</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>142</x>
@@ -1079,12 +1079,28 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>34</x>
-     <y>196</y>
+     <x>43</x>
+     <y>114</y>
     </hint>
     <hint type="destinationlabel">
      <x>67</x>
      <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_opengl</sender>
+   <signal>clicked()</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>226</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>309</y>
     </hint>
    </hints>
   </connection>
