@@ -17,12 +17,11 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include "appsetting.h"
 #include <QApplication>
 #include <QSettings>
 #include <QTranslator>
 #include <QLocale>
-
+#include "appsetting.h"
 
 int appSetting::_defaultComputerCount = 0;
 int appSetting::_defaultHubCount = 0;

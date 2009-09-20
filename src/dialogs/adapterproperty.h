@@ -42,6 +42,13 @@ class adapterProperty : public dialogTemplate
 public:
     adapterProperty(adapterSetting *s);
     ~adapterProperty();
+private slots:
+    void updateTab(int n);
+    void addInterface();
+    void deleteInterface();
+    void reset();
+    void changeTab(int n);
+    void apply();
 private:
     adapterSetting *sd;
     QLabel *lb_statics;
@@ -52,15 +59,6 @@ private:
     ipEdit *le_mask;
     QPushButton *btn_add;
     QPushButton *btn_del;
-private slots:
-    QIcon connectIcon(bool b);
-    void updateTab(int n);
-    void addInterface();
-    void deleteInterface();
-    void reset();
-    void changeTab(int n);
-public slots:
-    void apply();
 };
 
 #endif // ADAPTERPROPERTY_H

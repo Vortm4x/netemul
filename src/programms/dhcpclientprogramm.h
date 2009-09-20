@@ -20,27 +20,46 @@
 #ifndef DHCPCLIENTPROGRAMM_H
 #define DHCPCLIENTPROGRAMM_H
 
+#include <QIcon>
 #include "programmrep.h"
 
 static const int FIVE_MINUTE = 300;
+
+class interface;
+class udpSocket;
+
+struct interfaceState {
+    enum { CS_NONE , CS_WAIT_VARIANT , CS_WAIT_RESPONSE , CS_ALL_RIGHT };
+    int state;
+    int xid;
+    QString name;
+    interface *adapter;
+};
 
 class dhcpClientProgramm : public programmRep
 {
     Q_OBJECT
 public:
     enum { DHCPClient = 51 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
-    enum state { NONE = 0 , WAIT_VARIANT = 1 , WAIT_RESPONCE = 2 , ALL_RIGHT = 3 };
     dhcpClientProgramm();
-    ~dhcpClientProgramm() { }
+    ~dhcpClientProgramm();
     bool interrupt(int) { return false; }
+    void setDevice(smartDevice *s);
     void showProperty();
     void incTime();
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+    void observeInterface(const QString &name, bool b);
+    QStringList interfacesList() const;
+    QIcon isConnectSocketIcon(const QString &name) const;
+    Qt::CheckState checkedState(const QString &name) const;
+public slots:
+    void deleteInterface(const QString name);
 private:
-    int xid;
-    state myState;
-    void sendDiscover();
+    interfaceState* stateAt(const QString name);
+    udpSocket *listener;
+    QList<interfaceState*> states;
+    void sendDiscover(const QString &name);
     int time;
 };
 

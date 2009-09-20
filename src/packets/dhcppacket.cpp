@@ -21,5 +21,49 @@
 
 dhcpPacket::dhcpPacket()
 {
-
+    d = new dhcpPacketData;
 }
+
+dhcpPacket::dhcpPacket(const QByteArray &data)
+{
+    d = new dhcpPacketData;
+    QDataStream s(data);
+    s >> d->xid >> d->type >> d->yiaddr >> d->siaddr >> d->chaddr;
+}
+/*!
+  * Выполняет сериализацию.
+  */
+QByteArray dhcpPacket::toData() const
+{
+    return d->toData();
+}
+//-----------------------------------------------------------------------------------------
+/*!
+  * Преобразует тип пакета в строковое представление.
+  */
+QString dhcpPacket::typeString() const
+{
+    const QString names[] = { "DHCPDISCOVER" , "DHCPOFFER" , "DHCPREQUEST" , "DHCPACK" };
+    return names[ d->type ];
+}
+//------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+dhcpPacketData::dhcpPacketData(const dhcpPacketData &other) : QSharedData(other)
+{
+    xid = other.xid;
+    type = other.type;
+    yiaddr = other.yiaddr;
+    siaddr = other.siaddr;
+    chaddr = other.chaddr;
+}
+/*!
+  * Преобразует содержимое в последовательность байт.
+  */
+QByteArray dhcpPacketData::toData() const
+{
+    QByteArray d;
+    QDataStream s(&d, QIODevice::WriteOnly);
+    s << xid << type << yiaddr << siaddr << chaddr;
+    return d;
+}
+//-------------------------------------------------------------------------------------------

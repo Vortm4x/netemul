@@ -28,6 +28,7 @@ static const QColor cl_ipInternal = "#efaf8c";
 static const QColor cl_udpInternal = "#ccccff";
 static const QColor cl_rip = "#f78d9d";
 static const QColor cl_user = "#badbad";
+static const QColor cl_dhcp = "#f2e8c9" ;
 static const QColor cl_undef = "#f984e5";
 static const QColor cl_arp = "#7fc7ff";
 static const QColor cl_arpInternal = "#c0c0c0";
@@ -53,6 +54,7 @@ protected:
     void changeEvent(QEvent *e);
 private:
     void printRecord( int c, frame fr );
+    QTreeWidgetItem* newItemWidget( QTreeWidgetItem *parent , const QString &text , const QColor color = "#FFFFFF");
     QString parseIp(frame fr,QTreeWidgetItem *parent);
     QString parseArp(frame fr,QTreeWidgetItem *parent);
 };

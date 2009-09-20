@@ -31,6 +31,7 @@ public:
     boxDevice();
     virtual ~boxDevice();
     bool isConnectSocket(const QString &socket) const { return chip->isConnectSocket(socket); }
+    QIcon isConnectSocketIcon(const QString &socket) const;
     QStringList sockets() const { return chip->sockets(); }
     QString socketName(const cableDev *c) const { return chip->socketName(c); }
     void addConnection(const QString &port , cableDev *c) { chip->addConnection(port,c); }

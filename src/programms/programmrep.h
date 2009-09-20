@@ -35,14 +35,14 @@ public:
     void setEnable(bool b) { if ( b != myEnable ) myEnable = b; }
     bool isEnable() const  { return myEnable; }
     QString name() const { return myName; }
-    virtual void setDevice(smartDevice *s) { sd = s; }
+    virtual void setDevice(smartDevice *s) { device = s; }
     virtual bool interrupt(int u) = 0;
     virtual void showProperty() = 0;
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 protected:
-    smartDevice *sd;
+    smartDevice *device;
     QString myName; //!< Имя программы.
 private:
     quint8 countRef;

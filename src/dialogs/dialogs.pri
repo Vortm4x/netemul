@@ -18,7 +18,8 @@ HEADERS += src/dialogs/adapterproperty.h \
     src/dialogs/logdialog.h \
     src/dialogs/aboutwindow.h \
     src/dialogs/dhcpclientproperty.h \
-    src/dialogs/ripproperty.h
+    src/dialogs/ripproperty.h \
+    src/dialogs/dhcpserverproperty.h
 SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/computerproperty.cpp \
     src/dialogs/connectdialog.cpp \
@@ -39,4 +40,5 @@ SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/logdialog.cpp \
     src/dialogs/aboutwindow.cpp \
     src/dialogs/dhcpclientproperty.cpp \
-    src/dialogs/ripproperty.cpp
+    src/dialogs/ripproperty.cpp \
+    src/dialogs/dhcpserverproperty.cpp

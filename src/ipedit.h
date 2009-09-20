@@ -37,6 +37,7 @@ public:
     ipAddress ipText() const { return ipAddress(text()); }
     QString text() const;
     void clear();   
+    QSize sizeHint() const;
 public slots:
     void setDefaultMask(quint8 u);
     void changeMask(QString s);

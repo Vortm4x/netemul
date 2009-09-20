@@ -20,10 +20,11 @@
 #ifndef SMARTDEVICE_H
 #define SMARTDEVICE_H
 
+#include <QtCore/QVector>
+#include <QtGui/QIcon>
 #include "deviceimpl.h"
 #include "interface.h"
 #include "programm.h"
-#include <QVector>
 
 class routeModel;
 class arpModel;
@@ -64,6 +65,7 @@ public:
     QStringList interfacesIp() const;
     void addInterface();
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
+    QIcon isConnectSocketIcon(const QString &socket) const;
     QString socketName(const cableDev *c) const;
     QString nameToIp(const QString &name) const { return adapter(name)->ip().toString(); }
     const interface* adapter(const QString &s) const;
@@ -105,6 +107,8 @@ public slots:
     virtual quint64 receivePacketCount(const QString &name) { return adapter(name)->countRecPacket(); }
     virtual quint64 sendFrameCount(const QString &name) { return adapter(name)->countSendFrame(); }
     virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
+signals:
+    void interfaceDeleted(QString);
 private:
     interface* adapter(const QString &name);
 protected:
@@ -142,6 +146,7 @@ public:
     void connectedNet() { sd->connectedNet(sd->myInterfaces.at(cur)); }
     int socketsCount() const { return sd->socketsCount(); }
     bool isConnect() const { return sd->myInterfaces.at(cur)->isConnect(); }
+    QIcon isConnectSocketIcon() const { return sd->isConnectSocketIcon( sd->myInterfaces.at(cur)->name() ); }
     QString name() const { return sd->myInterfaces.at(cur)->name(); }
     QString mac() const { return sd->myInterfaces.at(cur)->mac().toString(); }
     QString ip() const { return sd->myInterfaces.at(cur)->ip().toString(); }

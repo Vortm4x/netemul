@@ -32,6 +32,7 @@ public:
     abstractSocket(smartDevice *d);
     virtual ~abstractSocket();
     bool isOurData(ipAddress address, quint16 port);
+    virtual bool isBusy() const { return false; }
     void setBind(ipAddress address) { myBind = address; }
     virtual void treatPacket(ipPacket) { }
     virtual void secondEvent() { }

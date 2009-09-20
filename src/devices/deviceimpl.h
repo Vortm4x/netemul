@@ -40,6 +40,7 @@ public:
 
     virtual QStringList sockets() const = 0;
     virtual bool isConnectSocket(const QString &socket) const = 0;
+    virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
     virtual bool isBusy() const = 0;
 

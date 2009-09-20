@@ -22,36 +22,133 @@
 #include "udpsocket.h"
 #include "dhcppacket.h"
 #include "dhcpclientproperty.h"
+#include "udppacket.h"
 
 dhcpClientProgramm::dhcpClientProgramm()
 {
     myName = tr("DHCP client");
-    myState = NONE;
     time = 0;
+}
+
+dhcpClientProgramm::~dhcpClientProgramm()
+{
+    qDeleteAll(states);
+    delete listener;
 }
 
 void dhcpClientProgramm::incTime()
 {
     time++;
-    if (  myState == NONE && time%FIVE_MINUTE == 0 ) sendDiscover();
 }
-
-void dhcpClientProgramm::sendDiscover()
+/*!
+  * Переопределяем функцию установки устройства чтобы соединиться со слотом.
+  * @param s - указатель на устройство на которое установлена программа.
+  */
+void dhcpClientProgramm::setDevice(smartDevice *s)
 {
-    xid = qrand()%5000;
-    dhcpPacket p;
-    p.setXid(xid);
-    QByteArray data;
-    udpSocket socket(sd, CLIENT_SOCKET);
-    socket.write( ipAddress::full() , SERVER_SOCKET , data);
+    programmRep::setDevice(s);
+    listener = new udpSocket(s,CLIENT_SOCKET);
+    listener->setBind("0.0.0.0");
+    connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
 }
-
+//------------------------------------------------------
+/*!
+  * Посылает запрос на получение настроек.
+  * @param name - имя интерфейса.
+  */
+void dhcpClientProgramm::sendDiscover(const QString &name)
+{ 
+    interfaceState *t = stateAt(name);
+    if ( !t ) return;
+    dhcpPacket message;
+    message.setXid(t->xid);
+    message.setChaddr( t->adapter->mac() );
+    udpPacket udp;
+    udp.setSender(CLIENT_SOCKET);
+    udp.setReceiver(SERVER_SOCKET);
+    udp.pack( message.toData() );
+    ipPacket packet( t->adapter->ip() , ipAddress::full() );
+    packet.pack( udp.toData() );
+    t->adapter->sendPacket( packet);
+}
+//--------------------------------------------------------------
+/*!
+  * Показывает диалог программы.
+  */
 void dhcpClientProgramm::showProperty()
 {
     dhcpClientProperty *d = new dhcpClientProperty;
+    d->setProgramm(this);
     d->exec();
 }
-
+//---------------------------------------------------------------
+/*!
+  * Ищет указанный сеанс связи для интерфейса.
+  * @param name - имя интерфейса.
+  * @return указатель на сеанс, если такого нет то 0
+  */
+interfaceState* dhcpClientProgramm::stateAt(const QString name)
+{
+    foreach ( interfaceState *i , states )
+        if ( i->name == name ) return i;
+    return 0;
+}
+//--------------------------------------------------------------
+QStringList dhcpClientProgramm::interfacesList() const
+{
+    return device->sockets();
+}
+/*!
+  * Возвращаем иконку подключения, для указанного интерфейса.
+  * @param имя интерефейса
+  * @return иконка соединения
+  */
+QIcon dhcpClientProgramm::isConnectSocketIcon(const QString &name) const
+{
+    return device->isConnectSocketIcon(name);
+}
+//-----------------------------------------------------------------------
+/*!
+  * Вызывается когда у устройства удаляется интерфейс, если мы за
+  * ним следим, то мы прекращаем это делать и удаляем его из списка.
+  */
+void dhcpClientProgramm::deleteInterface(const QString name)
+{
+    interfaceState *t = stateAt(name);
+    if ( !t ) return;
+    states.removeOne(t);
+    delete t;
+}
+//--------------------------------------------------------------------
+/*!
+  * Если интерфейс еще не добавлен под наблюдение, то добавляем его.
+  * @param name - имя интерфейса.
+  * @param b - включить или выключить наблюдение.
+  */
+void dhcpClientProgramm::observeInterface(const QString &name, bool b)
+{
+    interfaceState *temp = stateAt(name);
+    if ( temp ) {
+        if ( b ) return;
+        states.removeOne(temp);
+        delete temp;
+        return;
+    }
+    interfaceState *session = new interfaceState;
+    session->name = name;
+    session->xid = qrand()%5000;
+    session->state = interfaceState::CS_NONE;
+    session->adapter = device->adapter(name);
+    states << session;
+    sendDiscover(session->name);
+}
+//--------------------------------------------------------------------
+Qt::CheckState dhcpClientProgramm::checkedState(const QString &name) const
+{
+    foreach ( interfaceState *i , states )
+        if ( i->name == name ) return Qt::Checked;
+    return Qt::Unchecked;
+}
 /*!
   Записывает отличительные черты в поток.
   @param stream - поток для записи.

@@ -53,6 +53,12 @@ void boxDevice::showLogDialog(logDialog *log) const
     connect( chip , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
 }
 
+QIcon boxDevice::isConnectSocketIcon(const QString &socket) const
+{
+    if ( isConnectSocket(socket) ) return QIcon(":/im/images/ok.png");
+    return QIcon(":/im/images/not.png");
+}
+
 void boxDevice::setCheckedSocket(const QString &port)
 {
     chip->setCheckedSocket(port);

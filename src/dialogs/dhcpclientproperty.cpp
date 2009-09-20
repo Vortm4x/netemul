@@ -18,11 +18,30 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "dhcpclientproperty.h"
+#include "dhcpclientprogramm.h"
 
 dhcpClientProperty::dhcpClientProperty(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
     setAttribute( Qt::WA_DeleteOnClose );
+}
+
+void dhcpClientProperty::setProgramm(dhcpClientProgramm *prog)
+{
+    myProgramm = prog;
+    foreach ( QString i , myProgramm->interfacesList() ) {
+        QListWidgetItem *item = new QListWidgetItem( myProgramm->isConnectSocketIcon(i), i , lw_interfaces );
+        item->setCheckState( myProgramm->checkedState( i ) );
+    }
+}
+
+void dhcpClientProperty::apply()
+{
+    for ( int i = 0 ; i < lw_interfaces->count() ; i++ ) {
+        QListWidgetItem *t = lw_interfaces->item(i);
+        myProgramm->observeInterface( t->text() , t->checkState() == Qt::Checked );
+    }
+    accept();
 }
 
 void dhcpClientProperty::changeEvent(QEvent *e)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>397</width>
-    <height>260</height>
+    <width>264</width>
+    <height>266</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,12 +17,13 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Choose interfaces which must be under DHCP control: </string>
+      <string>Choose interfaces which must be
+ under DHCP control: </string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QListWidget" name="listWidget"/>
+    <widget class="QListWidget" name="lw_interfaces"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -85,5 +86,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btn_ok</sender>
+   <signal>clicked()</signal>
+   <receiver>dhcpClientProperty</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>250</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>112</x>
+     <y>230</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>apply()</slot>
+ </slots>
 </ui>

@@ -20,26 +20,57 @@
 #ifndef DHCPPACKET_H
 #define DHCPPACKET_H
 
+#include <QSharedData>
 #include "ipaddress.h"
 #include "macaddress.h"
+
+class dhcpPacketData : public QSharedData
+{
+public:
+    dhcpPacketData() { }
+    dhcpPacketData(const dhcpPacketData &other);
+    ~dhcpPacketData() { }
+    QByteArray toData() const;
+    friend class dhcpPacket;
+private:
+    int xid;
+    int type;
+    int time;
+    ipAddress mask;
+    ipAddress gateway;
+    ipAddress yiaddr;
+    ipAddress siaddr;
+    macAddress chaddr;
+};
 
 class dhcpPacket
 {
 public:
     dhcpPacket();
-    void setYiaddr(ipAddress a) { myYiaddr = a; }
-    void setSiaddr(ipAddress a) { mySiaddr = a; }
-    void setChaddr(macAddress a) { myChaddr = a; }
-    void setXid(int x) { myXid = x; }
-    int xid() const { return myXid; }
-    ipAddress yiaddr() const { return myYiaddr; }
-    ipAddress siaddr() const { return mySiaddr; }
-    macAddress chaddr() const { return myChaddr; }
+    dhcpPacket(const QByteArray &data);
+    dhcpPacket(const dhcpPacket &other) : d(other.d) { }
+    ~dhcpPacket() { }
+    QByteArray toData() const;
+    enum { DHCPDISCOVER , DHCPOFFER , DHCPREQUEST , DHCPACK };
+    void setYiaddr(ipAddress a) { d->yiaddr = a; }
+    void setSiaddr(ipAddress a) { d->siaddr = a; }
+    void setMask(ipAddress a) { d->mask = a; }
+    void setGateway(ipAddress a) { d->gateway = a; }
+    void setChaddr(macAddress a) { d->chaddr = a; }    
+    void setXid(int x) { d->xid = x; }
+    void setType(int t) { d->type = t; }
+    void setTime(int t) { d->time = t; }
+    int type() const { return d->type; }
+    int xid() const { return d->xid; }
+    int time() const { return d->time; }
+    ipAddress yiaddr() const { return d->yiaddr; }
+    ipAddress siaddr() const { return d->siaddr; }
+    ipAddress mask() const { return d->mask; }
+    ipAddress gateway() const { return d->gateway; }
+    macAddress chaddr() const { return d->chaddr; }
+    QString typeString() const;
 private:
-    int myXid;
-    ipAddress myYiaddr;
-    ipAddress mySiaddr;
-    macAddress myChaddr;
+    QSharedDataPointer<dhcpPacketData> d;
 };
 
 #endif // DHCPPACKET_H

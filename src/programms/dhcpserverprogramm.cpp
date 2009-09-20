@@ -18,6 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "dhcpserverprogramm.h"
+#include "dhcpserverproperty.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
 
@@ -29,7 +30,7 @@ dhcpServerProgramm::dhcpServerProgramm()
 void dhcpServerProgramm::setDevice(smartDevice *s)
 {
     programmRep::setDevice(s);
-    receiver = new udpSocket(sd, SERVER_SOCKET);
+    receiver = new udpSocket(device, SERVER_SOCKET);
     receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
 }
@@ -39,7 +40,27 @@ void dhcpServerProgramm::execute(QByteArray data)
     QString str;
     QDataStream s(data);
     s >> str;
-    qDebug("RECEIVE MESSAGE: %s",str.toAscii().data() );
+
+}
+
+bool dhcpServerProgramm::containRecord(staticRecord *rec)
+{
+    if ( statics.isEmpty() ) return false;
+    foreach (staticRecord *i, statics)
+        if ( i == rec ) return true;
+    return false;
+}
+
+void dhcpServerProgramm::addStaticRecord(staticRecord *rec)
+{
+    statics << rec;
+}
+
+void dhcpServerProgramm::showProperty()
+{
+    dhcpServerProperty *d = new dhcpServerProperty;
+    d->setProgramm(this);
+    d->exec();
 }
 
 /*!

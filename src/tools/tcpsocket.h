@@ -37,6 +37,7 @@ public:
     void confirmConnection(ipPacket p);
     void secondEvent();
     void write(ipAddress a, quint16 p, QByteArray data);
+    bool isBusy() const { return !buffer.isEmpty(); }
 signals:
     void writeEnd();
     void receiveEnd();

@@ -30,10 +30,10 @@ connectDialog::connectDialog(device *s, device *e)
     connect( endList , SIGNAL(itemSelectionChanged()) , SLOT(changeSelect()));
 
     foreach ( QString i , start->sockets() )
-         new QListWidgetItem( connectIcon( start->isConnectSocket(i) ) , i , startList, start->isConnectSocket(i) );
+         new QListWidgetItem( start->isConnectSocketIcon(i)  , i , startList, start->isConnectSocket(i) );
 
     foreach ( QString i , end->sockets() )
-        new QListWidgetItem( connectIcon( end->isConnectSocket(i) ) , i , endList, end->isConnectSocket(i) );
+        new QListWidgetItem( end->isConnectSocketIcon(i)  , i , endList, end->isConnectSocket(i) );
 
     for ( int i = 0 ; i < startList->count() ; i++ )
         if ( !startList->item(i)->type() ) {
@@ -68,12 +68,6 @@ void connectDialog::changeEvent(QEvent *e)
     default:
         break;
     }
-}
-
-QIcon connectDialog::connectIcon(bool b) const
-{
-    if (b) return QIcon(":/im/images/ok.png");
-    else return QIcon(":/im/images/not.png");
 }
 
 

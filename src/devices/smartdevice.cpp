@@ -392,6 +392,8 @@ bool smartDevice::isBusy() const
 {
     foreach ( interface *i , myInterfaces )
         if ( i->isBusy() ) return true;
+    foreach ( abstractSocket *i , mySockets )
+        if ( i->isBusy() ) return true;
     return false;
 }
 
@@ -409,6 +411,7 @@ void smartDevice::deleteInterface(const QString &name)
 {
     interface *t = adapter(name);
     myInterfaces.remove( myInterfaces.indexOf(t) );
+    emit interfaceDeleted(name);
 }
 
 QList<arpModel*> smartDevice::arpModels()
@@ -460,6 +463,11 @@ int smartDevice::trafficDigit() const
     return sum;
 }
 
+QIcon smartDevice::isConnectSocketIcon(const QString &socket) const
+{
+    if ( isConnectSocket(socket) ) return QIcon(":/im/images/ok.png");
+    return QIcon(":/im/images/not.png");
+}
 #endif
 
 

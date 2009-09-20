@@ -38,7 +38,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     tab_interfaces = new QTabBar;
     for ( int i = 0 ; i < sd->socketsCount() ; i++ ) {
         sd->setCurrent(i);
-        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
+        tab_interfaces->addTab( sd->isConnectSocketIcon() , sd->name() );
     }
     all->addWidget(tab_interfaces);
 
@@ -150,20 +150,13 @@ void adapterProperty::reset()
     updateTab(tab_interfaces->currentIndex());
 }
 //------------------------------------------------------------
-QIcon adapterProperty::connectIcon(bool b)
-{
-    if ( b) return QIcon(":/im/images/ok.png");
-    else return QIcon(":/im/images/not.png");
-}
-
 void adapterProperty::addInterface()
 {
     interfaceDialog *d = new interfaceDialog;
     if ( d->exec() ) {
-        //int n = d->result();
         sd->addInterface();
         sd->setCurrent( tab_interfaces->count() );
-        tab_interfaces->addTab(  connectIcon(sd->isConnect()), sd->name() );
+        tab_interfaces->addTab(  sd->isConnectSocketIcon() , sd->name() );
         updateTab( tab_interfaces->count() - 1 );
     }
     delete d;

@@ -52,8 +52,8 @@ void ripProgramm::clearTemp()
 
 void ripProgramm::setDevice(smartDevice *s)
 {
-    sd = s;
-    model = sd->routeTable();
+    device = s;
+    model = device->routeTable();
     receiver = new udpSocket(s,mySocket);
     receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)) , SLOT(execute(QByteArray)) );
@@ -64,7 +64,7 @@ void ripProgramm::setDevice(smartDevice *s)
 */
 void ripProgramm::incTime()
 {
-    if ( !sd->isRouter() ) return;
+    if ( !device->isRouter() ) return;
     timer++;
     if ( timer >= interval ) {
         sendUpdate(true);
@@ -92,7 +92,7 @@ void ripProgramm::execute(QByteArray data)
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= infinity);
         t->metric++;
-        t->out = sd->findInterfaceIp( sender );
+        t->out = device->findInterfaceIp( sender );
         t->gateway = sender;
         t->time = 0;
         t->mode = routeModel::ripMode;
@@ -108,7 +108,7 @@ void ripProgramm::execute(QByteArray data)
 void ripProgramm::sendUpdate(bool isAll)
 {
     if ( isAll ) model->update();
-    foreach ( interface *i , sd->interfaces() ) {
+    foreach ( interface *i , device->interfaces() ) {
         if ( !i->isConnect() ) continue;
         QByteArray b;
         QDataStream d(&b, QIODevice::WriteOnly );
@@ -139,7 +139,7 @@ void ripProgramm::sendUpdate(bool isAll)
         d.device()->seek(0);
         d << quint16(b.size()-2);
         ipAddress temp = i->ip() | ~i->mask();
-        udpSocket sock(sd, mySocket);
+        udpSocket sock(device, mySocket);
         sock.write(temp,mySocket,b);        
     }
     if (tempList.size()) clearTemp();

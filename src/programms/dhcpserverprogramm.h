@@ -21,8 +21,18 @@
 #define DHCPSERVERPROGRAMM_H
 
 #include "programmrep.h"
+#include "macaddress.h"
+#include "ipaddress.h"
 
 class udpSocket;
+
+struct staticRecord {
+    macAddress chaddr;
+    ipAddress yiaddr;
+    ipAddress mask;
+    ipAddress gateway;
+    int time;
+};
 
 class dhcpServerProgramm : public programmRep
 {
@@ -32,7 +42,9 @@ public:
     dhcpServerProgramm();
     ~dhcpServerProgramm() { }
     void setDevice(smartDevice *s);
-    void showProperty() { }
+    void showProperty();
+    bool containRecord( staticRecord *rec);
+    void addStaticRecord(staticRecord *rec);
     void incTime() { }
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
@@ -40,6 +52,7 @@ public:
 public slots:
     void execute(QByteArray data);
 private:
+    QList<staticRecord*> statics;
     udpSocket *receiver;
 };
 

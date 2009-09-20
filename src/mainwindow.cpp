@@ -53,7 +53,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    QCoreApplication::setApplicationVersion("0.8.5");
+    QCoreApplication::setApplicationVersion("0.9.6");
     createAction(); // Создаем события
     createTools(); //
     createMenu(); // Создаем меню

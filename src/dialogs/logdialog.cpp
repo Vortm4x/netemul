@@ -25,6 +25,7 @@
 #include "appsetting.h"
 #include "udppacket.h"
 #include "tcppacket.h"
+#include "dhcppacket.h"
 
 logDialog::logDialog(QStringList list)
 {
@@ -88,6 +89,15 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
         switch ( udp.receiver() ) {
             case udpPacket::User : parent->setBackgroundColor(0,cl_user); break;
             case udpPacket::RIP: parent->setBackgroundColor(0,cl_rip); break;
+            case udpPacket::DHCPClient: case udpPacket::DHCPServer:
+                        parent->setBackgroundColor(0,cl_dhcp);
+                        {
+                            dhcpPacket dhcp( udp.unpack() );
+                            t = newItemWidget(parent, tr("DHCP Message, Type: %1").arg( dhcp.typeString() ) );
+                            newItemWidget(t, tr("Xid: %1, Yiaddr: %2").arg( dhcp.xid() ).arg( dhcp.yiaddr().toString()) );
+                            newItemWidget(t, tr("Siaddr: %1, Chaddr: %2").arg( dhcp.siaddr().toString()).arg(dhcp.chaddr().toString()) );
+                        }
+                        break;
             default: parent->setBackgroundColor(0,cl_undef);
         }
     }
@@ -158,6 +168,14 @@ bool logDialog::eventFilter(QObject *obj, QEvent *e)
         if ( e->type() == QEvent::FocusOut ) emit changeInterface("");
     }
     return QWidget::eventFilter(obj,e);
+}
+
+QTreeWidgetItem* logDialog::newItemWidget(QTreeWidgetItem *parent, const QString &text, QColor color)
+{
+    QTreeWidgetItem *t = new QTreeWidgetItem(parent);
+    t->setText(0,text);
+    t->setBackgroundColor(0,color);
+    return t;
 }
 
 void logDialog::changeEvent(QEvent *e)

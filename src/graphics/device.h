@@ -22,6 +22,7 @@
 
 #include <QGraphicsItem>
 #include <QDataStream>
+#include <QIcon>
 #include "deviceimpl.h"
 #include "statistics.h"
 
@@ -65,7 +66,8 @@ public:
     void arpDialog() const { impl->arpDialog(); }
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
-    bool isConnectSocket(const QString &str) { return impl->isConnectSocket(str); }
+    bool isConnectSocket(const QString &str) const { return impl->isConnectSocket(str); }
+    QIcon isConnectSocketIcon(const QString &str) const { return impl->isConnectSocketIcon(str); }
     QStringList sockets() const { return impl->sockets(); }
     void secondTimerEvent() { impl->secondTimerEvent(); }
     void deciSecondTimerEvent() { impl->deciSecondTimerEvent(); }

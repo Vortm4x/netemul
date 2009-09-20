@@ -35,6 +35,7 @@ ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
     QIntValidator *v = new QIntValidator(1,255,this);
     QHBoxLayout *all = new QHBoxLayout;
     label = new QLabel(str);
+    label->setFixedWidth(150);
     all->addWidget(label,0,Qt::AlignLeft);
     all->addStretch(1);
     part[0] = new QLineEdit(this);
@@ -42,7 +43,7 @@ ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
     part[0]->setMaxLength(3);
     part[0]->setValidator(v);
     part[0]->setText("0");
-    setFixedSize( 450 , part[0]->height()+10 );
+//    setFixedSize( 450 , part[0]->height()+10 );  
     connect( part[0] , SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect( part[0] , SIGNAL(textChanged(QString)), SLOT(changeMask(QString)));
     all->addWidget(part[0] );
@@ -59,6 +60,7 @@ ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
         connect(part[i] , SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     }
     setLayout(all);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void ipEdit::setText(QString str)
@@ -66,6 +68,11 @@ void ipEdit::setText(QString str)
     QStringList s = str.split(".");
     for (int i = 0 ; i < 4 ; i++)
         part[i]->setText(s.at(i));
+}
+
+QSize ipEdit::sizeHint() const
+{
+    return QSize(label->width() + part[0]->width() * 4 + 50, part[0]->height() +10 );
 }
 
 QString ipEdit::text() const

@@ -35,8 +35,8 @@ protected:
     QPushButton *btn_apply;
     QPushButton *btn_cancel;
     QHBoxLayout *lay;
-public slots:
-    virtual void apply() { }
+private slots:
+    virtual void apply() = 0;
     void applyEnable();
     void applyDisable();
 };
