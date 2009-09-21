@@ -55,7 +55,7 @@ public:
 public slots:
     void newFile();  // Слот создания нового файла
     void closeFile();
-    void saveFile();
+    bool saveFile();
     void saveAsFile();
     void openFile();
     void setting();

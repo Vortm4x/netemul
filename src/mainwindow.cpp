@@ -82,12 +82,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     // При попытке закрыть главное окно выводим запрос на подтверждение
     if ( !canva->isModified() ) {
+        writeSetting();
         event->accept();
         return;
     }
     int res = saveFileDialog();
     if (res != QMessageBox::Cancel ) {
-        if ( res == QMessageBox::Save ) saveFile();
+        if ( res == QMessageBox::Save )
+            if ( !saveFile() ) {
+                event->ignore();
+                return;
+            }
         writeSetting();
         event->accept();
         return;
@@ -288,7 +293,6 @@ void MainWindow::createMenu()
     viewMenu->addAction(showGridAct);
 
     itemMenu = menuBar()->addMenu(QString());
-    itemMenu->addAction(deleteAct);
     itemMenu->addAction(propertyAct);
     itemMenu->addAction(tableAct);
     itemMenu->addAction(adapterAct);
@@ -296,6 +300,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(arpAct);
     itemMenu->addAction(logAct);
     itemMenu->addAction(aboutDeviceAct);
+    itemMenu->addAction(deleteAct);
     itemMenu->setEnabled(false);
 
     settingMenu = menuBar()->addMenu( QString() );
@@ -452,17 +457,18 @@ void MainWindow::setOpenglMode(bool mode)
 }
 
 //Слот сохранить
-void MainWindow::saveFile()
+bool MainWindow::saveFile()
 {
     if ( myFile.isEmpty() ) {
        QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
                                                 QDir::currentPath(),
                                                 tr("Networks(*.net)"));
-       if ( t.isEmpty() ) return;
+       if ( t.isEmpty() ) return false;
        myFile = t;
     }
     setWindowTitle( myFile );
     canva->saveScene(myFile);
+    return true;
 }
 
 void MainWindow::openFile()
