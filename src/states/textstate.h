@@ -10,9 +10,6 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent*) { }
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*) { }
-    void goInsert() { }
-    void goCable() { }
-    void goSend() { }
 };
 
 #endif // TEXTSTATE_H

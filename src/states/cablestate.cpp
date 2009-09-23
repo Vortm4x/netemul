@@ -38,10 +38,11 @@ void cableState::mouseRelease(QGraphicsSceneMouseEvent*)
     if ( device::isConnectDevices(startItem, endItem) ) return;
     if ( startItem == endItem ) return;
     connectDialog *conDialog = new connectDialog(startItem,endItem);
-    if ( conDialog->exec() ) {
-        start = conDialog->getStart();
-        end = conDialog->getEnd();
-    } else return;
+    bool canCreate = conDialog->exec();
+    start = conDialog->getStart();
+    end = conDialog->getEnd();
+    delete conDialog;
+    if ( !canCreate ) return;
     // Вообщем так ... если уствойства есть под обоими концами
     // и эти устройства различны то мы создаем этот кабель! #НИХРЕНА НЕ#Проверено все ок =)
     scene->createConnection( startItem , endItem , start , end );

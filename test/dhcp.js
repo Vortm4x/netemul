@@ -1,5 +1,5 @@
-if (open) closeFile();
-newFile();
+if (open) closeScene();
+newScene();
 var net1 = new Array();
 var net2 = new Array();
 var r1 = addRouter(7,1);

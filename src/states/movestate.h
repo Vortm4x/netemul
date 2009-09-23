@@ -16,9 +16,7 @@ public:
     ~moveState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
-    void mouseRelease(QGraphicsSceneMouseEvent*);
-    void goText() { }
-    void goSend() { }
+    void mouseRelease(QGraphicsSceneMouseEvent *event);
 private:
     void calibrateAll(itemList list);
     itemList filterCables(itemList list);

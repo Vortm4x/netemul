@@ -1,5 +1,5 @@
-if ( open ) closeFile();
-newFile();
+if ( open ) closeScene();
+newScene();
 var h1 = addHub(5,0);
 h1.setSocketsCount(4);
 var h2 = addHub(2,2);

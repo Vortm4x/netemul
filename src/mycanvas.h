@@ -50,16 +50,19 @@ public:
     enum { width = 2000 , height = 2000 };    
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
+    myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
+    ~myCanvas();
     device* addDeviceOnScene(QPointF coor, int myType); // Добавить устройство на сцену
     void deleteConnection(cableDev *cable);
     void hideState();
-    myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
     textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     void ticTime();
     bool isEnd() const;
+    void newFile();
+    void closeFile();
     bool isModified() const { return myModified; }
     int animateSpeed() const;
     void setAnimateSpeed(int n);
@@ -68,7 +71,6 @@ public:
     QPointF calibrate(QPointF c);
     int devicesCount() const { return myDevices.size(); }
     int cablesCount() const { return connections.size(); }
-    ~myCanvas();
 signals:
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
@@ -79,8 +81,8 @@ public slots:
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
     void removeDevice();
-    void newFile();
-    void closeFile();
+    void newScene();
+    void closeScene();
     void play();
     void stop() { killTimer(myTimer); myTimer = 0; } // Выключаем таймер
     bool isPlayed() const { return myTimer; }

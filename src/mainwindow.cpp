@@ -32,6 +32,7 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QToolBar>
 #include <QtGui/QComboBox>
+#include <QtGui/QDesktopServices>
 #include "mainwindow.h"
 #include "scenecontrol.h"
 #include "settingdialog.h"
@@ -358,7 +359,6 @@ void MainWindow::createScene()
     connect( showGridAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowGrid(bool)));
     connect( canva , SIGNAL(uncheck()) , SLOT(uncheck()));
     connect( deleteAct , SIGNAL(triggered()) , canva , SLOT(removeDevice()));
-    connect( newAct , SIGNAL(triggered()) , canva , SLOT(newFile()));
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
@@ -397,6 +397,7 @@ void MainWindow::newFile()
 {
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
+    canva->newFile();
 }
 //----------------------------------------------------------
 /*!

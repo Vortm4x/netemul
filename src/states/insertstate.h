@@ -13,8 +13,6 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*) { }
-    void goText() { }
-    void goSend() { }
     void hideState();
 private:
     insertRect *InsertRect; // Прямоугольныник для вставки

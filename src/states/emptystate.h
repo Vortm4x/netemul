@@ -10,10 +10,6 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent*) { }
     void mousePress(QGraphicsSceneMouseEvent*) { }
     void mouseRelease(QGraphicsSceneMouseEvent*) { }
-    void goInsert() { }
-    void goCable() { }
-    void goText() { }
-    void goSend() { }
 };
 
 #endif // EMPTYSTATE_H

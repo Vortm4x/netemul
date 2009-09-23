@@ -66,7 +66,6 @@ myCanvas::~myCanvas()
 */ 
 void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( mouseGrabberItem() ) qDebug("Grab start moving!");
     myState->mouseMove(event);
 }
 //----------------------------------------------------------------------
@@ -76,14 +75,12 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 */
 void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( mouseGrabberItem() ) qDebug("Grab start press !");
     if ( event->button() != Qt::LeftButton ) return;
     myState->mousePress(event);
 }
 //-----------------------------------------------------------------------
 void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( mouseGrabberItem() ) qDebug("Grab start release!");
     if ( event->button() != Qt::LeftButton ) return;
     myState->mouseRelease(event);
 }
@@ -149,21 +146,20 @@ void myCanvas::removeDevice()
 */
 void myCanvas::newFile()
 {
+    if ( myOpen ) return;
     lastId = 0;
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     setSceneRect(0,0,myCanvas::width,myCanvas::height);
     myState->goMove();
     myOpen = true;
     play();
-    emit fileOpened();
 }
 //-------------------------------------------------
 /*!
   Закрывает файл, очищает сцену, делает фон серым, удаляет все соединения.
 */
 void myCanvas::closeFile()
-{
-    myState->goEmpty();
+{   
     clear();
     myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
@@ -172,8 +168,8 @@ void myCanvas::closeFile()
     myTextItems.clear();
     if ( myTimer ) stop();
     myOpen = false;
-    emit fileClosed();
     myModified = false;
+    myState->goEmpty();
 }
 //---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
@@ -213,7 +209,7 @@ void myCanvas::openScene(QString fileName)
     if ( str != QCoreApplication::applicationVersion() ) {
         QMessageBox::critical(NULL,tr("Error"),tr("The outdated version of the file, file can't be opened"),
                               QMessageBox::Ok , QMessageBox::Ok );
-        closeFile();
+        emit fileClosed();
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
@@ -469,6 +465,17 @@ QObjectList myCanvas::computerList()
         if ( i->isCanSend() ) temp << i->contentDevice();
     return temp;
 }
+
+void myCanvas::closeScene()
+{
+    emit fileClosed();
+}
+
+void myCanvas::newScene()
+{
+    emit fileOpened();
+}
+
 
 
 

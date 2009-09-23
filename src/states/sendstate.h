@@ -15,9 +15,6 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent*);
     void mouseRelease(QGraphicsSceneMouseEvent*) { }
-    void goInsert() { }
-    void goCable() { }
-    void goText() { }
     void hideState();
 private:
     // All temp transport varios

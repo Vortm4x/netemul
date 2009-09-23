@@ -1,5 +1,5 @@
-if ( open ) closeFile();
-newFile();
+if ( open ) closeScene();
+newScene();
 var net = new Array();
 var r = new Array();
 var s = new Array();
@@ -53,6 +53,6 @@ r[2].setIp( "LAN4" , "192.168.1.253");
 r[3].setIp( "LAN4" , "192.168.1.254");
 for ( i = 0 ; i < 4 ; i++ ) r[i].router = true;
 saveScene("big.net");
-closeFile();
+closeScene();
 openScene("big.net");
 true;

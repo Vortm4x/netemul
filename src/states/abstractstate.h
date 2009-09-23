@@ -16,9 +16,9 @@ public:
     virtual void goMove();
     virtual void goInsert();
     virtual void goCable();
-    virtual void goText() { }
-    virtual void goSend() { }
-    virtual void goEmpty() { }
+    virtual void goText();
+    virtual void goSend();
+    virtual void goEmpty();
     virtual void hideState() { }
     static abstractState* initialize(myCanvas *s);
     void goTo(int mode);

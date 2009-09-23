@@ -12,8 +12,6 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*);
-    void goText() { }
-    void goSend() { }
 private:
     QGraphicsLineItem *line; // Временная линия для рисования
 };

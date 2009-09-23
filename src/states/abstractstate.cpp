@@ -4,6 +4,8 @@
 #include "movestate.h"
 #include "insertstate.h"
 #include "cablestate.h"
+#include "textstate.h"
+#include "sendstate.h"
 
 abstractState::abstractState(myCanvas *s)
 {
@@ -35,6 +37,28 @@ void abstractState::goCable()
     scene->myState = new cableState(scene);
     delete oldState;
 }
+
+void abstractState::goText()
+{
+    abstractState *oldState = scene->myState;
+    scene->myState = new textState(scene);
+    delete oldState;
+}
+
+void abstractState::goSend()
+{
+    abstractState *oldState = scene->myState;
+    scene->myState = new sendState(scene);
+    delete oldState;
+}
+
+void abstractState::goEmpty()
+{
+    abstractState *oldState = scene->myState;
+    scene->myState = new emptyState(scene);
+    delete oldState;
+}
+
 
 void abstractState::goTo(int mode)
 {

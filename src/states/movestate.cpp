@@ -7,14 +7,12 @@
 
 moveState::moveState(myCanvas *s) : abstractState(s)
 {
-    qDebug("I born!");
     SelectRect = 0; // Выделения нет
     p2Rect = QPoint();
 }
 
 moveState::~moveState()
 {
-    qDebug("Help!!! I dead!!");
     if ( SelectRect ) {
         scene->removeItem(SelectRect);
         delete SelectRect;
@@ -31,10 +29,8 @@ void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
 void moveState::mousePress(QGraphicsSceneMouseEvent *event)
 {
     scene->QGraphicsScene::mousePressEvent(event);
-    qDebug("NAjali");
     // Если есть выделенные элементы и мы щелкаем на одном из них
-    if ( scene->selectedItems().count() && scene->items( event->scenePos()).count() ) {
-        qDebug("moving!");
+    if ( (scene->selectedItems().toSet() & scene->items( event->scenePos()).toSet()).size() ) {
     // То нужно сохранить все их координаты на случай если начнется перемещение.
         foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
             if ( i->type() != cableDev::Type )
@@ -43,15 +39,15 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
     } // Иначе создаем прямоугольник выделения.
     else {
         if ( scene->items( event->scenePos() ).count() ) return;
-        qDebug("selecting!");
         SelectRect = new selectRect;
         p2Rect = QPointF( event->scenePos() );
         scene->addItem(SelectRect);
     }
 }
 
-void moveState::mouseRelease(QGraphicsSceneMouseEvent*)
+void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
+    scene->QGraphicsScene::mouseReleaseEvent(event);
     if ( scene->coordMap.count() ) {
         bool needReturn = false;
         QGraphicsItem *curDevice;

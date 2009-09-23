@@ -43,18 +43,20 @@ void sendState::mousePress(QGraphicsSceneMouseEvent*)
     if ( mySendState == noSendItem ) {
         sendDialog *temp = new sendDialog(sendDialog::sender,t);
         if ( !temp->exec() ) return;
-            messageSize = temp->messageSize();
-            broadcast = temp->broadcast();
-            protocol = temp->protocol();
-            senderDevice = t;
-            mySendState = oneSendItem;
-            SendEllipse->chooseOneDevice();
+        messageSize = temp->messageSize();
+        broadcast = temp->broadcast();
+        protocol = temp->protocol();
+        senderDevice = t;
+        mySendState = oneSendItem;
+        SendEllipse->chooseOneDevice();
+        delete temp;
     } else {
         sendDialog *temp = new sendDialog(sendDialog::receiver,t);
         if ( !temp->exec() ) return;
         receiverIp = temp->dest();
         senderDevice->sendMessage(receiverIp,messageSize,protocol);
         emit scene->uncheck();
+        delete temp;
         goMove();
     }
 }

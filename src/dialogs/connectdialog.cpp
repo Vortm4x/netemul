@@ -47,7 +47,7 @@ connectDialog::connectDialog(device *s, device *e)
             break;
         }
     resize( sizeHint());
-    setAttribute(Qt::WA_DeleteOnClose);
+// НЕ НАДО СТАВИТЬ ЗДЕСЬ setAttribute(Qt::WA_DeleteOnClose); !!! руки оторву тому кто постАВИТ !!!
 }
 
 void connectDialog::changeSelect()
