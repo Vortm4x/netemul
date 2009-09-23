@@ -476,6 +476,12 @@ void myCanvas::newScene()
     emit fileOpened();
 }
 
+void myCanvas::turnToMove()
+{
+    myState->goMove();
+    emit uncheck();
+}
+
 
 
 

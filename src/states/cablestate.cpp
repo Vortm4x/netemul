@@ -10,6 +10,14 @@ cableState::cableState(myCanvas *s) : abstractState(s)
     line = 0; // Провода нет
 }
 
+cableState::~cableState()
+{
+    if ( line ) {
+        scene->removeItem(line);
+        delete line;
+    }
+}
+
 void cableState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     // Заново прорисовываем линию от начала кабеля до Текущей точки

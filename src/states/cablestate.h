@@ -9,6 +9,7 @@ class cableState : public abstractState
 {
 public:
     cableState(myCanvas *s);
+    ~cableState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*);

@@ -63,6 +63,7 @@ public:
     bool isEnd() const;
     void newFile();
     void closeFile();
+    void turnToMove();
     bool isModified() const { return myModified; }
     int animateSpeed() const;
     void setAnimateSpeed(int n);

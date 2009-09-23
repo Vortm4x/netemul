@@ -17,17 +17,18 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
+#include <QMenu>
+#include <QGraphicsScene>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QtDebug>
+#include <QPainter>
+#include "mycanvas.h"
 #include "routerdevice.h"
 #include "device.h"
 #include "computer.h"
 #include "hubdevice.h"
 #include "switchdevice.h"
 #include "cabledev.h"
-#include <QMenu>
-#include <QGraphicsScene>
-#include <QGraphicsSceneContextMenuEvent>
-#include <QtDebug>
-#include <QPainter>
 
 device::device(int t)
 {
@@ -119,6 +120,8 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
 void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     //if ( scene()->selectedItems().count() ) return;
+    myCanvas *canva = qobject_cast<myCanvas*>(scene());
+    canva->turnToMove();
     scene()->clearSelection(); // Снять все выделения на сцене
     setSelected(true); // Выделить текущуе устройство
     if ( !popUpMenu->exec(event->screenPos()) )
@@ -128,6 +131,8 @@ void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
+    myCanvas *canva = qobject_cast<myCanvas*>(scene());
+    canva->turnToMove();
     dialog();
     scene()->clearSelection();
 }
