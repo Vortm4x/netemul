@@ -24,19 +24,16 @@
 #include <QAction>
 #include <QPainter>
 #include <QtDebug>
-#include <QFile>
-#include <QDataStream>
-#include <QMessageBox>
-#include <QTextCursor>
+#include <QtCore/QFile>
+#include <QtCore/QDataStream>
+#include <QtGui/QMessageBox>
+#include <QtGui/QTextCursor>
+#include <QtGui/QApplication>
 #include "mycanvas.h"
-#include "connectdialog.h"
 #include "device.h"
 #include "cabledev.h"
-#include "senddialog.h"
 #include "appsetting.h"
-#include "insertrect.h"
-#include "sendellipse.h"
-#include "selectrect.h"
+#include "abstractstate.h"
 
 /*!
   Конструктор проводит начальную инициализацию сцены.
@@ -45,19 +42,11 @@
 */
 myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {
-    nowMode = noFile; // Сначала файла нет
-    itemMenu = context; // меню из аргумента
-    line = 0; // Провода нет
-    SelectRect = 0; // Выделения нет
-    p2Rect = QPoint();
-    InsertRect = 0 ;
-    SendEllipse = 0;
-    myTimer = 0;
-    myState = noSendItem;
-    prevMode = move;
-    prevType = noDev;
+    itemMenu = context; // меню из аргумента                    
+    myTimer = 0;       
     myOpen = false;
     myModified = false;
+    myState = abstractState::initialize(this);
 }
 //------------------------------------------------------------------
 /*!
@@ -77,26 +66,8 @@ myCanvas::~myCanvas()
 */ 
 void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    switch ( nowMode ) { // Исходя из режима в котором находится сцена мы выполняем действия
-            case noFile: // Сцена закрыта
-                return;
-            case cable: // Если режим кабель
-                // Заново прорисовываем линию от начала кабеля до Текущей точки
-                if (line != 0) line->setLine(QLineF(line->line().p1(), event->scenePos()));
-                break;
-            case move: // Если перемещение
-                // Если есть перемещаемые устройства используем метод предка для их перемещения
-                if ( coordMap.count() ) QGraphicsScene::mouseMoveEvent(event);
-                else  if (SelectRect ) // Если есть выделение обновляем его.
-                        SelectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
-                break;
-            case insert: // Если режим вставки устройства
-                if ( InsertRect ) InsertRect->moving( event->scenePos() );
-                break;
-            case send: // Если режим отправки пакетов.
-                if ( SendEllipse ) SendEllipse->moving( event->scenePos() );
-                break;
-    }
+    if ( mouseGrabberItem() ) qDebug("Grab start moving!");
+    myState->mouseMove(event);
 }
 //----------------------------------------------------------------------
 /*!
@@ -105,94 +76,17 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 */
 void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( event->button() != Qt::LeftButton ) {
-        QGraphicsScene::mousePressEvent(event);
-        return;
-    }
-    switch (nowMode) {
-        case noFile:
-            return; // Если файл не открыт то не будем обрабатывать вообще
-        case move: // если режим перемещения
-            QGraphicsScene::mousePressEvent(event); // Сначала событие предка
-            // Если есть выделенные элементы и мы щелкаем на одном из них
-            if ( selectedItems().count() && items( event->scenePos()).count() ) {
-                // То нужно сохранить все их координаты на случай если начнется перемещение.
-                foreach ( QGraphicsItem* i , selectedItems() ) {
-                    if ( i->type() != cableDev::Type )
-                        coordMap.insert( i , i->scenePos());
-                }
-            } // Иначе создаем прямоугольник выделения.
-            else {
-                if ( items( event->scenePos() ).count() ) break;
-                SelectRect = new selectRect;
-                p2Rect = QPointF( event->scenePos() );
-                addItem(SelectRect);
-            }
-            break;
-        case text:
-             createTextItem(event->scenePos());
-             setMode( move , noDev );
-             emit uncheck();
-             myModified = true;
-             break;
-        case insert: // Если режим вставки
-            if ( InsertRect->pos().y() < 0 ) break;
-            if ( InsertRect->isReadyInsert() ) {
-                addDeviceOnScene(event->scenePos(), nowType); // Добавляем устройство на сцену
-                prevMode = insert;
-                prevType = nowType;
-                myModified = true;
-            }
-            break;
-        case cable: // А если кабель
-            if ( items(event->scenePos()).isEmpty()) break; // не будем водить кабеля из пустых мест
-            line =  new QGraphicsLineItem(QLineF(event->scenePos(),
-                                         event->scenePos()));
-            //Создадим временную линию, выставим её свойства и добавим на сцену
-            line->setPen(QPen(Qt::black,2));
-            addItem(line);
-            break;
-        case send:
-            if ( SendEllipse->hasUnderDevice() ) {
-                QGraphicsItem *tempItem = SendEllipse->underDevice() ;
-                device *t = qgraphicsitem_cast<device*>(tempItem);
-                if ( !t ) break;
-                if ( !t->isCanSend() ) {
-                    QMessageBox::warning(0,tr("Error"),tr("The device can't transmit data!"),
-                                     QMessageBox::Ok , QMessageBox::Ok);
-                    break;
-                }
-                if ( myState == noSendItem ) {
-                    sendDialog *temp = new sendDialog(sendDialog::sender,t);
-                    if (temp->exec() ) {
-                        messageSize = temp->messageSize();
-                        broadcast = temp->broadcast();
-                        protocol = temp->protocol();
-                        senderDevice = t;
-                        if ( broadcast ) {
-                            emit uncheck();
-                            setMode( myCanvas::move , myCanvas::noDev);
-                        } else {
-                            myState = oneSendItem;
-                            SendEllipse->chooseOneDevice();
-                        }
-                    }
-                    delete temp;
-                } else {
-                    sendDialog *temp = new sendDialog(sendDialog::receiver,t);
-                    if (temp->exec() ) {
-                        receiverIp = temp->dest();
-                        senderDevice->sendMessage(receiverIp,messageSize,protocol);
-                        emit uncheck();
-                        setMode( myCanvas::move , myCanvas::noDev);
-                    }
-                    delete temp;
-                }
-            }
-            break;
-    }
+    if ( mouseGrabberItem() ) qDebug("Grab start press !");
+    if ( event->button() != Qt::LeftButton ) return;
+    myState->mousePress(event);
 }
 //-----------------------------------------------------------------------
+void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if ( mouseGrabberItem() ) qDebug("Grab start release!");
+    if ( event->button() != Qt::LeftButton ) return;
+    myState->mouseRelease(event);
+}
 /*!
   Создает соединение между устройствами.
   @param s - Указатель на первое устройство.
@@ -214,99 +108,6 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     return cable;
 }
 //-------------------------------------------------------------------------
-void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    if ( event->button() != Qt::LeftButton ) {
-        QGraphicsScene::mouseReleaseEvent(event);
-        return;
-    }
-    bool canCreate = true; // показывает можно ли
-    switch (nowMode) {
-            case noFile:
-                return;
-            case cable:
-                if (line) { // Если кабель тянеться и режим тоже кабель
-                    QString start,end;
-                    device *startItem = deviceInPoint(line->line().p1()) ;
-                    device *endItem = deviceInPoint(line->line().p2()) ;
-                    removeItem(line);
-                    delete line;
-                    line = 0; // Линию временную делаем указателем на нуль
-                    if ( !startItem || !endItem ) break;
-                    if ( device::isConnectDevices(startItem, endItem) ) break;
-                    if ( startItem == endItem ) break;
-                    if ( canCreate ) {
-                        connectDialog *conDialog = new connectDialog(startItem,endItem);
-                        conDialog->move(400,400);
-                        canCreate = conDialog->exec() ;
-                        if (canCreate) {
-                            start = conDialog->getStart();
-                            end = conDialog->getEnd();
-                        }
-                        delete conDialog;
-                    }
-                    else canCreate = false;
-                    // Вообщем так ... если уствойства есть под обоими концами
-                    // и эти устройства различны то мы создаем этот кабель! Проверено все ок =)
-                   if ( canCreate ) createConnection( startItem , endItem , start , end );
-                   prevMode = cable;
-                   prevType = noDev;
-                }
-                break;
-            case move:
-                if ( coordMap.count() ) {
-                    bool needReturn = false;
-                    QMapIterator<QGraphicsItem*,QPointF> i(coordMap);
-                    i.toFront();
-                    while (i.hasNext()) {
-                         i.next();
-                         QList<QGraphicsItem*> underItems = i.key()->collidingItems();
-                         foreach ( QGraphicsItem *j , underItems )
-                             if ( j->type() == cableDev::Type ) underItems.removeOne(j);
-                         if ( !sceneRect().contains( i.key()->pos()) || underItems.count() ) {
-                             needReturn = true;
-                             break;
-                         }
-                    }
-                    if ( needReturn ) {
-                        i.toFront();
-                         while (i.hasNext()) {
-                            i.next();
-                            i.key()->setPos(i.value());
-                        }
-                    }
-                    i.toFront();
-                    while (i.hasNext()) {
-                        i.next();
-                        if (i.key()->type() != textItem::Type ) i.key()->setPos( calibrate(i.key()->scenePos()) );
-                        if ( isDevice(i.key()) ) {
-                            device *d = qgraphicsitem_cast<device*>(i.key());
-                            d->updateCables();
-                        }
-                    }
-                    myModified = true;
-                    coordMap.clear();
-                }
-                else {
-                    if ( SelectRect != 0 ) {
-                        QPainterPath path;
-                        path.addRect(SelectRect->rect());
-                        setSelectionArea(path);
-                        removeItem(SelectRect);
-                        delete SelectRect;
-                        p2Rect = QPoint();
-                        SelectRect = 0 ;
-                    }
-                }
-                QGraphicsScene::mouseReleaseEvent(event); // передаем событие предку
-                break; 
-            case insert:
-                break;
-            case text:
-                QGraphicsScene::mouseReleaseEvent(event); // передаем событие предку
-                break;
-    }
-}
 
 device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
 {
@@ -351,7 +152,7 @@ void myCanvas::newFile()
     lastId = 0;
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     setSceneRect(0,0,myCanvas::width,myCanvas::height);
-    setMode(myCanvas::move,myCanvas::noDev);
+    myState->goMove();
     myOpen = true;
     play();
     emit fileOpened();
@@ -362,7 +163,7 @@ void myCanvas::newFile()
 */
 void myCanvas::closeFile()
 {
-    setMode(myCanvas::noFile,myCanvas::noDev);
+    myState->goEmpty();
     clear();
     myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
@@ -383,40 +184,14 @@ void myCanvas::deleteConnection(cableDev *cable)
 
 void myCanvas::setMode(int modScene,int curDev)
 {
-    nowMode = modScene;
-    nowType = curDev;
-    myState = noSendItem;
-    views().first()->setCursor(Qt::ArrowCursor);
+    myState->goTo(modScene);
+    nowType = curDev;    
     setSelectionArea( QPainterPath() );
-    if ( InsertRect ) {
-        removeItem(InsertRect);
-        delete InsertRect;
-        InsertRect = 0 ;
-    }
-    if ( SendEllipse ) {
-        removeItem( SendEllipse);
-        delete SendEllipse;
-        SendEllipse = 0;
-    }
-    switch ( nowMode ) {
-        case insert:
-            InsertRect = new insertRect;
-            addItem(InsertRect);
-            break;
-        case send:
-            views().first()->setCursor(Qt::PointingHandCursor);
-            SendEllipse = new sendEllipse;
-            addItem(SendEllipse);
-            break;
-        default:
-            break;
-    }
 }
 
-void myCanvas::hideInsertRect()
+void myCanvas::hideState()
 {
-    if ( InsertRect ) InsertRect->hideItem();
-    if ( SendEllipse ) SendEllipse->hideItem();
+    myState->hideState();
 }
 /*!
   Загружает сцену из файла.

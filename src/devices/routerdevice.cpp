@@ -53,17 +53,24 @@ void routerDevice::read(QDataStream &stream)
 }
 
 void routerDevice::setSocketsCount(int n)
-{
-    foreach ( interface *i , myInterfaces )
-        if ( i->isConnect() ) {
-            QMessageBox::warning(0,tr("Error"), tr("To change the number of ports, disconnect all cables!"),
-                                 QMessageBox::Ok , QMessageBox::Ok);
-            return;
+{ 
+    int t = myInterfaces.size();
+    if ( t <= n ) {
+        for ( int i = t; i < n ; i++ )
+            addInterface( tr("LAN%1").arg(i+1) );
+    }
+    else {
+        foreach ( interface *i , myInterfaces )
+            if ( i->isConnect() ) {
+                QMessageBox::warning(0,tr("Error"), tr("To change the number of ports, disconnect all cables!"),
+                                     QMessageBox::Ok , QMessageBox::Ok);
+                return;
+            }
+        for ( int i = t-1 ; i >= n ; i-- ) {
+            delete myInterfaces[i];
+            myInterfaces.pop_back();
         }
-    qDeleteAll(myInterfaces);
-    myInterfaces.clear();
-    for ( int i = 0 ; i < n ; i++ )
-        addInterface( tr("LAN%1").arg(i+1) );
+    }
 }
 
 

@@ -46,6 +46,7 @@ sendDialog::sendDialog(aim cur,device* t)
     setLayout(all);
     connect( okButton , SIGNAL(clicked()) , this , SLOT(checkAccept()));
     connect( cancelButton , SIGNAL(clicked()) , this , SLOT(reject()));
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void sendDialog::checkSelected(int cur)

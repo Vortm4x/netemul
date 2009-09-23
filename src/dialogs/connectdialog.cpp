@@ -47,6 +47,7 @@ connectDialog::connectDialog(device *s, device *e)
             break;
         }
     resize( sizeHint());
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void connectDialog::changeSelect()

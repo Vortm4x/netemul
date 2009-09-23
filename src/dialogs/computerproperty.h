@@ -34,6 +34,7 @@ class computerProperty : public dialogTemplate
     Q_DISABLE_COPY(computerProperty)
 public:
     computerProperty();
+    ~computerProperty();
     void setDevice(computerSetting *c);
 private:
     computerSetting *comp;

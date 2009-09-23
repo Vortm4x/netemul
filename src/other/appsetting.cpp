@@ -58,6 +58,8 @@ void appSetting::defaultNums()
     _speed = 100;
     _language = 0;
     _hasOpengl = false;
+    for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
+        QCoreApplication::removeTranslator(mas[i]);
 }
 
 void appSetting::readSetting()
@@ -108,6 +110,7 @@ void appSetting::writeSetting()
 
 void appSetting::setLanguage(int n)
 {
+    if ( n == _language ) return;
     _language = n;
     for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
         if ( i != n ) QCoreApplication::removeTranslator(mas[i]);

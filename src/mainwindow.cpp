@@ -499,7 +499,7 @@ bool MainWindow::eventFilter(QObject *obj,QEvent *event)
 {
     if ( obj == view ) {
         if ( event->type() == QEvent::Leave )
-            canva->hideInsertRect();
+            canva->hideState();
         return false;
     } else
     return QMainWindow::eventFilter(obj,event);

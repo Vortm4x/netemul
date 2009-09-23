@@ -118,6 +118,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
 
 void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
+    //if ( scene()->selectedItems().count() ) return;
     scene()->clearSelection(); // Снять все выделения на сцене
     setSelected(true); // Выделить текущуе устройство
     if ( !popUpMenu->exec(event->screenPos()) )

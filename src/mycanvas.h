@@ -21,7 +21,6 @@
 #define MYCANVAS_H
 
 #include <QtGui/QGraphicsScene>
-#include <QtGui/QGraphicsLineItem>
 #include "textitem.h"
 
 class QMenu;
@@ -32,9 +31,7 @@ class devicePort;
 class textItem;
 class device;
 class deviceImpl;
-class insertRect;
-class sendEllipse;
-class selectRect;
+class abstractState;
 
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
@@ -48,16 +45,14 @@ class myCanvas : public QGraphicsScene
     Q_PROPERTY(bool open READ isOpen WRITE setOpen)
     Q_PROPERTY(int animateSpeed READ animateSpeed WRITE setAnimateSpeed)
 public:
-    friend class statisticsScene;
     // режимы : нет файла , перемещение , вставка провода , вставка устройства
     enum { noFile = -1 , move = 0 , cable = 1 , insert = 2 , send = 6 , text = 8};
-    enum { width = 2000 , height = 2000 };
-    enum sendState { noSendItem = 0 , oneSendItem = 1 };
+    enum { width = 2000 , height = 2000 };    
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
     device* addDeviceOnScene(QPointF coor, int myType); // Добавить устройство на сцену
     void deleteConnection(cableDev *cable);
-    void hideInsertRect();
+    void hideState();
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
     textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
@@ -104,30 +99,15 @@ private:
     bool myOpen;
     bool myModified;
     int lastId;
-    sendState myState;
-    QGraphicsLineItem *line; // Временная линия для рисования
-    selectRect *SelectRect; // Временный прямоугольник для выделения
-    QPointF p2Rect; // Точка начала выделения
-    insertRect *InsertRect; // Прямоугольныник для вставки
-    sendEllipse *SendEllipse; // Кружочек для выделения отправителя и получателя
+    abstractState *myState;        
 
     QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
     QList<device*> myDevices; //!< Список всех устройств на сцене.
     QList<textItem*> myTextItems; //!< Список всех надписей на сцене.
 
-    // All temp transport varios
-    int messageSize;
-    bool broadcast;
-    QString receiverIp;
-    device *senderDevice;
-    int protocol;
-
     QMenu *itemMenu; // Меню для устройства
     QList<cableDev* >  connections;
-    int nowMode; // Текущий режим
     int nowType; // Текущее устройство
-    int prevMode;
-    int prevType;
 
     int myTimer;
 protected:
@@ -135,6 +115,14 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // и отпускания кнопки мыши
     void timerEvent(QTimerEvent*);
+// My dear Friends =)
+    friend class statisticsScene;
+    friend class abstractState;
+    friend class moveState;
+    friend class insertState;
+    friend class cableState;
+    friend class textState;
+    friend class sendState;
 };
 //------------------------------------------------------------------
 #endif // MYCANVAS_H

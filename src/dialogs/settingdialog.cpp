@@ -25,7 +25,6 @@ settingDialog::settingDialog()
     setupUi(this);
     currentValues();
     setAttribute(Qt::WA_DeleteOnClose);
-    btn_apply->setEnabled(false);
 }
 
 void settingDialog::currentValues()
@@ -58,6 +57,7 @@ void settingDialog::currentValues()
     sb_waitingTime->setValue(appSetting::waitingTime());
 
     cb_opengl->setChecked( appSetting::hasOpengl() );
+    btn_apply->setEnabled(false);
 }
 
 void settingDialog::applyEnable()
@@ -86,7 +86,7 @@ void settingDialog::apply()
 void settingDialog::defaultSettings()
 {
     appSetting::defaultNums();
-    currentValues();
+    currentValues();   
 }
 
 void settingDialog::changeEvent(QEvent *e)

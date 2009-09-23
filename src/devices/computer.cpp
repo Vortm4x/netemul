@@ -34,12 +34,9 @@ computer::computer(int c /* = 0 */)
 
 void computer::dialog()
 {
-    computerSetting *set = new computerSetting(this);
     computerProperty *d = new computerProperty;
-    d->setDevice(set);
+    d->setDevice( new computerSetting(this) );
     d->exec();
-    delete d;
-    delete set;
 }
 
 

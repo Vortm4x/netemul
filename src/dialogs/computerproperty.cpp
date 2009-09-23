@@ -47,6 +47,12 @@ computerProperty::computerProperty()
     all->addLayout(prop);
     all->addLayout(lay);
     setLayout(all);
+    setAttribute(Qt::WA_DeleteOnClose);
+}
+
+computerProperty::~computerProperty()
+{
+    delete comp;
 }
 
 void computerProperty::setDevice(computerSetting *c)
