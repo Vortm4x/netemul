@@ -21,6 +21,7 @@
 #define MYCANVAS_H
 
 #include <QtGui/QGraphicsScene>
+#include <QtGui/QUndoStack>
 #include "textitem.h"
 
 class QMenu;
@@ -28,7 +29,6 @@ class QAction;
 class cableDev;
 class connectDialog;
 class devicePort;
-class textItem;
 class device;
 class deviceImpl;
 class abstractState;
@@ -52,7 +52,7 @@ public:
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     ~myCanvas();
-    device* addDeviceOnScene(QPointF coor, int myType); // Добавить устройство на сцену
+    device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену
     void deleteConnection(cableDev *cable);
     void hideState();
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
@@ -72,6 +72,11 @@ public:
     QPointF calibrate(QPointF c);
     int devicesCount() const { return myDevices.size(); }
     int cablesCount() const { return connections.size(); }
+    QAction* undoAction(QObject *obj) { return commandStack.createUndoAction(obj); }
+    QAction* redoAction(QObject *obj) { return commandStack.createRedoAction(obj); }
+
+    void putItems(QMap<QGraphicsItem*,QPointF> map);
+    void calibrateAll(QList<QGraphicsItem*> list);
 signals:
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
@@ -81,7 +86,7 @@ public slots:
     void editorLostFocus(textItem *t);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
-    void removeDevice();
+    void removeDevice(device *dev = 0);
     void newScene();
     void closeScene();
     void play();
@@ -97,6 +102,7 @@ public slots:
     QObjectList computerList();
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
 private:
+    QUndoStack commandStack;
     bool isDevice(QGraphicsItem *t) const;
     device* deviceWithImpl(deviceImpl *d);
     bool myOpen;

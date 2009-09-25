@@ -47,6 +47,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myOpen = false;
     myModified = false;
     myState = abstractState::initialize(this);
+    commandStack.setUndoLimit(5);
 }
 //------------------------------------------------------------------
 /*!
@@ -106,8 +107,9 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
 }
 //-------------------------------------------------------------------------
 
-device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
+device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 {
+    if ( myType == -1 ) myType = nowType;
     device *t = new device(myType);
     t->setPos( calibrate(coor) );
     t->setMenu(itemMenu);
@@ -118,8 +120,13 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType)
 /*!
   Функция удаляет со сцены выделенные устройства и провода.
 */
-void myCanvas::removeDevice()
+void myCanvas::removeDevice(device *dev /* = 0 */)
 {
+    if ( dev ) {
+        removeItem( dev );
+        myDevices.removeOne(dev);
+        return;
+    }
     myModified = true;
     QList<QGraphicsItem*> l = selectedItems(); // Получаем список выделенных элементов.
     foreach (QGraphicsItem *item, l ) {
@@ -160,6 +167,7 @@ void myCanvas::newFile()
 */
 void myCanvas::closeFile()
 {   
+    myState->goEmpty();
     clear();
     myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
@@ -169,7 +177,7 @@ void myCanvas::closeFile()
     if ( myTimer ) stop();
     myOpen = false;
     myModified = false;
-    myState->goEmpty();
+    commandStack.clear();
 }
 //---------------------------------------------------
 void myCanvas::deleteConnection(cableDev *cable)
@@ -198,7 +206,7 @@ void myCanvas::openScene(QString fileName)
     newFile();
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Невозможно открыть файл для чтения";
+        qDebug() << tr("Opening file for reading is impossible");
         return;
     }
     QDataStream s(&file);
@@ -255,7 +263,7 @@ void myCanvas::saveScene(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << "Невозможно открыть файл для записи";
+        qDebug() << tr("Opening file for writeng is impossible");
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
@@ -484,5 +492,28 @@ void myCanvas::turnToMove()
 
 
 
+void myCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
+{
+    QMapIterator<QGraphicsItem*,QPointF> i(map);
+    i.toFront();
+    while ( i.hasNext() ) {
+        i.next();
+        QGraphicsItem *curDevice = i.key();
+        QPointF curPoint = i.value();
 
+        curDevice->setPos( curPoint );
 
+        if ( isDevice( curDevice ) ) {
+            device *d = qgraphicsitem_cast<device*>(curDevice);
+            d->updateCables();
+        }
+    }
+    calibrateAll( map.keys() );
+    myModified = true;
+}
+
+void myCanvas::calibrateAll(QList<QGraphicsItem*> list)
+{
+    foreach ( QGraphicsItem *i , list )
+        if ( i->type() != textItem::Type ) i->setPos( calibrate( i->pos() ) );
+}

@@ -4,6 +4,7 @@
 #include "device.h"
 #include "selectrect.h"
 #include "cabledev.h"
+#include "movecommand.h"
 
 moveState::moveState(myCanvas *s) : abstractState(s)
 {
@@ -67,28 +68,19 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
         }
 
         if ( !needReturn ) {
-            calibrateAll( scene->coordMap.keys() );
-            scene->myModified = true;
+            QMap<QGraphicsItem*, QPointF> old = scene->coordMap;
+            scene->calibrateAll( scene->coordMap.keys() );
+            QMap<QGraphicsItem*, QPointF> rec;
+            foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
+                if ( i->type() != cableDev::Type )
+                    rec.insert(i, i->scenePos() );
+             }
+            moveCommand *c = new moveCommand(scene,old, rec);
+            scene->commandStack.push(c);
             scene->coordMap.clear();
             return;
         }
-
-        i.toFront();
-        while ( i.hasNext() ) {
-            i.next();
-            curDevice = i.key();
-            curPoint = i.value();
-
-            curDevice->setPos( curPoint );
-
-            if ( scene->isDevice( curDevice ) ) {
-                device *d = qgraphicsitem_cast<device*>(curDevice);
-                d->updateCables();
-            }
-        }
-        calibrateAll( scene->coordMap.keys() );
-        scene->myModified = true;
-        scene->coordMap.clear();
+        scene->putItems(scene->coordMap);
     }
     else {
         if ( !SelectRect ) return;
@@ -100,12 +92,6 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
         p2Rect = QPoint();
         SelectRect = 0 ;
     }
-}
-
-void moveState::calibrateAll(itemList list)
-{
-    foreach ( QGraphicsItem *i , list )
-        if ( i->type() != textItem::Type ) i->setPos( scene->calibrate( i->pos() ) );
 }
 
 itemList moveState::filterCables(itemList list)

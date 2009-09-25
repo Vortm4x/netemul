@@ -30,5 +30,6 @@
         <file>images/clean.png</file>
         <file>images/question.png</file>
         <file>images/tcp.png</file>
+        <file>images/undo.png</file>
     </qresource>
 </RCC>

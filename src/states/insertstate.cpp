@@ -2,6 +2,7 @@
 #include "insertstate.h"
 #include "mycanvas.h"
 #include "insertrect.h"
+#include "addcommand.h"
 
 insertState::insertState(myCanvas *s) : abstractState(s)
 {
@@ -28,7 +29,9 @@ void insertState::mouseMove(QGraphicsSceneMouseEvent *event)
 void insertState::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if ( !InsertRect->isReadyInsert() ) return;
-    scene->addDeviceOnScene(event->scenePos(), scene->nowType); // Добавляем устройство на сцену
+     // Добавляем устройство на сцену
+    addCommand *command = new addCommand( scene , event->scenePos() , scene->nowType );
+    scene->commandStack.push(command);
     scene->myModified = true;
 }
 

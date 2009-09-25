@@ -152,6 +152,7 @@ void MainWindow::retranslate()
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
     fileMenu->setTitle(tr("File"));
+    editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
     itemMenu->setTitle(tr("Object"));
     settingMenu->setTitle(tr("Service"));
@@ -288,6 +289,8 @@ void MainWindow::createMenu()
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
+    editMenu = menuBar()->addMenu(QString());
+
     viewMenu = menuBar()->addMenu(QString());
     viewMenu->addAction( deviceBar->toggleViewAction() );
     viewMenu->addAction( controlBar->toggleViewAction() );
@@ -376,6 +379,14 @@ void MainWindow::createScene()
     connect( progAct , SIGNAL(triggered()) , sceneControler , SLOT(programmsDialog()) );
     connect( arpAct , SIGNAL(triggered()) , sceneControler , SLOT(arpDialog()) );
     connect( logAct , SIGNAL(triggered()) , SLOT(showLogDialog()) );
+    QAction *t = canva->undoAction(this);
+    t->setIcon( QIcon(":/im/images/undo.png") );
+    t->setShortcut(QKeySequence::Undo);
+    editMenu->addAction( t );
+    t = canva->redoAction(this);
+    t->setShortcut(QKeySequence::Redo);
+    t->setIcon( QIcon(":/im/images/redo.png") );
+    editMenu->addAction( t );
 }
 //------------------------------------------------------------------
 

@@ -17,8 +17,7 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent *event);
-private:
-    void calibrateAll(itemList list);
+private:    
     itemList filterCables(itemList list);
     selectRect *SelectRect; // Временный прямоугольник для выделения
     QPointF p2Rect; // Точка начала выделения
