@@ -52,8 +52,7 @@ public:
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
     myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     ~myCanvas();
-    device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену
-    void deleteConnection(cableDev *cable);
+    device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену    
     void hideState();
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);
     textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
@@ -74,9 +73,13 @@ public:
     int cablesCount() const { return connections.size(); }
     QAction* undoAction(QObject *obj) { return commandStack.createUndoAction(obj); }
     QAction* redoAction(QObject *obj) { return commandStack.createRedoAction(obj); }
-
+    void registerDevice(device *dev);    
+    void unregisterDevice(device *dev);
+    void registerCable(cableDev *cable);
+    void unregisterCable(cableDev *cable);
     void putItems(QMap<QGraphicsItem*,QPointF> map);
     void calibrateAll(QList<QGraphicsItem*> list);
+    bool isDevice(QGraphicsItem *t) const;
 signals:
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
@@ -86,7 +89,7 @@ public slots:
     void editorLostFocus(textItem *t);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
-    void removeDevice(device *dev = 0);
+    void removeDevice();
     void newScene();
     void closeScene();
     void play();
@@ -101,9 +104,13 @@ public slots:
     textItem* addNote(int x, int y);
     QObjectList computerList();
     void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
+protected:
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
+    void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // и отпускания кнопки мыши
+    void timerEvent(QTimerEvent*);
 private:
-    QUndoStack commandStack;
-    bool isDevice(QGraphicsItem *t) const;
+    QUndoStack commandStack;    
     device* deviceWithImpl(deviceImpl *d);
     bool myOpen;
     bool myModified;
@@ -119,11 +126,6 @@ private:
     int nowType; // Текущее устройство
 
     int myTimer;
-protected:
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
-    void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event); // и отпускания кнопки мыши
-    void timerEvent(QTimerEvent*);
 // My dear Friends =)
     friend class statisticsScene;
     friend class abstractState;

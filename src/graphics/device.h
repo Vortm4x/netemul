@@ -66,6 +66,7 @@ public:
     void arpDialog() const { impl->arpDialog(); }
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
+    bool isShared() const { return impl->isShared(); }
     bool isConnectSocket(const QString &str) const { return impl->isConnectSocket(str); }
     QIcon isConnectSocketIcon(const QString &str) const { return impl->isConnectSocketIcon(str); }
     QStringList sockets() const { return impl->sockets(); }

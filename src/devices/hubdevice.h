@@ -34,6 +34,7 @@ public:
     ~hubDevice();
     void dialog();
     void detectCollision();
+    bool isShared() const { return true; }
     QString deviceName() const { return "hub"; }
     friend class hubSetting;
 protected:

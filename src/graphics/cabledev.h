@@ -71,6 +71,11 @@ public:
     void killRandomPackets(QQueue<bitStream*> stream);
     void killCurrentPackets();
     void startCollision();
+    void registerCable();
+    void unregisterCable();
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                QWidget *widget = 0); // Как будем рисовать
 private:
     bool isCollision;
     bool myChecked;
@@ -81,10 +86,9 @@ private:
     device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;
     devicePort *myEndPort;
+    QString myStartName;
+    QString myEndName;
     int mySpeed;
-protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                QWidget *widget = 0); // Как будем рисовать
 };
 
 #endif // CABLEDEV_H

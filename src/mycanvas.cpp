@@ -34,6 +34,8 @@
 #include "cabledev.h"
 #include "appsetting.h"
 #include "abstractstate.h"
+#include "deletecommand.h"
+#include "addcablecommand.h"
 
 /*!
   Конструктор проводит начальную инициализацию сцены.
@@ -97,11 +99,8 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
 {
     if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
     cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
-    s->update();
-    e->update();
-    addItem(cable); // И добавляем его на сцену =)
-    connections << cable;
-    cable->updatePosition(); // Обновляем его положение
+    addCableCommand *com = new addCableCommand(this, cable);
+    commandStack.push(com);
     myModified = true;
     return cable;
 }
@@ -120,32 +119,34 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 /*!
   Функция удаляет со сцены выделенные устройства и провода.
 */
-void myCanvas::removeDevice(device *dev /* = 0 */)
+void myCanvas::removeDevice()
 {
-    if ( dev ) {
-        removeItem( dev );
-        myDevices.removeOne(dev);
-        return;
-    }
     myModified = true;
-    QList<QGraphicsItem*> l = selectedItems(); // Получаем список выделенных элементов.
-    foreach (QGraphicsItem *item, l ) {
-        if ( isDevice(item) ) { // Если не кабель
-            device *t = qgraphicsitem_cast<device*>(item);
-            QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
-            foreach ( cableDev* i , lostCables) {
-                removeItem(i);
-                deleteConnection(i);
-            }
-            myDevices.removeOne(t);
-        }
-        else if ( item->type() == cableDev::Type ) {
-            deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
-        }
-        else if ( item->type() == textItem::Type )
-            myTextItems.removeOne(qgraphicsitem_cast<textItem*>(item));
-        removeItem(item); // Удаляем этот элемент со сцены
-    }
+
+    QList<QGraphicsItem*> list = selectedItems(); // Получаем список выделенных элементов.
+    deleteCommand *com = new deleteCommand(this,list);
+    commandStack.push(com);
+
+//    QList<QGraphicsItem*> toDeleting;
+//    foreach (QGraphicsItem *item, l ) {
+//        if ( isDevice(item) ) {
+//            device *t = qgraphicsitem_cast<device*>(item);
+//            QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
+//            foreach ( cableDev* i , lostCables) {
+//                removeItem(i);
+//                deleteConnection(i);
+//            }
+//            myDevices.removeOne(t);
+//        }
+//        else if ( item->type() == cableDev::Type ) {
+//            deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
+//        }
+//        else if ( item->type() == textItem::Type )
+//            myTextItems.removeOne(qgraphicsitem_cast<textItem*>(item));
+//        removeItem(item); // Удаляем этот элемент со сцены
+//        toDeleting << item;
+//    }
+//    qDeleteAll(toDeleting);
 }
 //------------------------------------------------------
 /*!
@@ -168,6 +169,7 @@ void myCanvas::newFile()
 void myCanvas::closeFile()
 {   
     myState->goEmpty();
+    commandStack.clear();
     clear();
     myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
@@ -177,15 +179,8 @@ void myCanvas::closeFile()
     if ( myTimer ) stop();
     myOpen = false;
     myModified = false;
-    commandStack.clear();
 }
 //---------------------------------------------------
-void myCanvas::deleteConnection(cableDev *cable)
-{
-    cable->deleteConnect();
-    connections.removeOne(cable);
-}
-
 void myCanvas::setMode(int modScene,int curDev)
 {
     myState->goTo(modScene);
@@ -490,8 +485,6 @@ void myCanvas::turnToMove()
     emit uncheck();
 }
 
-
-
 void myCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
 {
     QMapIterator<QGraphicsItem*,QPointF> i(map);
@@ -516,4 +509,28 @@ void myCanvas::calibrateAll(QList<QGraphicsItem*> list)
 {
     foreach ( QGraphicsItem *i , list )
         if ( i->type() != textItem::Type ) i->setPos( calibrate( i->pos() ) );
+}
+
+void myCanvas::registerDevice(device *dev)
+{
+    addItem(dev);
+    myDevices << dev;
+}
+
+void myCanvas::unregisterDevice(device *dev)
+{
+    removeItem(dev);
+    myDevices.removeOne(dev);
+}
+
+void myCanvas::registerCable(cableDev *cable)
+{
+    addItem(cable); // И добавляем его на сцену =)
+    connections << cable;
+}
+
+void myCanvas::unregisterCable(cableDev *cable)
+{
+    removeItem(cable);
+    connections.removeOne(cable);
 }

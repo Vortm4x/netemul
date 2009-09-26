@@ -58,6 +58,8 @@ public:
     virtual void programmsDialog() { qFatal("error not compability"); }
     virtual void arpDialog() { qFatal("error not compability"); }
 
+    virtual bool isShared() const { return false; }
+
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
 

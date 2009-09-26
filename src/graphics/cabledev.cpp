@@ -31,9 +31,9 @@ cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
     isCollision = false;
     myStartDev = start;
     myEndDev = end;
-    myStartDev->addConnection(sp,this);
-    myEndDev->addConnection(ep,this);
-    if ( myStartPort->isShared() || myEndPort->isShared() ) myShared = true;
+    myStartName = sp;
+    myEndName = ep;
+    if ( myStartDev->isShared() || myEndDev->isShared() ) myShared = true;
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
     setZValue(-1000.0); // Кидаем его на самый-самый задний план
 }
@@ -160,8 +160,7 @@ QString cableDev::endSocketName() const
 
 void cableDev::deleteConnect()
 {
-    myStartDev->deleteConnection(this);
-    myEndDev->deleteConnection(this);
+    unregisterCable();
 }
 
 void cableDev::insertInPort(devicePort *p)
@@ -204,6 +203,25 @@ void cableDev::startCollision()
     killRandomPackets(fromEndQueue);
     killRandomPackets(fromStartQueue);
     isCollision = true;
+}
+
+void cableDev::registerCable()
+{        
+    myStartDev->addConnection(myStartName,this);
+    myEndDev->addConnection(myEndName,this);
+    myStartDev->update();
+    myEndDev->update();
+    updatePosition(); // Обновляем его положение
+}
+
+void cableDev::unregisterCable()
+{    
+    myStartDev->deleteConnection(this);
+    myEndDev->deleteConnection(this);
+    myStartDev->update();
+    myEndDev->update();
+    myStartPort = 0;
+    myEndPort = 0;
 }
 
 

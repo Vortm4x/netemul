@@ -425,6 +425,7 @@ void MainWindow::closeFile()
     setWindowTitle(myFile = tr(""));
     setEnabledFileItems(false);
     canva->closeFile();
+    uncheck();
 }
 //-----------------------------------------------------------
 // Слот включает или отключает пункты меню в зависимости от того открыт файл или закрыт
