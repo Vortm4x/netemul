@@ -46,6 +46,7 @@ public:
     switchChip* concreteChip();
     void secondTimerEvent();
     QString deviceName() const { return "switch"; }
+    QString deviceCommandName() const { return tr("Switch"); }
     QString tableName() const { return tr("Switching table"); }
 protected:
     void write(QDataStream &stream) const;

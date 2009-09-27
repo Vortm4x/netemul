@@ -122,31 +122,9 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 void myCanvas::removeDevice()
 {
     myModified = true;
-
     QList<QGraphicsItem*> list = selectedItems(); // Получаем список выделенных элементов.
     deleteCommand *com = new deleteCommand(this,list);
     commandStack.push(com);
-
-//    QList<QGraphicsItem*> toDeleting;
-//    foreach (QGraphicsItem *item, l ) {
-//        if ( isDevice(item) ) {
-//            device *t = qgraphicsitem_cast<device*>(item);
-//            QList<cableDev*> lostCables = t->cables(); // Удаляем все кабеля у этого устройства
-//            foreach ( cableDev* i , lostCables) {
-//                removeItem(i);
-//                deleteConnection(i);
-//            }
-//            myDevices.removeOne(t);
-//        }
-//        else if ( item->type() == cableDev::Type ) {
-//            deleteConnection(qgraphicsitem_cast<cableDev*>(item)); // Иначе удаем кабель
-//        }
-//        else if ( item->type() == textItem::Type )
-//            myTextItems.removeOne(qgraphicsitem_cast<textItem*>(item));
-//        removeItem(item); // Удаляем этот элемент со сцены
-//        toDeleting << item;
-//    }
-//    qDeleteAll(toDeleting);
 }
 //------------------------------------------------------
 /*!
@@ -533,4 +511,16 @@ void myCanvas::unregisterCable(cableDev *cable)
 {
     removeItem(cable);
     connections.removeOne(cable);
+}
+
+void myCanvas::registerText(textItem *t)
+{
+    addItem(t);
+    myTextItems << t;
+}
+
+void myCanvas::unregisterText(textItem *t)
+{
+    removeItem(t);
+    myTextItems.removeOne(t);
 }

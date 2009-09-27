@@ -31,5 +31,7 @@
         <file>images/question.png</file>
         <file>images/tcp.png</file>
         <file>images/undo.png</file>
+        <file>images/cogwheel.png</file>
+        <file>images/NetEmul.png</file>
     </qresource>
 </RCC>

@@ -769,6 +769,10 @@
        <property name="text">
         <string>Default</string>
        </property>
+       <property name="icon">
+        <iconset resource="../../netemul.qrc">
+         <normaloff>:/im/images/cogwheel.png</normaloff>:/im/images/cogwheel.png</iconset>
+       </property>
       </widget>
      </item>
      <item>

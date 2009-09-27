@@ -33,7 +33,7 @@ public:
 public slots:
     void changeSelect();
     QString getStart() { return startList->currentItem()->text(); }
-    QString getEnd() { return  endList->currentItem()->text(); }
+    QString getEnd() { return endList->currentItem()->text(); }
 private:
     device *start;
     device *end;

@@ -36,6 +36,7 @@ public:
     void detectCollision();
     bool isShared() const { return true; }
     QString deviceName() const { return "hub"; }
+    QString deviceCommandName() const { return tr("Hub"); }
     friend class hubSetting;
 protected:
     void write(QDataStream &stream) const;

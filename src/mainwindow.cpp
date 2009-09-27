@@ -249,7 +249,7 @@ void MainWindow::createAction()
     aboutQtAct = createOneAction();
     connect( aboutQtAct , SIGNAL(triggered()) , qApp ,SLOT(aboutQt()) );
 
-    aboutAct = createOneAction();
+    aboutAct = createOneAction(QIcon(":/im/images/NetEmul.png"));
     connect( aboutAct , SIGNAL(triggered()) , SLOT(aboutDialog()));
 
     helpAct = createOneAction(QIcon(":/im/images/question.png"));

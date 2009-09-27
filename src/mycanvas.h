@@ -77,6 +77,8 @@ public:
     void unregisterDevice(device *dev);
     void registerCable(cableDev *cable);
     void unregisterCable(cableDev *cable);
+    void registerText(textItem *t);
+    void unregisterText(textItem *t);
     void putItems(QMap<QGraphicsItem*,QPointF> map);
     void calibrateAll(QList<QGraphicsItem*> list);
     bool isDevice(QGraphicsItem *t) const;
@@ -122,7 +124,7 @@ private:
     QList<textItem*> myTextItems; //!< Список всех надписей на сцене.
 
     QMenu *itemMenu; // Меню для устройства
-    QList<cableDev* >  connections;
+    QList<cableDev*> connections;
     int nowType; // Текущее устройство
 
     int myTimer;

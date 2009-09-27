@@ -30,6 +30,7 @@ public:
     int type() const { return routerDev; }
     routerDevice(int c = 0);
     QString deviceName() const { return "router"; }
+    QString deviceCommandName() const { return tr("Router"); }
     bool canManageInterface() const { return false; }
     void dialog();
 protected:

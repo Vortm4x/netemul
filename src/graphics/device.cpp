@@ -79,7 +79,8 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     Q_UNUSED(widget); // Эти параметры
     QList<QGraphicsItem*> collides = collidingItems();
     foreach ( QGraphicsItem* item , collides)
-        if ( item->type() == cableDev::Type || item->type() == QGraphicsLineItem::Type) collides.removeOne(item);
+        if ( item->type() == cableDev::Type || item->type() == QGraphicsLineItem::Type
+             || item->type() == textItem::Type ) collides.removeOne(item);
     QLinearGradient tempGrad(device::rectDevX , device::rectDevY ,-device::rectDevX,-device::rectDevY);
     tempGrad.setColorAt(0,Qt::white);
     if (isSelected()) {

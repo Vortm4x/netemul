@@ -6,14 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>379</width>
-    <height>247</height>
+    <width>412</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About program</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../netemul.qrc">:/im/images/NetEmul.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
@@ -63,6 +76,7 @@ Omilaeva Anastasia - Developer.</string>
         <widget class="QPlainTextEdit" name="plainTextEdit">
          <property name="plainText">
           <string>Konstantin Andreev - Author of the idea and creator of the icons, 
+Arina Shelest - Author of the logotype.
 
 Lisandro Damián Nicanor Pérez Meyer
 Márcio Moraes</string>

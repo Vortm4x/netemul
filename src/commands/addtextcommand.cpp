@@ -17,16 +17,35 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include "textstate.h"
-#include "mycanvas.h"
 #include "addtextcommand.h"
+#include "mycanvas.h"
 
-void textState::mousePress(QGraphicsSceneMouseEvent *event)
+addTextCommand::addTextCommand(myCanvas *s, QPointF p)
 {
-    addTextCommand *com = new addTextCommand(scene, event->scenePos() );
-    scene->commandStack.push(com);
-    scene->myModified = true;
-    emit scene->uncheck();
-    goMove();
+    scene = s;
+    point = p;
+    isFirst = true;
+    setText(QObject::tr("Add note"));
+}
+
+addTextCommand::~addTextCommand()
+{
+    if ( !isOnScene ) delete text;
+}
+
+void addTextCommand::undo()
+{
+    scene->unregisterText(text);
+    isOnScene = false;
+}
+
+void addTextCommand::redo()
+{
+    if ( isFirst ) {
+        text = scene->createTextItem(point);
+        isFirst = false;
+    }
+    else scene->registerText(text);
+    isOnScene = true;
+
 }
