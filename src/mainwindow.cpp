@@ -477,6 +477,7 @@ bool MainWindow::saveFile()
                                                 QDir::currentPath(),
                                                 tr("Networks(*.net)"));
        if ( t.isEmpty() ) return false;
+       if ( !t.contains(".net") ) t.push_back(".net");
        myFile = t;
     }
     setWindowTitle( myFile );
@@ -502,6 +503,7 @@ void MainWindow::saveAsFile()
     QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
                                              QApplication::applicationDirPath(),tr("Networks(*.net)"));
     if ( t.isEmpty() ) return ;
+    if ( !t.contains(".net") ) t.push_back(".net");
     myFile = t;
     setWindowTitle( myFile );
     canva->saveScene(myFile);
