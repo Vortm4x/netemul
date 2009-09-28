@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=NetEmul
+Name[ru]=NetEmul
+Comment=The LAN network simulator
+Comment[ru]=Симулятор работы локольной сети
+Type=Application
+Exec=/usr/local/bin/netemul
+Icon=/usr/local/share/netemul/pixmap/NetEmul.png
+Terminal=false
+Categories=GNOME;Education;
+StartupNotify=true

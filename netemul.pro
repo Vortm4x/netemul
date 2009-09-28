@@ -95,6 +95,16 @@ unix {
         ../translation/netemul_pt_BR.qm \
         ../translation/netemul_ru.qm
     INSTALLS += translations
+
+    # Icons
+    icons.path = $${PREFIX}/share/netemul/pixmap/
+    icons.files = ../images/NetEmul.png
+    INSTALLS += icons
+
+    # Desktop
+    desktop.path = /usr/share/applications/
+    desktop.files = ./netemul.desktop
+    INSTALLS += desktop
 }
 
 # Let the variable be available for compiling
