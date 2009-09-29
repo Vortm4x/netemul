@@ -101,12 +101,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Programs</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Programs installed on device</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas instalados no dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="134"/>
@@ -250,12 +250,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="106"/>
         <source>File was modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Arquivo foi modificado</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="106"/>
         <source>File was modified, do you want to save changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Arquivo foi modificado, você deseja salvar as alterações?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="144"/>
@@ -280,7 +280,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="138"/>
         <source>Edit netcards</source>
-        <translation>Editar adaptadores</translation>
+        <translation>Editar placas de redes</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
@@ -320,12 +320,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="153"/>
         <source>About device</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre o dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="153"/>
         <source>Information about device</source>
-        <translation type="unfinished"></translation>
+        <translation>Infomação sobre o dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="154"/>
@@ -335,7 +335,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="156"/>
@@ -380,7 +380,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="275"/>
         <source>Ctrl+F1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+F1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="476"/>
@@ -485,7 +485,7 @@
     <message>
         <location filename="../src/chips/interface.cpp" line="109"/>
         <source>The network found a matching IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>A rede encontrou um endereço IP correspondente</translation>
     </message>
     <message>
         <source>The network found a match ip-address! </source>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/packets/udppacket.cpp" line="39"/>
         <source>DHCP message</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensagem DHCP</translation>
     </message>
     <message>
         <location filename="../src/packets/udppacket.cpp" line="40"/>
@@ -553,37 +553,37 @@
     <message>
         <location filename="../src/commands/addcommand.cpp" line="48"/>
         <source>Add %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar %1</translation>
     </message>
     <message>
         <location filename="../src/commands/deletecommand.cpp" line="38"/>
         <source>Delete</source>
-        <translation type="unfinished">Excluir</translation>
+        <translation>Excluir</translation>
     </message>
     <message>
         <location filename="../src/commands/movecommand.cpp" line="27"/>
         <source>Move</source>
-        <translation type="unfinished">Mover</translation>
+        <translation>Mover</translation>
     </message>
     <message>
         <location filename="../src/states/sendstate.cpp" line="58"/>
         <source>Error</source>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/states/sendstate.cpp" line="58"/>
         <source>The device can&apos;t transmit data!</source>
-        <translation type="unfinished">O dispositivo não pode transmitir os dados!</translation>
+        <translation>O dispositivo não pôde transmitir os dados!</translation>
     </message>
     <message>
         <location filename="../src/commands/addcablecommand.cpp" line="28"/>
         <source>Add cable</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar cabo</translation>
     </message>
     <message>
         <location filename="../src/commands/addtextcommand.cpp" line="28"/>
         <source>Add note</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar nota</translation>
     </message>
 </context>
 <context>
@@ -591,12 +591,12 @@
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="14"/>
         <source>About program</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre o programa</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="37"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="43"/>
@@ -605,12 +605,15 @@
 (C) 2009 Semenov Pavel and Omilaeva Anastasia
 
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Programa para simulação de redes de computadores.
+
+(C) 2009 Semenov Pavel e Omilaeva Anastasia
+</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="55"/>
         <source>Authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Autores</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="61"/>
@@ -618,12 +621,15 @@
 Semenov Pavel - Project admin. Developer.&lt;br&gt;
 &lt;br&gt;
 Omilaeva Anastasia - Developer.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;a href=&quot;https://sourceforge.net/projects/netemul&quot;&gt;Página Pessoal&lt;/a&gt;&lt;br&gt;&lt;br&gt;
+Semenov Pavel - Adiministrador do projeto. Desenvolvedor.&lt;br&gt;
+&lt;br&gt;
+Omilaeva Anastasia - Desenvolvedor.</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="72"/>
         <source>Thanks to</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrigado a</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="78"/>
@@ -632,24 +638,29 @@ Arina Shelest - Author of the logotype.
 
 Lisandro Damián Nicanor Pérez Meyer
 Márcio Moraes</source>
-        <translation type="unfinished"></translation>
+        <translation>Konstantin Andreev - Autor da ideia e criador dos ícones, 
+Arina Shelest - Autor do logotipo.
+
+Lisandro Damián Nicanor Pérez Meyer</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="90"/>
         <source>Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Tradução</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="96"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
 Lisandro Damián Nicanor Pérez Meyer - Español</source>
-        <translation type="unfinished"></translation>
+        <translation>Семенов Павел - Русский
+Márcio Moraes - Português do Brasil
+Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     </message>
     <message>
         <location filename="../src/forms/aboutwindow.ui" line="124"/>
         <source>Close</source>
-        <translation type="unfinished">Fechar</translation>
+        <translation>Fechar</translation>
     </message>
 </context>
 <context>
@@ -657,7 +668,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="35"/>
         <source>Netcard</source>
-        <translation type="unfinished">Adaptador</translation>
+        <translation>Placa de rede</translation>
     </message>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="46"/>
@@ -708,11 +719,11 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="175"/>
         <source>At least a netcard must exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelo menos uma placa de rede deve existir</translation>
     </message>
     <message>
         <source>Must be at least one netcard</source>
-        <translation type="obsolete">Deve ser pelo menos um adaptador</translation>
+        <translation type="obsolete">Deve ser pelo menos uma placa de rede</translation>
     </message>
 </context>
 <context>
@@ -720,7 +731,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/chips/boxchip.cpp" line="136"/>
         <source>LAN%1</source>
-        <translation type="unfinished">LAN%1</translation>
+        <translation>LAN%1</translation>
     </message>
 </context>
 <context>
@@ -738,7 +749,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/devices/computer.h" line="43"/>
         <source>Computer</source>
-        <translation type="unfinished">Computador</translation>
+        <translation>Computador</translation>
     </message>
 </context>
 <context>
@@ -746,7 +757,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
         <source>Proreties</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="33"/>
@@ -792,7 +803,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/dhcpclientprogramm.cpp" line="29"/>
         <source>DHCP client</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliente DHCP</translation>
     </message>
 </context>
 <context>
@@ -800,23 +811,24 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="14"/>
         <source>DHCP client property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedade do cliente DHCP</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="20"/>
         <source>Choose interfaces which must be
  under DHCP control: </source>
-        <translation type="unfinished"></translation>
+        <translation>Escolha as interfaces que devem estar
+ sob controle do DHCP: </translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="46"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="57"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -824,7 +836,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="27"/>
         <source>DHCP server</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor DHCP</translation>
     </message>
 </context>
 <context>
@@ -832,34 +844,34 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="8"/>
         <source>From </source>
-        <translation type="unfinished"></translation>
+        <translation>De </translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="10"/>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>para</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="12"/>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="25"/>
         <source>Mask</source>
-        <translation type="unfinished">Máscara de rede</translation>
+        <translation>Máscara de rede</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="14"/>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="25"/>
         <source>Gateway</source>
-        <translation type="unfinished">Rota padrão</translation>
+        <translation>Rota padrão</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="25"/>
         <source>Mac</source>
-        <translation type="unfinished"></translation>
+        <translation>Endereço MAC</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="25"/>
         <source>Ip</source>
-        <translation type="unfinished">Ip</translation>
+        <translation>IP</translation>
     </message>
 </context>
 <context>
@@ -867,47 +879,47 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="26"/>
         <source>DHCP server&apos;s properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedades do servidor DHCP</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="32"/>
         <source>Static:</source>
-        <translation type="unfinished"></translation>
+        <translation>Estático:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="80"/>
         <source>Add</source>
-        <translation type="unfinished">Adicionar</translation>
+        <translation>Adicionar</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="91"/>
         <source>Delete</source>
-        <translation type="unfinished">Excluir</translation>
+        <translation>Excluir</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="104"/>
         <source>Lease term:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo de locação:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="123"/>
         <source> s</source>
-        <translation type="unfinished"> segundo</translation>
+        <translation> segundo</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="139"/>
         <source>Dynamic:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dinâmico:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="177"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="188"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -947,7 +959,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/devices/hubdevice.h" line="39"/>
         <source>Hub</source>
-        <translation type="unfinished">Hub</translation>
+        <translation>Hub</translation>
     </message>
 </context>
 <context>
@@ -964,7 +976,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
         <source>Properies</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="45"/>
@@ -984,7 +996,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="66"/>
         <source>Reset statistics</source>
-        <translation type="unfinished">Restaurar estatísticas</translation>
+        <translation>Restaurar estatísticas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="74"/>
@@ -994,7 +1006,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="90"/>
         <source>Number of collisions: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de colisões: %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="110"/>
@@ -1027,12 +1039,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/installdialog.ui" line="44"/>
         <source>DHCP client</source>
-        <translation type="unfinished"></translation>
+        <translation>Cliente DHCP</translation>
     </message>
     <message>
         <location filename="../src/forms/installdialog.ui" line="52"/>
         <source>DHCP server</source>
-        <translation type="unfinished"></translation>
+        <translation>Servidor DHCP</translation>
     </message>
     <message>
         <location filename="../src/forms/installdialog.ui" line="80"/>
@@ -1047,12 +1059,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/installdialog.cpp" line="48"/>
         <source>Error</source>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/dialogs/installdialog.cpp" line="48"/>
         <source>Program already installed.</source>
-        <translation type="unfinished"></translation>
+        <translation>O programa já está instalado.</translation>
     </message>
 </context>
 <context>
@@ -1060,7 +1072,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="30"/>
         <source>Add adapter</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar um adaptador</translation>
     </message>
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="48"/>
@@ -1080,7 +1092,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="53"/>
         <source>Add netcard</source>
-        <translation>Adicionar um adaptador</translation>
+        <translation>Adicionar uma placa de rede</translation>
     </message>
     <message>
         <location filename="../src/dialogs/interfacedialog.cpp" line="56"/>
@@ -1119,47 +1131,47 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="96"/>
         <source>DHCP Message, Type: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensagem DHCP, Tipo: %1</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="97"/>
         <source>Xid: %1, Yiaddr: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Xid: %1, Yiaddr: %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="98"/>
         <source>Siaddr: %1, Chaddr: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Siaddr: %1, Chaddr: %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="112"/>
         <source>ISN %1, ACK %2</source>
-        <translation type="unfinished"></translation>
+        <translation>ISN %1, ACK %2</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="116"/>
         <source>flags: No flags</source>
-        <translation type="unfinished"></translation>
+        <translation>flags: Sem flags</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="118"/>
         <source>flags: Ack</source>
-        <translation type="unfinished"></translation>
+        <translation>flags: Ack</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="119"/>
         <source>flags: SYN</source>
-        <translation type="unfinished"></translation>
+        <translation>flags: SYN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="120"/>
         <source>flags: SYN, ACK</source>
-        <translation type="unfinished"></translation>
+        <translation>flags: SYN, ACK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="121"/>
         <source>flags: Fin</source>
-        <translation type="unfinished"></translation>
+        <translation>flags: Fin</translation>
     </message>
     <message>
         <location filename="../src/dialogs/logdialog.cpp" line="133"/>
@@ -1229,12 +1241,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/logdialog.ui" line="83"/>
         <source>TCP</source>
-        <translation type="unfinished">TCP</translation>
+        <translation>TCP</translation>
     </message>
     <message>
         <location filename="../src/forms/logdialog.ui" line="88"/>
         <source>UDP</source>
-        <translation type="unfinished">UDP</translation>
+        <translation>UDP</translation>
     </message>
     <message>
         <source>Ip</source>
@@ -1251,7 +1263,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/mycanvas.cpp" line="182"/>
         <source>Opening file for reading is impossible</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir arquivo para leitura é impossível</translation>
     </message>
     <message>
         <location filename="../src/mycanvas.cpp" line="191"/>
@@ -1261,7 +1273,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/mycanvas.cpp" line="239"/>
         <source>Opening file for writeng is impossible</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir arquivo para escrita é impossível</translation>
     </message>
     <message>
         <source>The device can&apos;t transmit data!</source>
@@ -1292,7 +1304,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="30"/>
         <source>Installed programs</source>
-        <translation type="unfinished"></translation>
+        <translation>Programas instalados</translation>
     </message>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="60"/>
@@ -1302,7 +1314,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="74"/>
         <source>Settings</source>
-        <translation type="unfinished">Configurações</translation>
+        <translation>Configurações</translation>
     </message>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="88"/>
@@ -1325,7 +1337,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/ripprogramm.cpp" line="32"/>
         <source>RIP</source>
-        <translation type="unfinished">RIP</translation>
+        <translation>RIP</translation>
     </message>
 </context>
 <context>
@@ -1333,42 +1345,42 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="14"/>
         <source>Rip programm property</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedade do programa Rip</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="22"/>
         <source>Split horizon:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dividir horizontalmente:</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="36"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation>Desabilitar</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="41"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Habilitar</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="46"/>
         <source>With poison reverse</source>
-        <translation type="unfinished"></translation>
+        <translation>Com veneno reverso</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="56"/>
         <source> Turn On/Off triggered updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar/Desativar atualizações desencadeadas</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="91"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/forms/ripproperty.ui" line="102"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1376,7 +1388,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/routeeditor.cpp" line="35"/>
         <source>Routing table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabela de roteamento</translation>
     </message>
     <message>
         <location filename="../src/dialogs/routeeditor.cpp" line="46"/>
@@ -1483,7 +1495,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/devices/routerdevice.h" line="33"/>
         <source>Router</source>
-        <translation type="unfinished">Roteador</translation>
+        <translation>Roteador</translation>
     </message>
 </context>
 <context>
@@ -1491,7 +1503,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
         <source>Properies</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="36"/>
@@ -1615,12 +1627,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="120"/>
         <source>Netcard</source>
-        <translation type="unfinished">Adaptador</translation>
+        <translation>Placa de rede</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="132"/>
         <source>Tcp</source>
-        <translation type="unfinished"></translation>
+        <translation>TCP</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="159"/>
@@ -1650,12 +1662,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="224"/>
         <source>Spanish</source>
-        <translation type="unfinished"></translation>
+        <translation>Espanhol</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="234"/>
         <source>Turn on/off OpenGL</source>
-        <translation type="unfinished"></translation>
+        <translation>Ativar/Desativar OpenGL</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="260"/>
@@ -1749,7 +1761,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="462"/>
         <source>Switching table&apos;s records lifetime:</source>
-        <translation type="unfinished"></translation>
+        <translation>Registro do tempo de vida da tabela do switch:</translation>
     </message>
     <message>
         <source>Lifetime records of table switching</source>
@@ -1768,22 +1780,22 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="622"/>
         <source>Expectation time for arp-responce</source>
-        <translation type="unfinished"></translation>
+        <translation>Expectativa do tempo para resposta do arp</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="669"/>
         <source>Number of repeat sendings:</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de envios de repetição:</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="698"/>
         <source>Waiting confirmation time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo de espera da confirmação:</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="770"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>Padrão</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="784"/>
@@ -1926,12 +1938,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/devices/switchdevice.h" line="49"/>
         <source>Switch</source>
-        <translation type="unfinished">Switch</translation>
+        <translation>Switch</translation>
     </message>
     <message>
         <location filename="../src/devices/switchdevice.h" line="50"/>
         <source>Switching table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabela do switch</translation>
     </message>
 </context>
 <context>
@@ -1976,7 +1988,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
         <source>Properies</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="45"/>
@@ -1996,7 +2008,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="64"/>
         <source>Reset statistics</source>
-        <translation type="unfinished">Restaurar estatísticas</translation>
+        <translation>Restaurar estatísticas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="72"/>
@@ -2019,7 +2031,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/tablearp.cpp" line="37"/>
         <source>Arp table</source>
-        <translation type="unfinished">Tabela arp</translation>
+        <translation>Tabela arp</translation>
     </message>
     <message>
         <location filename="../src/dialogs/tablearp.cpp" line="46"/>
@@ -2091,7 +2103,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/tableswitch.ui" line="14"/>
         <source>Switching table</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabela switch</translation>
     </message>
     <message>
         <location filename="../src/forms/tableswitch.ui" line="44"/>
@@ -2134,12 +2146,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/tools/tcpsocket.cpp" line="187"/>
         <source>Error</source>
-        <translation type="unfinished">Erro</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/tools/tcpsocket.cpp" line="187"/>
         <source>TCP: Data transmition error</source>
-        <translation type="unfinished"></translation>
+        <translation>TCP: Erro ao transmitir dados</translation>
     </message>
 </context>
 <context>
@@ -2152,12 +2164,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="109"/>
         <source>Script not correctly finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Script não concluído corretamente</translation>
     </message>
     <message>
         <location filename="../src/dialogs/testdialog.cpp" line="148"/>
         <source>Choose a directory with scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Escolha um diretório com scripts</translation>
     </message>
     <message>
         <source>Script finished is not correctly</source>
@@ -2181,7 +2193,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/testdialog.ui" line="48"/>
         <source>Set path</source>
-        <translation type="unfinished"></translation>
+        <translation>Definir localização</translation>
     </message>
     <message>
         <location filename="../src/forms/testdialog.ui" line="55"/>
