@@ -586,9 +586,13 @@ void MainWindow::helpDialog()
 #ifdef Q_WS_MACX
     QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
                                    + "/../../../doc/"+t+"/"+dest+".html"));
-#else
+#endif
+#ifdef Q_WS_WIN
     QDesktopServices::openUrl(QUrl("file:///" +QCoreApplication::applicationDirPath()
                                    +"/doc/"+t+"/"+dest+".html"));
+#endif
+#ifdef Q_WS_X11
+    QDesktopServices::openUrl(QUrl(DOC_PATH + t + "/" + dest + ".html"));
 #endif
 }
 

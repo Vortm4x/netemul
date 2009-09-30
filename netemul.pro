@@ -35,6 +35,8 @@ QT += script
 
 # Default translations path
 TRANSLATIONS_PATH = "translation"
+DOC_PATH = "doc"
+
 win32 { 
     DESTDIR = ../trunk
     message("Static link ...")
@@ -105,7 +107,14 @@ unix {
     desktop.path = /usr/share/applications/
     desktop.files = ./netemul.desktop
     INSTALLS += desktop
+
+    # Docs
+    docs.path = $${PREFIX}/share/netemul/
+    docs.files = ../doc
+    INSTALLS += docs
+    DOC_PATH = $${PREFIX}/share/netemul/doc/
 }
 
 # Let the variable be available for compiling
+DEFINES += DOC_PATH=\\\"$${DOC_PATH}\\\"
 DEFINES += TRANSLATIONS_PATH=\\\"$${TRANSLATIONS_PATH}\\\"
