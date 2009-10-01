@@ -44,7 +44,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="125"/>
-        <location filename="../src/mainwindow.cpp" line="489"/>
+        <location filename="../src/mainwindow.cpp" line="490"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
@@ -302,13 +302,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="612"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="613"/>
         <source>Stop simulation</source>
         <translation>Остановить симуляцию</translation>
     </message>
@@ -396,24 +396,24 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="476"/>
-        <location filename="../src/mainwindow.cpp" line="502"/>
+        <location filename="../src/mainwindow.cpp" line="503"/>
         <source>Save file as ...</source>
         <translation>Сохранить файл как...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="478"/>
-        <location filename="../src/mainwindow.cpp" line="490"/>
-        <location filename="../src/mainwindow.cpp" line="503"/>
+        <location filename="../src/mainwindow.cpp" line="491"/>
+        <location filename="../src/mainwindow.cpp" line="504"/>
         <source>Networks(*.net)</source>
         <translation>Сети(*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="601"/>
+        <location filename="../src/mainwindow.cpp" line="607"/>
         <source>Play</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="602"/>
+        <location filename="../src/mainwindow.cpp" line="608"/>
         <source>Start simulation</source>
         <translation>Запустить симуляцию</translation>
     </message>
@@ -652,7 +652,7 @@ Omilaeva Anastasia - Developer.</source>
         <source>Thanks to</source>
         <translation>Благодарности</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="78"/>
         <source>Konstantin Andreev - Author of the idea and creator of the icons, 
 Arina Shelest - Author of the logotype.
@@ -680,7 +680,7 @@ Márcio Moraes</translation>
         <source>Translation</source>
         <translation>Перевод</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="96"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
@@ -785,8 +785,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>computerProperty</name>
     <message>
-        <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
         <source>Proreties</source>
+        <translation type="obsolete">Свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
+        <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
@@ -1007,9 +1011,13 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation type="obsolete">Управляемый через SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
         <source>Properies</source>
-        <translation>Настройки</translation>
+        <translation type="obsolete">Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
+        <source>Properties</source>
+        <translation>Свойства</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="45"/>
@@ -1356,18 +1364,26 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation>Ошибка</translation>
     </message>
     <message>
+        <location filename="../src/mycanvas.cpp" line="191"/>
+        <source>Outdated version of the file, file can&apos;t be opened</source>
+        <translation>Устаревшая версия файла сохранения, файл не может быть открыт</translation>
+    </message>
+    <message>
         <location filename="../src/mycanvas.cpp" line="239"/>
-        <source>Opening file for writeng is impossible</source>
+        <source>Opening file for writing is impossible</source>
         <translation>Невозможно открыть файл для записи</translation>
+    </message>
+    <message>
+        <source>Opening file for writeng is impossible</source>
+        <translation type="obsolete">Невозможно открыть файл для записи</translation>
     </message>
     <message>
         <source>The device can&apos;t transmit data!</source>
         <translation type="obsolete">Устройство не может отправлять данные!</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="191"/>
         <source>The outdated version of the file, file can&apos;t be opened</source>
-        <translation>Устаревшая версия файла сохранения. Файл не может быть открыт</translation>
+        <translation type="obsolete">Устаревшая версия файла сохранения. Файл не может быть открыт</translation>
     </message>
     <message>
         <location filename="../src/mycanvas.h" line="58"/>
@@ -1586,8 +1602,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>routerProperty</name>
     <message>
-        <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
         <source>Properies</source>
+        <translation type="obsolete">Свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
+        <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
@@ -2075,8 +2095,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation type="obsolete">Управляемый через SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
         <source>Properies</source>
+        <translation type="obsolete">Свойства</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
+        <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
@@ -2246,17 +2270,17 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>testDialog</name>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="106"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="105"/>
         <source>Script finished correctly</source>
         <translation>Скрипт завершился корректно</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="109"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="108"/>
         <source>Script not correctly finished</source>
         <translation>Скрипт завершился не корректно</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="148"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="147"/>
         <source>Choose a directory with scripts</source>
         <translation>Выберите каталог со скриптами</translation>
     </message>

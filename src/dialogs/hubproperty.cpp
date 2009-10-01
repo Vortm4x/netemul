@@ -28,7 +28,7 @@
 
 hubProperty::hubProperty()
 {
-    setWindowTitle(tr("Properies"));
+    setWindowTitle(tr("Properties"));
     QVBoxLayout *all = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
     QLabel *t = new QLabel(tr("Number of ports: "));

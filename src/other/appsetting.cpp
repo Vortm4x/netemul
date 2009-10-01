@@ -77,7 +77,7 @@ void appSetting::readSetting()
     _defaultHubManual = setting.value("hub/manual",false).toBool() ;
     _arpResponceTime = setting.value("netcard/responcetime",45).toInt();
     _defaultSwitchManual = setting.value("switch/manual",false).toBool() ;
-    _scriptPath = setting.value("main/scriptPath","./test").toString();
+    _scriptPath = setting.value("main/scriptPath",SCRIPT_PATH).toString();
     _ttlArp = setting.value("ttl/Arp",1200).toInt() ;
     _ttlMac = setting.value("ttl/Mac",300).toInt();
     _speed = setting.value("main/speed",100).toInt();

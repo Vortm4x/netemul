@@ -64,6 +64,10 @@ testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
+testDialog::~testDialog()
+{
+}
+
 void testDialog::updateList()
 {
     listWidget->clear();
@@ -73,11 +77,6 @@ void testDialog::updateList()
     QStringList s = t.entryList(h);
     foreach ( QString i , s)
         listWidget->addItem( i.remove(".js") );
-}
-
-testDialog::~testDialog()
-{
-
 }
 
 void testDialog::changeEvent(QEvent *e)
@@ -115,7 +114,7 @@ void testDialog::start()
 bool testDialog::test(QString s)
 {
     qDebug() << s << " started";
-    QString g = appSetting::scriptPath()+"/"+s+".js";
+    QString g = appSetting::scriptPath()+s+".js";
     QFile file(g);
     file.open(QIODevice::ReadOnly);
     QString temporary = file.readAll();
@@ -147,6 +146,7 @@ void testDialog::setScriptPath()
     QString name = QFileDialog::getExistingDirectory( this,
                    tr("Choose a directory with scripts"), appSetting::scriptPath() );
     if ( name.isEmpty() ) return;
+    if ( name.at( name.length() - 1 ) != '/' ) name.push_back('/');
     appSetting::setScriptPath(name);
     updateList();
 }

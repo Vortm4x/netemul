@@ -188,7 +188,7 @@ void myCanvas::openScene(QString fileName)
     QString str;
     s >> str;
     if ( str != QCoreApplication::applicationVersion() ) {
-        QMessageBox::critical(NULL,tr("Error"),tr("The outdated version of the file, file can't be opened"),
+        QMessageBox::critical(NULL,tr("Error"),tr("Outdated version of the file, file can't be opened"),
                               QMessageBox::Ok , QMessageBox::Ok );
         emit fileClosed();
         return;
@@ -236,7 +236,7 @@ void myCanvas::saveScene(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << tr("Opening file for writeng is impossible");
+        qDebug() << tr("Opening file for writing is impossible");
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);

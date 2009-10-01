@@ -26,7 +26,7 @@
 
 computerProperty::computerProperty()
 {
-    setWindowTitle(tr("Proreties"));
+    setWindowTitle(tr("Properties"));
     QVBoxLayout *all = new QVBoxLayout;
     QVBoxLayout *prop = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;

@@ -30,7 +30,7 @@
 */
 routerProperty::routerProperty()
 {
-    setWindowTitle(tr("Properies"));
+    setWindowTitle(tr("Properties"));
     QVBoxLayout *all = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
     temp->addWidget( new QLabel(tr("Number of ports: ") ) );

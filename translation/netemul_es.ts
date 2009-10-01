@@ -25,7 +25,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="125"/>
-        <location filename="../src/mainwindow.cpp" line="489"/>
+        <location filename="../src/mainwindow.cpp" line="490"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
@@ -123,13 +123,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="612"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="613"/>
         <source>Stop simulation</source>
         <translation>Parar simulación</translation>
     </message>
@@ -401,24 +401,24 @@
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="476"/>
-        <location filename="../src/mainwindow.cpp" line="502"/>
+        <location filename="../src/mainwindow.cpp" line="503"/>
         <source>Save file as ...</source>
         <translation>Guardar archivo como...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="478"/>
-        <location filename="../src/mainwindow.cpp" line="490"/>
-        <location filename="../src/mainwindow.cpp" line="503"/>
+        <location filename="../src/mainwindow.cpp" line="491"/>
+        <location filename="../src/mainwindow.cpp" line="504"/>
         <source>Networks(*.net)</source>
         <translation>Redes (*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="601"/>
+        <location filename="../src/mainwindow.cpp" line="607"/>
         <source>Play</source>
         <translation>Ejecutar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="602"/>
+        <location filename="../src/mainwindow.cpp" line="608"/>
         <source>Start simulation</source>
         <translation>Empezar la simulación</translation>
     </message>
@@ -611,7 +611,7 @@ Omilaeva Anastasia - Desarrollador.</translation>
         <source>Thanks to</source>
         <translation>Gracias a</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="78"/>
         <source>Konstantin Andreev - Author of the idea and creator of the icons, 
 Arina Shelest - Author of the logotype.
@@ -639,7 +639,7 @@ Márcio Moraes</translation>
         <source>Translation</source>
         <translation>Traducciones</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="96"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
@@ -747,9 +747,13 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
 <context>
     <name>computerProperty</name>
     <message>
-        <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
         <source>Proreties</source>
-        <translation>Propiedades</translation>
+        <translation type="obsolete">Propiedades</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
+        <source>Properties</source>
+        <translation type="unfinished">Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="33"/>
@@ -966,9 +970,13 @@ estar bajo control de DHCP:</translation>
         <translation type="obsolete">Manejar a través de SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
         <source>Properies</source>
-        <translation>Propiedades</translation>
+        <translation type="obsolete">Propiedades</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
+        <source>Properties</source>
+        <translation type="unfinished">Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="45"/>
@@ -1279,18 +1287,26 @@ estar bajo control de DHCP:</translation>
         <translation>Error</translation>
     </message>
     <message>
+        <location filename="../src/mycanvas.cpp" line="191"/>
+        <source>Outdated version of the file, file can&apos;t be opened</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/mycanvas.cpp" line="239"/>
+        <source>Opening file for writing is impossible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Opening file for writeng is impossible</source>
-        <translation>No es posible abrir el archivo para escritura</translation>
+        <translation type="obsolete">No es posible abrir el archivo para escritura</translation>
     </message>
     <message>
         <source>The device can&apos;t transmit data!</source>
         <translation type="obsolete">¡El dispositivo no puede transmitir datos!</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="191"/>
         <source>The outdated version of the file, file can&apos;t be opened</source>
-        <translation>Versión vieja del archivo, no puede ser abierto</translation>
+        <translation type="obsolete">Versión vieja del archivo, no puede ser abierto</translation>
     </message>
     <message>
         <location filename="../src/mycanvas.h" line="58"/>
@@ -1509,9 +1525,13 @@ estar bajo control de DHCP:</translation>
 <context>
     <name>routerProperty</name>
     <message>
-        <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
         <source>Properies</source>
-        <translation>Propiedades</translation>
+        <translation type="obsolete">Propiedades</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
+        <source>Properties</source>
+        <translation type="unfinished">Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="36"/>
@@ -1988,9 +2008,13 @@ estar bajo control de DHCP:</translation>
         <translation type="obsolete">Manejar por SNMP:</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
         <source>Properies</source>
-        <translation>Propiedades</translation>
+        <translation type="obsolete">Propiedades</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
+        <source>Properties</source>
+        <translation type="unfinished">Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="45"/>
@@ -2159,17 +2183,17 @@ estar bajo control de DHCP:</translation>
 <context>
     <name>testDialog</name>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="106"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="105"/>
         <source>Script finished correctly</source>
         <translation>Script finalizado correctamente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="109"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="108"/>
         <source>Script not correctly finished</source>
         <translation>El script no terminó correctamente</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/testdialog.cpp" line="148"/>
+        <location filename="../src/dialogs/testdialog.cpp" line="147"/>
         <source>Choose a directory with scripts</source>
         <translation>Elija un directorio con scripts</translation>
     </message>
