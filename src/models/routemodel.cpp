@@ -141,6 +141,7 @@ void routeModel::deleteFromTable(routeRecord *r)
     lastRecord = 0;
     table.removeOne(r);
     delete r;
+    qDebug("DELETING!!!");
     qStableSort(table.begin(),table.end(),routeGreat);
     reset();
 }
@@ -225,7 +226,7 @@ void routeModel::update()
 void routeModel::deleteOldRecord(int time)
 {
     foreach ( routeRecord *i , table )
-        if ( i->time >= time && i->mode != connectMode && i->mode != staticMode ) deleteFromTable(i);
+        if ( i->time >= time && i->mode != connectMode  && i->mode != staticMode ) deleteFromTable(i);
 }
 
 void routeModel::write(QDataStream &stream) const
@@ -245,6 +246,7 @@ void routeModel::read(QDataStream &stream)
     stream >> n;
     for ( int i = 0 ; i < n ; i++ ) {
         routeRecord *t = new routeRecord;
+        t->mode = staticMode;
         stream >> *t;
         addToTable(t);
     }
