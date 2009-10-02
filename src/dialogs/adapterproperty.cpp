@@ -177,9 +177,8 @@ void adapterProperty::deleteInterface()
                              QMessageBox::Ok , QMessageBox::Ok );
         return;
     }
-
-    tab_interfaces->removeTab( sd->current() );
     sd->deleteInterface( le_name->text() );
+    tab_interfaces->removeTab( sd->current() );
     tab_interfaces->setCurrentIndex(0);
     updateTab(0);
 }
