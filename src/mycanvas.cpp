@@ -236,7 +236,7 @@ void myCanvas::saveScene(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << tr("Opening file for writing is impossible");
+        qDebug() << tr("Opening file for writing is impossible %1").arg(fileName);
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);

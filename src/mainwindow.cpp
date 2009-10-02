@@ -481,6 +481,7 @@ bool MainWindow::saveFile()
        myFile = t;
     }
     setWindowTitle( myFile );
+    qDebug("save");
     canva->saveScene(myFile);
     return true;
 }
@@ -506,6 +507,7 @@ void MainWindow::saveAsFile()
     if ( !t.contains(".net") ) t.push_back(".net");
     myFile = t;
     setWindowTitle( myFile );
+    qDebug("save");
     canva->saveScene(myFile);
 }
 

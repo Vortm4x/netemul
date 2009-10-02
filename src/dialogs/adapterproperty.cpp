@@ -137,7 +137,7 @@ void adapterProperty::apply()
     sd->setIp( le_ip->text() );
     sd->setMask( le_mask->text() );
     sd->connectedNet();
-    sd->sendArpRequest(le_ip->text());
+    if ( sd->isConnect() ) sd->sendArpRequest(le_ip->text());
     if ( sender() == btn_ok ) accept();
 }
 //------------------------------------------------------------
@@ -157,6 +157,7 @@ void adapterProperty::addInterface()
         sd->addInterface();
         sd->setCurrent( tab_interfaces->count() );
         tab_interfaces->addTab(  sd->isConnectSocketIcon() , sd->name() );
+        tab_interfaces->setCurrentIndex( tab_interfaces->count() - 1);
         updateTab( tab_interfaces->count() - 1 );
     }
     delete d;
