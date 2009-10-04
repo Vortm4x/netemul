@@ -174,11 +174,11 @@ void MainWindow::createAction()
     newAct->setShortcut(QKeySequence::New); // Устанавливаем горячие клавиши
     connect( newAct, SIGNAL(triggered()) , SLOT(newFile()));
 
-    openAct = createOneAction();
+    openAct = createOneAction( QIcon(":/im/images/fileload.png") );
     openAct->setShortcut(QKeySequence::Open);
     connect( openAct , SIGNAL(triggered()) , SLOT(openFile()));
 
-    saveAct = createOneAction();
+    saveAct = createOneAction( QIcon(":/im/images/filesave.png") );
     saveAct->setShortcut(QKeySequence::Save);
     connect( saveAct , SIGNAL(triggered()) , SLOT(saveFile()) );
 

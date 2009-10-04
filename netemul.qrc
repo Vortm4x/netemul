@@ -33,5 +33,7 @@
         <file>images/undo.png</file>
         <file>images/cogwheel.png</file>
         <file>images/NetEmul.png</file>
+        <file>images/fileload.png</file>
+        <file>images/filesave.png</file>
     </qresource>
 </RCC>
