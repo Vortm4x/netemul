@@ -5,13 +5,15 @@ QT += testlib
 TARGET = ippacket
 CONFIG += console
 TEMPLATE = app
+INCLUDEPATH += ../../src/packets \
+    ../../src
 SOURCES += main.cpp \
-    ../../src/ippacket.cpp \
+    ../../src/packets/ippacket.cpp \
     ../../src/ipaddress.cpp \
-    ../../src/udppacket.cpp \
-    ../../src/tcppacket.cpp
-HEADERS += ../../src/ippacket.h \
+    ../../src/packets/udppacket.cpp \
+    ../../src/packets/tcppacket.cpp
+HEADERS += ../../src/packets/ippacket.h \
     ../../src/ipaddress.h \
-   ../../src/udppacket.h \
-  ../../src/tcppacket.h
+   ../../src/packets/udppacket.h \
+  ../../src/packets/tcppacket.h
 

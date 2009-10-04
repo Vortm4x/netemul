@@ -54,7 +54,7 @@ void appSetting::defaultNums()
     _arpResponceTime = 45;
     _ttlMac = 300;
     _sendingNum = 1;
-    _waitingTime = 45;
+    _waitingTime = 80;
     _speed = 100;
     _language = 0;
     _hasOpengl = false;
@@ -64,6 +64,7 @@ void appSetting::defaultNums()
 
 void appSetting::readSetting()
 {
+#ifndef __TESTING__
     QString translationsPath(TRANSLATIONS_PATH);
     for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , translationsPath);
@@ -83,12 +84,14 @@ void appSetting::readSetting()
     _speed = setting.value("main/speed",100).toInt();
     setLanguage( setting.value("main/language",0).toInt() );
     _sendingNum = setting.value("tcp/sendingNumber",1).toInt();
-    _waitingTime = setting.value("tcp/waitingTime",45).toInt();
+    _waitingTime = setting.value("tcp/waitingTime",80).toInt();
     _hasOpengl = setting.value("main/opengl",false).toBool();
+#endif
 }
 
 void appSetting::writeSetting()
 {
+#ifndef __TESTING__
     for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) delete mas[i];
     QSettings setting("FROST","netemul");
     setting.setValue("computer/socketCount" , _defaultComputerCount );
@@ -106,6 +109,7 @@ void appSetting::writeSetting()
     setting.setValue("tcp/sendingNumber",_sendingNum);
     setting.setValue("tcp/waitingTime",_waitingTime);
     setting.setValue("main/opengl", _hasOpengl );
+#endif
 }
 
 void appSetting::setLanguage(int n)

@@ -1,8 +1,8 @@
 #include <QtTest>
-#include "../../src/ippacket.h"
-#include "../../src/ipaddress.h"
-#include "../../src/tcppacket.h"
-#include "../../src/udppacket.h"
+#include "ippacket.h"
+#include "ipaddress.h"
+#include "tcppacket.h"
+#include "udppacket.h"
 
 /*!
   Тестирует класс ipPacket

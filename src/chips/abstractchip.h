@@ -22,13 +22,9 @@
 
 #include "statistics.h"
 
-#ifndef __TESTING__
 #include "macaddress.h"
 #include "ipaddress.h"
 #include "frame.h"
-#else
-#include <QDataStream>
-#endif
 
 class devicePort;
 class ipPacket;
@@ -44,7 +40,6 @@ class abstractChip : public QObject
 public:
     abstractChip();
     virtual ~abstractChip() { }
-#ifndef __TESTING__
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     virtual int trafficDigit() const = 0;
     QString staticsString() const { return myStatistics.toString(); }
@@ -72,7 +67,6 @@ protected:
     ipAddress myIp;
     ipAddress myMask;
     macAddress myMac;
-#endif
 };
 
 

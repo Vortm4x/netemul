@@ -21,11 +21,12 @@
 #include "smartdevice.h"
 #ifndef __TESTING__
 #include "routeeditor.h"
-#include "routemodel.h"
 #include "adapterproperty.h"
 #include "tablearp.h"
 #include "programmdialog.h"
 #include "logdialog.h"
+#endif
+#include "routemodel.h"
 #include "tcpsocket.h"
 #include "udpsocket.h"
 
@@ -269,40 +270,50 @@ bool smartDevice::sendInterrupt(int u)
 //-------------------------------------------------------
 void smartDevice::tableDialog()
 {
+#ifndef __TESTING__
     routeEditor *d = new routeEditor(this);
     d->exec();
     delete d;
+#endif
 }
 
 void smartDevice::showLogDialog(logDialog *log) const
 {
+#ifndef __TESTING__
     connect( log ,SIGNAL(changeInterface(QString)) , this ,SLOT(setCheckedSocket(QString)) );
     foreach ( interface *i , myInterfaces ) {
         connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
         connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
     }
+#endif
 }
 
 void smartDevice::adapterDialog()
 {
+#ifndef __TESTING__
     adapterSetting *set = new adapterSetting(this);
     adapterProperty *d = new adapterProperty(set);
     d->exec();
     delete set;
+#endif
 }
 
 void smartDevice::programmsDialog()
 {
+#ifndef __TESTING__
     programmDialog *d = new programmDialog;
     d->setDevice(this);
     d->exec();
+#endif
 }
 
 void smartDevice::arpDialog()
 {
+#ifndef __TESTING__
     tableArp *d = new tableArp;
     d->setDevice(this);
     d->exec();
+#endif
 }
 
 QStringList smartDevice::sockets() const
@@ -468,7 +479,32 @@ QIcon smartDevice::isConnectSocketIcon(const QString &socket) const
     if ( isConnectSocket(socket) ) return QIcon(":/im/images/ok.png");
     return QIcon(":/im/images/not.png");
 }
-#endif
+
+//------------------------------------------------------------------------------
+//----------------------Функии класса adapterSetting----------------------------
+//------------------------------------------------------------------------------
+/*!
+  * Функция устанавливает текущий выбранный интерфейс в настройках адаптеров.
+  */
+void adapterSetting::setCurrent(int n)
+{
+    cur = n;
+    oldMask = sd->myInterfaces[cur]->mask();
+    oldIp = sd->myInterfaces[cur]->ip();
+}
+//-----------------------------------------------------------------------
+/*!
+  * Изменяет таблицу маршрутизации в соответсвии с новыми настройками интрефейсов.
+  */
+void adapterSetting::connectedNet()
+{
+    routeRecord *t = sd->routeTable()->recordAt( oldMask & oldIp );
+    if ( t ) { // Удаляем запись со старыми натсройками
+        sd->routeTable()->deleteFromTable(t);
+    }
+    sd->connectedNet(sd->myInterfaces.at(cur));
+}
+//--------------------------------------------------------------------------
 
 
 

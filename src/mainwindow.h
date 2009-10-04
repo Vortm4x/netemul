@@ -129,6 +129,7 @@ private:
     QAction *arpAct;
     QAction *logAct;
     QAction *aboutDeviceAct;
+    QAction *designerPacketAct;
 };
 
 #endif // MAINWINDOW_H

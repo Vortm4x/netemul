@@ -51,7 +51,6 @@ bool devicePort::isCableBusy() const
     return myConnect && myCable->isBusy(this);
 }
 
-#ifndef __TESTING__
 /*!
   Достает кадр из очереди и отправляет его.
 */
@@ -96,7 +95,6 @@ void devicePort::startCollision()
 {
     if ( myConnect && !myCable->isCollisionCable() ) myCable->startCollision();
 }
-#endif
 
 
 

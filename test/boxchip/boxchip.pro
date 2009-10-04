@@ -1,10 +1,6 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-07-18T22:25:27
 # -------------------------------------------------
-include(../testing.pri)
-OBJECTS_DIR = ../../build
-MOC_DIR = ../../build
-UI_DIR = ../../src
 QT += testlib
 QT -= gui
 TARGET = boxchip

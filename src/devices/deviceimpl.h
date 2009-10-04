@@ -57,6 +57,7 @@ public:
     virtual void adapterDialog() { qFatal("error not compability adapter!"); }
     virtual void programmsDialog() { qFatal("error not compability"); }
     virtual void arpDialog() { qFatal("error not compability"); }
+    virtual void showDesignerDialog() { qFatal("Error designer!"); }
 
     virtual bool isShared() const { return false; }
 

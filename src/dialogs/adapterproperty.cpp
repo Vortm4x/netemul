@@ -131,6 +131,9 @@ void adapterProperty::updateTab(int n)
     if (sd) sd->setCheckedSocket( sd->name() );
 }
 //-----------------------------------------------------
+/*!
+  Применить сделанные изменения.
+  */
 void adapterProperty::apply()
 {
     sd->setMac( le_mac->text() );

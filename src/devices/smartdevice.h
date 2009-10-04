@@ -109,9 +109,8 @@ public slots:
     virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
 signals:
     void interfaceDeleted(QString);
-private:
-    interface* adapter(const QString &name);
 protected:
+    interface* adapter(const QString &name);
     interface* addInterface(const QString &name);
     void deleteInterface(const QString &name);
     bool myRouter;
@@ -140,10 +139,10 @@ public:
 class adapterSetting {
 public:
     adapterSetting(smartDevice *s) : sd(s) { }
-    void setCurrent(int n) { cur = n; }
+    void setCurrent(int n);
     int current() const { return cur; }
     void resetStatics() { sd->myInterfaces.at(cur)->resetStatics(); }
-    void connectedNet() { sd->connectedNet(sd->myInterfaces.at(cur)); }
+    void connectedNet();
     int socketsCount() const { return sd->socketsCount(); }
     bool isConnect() const { return sd->myInterfaces.at(cur)->isConnect(); }
     QIcon isConnectSocketIcon() const { return sd->isConnectSocketIcon( sd->myInterfaces.at(cur)->name() ); }
@@ -161,6 +160,8 @@ public:
     void addInterface() { sd->addInterface(); }
     void deleteInterface(const QString &name) { sd->deleteInterface(name); }
 private:
+    ipAddress oldIp;
+    ipAddress oldMask;
     int cur;
     smartDevice *sd;
 };

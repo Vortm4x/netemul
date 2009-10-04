@@ -47,10 +47,12 @@ public slots:
     void programmsDialog() const;
     void arpDialog() const;
     void showLogDialog(logDialog *log) const;
+    void showDesignerDialog() const;
 signals:
     void selectOneDevice(bool);
     void selectTableDevice(bool);
     void selectSmartDevice(bool);
+    void selectComputer(bool);
 };
 
 #endif // SCENECONTROL_H

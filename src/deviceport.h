@@ -46,7 +46,6 @@ public:
     int num() const { return myNum; }
     void pushToSend(frame &f) { senderQueue.enqueue(f); }
     bool isCableConnect(const cableDev *c) const;
-#ifndef __TESTING__
     int trafficDigit() const { return senderQueue.size(); }
     void setConnect(bool cur,cableDev *cable);
     frame popFromReceive() { return receiveQueue.dequeue(); }
@@ -56,7 +55,6 @@ public:
     bool hasReceive() const { return !receiveQueue.isEmpty(); }
     bool isCableBusy() const;
     void startCollision();
-#endif
 private:
     int myNum;
     QQueue<frame> senderQueue;

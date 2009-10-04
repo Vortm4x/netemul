@@ -18,10 +18,12 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "ripprogramm.h"
-#include "ripproperty.h"
 #include "smartdevice.h"
-#include "udpsocket.h"
 #include "routemodel.h"
+#include "udpsocket.h"
+#ifndef __TESTING__
+#include "ripproperty.h"
+#endif
 
 /*!
   Инициализирует программу стандартными настройками.
@@ -204,12 +206,13 @@ bool ripProgramm::interrupt(int u)
     return false;
 }
 //---------------------------------------------------
-
 void ripProgramm::showProperty()
 {
+#ifndef __TESTING__
     ripProperty *d = new ripProperty;
     d->setProgramm(this);
     d->exec();
+#endif
 }
 
 void ripProgramm::addToTemp(routeRecord *r)

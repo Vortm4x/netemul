@@ -29,7 +29,6 @@ abstractChip::abstractChip()
     resetStatics();
 #endif
 }
-#ifndef __TESTING__
 //--------------------------------------------------------------
 /*!
   Сбрасывает всю статистику, накопленную этим устройством.
@@ -66,7 +65,6 @@ void abstractChip::checkSend(frame &f)
     myStatistics.incSendFrames();
     if ( f.type() == frame::ip ) myStatistics.incSendPackets();
 }
-#endif
 
 
 

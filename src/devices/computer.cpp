@@ -20,8 +20,11 @@
 #include "computer.h"
 #include "interface.h"
 #include "routemodel.h"
-#include "computerproperty.h"
 #include "appsetting.h"
+#ifndef __TESTING__
+#include "computerproperty.h"
+#include "designerdialog.h"
+#endif
 
 computer::computer(int c /* = 0 */)
 {
@@ -32,11 +35,25 @@ computer::computer(int c /* = 0 */)
     setNote(tr("<b>Computer</b><!--You can use HTML.-->"));
 }
 
+void computer::showDesignerDialog()
+{
+    designerDialog *d = new designerDialog(this);
+    d->show();
+}
+
 void computer::dialog()
 {
+#ifndef __TESTING__
     computerProperty *d = new computerProperty;
     d->setDevice( new computerSetting(this) );
     d->exec();
+#endif
+}
+
+void computer::sendConstructedFrame(QString Interface, frame Frame, int count)
+{
+    for ( int i = 0 ; i < count ; i++ )
+        adapter(Interface)->pushToSocket(Frame);
 }
 
 

@@ -141,7 +141,6 @@ void routeModel::deleteFromTable(routeRecord *r)
     lastRecord = 0;
     table.removeOne(r);
     delete r;
-    qDebug("DELETING!!!");
     qStableSort(table.begin(),table.end(),routeGreat);
     reset();
 }

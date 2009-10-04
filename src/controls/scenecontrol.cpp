@@ -32,6 +32,7 @@ void sceneControl::observeSelection()
         emit selectTableDevice( t->hasTable() );
         emit selectOneDevice(true);
         emit selectSmartDevice( t->isSmart() );
+        emit selectComputer( t->isCanSend() );
     }
     else {
         emit selectSmartDevice(false);
@@ -79,6 +80,12 @@ void sceneControl::showLogDialog(logDialog *log) const
 {
     device *t = scene->oneSelectedDevice();
     t->showLogDialog(log);
+}
+
+void sceneControl::showDesignerDialog() const
+{
+    device *t = scene->oneSelectedDevice();
+    t->showDesignerDialog();
 }
 
 bool sceneControl::isSelect() const

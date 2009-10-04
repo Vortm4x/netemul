@@ -151,6 +151,7 @@ void MainWindow::retranslate()
     UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
+    UPDATEACTION( designerPacketAct , tr("Packet desinger") , tr("Create user's packet") )
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -274,6 +275,8 @@ void MainWindow::createAction()
     aboutDeviceAct = createOneAction(QIcon(":/im/images/question.png"));
     aboutDeviceAct->setShortcut(tr("Ctrl+F1"));
     connect( aboutDeviceAct , SIGNAL(triggered()), SLOT(helpDialog()) );
+
+    designerPacketAct = createOneAction( QIcon(":/im/images/cogwheel.png") );
 }
 
 //Создаем меню
@@ -303,6 +306,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(progAct);
     itemMenu->addAction(arpAct);
     itemMenu->addAction(logAct);
+    itemMenu->addAction(designerPacketAct);
     itemMenu->addAction(aboutDeviceAct);
     itemMenu->addAction(deleteAct);
     itemMenu->setEnabled(false);
@@ -347,6 +351,7 @@ void MainWindow::createTools()
     controlBar->addAction(tableAct);
     controlBar->addAction(arpAct);
     controlBar->addAction(logAct);
+    controlBar->addAction(designerPacketAct);
     controlBar->addSeparator();
     controlBar->setEnabled(false);
 }
@@ -373,6 +378,8 @@ void MainWindow::createScene()
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , arpAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectComputer(bool)) , designerPacketAct , SLOT(setVisible(bool)) );
+    connect( designerPacketAct , SIGNAL(triggered()) , sceneControler , SLOT(showDesignerDialog()) );
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
     connect( tableAct , SIGNAL(triggered()) , sceneControler , SLOT(tableDialog()) );
     connect( propertyAct , SIGNAL(triggered()) ,sceneControler , SLOT(propertyDialog()) );

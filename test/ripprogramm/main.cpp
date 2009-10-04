@@ -1,9 +1,9 @@
 #include <QtTest>
 #include "routemodel.h"
 #include "ripprogramm.h"
-#include "smartdevice.h"
 #include "udppacket.h"
 #include "interface.h"
+#include "computer.h"
 
 class TestRipProgramm : public QObject
 {
@@ -24,7 +24,7 @@ private:
 
 void TestRipProgramm::initTestCase()
 {
-    device = new smartDevice;
+    device = new computer;
     programm = new ripProgramm;
     programm->setDevice(device);
     model = device->routeTable();
@@ -41,7 +41,7 @@ void TestRipProgramm::initTestCase()
 
 void TestRipProgramm::execute()
 {
-    programm->execute(packet);
+    programm->execute(packet.unpack());
     QCOMPARE( model->rowCount() , 4 );
 }
 

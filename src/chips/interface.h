@@ -66,6 +66,8 @@ public:
     void setChecked(bool b);
     arpModel* arpTable() const { return myArpTable; }
 
+    void pushToSocket(frame &f);
+
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
     void setName(const QString &str) { myName = str; }
@@ -73,7 +75,6 @@ public:
 signals:
     void receivedPacket(ipPacket);
 private:
-    void pushToSocket(frame &f);
     QString myName;
     devicePort *mySocket;
     arpModel *myArpTable;

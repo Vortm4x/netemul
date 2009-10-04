@@ -38,11 +38,13 @@ public:
     ~computer() {  }
 
     void dialog();
+    void showDesignerDialog();
 
     QString deviceName() const { return "comp"; }
     QString deviceCommandName() const { return tr("Computer"); }
     bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
+    void sendConstructedFrame(QString Interface,frame Frame, int count);
 protected:
     void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}
     void read(QDataStream &stream) { smartDevice::read(stream); }
