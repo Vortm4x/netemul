@@ -354,6 +354,7 @@ void MainWindow::createTools()
     controlBar->addAction(designerPacketAct);
     controlBar->addSeparator();
     controlBar->setEnabled(false);
+    //1ughyh8ihuttji
 }
 //------------------------------------------------------
 /*!
