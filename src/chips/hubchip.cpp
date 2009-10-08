@@ -25,9 +25,9 @@ hubChip::hubChip(int n /* = 4 */) : boxChip(n)
     foreach ( devicePort *i , mySockets )
         i->setShared(true);
 }
-#ifndef __TESTING__
 void hubChip::receiveEvent(frame &fr,devicePort *sender)
 {
+#ifndef __TESTING__
     checkReceive(fr);
     emit receiveData(fr,tr("LAN%1").arg(sender->num()));
     foreach ( devicePort *i , mySockets )
@@ -35,9 +35,10 @@ void hubChip::receiveEvent(frame &fr,devicePort *sender)
             checkSend(fr);
             emit sendData(fr, tr("LAN%1").arg(i->num()) );
             i->pushToSend( fr );
-        }   
+        }
+#endif
 }
-
+#ifndef __TESTING__
 void hubChip::detectCollision()
 {
     foreach ( devicePort *i , mySockets ) i->startCollision();

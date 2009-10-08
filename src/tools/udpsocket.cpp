@@ -37,6 +37,7 @@ void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
     routeRecord *r = dev->myRouteTable->recordAt(address);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
+    if ( !dev->ipToAdapter(r->out) || !dev->ipToAdapter(r->out)->isConnect() ) return;
     while ( quint32 size = data.size() ) {
         QByteArray tempArray;
         if ( size >= PACKET_SIZE ) tempArray = data.left(PACKET_SIZE);

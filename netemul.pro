@@ -36,7 +36,7 @@ QT += script
 # Default translations path
 TRANSLATIONS_PATH = "translation"
 DOC_PATH = "doc"
-SCRIPT_PATH = "test/scripts"
+SCRIPT_PATH = "scripts"
 
 win32 { 
     DESTDIR = ../trunk
@@ -118,7 +118,7 @@ unix {
     #Scripts
     SCRIPT_PATH = $${PREFIX}/share/netemul/
     scripts.path = $${SCRIPT_PATH}
-    scripts.files = ../test/scripts
+    scripts.files = ../scripts
     INSTALLS += scripts    
 }
 

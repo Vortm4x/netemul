@@ -1,6 +1,6 @@
-#include "../../src/frame.h"
-#include "../../src/arppacket.h"
-#include "../../src/ippacket.h"
+#include "frame.h"
+#include "arppacket.h"
+#include "ippacket.h"
 #include <QtTest>
 
 class TestFrame : public QObject
