@@ -157,12 +157,11 @@ void interface::deciSecondEvent()
 void interface::secondEvent()
 {
     myArpTable->update();
-    int time = appSetting::arpResponceTime()+qrand()%20;
     foreach ( waitPacket *i , myWaits ) {
-        if ( ++i->time < time ) continue;
+        if ( --i->time ) continue;
         if ( i->count <= COUNT_AGAINST_SEND ) {
-            i->time = 0;
             i->count++;
+            i->time = qrand()%(appSetting::arpResponceTime()*i->count)+appSetting::arpResponceTime();
             sendArpRequest( i->dest );
         } else {
             myWaits.removeOne(i);
@@ -223,7 +222,8 @@ waitPacket* waitPacket::create(ipAddress a,ipPacket p)
     waitPacket *t = new waitPacket;
     t->dest = a;
     t->packets << p;
-    t->time = t->count = 0;
+    t->time = appSetting::arpResponceTime();
+    t->count = 0;
     return t;
 }
 

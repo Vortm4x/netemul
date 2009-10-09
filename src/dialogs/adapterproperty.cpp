@@ -105,6 +105,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
 adapterProperty::~adapterProperty()
 {
     sd->setCheckedSocket("");
+    delete sd;
 }
 //--------------------------------------------------
 /*!
@@ -140,6 +141,7 @@ void adapterProperty::apply()
     sd->setIp( le_ip->text() );
     sd->setMask( le_mask->text() );
     sd->connectedNet();
+    sd->setCurrent( tab_interfaces->currentIndex() );
     if ( sd->isConnect() ) sd->sendArpRequest(le_ip->text());
     if ( sender() == btn_ok ) accept();
 }

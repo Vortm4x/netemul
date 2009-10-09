@@ -87,6 +87,7 @@ routeEditor::routeEditor(smartDevice *s)
     connect( table->selectionModel() , SIGNAL(currentRowChanged(QModelIndex,QModelIndex)) , SLOT(checkSelection(QModelIndex)) );
     readSetting();
     setLayout(all);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 routeEditor::~routeEditor()

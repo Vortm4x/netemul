@@ -272,8 +272,7 @@ void smartDevice::tableDialog()
 {
 #ifndef __TESTING__
     routeEditor *d = new routeEditor(this);
-    d->exec();
-    delete d;
+    d->show();
 #endif
 }
 
@@ -291,10 +290,8 @@ void smartDevice::showLogDialog(logDialog *log) const
 void smartDevice::adapterDialog()
 {
 #ifndef __TESTING__
-    adapterSetting *set = new adapterSetting(this);
-    adapterProperty *d = new adapterProperty(set);
-    d->exec();
-    delete set;
+    adapterProperty *d = new adapterProperty( new adapterSetting(this) );
+    d->show();
 #endif
 }
 
