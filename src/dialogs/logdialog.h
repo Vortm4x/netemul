@@ -32,8 +32,8 @@ static const QColor cl_dhcp = "#f2e8c9" ;
 static const QColor cl_undef = "#f984e5";
 static const QColor cl_arp = "#7fc7ff";
 static const QColor cl_arpInternal = "#c0c0c0";
-static const QColor cl_tcpInternal = "#008080";
-static const QColor cl_tcpData = "#c0c0c0";
+static const QColor cl_tcpInternal = "#98ff98";
+static const QColor cl_tcpData = "#c59cff";
 
 class logDialog : public QWidget , private Ui::logDialog
 {

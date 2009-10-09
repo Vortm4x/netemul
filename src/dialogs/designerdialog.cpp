@@ -38,15 +38,15 @@ designerDialog::designerDialog(computer *comp)
     myComputer = comp;
     QVBoxLayout *lay = new QVBoxLayout;
     tw_design = new QTabWidget;
-    tw_design->addTab( createMain(), tr("Main") );
+    tw_design->addTab( createMainTab(), tr("Main") );
     tw_design->addTab( createFrameTab(), tr("Frame") );
     tw_design->addTab( createIpTab(), tr("Ip") );
     tw_design->addTab( createArpTab(), tr("Arp") );
     tw_design->addTab( createTcpTab(), tr("Tcp") );
     tw_design->addTab( createUdpTab(), tr("Udp") );
-    tw_design->setTabEnabled( 2, false );
-    tw_design->setTabEnabled( 4, false );
-    tw_design->setTabEnabled( 5, false );
+    tw_design->setTabEnabled( IP_TAB, false );
+    tw_design->setTabEnabled( TCP_TAB, false );
+    tw_design->setTabEnabled( UDP_TAB, false );
     lay->addWidget( tw_design );
     QList<QWidget*> list;
     btn_ok = new QPushButton( QIcon(":/im/images/ok.png"), tr("Ok") );
@@ -61,7 +61,7 @@ designerDialog::designerDialog(computer *comp)
     setWindowTitle(tr("Packet designer") );
 }
 
-QWidget* designerDialog::createMain()
+QWidget* designerDialog::createMainTab()
 {
     QWidget *main = new QWidget;
     QVBoxLayout *lay = new QVBoxLayout;
@@ -185,24 +185,24 @@ QWidget* designerDialog::createTcpTab()
     lb_senderPort = new QLabel( tr("Sender port: ") );
     sb_tcpSenderPort = new QSpinBox;
     sb_tcpSenderPort->setMaximum(0);
-    sb_tcpSenderPort->setMaximum(65535);
+    sb_tcpSenderPort->setMaximum( MAX_PORT );
     list << lb_senderPort << sb_tcpSenderPort;
     lb_receiverPort = new QLabel( tr("Receiver port: ") );
     sb_tcpReceiverPort = new QSpinBox;
     sb_tcpReceiverPort->setMaximum(0);
-    sb_tcpReceiverPort->setMaximum(65535);
+    sb_tcpReceiverPort->setMaximum( MAX_PORT );
     list << lb_receiverPort << sb_tcpReceiverPort;
     lay->addLayout( createLayout( list ) );    
     list.clear();
     lb_sequence = new QLabel( tr("Sequence number: ") );
     sb_sequence = new QSpinBox;
     sb_sequence->setMinimum(0);
-    sb_sequence->setMaximum(2147483647);
+    sb_sequence->setMaximum( MAX_TCP_NUMBER );
     list << lb_sequence << sb_sequence;
     lb_ack = new QLabel( tr("Ack number: ") );
     sb_ack = new QSpinBox;
     sb_ack->setMinimum(0);
-    sb_ack->setMaximum(2147483647);
+    sb_ack->setMaximum( MAX_TCP_NUMBER );
     list << lb_ack << sb_ack;
     lay->addLayout( createLayout( list ) );    
     list.clear();
@@ -232,13 +232,13 @@ QWidget* designerDialog::createUdpTab()
     lb_senderPort = new QLabel( tr("Sender port: ") );
     sb_udpSenderPort = new QSpinBox;
     sb_udpSenderPort->setMaximum(0);
-    sb_udpSenderPort->setMaximum(65535);
+    sb_udpSenderPort->setMaximum( MAX_PORT );
     list << lb_senderPort << sb_udpSenderPort;
     lay->addLayout( createLayout( list ) );
     lb_receiverPort = new QLabel( tr("Receiver port: ") );
     sb_udpReceiverPort = new QSpinBox;
     sb_udpReceiverPort->setMaximum(0);
-    sb_udpReceiverPort->setMaximum(65535);
+    sb_udpReceiverPort->setMaximum( MAX_PORT );
     list.clear();
     list << lb_receiverPort << sb_udpReceiverPort;
     lay->addLayout( createLayout( list ) );
@@ -302,30 +302,30 @@ void designerDialog::apply()
 void designerDialog::changeFrameState()
 {
     if ( rb_arp->isChecked() ) {
-        tw_design->setTabEnabled( 3, true );
-        tw_design->setTabEnabled( 2, false );
-        tw_design->setTabEnabled( 4, false );
-        tw_design->setTabEnabled( 5, false );
+        tw_design->setTabEnabled( ARP_TAB, true );
+        tw_design->setTabEnabled( IP_TAB, false );
+        tw_design->setTabEnabled( TCP_TAB, false );
+        tw_design->setTabEnabled( UDP_TAB, false );
         return;
     }
-    tw_design->setTabEnabled( 3, false );
-    tw_design->setTabEnabled( 2, true );
+    tw_design->setTabEnabled( ARP_TAB, false );
+    tw_design->setTabEnabled( IP_TAB, true );
     if ( rb_udp->isChecked() ) {
-        tw_design->setTabEnabled( 5, true );
-        tw_design->setTabEnabled( 4, false );
+        tw_design->setTabEnabled( UDP_TAB, true );
+        tw_design->setTabEnabled( TCP_TAB, false );
         return;
     }
-    tw_design->setTabEnabled( 4, true );
-    tw_design->setTabEnabled( 5, false );
+    tw_design->setTabEnabled( TCP_TAB, true );
+    tw_design->setTabEnabled( UDP_TAB, false );
 }
 
 void designerDialog::changeIpState()
 {
     if ( rb_tcp->isChecked() ) {
-        tw_design->setTabEnabled( 5, false );
-        tw_design->setTabEnabled( 4, true );
+        tw_design->setTabEnabled( UDP_TAB, false );
+        tw_design->setTabEnabled( TCP_TAB, true );
         return;
     }
-    tw_design->setTabEnabled( 4, false );
-    tw_design->setTabEnabled( 5, true );
+    tw_design->setTabEnabled( TCP_TAB, false );
+    tw_design->setTabEnabled( UDP_TAB, true );
 }

@@ -18,6 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include <QtGui/QGraphicsSceneMouseEvent>
+#include <QMap>
 #include "movestate.h"
 #include "mycanvas.h"
 #include "device.h"
@@ -41,7 +42,7 @@ moveState::~moveState()
 
 void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-    if ( scene->coordMap.count() ) scene->QGraphicsScene::mouseMoveEvent(event);
+    if ( coordMap.count() ) scene->QGraphicsScene::mouseMoveEvent(event);
     else  if (SelectRect) // Если есть выделение обновляем его.
        SelectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
 }
@@ -54,7 +55,7 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
     // То нужно сохранить все их координаты на случай если начнется перемещение.
         foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
             if ( i->type() != cableDev::Type )
-                scene->coordMap.insert( i , i->scenePos());
+                coordMap.insert( i , i->scenePos());
         }
     } // Иначе создаем прямоугольник выделения.
     else {
@@ -68,12 +69,12 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
 void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
     scene->QGraphicsScene::mouseReleaseEvent(event);
-    if ( scene->coordMap.count() ) {
+    if ( coordMap.count() ) {
         bool needReturn = false;
         QGraphicsItem *curDevice;
         QPointF curPoint;
 
-        QMapIterator<QGraphicsItem*,QPointF> i(scene->coordMap);
+        QMapIterator<QGraphicsItem*,QPointF> i(coordMap);
         while (i.hasNext()) {
             i.next();
             curDevice = i.key();
@@ -88,8 +89,8 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
         }
 
         if ( !needReturn ) {
-            QMap<QGraphicsItem*, QPointF> old = scene->coordMap;
-            scene->calibrateAll( scene->coordMap.keys() );
+            QMap<QGraphicsItem*, QPointF> old = coordMap;
+            scene->calibrateAll( coordMap.keys() );
             QMap<QGraphicsItem*, QPointF> rec;
             foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
                 if ( i->type() != cableDev::Type )
@@ -97,10 +98,10 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
              }
             moveCommand *c = new moveCommand(scene,old, rec);
             scene->commandStack.push(c);
-            scene->coordMap.clear();
+            coordMap.clear();
             return;
         }
-        scene->putItems(scene->coordMap);
+        scene->putItems(coordMap);
     }
     else {
         if ( !SelectRect ) return;

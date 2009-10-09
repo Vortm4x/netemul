@@ -104,13 +104,13 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
     else {
         tcpPacket tcp(p.unpack());
         s.append(" TCP ");
-        parent->setBackgroundColor(0,Qt::magenta);
+        parent->setBackgroundColor(0,cl_tcpData);
         QTreeWidgetItem *item = new QTreeWidgetItem(parent);
         item->setText(0, tcp.toString());
         item->setBackgroundColor(0, cl_tcpInternal);
         QTreeWidgetItem *t = new QTreeWidgetItem(item);
         t->setText(0, tr("ISN %1, ACK %2").arg(tcp.sequence()).arg(tcp.ack()));
-        t->setBackgroundColor(0, cl_tcpData);
+        t->setBackgroundColor(0, cl_tcpInternal);
         t = new QTreeWidgetItem(item);
         if ( tcp.flag() == tcpPacket::NO_FLAGS )
             t->setText(0, tr("flags: No flags"));
@@ -119,7 +119,7 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
         else if (tcp.flag() == tcpPacket::SYN) t->setText(0,tr("flags: SYN"));
         else if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK)) t->setText(0,tr("flags: SYN, ACK"));
         else t->setText(0, tr("flags: Fin"));
-        t->setBackgroundColor(0, cl_tcpData);
+        t->setBackgroundColor(0, cl_tcpInternal);
     }
     return s;
 }

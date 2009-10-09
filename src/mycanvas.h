@@ -119,7 +119,6 @@ private:
     int lastId;
     abstractState *myState;        
 
-    QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
     QList<device*> myDevices; //!< Список всех устройств на сцене.
     QList<textItem*> myTextItems; //!< Список всех надписей на сцене.
 

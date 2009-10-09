@@ -33,13 +33,20 @@ class QComboBox;
 class ipEdit;
 class computer;
 
+static const int MAX_PORT = 65535;
+static const int MAX_TCP_NUMBER = 2147483647;
+static const int IP_TAB = 2;
+static const int ARP_TAB = 3;
+static const int TCP_TAB = 4;
+static const int UDP_TAB = 5;
+
 class designerDialog : public QDialog
 {
     Q_OBJECT
 public:
     designerDialog(computer *com);
     ~designerDialog() {}
-    QWidget* createMain();
+    QWidget* createMainTab();
     QWidget* createFrameTab();
     QWidget* createIpTab();
     QWidget* createArpTab();

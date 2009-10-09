@@ -40,6 +40,7 @@ private:
     itemList filterDevices(itemList list);
     selectRect *SelectRect; // Временный прямоугольник для выделения
     QPointF p2Rect; // Точка начала выделения
+    QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
 };
 
 #endif // MOVESTATE_H
