@@ -47,6 +47,8 @@ private:
 signals:
     void textChanged(QString);
     void maskChanged(quint8);
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 //-----------------------------------------
 #endif // IPEDIT_H

@@ -42,7 +42,7 @@ ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
     part[0]->setFixedSize(45,25);
     part[0]->setMaxLength(3);
     part[0]->setValidator(v);
-    part[0]->setText("0");
+    part[0]->installEventFilter(this);
 //    setFixedSize( 450 , part[0]->height()+10 );  
     connect( part[0] , SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     connect( part[0] , SIGNAL(textChanged(QString)), SLOT(changeMask(QString)));
@@ -55,10 +55,11 @@ ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
         part[i]->setFixedSize(45,25);
         part[i]->setMaxLength(3);
         part[i]->setValidator(v);
-        part[i]->setText("0");
+        part[i]->installEventFilter(this);
         all->addWidget(part[i]);
         connect(part[i] , SIGNAL(textChanged(QString)), SIGNAL(textChanged(QString)));
     }
+    clear();
     setLayout(all);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
@@ -120,6 +121,21 @@ void ipEdit::changeMask(QString s)
     emit maskChanged(u);
 }
 //-------------------------------------------
+bool ipEdit::eventFilter(QObject *obj, QEvent *event)
+{
+    if ( event->type() == QEvent::KeyPress ) {
+        QKeyEvent *e = static_cast<QKeyEvent*>(event);
+        switch ( e->key() ) {
+            case Qt::Key_Left : focusPreviousChild(); break;
+            case Qt::Key_Right : focusNextChild(); break;
+            case Qt::Key_Space : focusNextChild(); break;
+            default: return QWidget::eventFilter(obj,event);
+        }
+        return true;
+    }
+    return QWidget::eventFilter(obj,event);
+}
+
 
 
 

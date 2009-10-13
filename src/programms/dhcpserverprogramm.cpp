@@ -19,8 +19,10 @@
 ****************************************************************************************/
 #include "dhcpserverprogramm.h"
 #include "dhcpserverproperty.h"
+#include "dhcppacket.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
+#include "udppacket.h"
 
 dhcpServerProgramm::dhcpServerProgramm()
 {
@@ -37,10 +39,18 @@ void dhcpServerProgramm::setDevice(smartDevice *s)
 
 void dhcpServerProgramm::execute(QByteArray data)
 {
-    QString str;
-    QDataStream s(data);
-    s >> str;
-
+    dhcpPacket packet(data);
+    xid = packet.xid();
+    dhcpPacket dhcp;
+    if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {
+        if ( statics.isEmpty() ) return;
+        foreach ( staticRecord *i, statics )
+            if ( i->chaddr == packet.chaddr() ) dhcp = buildOffer( i );
+    }
+    udpPacket udp;
+    udp.setSender( SERVER_SOCKET );
+    udp.setReceiver( CLIENT_SOCKET );
+    udp.pack( dhcp.toData() );
 }
 
 bool dhcpServerProgramm::containRecord(staticRecord *rec)
@@ -61,6 +71,18 @@ void dhcpServerProgramm::showProperty()
     dhcpServerProperty *d = new dhcpServerProperty;
     d->setProgramm(this);
     d->exec();
+}
+
+dhcpPacket dhcpServerProgramm::buildOffer(staticRecord *rec) const
+{
+    dhcpPacket p;
+    p.setType( dhcpPacket::DHCPOFFER );
+    p.setXid( xid );
+    p.setChaddr( rec->chaddr );
+    p.setYiaddr( rec->yiaddr );
+    p.setMask( rec->mask );
+    p.setGateway( rec->gateway );
+    return p;
 }
 
 /*!

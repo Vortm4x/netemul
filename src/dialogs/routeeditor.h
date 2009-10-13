@@ -43,6 +43,9 @@ public:
 private:
     void readSetting();
     void writeSetting() const;
+    QStringList filterConnectedSocket(QStringList list);
+    QStringList suffixList;
+    QStringList ipList;
     ipEdit *ip_dest;
     ipEdit *ip_mask;
     ipEdit *ip_gateway;
@@ -54,7 +57,8 @@ private:
     QTableView *table;
     routeModel *model;
     smartDevice *dev;
-public slots:
+private slots:
+    void selectAdapter(int number);
     void addRecord();
     void deleteRecord();
     void checkSelection(QModelIndex curr);

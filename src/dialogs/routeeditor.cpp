@@ -53,7 +53,13 @@ routeEditor::routeEditor(smartDevice *s)
     temp->addWidget( new QLabel(tr("Interface: ")) );
     cb_out = new QComboBox;
     cb_out->setFixedWidth(250);
-    cb_out->addItems( dev->interfacesIp() );
+    ipList = dev->interfacesIp();
+    QStringList tempList = ipList;
+    suffixList = filterConnectedSocket( dev->sockets() );
+    Q_ASSERT( tempList.size() == suffixList.size() );
+    for ( int i = 0 ; i < tempList.size() ; i++ )
+        tempList[i].append(" ("+ suffixList.at(i)+")" );
+    cb_out->addItems( tempList );
     temp->addWidget(cb_out);
     temp->addStretch(1);
     all->addLayout(temp);
@@ -83,22 +89,25 @@ routeEditor::routeEditor(smartDevice *s)
     lay->addWidget(btn_close, 1, Qt::AlignRight);
     all->addLayout(lay);
 
-    connect(btn_close, SIGNAL(clicked()), SLOT(reject()));
+    connect( btn_close, SIGNAL(clicked()), SLOT(reject()));
     connect( table->selectionModel() , SIGNAL(currentRowChanged(QModelIndex,QModelIndex)) , SLOT(checkSelection(QModelIndex)) );
+    connect( cb_out , SIGNAL(activated(int)) , SLOT(selectAdapter(int)) );
     readSetting();
     setLayout(all);
     setAttribute(Qt::WA_DeleteOnClose);
+    dev->setCheckedSocket( suffixList.at(0) );    
 }
 
 routeEditor::~routeEditor()
 {
     writeSetting();
+    dev->setCheckedSocket("");
 }
 
 void routeEditor::addRecord()
 {
-    model->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , cb_out->currentText() , sp_metr->value(),
-                     routeModel::staticMode );
+    model->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , ipList.at( cb_out->currentIndex() )
+                       , sp_metr->value(), routeModel::staticMode );
     ip_dest->clear();
     ip_mask->clear();
     ip_gateway->clear();
@@ -152,3 +161,16 @@ void routeEditor::writeSetting() const
     s.endGroup();
 }
 //--------------------------------------------
+void routeEditor::selectAdapter(int number)
+{
+    dev->setCheckedSocket( suffixList.at( number ) );
+}
+
+QStringList routeEditor::filterConnectedSocket(QStringList list)
+{
+    QStringList temp;
+    QStringList::const_iterator end = list.constEnd();
+    for ( QStringList::const_iterator i = list.constBegin() ; i != end; ++i )
+        if ( dev->isConnectSocket(*i) ) temp << *i;
+    return temp;
+}

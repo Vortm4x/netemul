@@ -25,6 +25,7 @@
 #include "ipaddress.h"
 
 class udpSocket;
+class dhcpPacket;
 
 struct staticRecord {
     macAddress chaddr;
@@ -45,6 +46,7 @@ public:
     void showProperty();
     bool containRecord( staticRecord *rec);
     void addStaticRecord(staticRecord *rec);
+    dhcpPacket buildOffer(staticRecord *rec) const;
     void incTime() { }
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
@@ -53,6 +55,7 @@ public slots:
     void execute(QByteArray data);
 private:
     QList<staticRecord*> statics;
+    int xid;
     udpSocket *receiver;
 };
 

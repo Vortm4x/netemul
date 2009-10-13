@@ -61,6 +61,7 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
     interfaceState *t = stateAt(name);
     if ( !t ) return;
     dhcpPacket message;
+    message.setType( dhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
     message.setChaddr( t->adapter->mac() );
     udpPacket udp;
