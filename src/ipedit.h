@@ -30,12 +30,15 @@ class QLabel;
 */
 class ipEdit : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
+    Q_PROPERTY( QString labelText READ labelText WRITE setLabelText DESIGNABLE true)
 public:
     ipEdit(QString str,QWidget *parent = 0);
     void setText(QString str);
     ipAddress ipText() const { return ipAddress(text()); }
     QString text() const;
+    void setLabelText(const QString text);
+    QString labelText() const;
     void clear();   
     QSize sizeHint() const;
 public slots:

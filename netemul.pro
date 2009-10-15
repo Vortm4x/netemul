@@ -32,12 +32,12 @@ INCLUDEPATH += . \
     src/states \
     src/commands
 QT += script
+SUBDIRS += ipedit
 
 # Default translations path
 TRANSLATIONS_PATH = "translation"
 DOC_PATH = "doc"
 SCRIPT_PATH = "scripts"
-
 win32 { 
     DESTDIR = ../trunk
     message("Static link ...")
@@ -98,31 +98,32 @@ unix {
         ../translation/netemul_pt_BR.qm \
         ../translation/netemul_ru.qm
     INSTALLS += translations
-
+    
     # Icons
     icons.path = $${PREFIX}/share/netemul/pixmap/
     icons.files = ../images/NetEmul.png
     INSTALLS += icons
-
+    
     # Desktop
     desktop.path = /usr/share/applications/
     desktop.files = ./netemul.desktop
     INSTALLS += desktop
-
+    
     # Docs$${PREFIX}/share/netemul/
     docs.path = $${PREFIX}/share/netemul/
     docs.files = ../doc
     INSTALLS += docs
     DOC_PATH = $${PREFIX}/share/netemul/doc/
-
-    #Scripts
+    
+    # Scripts
     SCRIPT_PATH = $${PREFIX}/share/netemul/
     scripts.path = $${SCRIPT_PATH}
     scripts.files = ../scripts
-    INSTALLS += scripts    
+    INSTALLS += scripts
 }
 
 # Let the variable be available for compiling
 DEFINES += DOC_PATH=\\\"$${DOC_PATH}\\\"
 DEFINES += SCRIPT_PATH=\\\"$${SCRIPT_PATH}\\\"
 DEFINES += TRANSLATIONS_PATH=\\\"$${TRANSLATIONS_PATH}\\\"
+FORMS += 

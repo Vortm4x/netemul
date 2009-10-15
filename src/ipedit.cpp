@@ -29,6 +29,7 @@
   Создает внешнее оформление виджета.
   @param str - строка отображаемая перед полем ввода.
   @param parent - виджет родитель.
+
   */
 ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
 {
@@ -134,6 +135,16 @@ bool ipEdit::eventFilter(QObject *obj, QEvent *event)
         return true;
     }
     return QWidget::eventFilter(obj,event);
+}
+
+void ipEdit::setLabelText(const QString text)
+{
+    label->setText(text);
+}
+
+QString ipEdit::labelText() const
+{
+    return label->text();
 }
 
 
