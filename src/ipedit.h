@@ -32,8 +32,8 @@ class ipEdit : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( QString labelText READ labelText WRITE setLabelText DESIGNABLE true)
-public:
-    ipEdit(QString str,QWidget *parent = 0);
+public:                
+    ipEdit(QWidget *parent = 0, QString str = "");
     void setText(QString str);
     ipAddress ipText() const { return ipAddress(text()); }
     QString text() const;

@@ -31,7 +31,7 @@
   @param parent - виджет родитель.
 
   */
-ipEdit::ipEdit(QString str, QWidget *parent /* = 0 */) : QWidget(parent)
+ipEdit::ipEdit(QWidget *parent /* = 0 */, QString str /* = "" */) : QWidget(parent)
 {
     QIntValidator *v = new QIntValidator(1,255,this);
     QHBoxLayout *all = new QHBoxLayout;

@@ -43,11 +43,11 @@ routeEditor::routeEditor(smartDevice *s)
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     all->addWidget(table);
-    ip_dest = new ipEdit(tr("Destination: "));
+    ip_dest = new ipEdit(this,tr("Destination: "));
     all->addWidget(ip_dest);
-    ip_mask = new ipEdit(tr("Mask: "));
+    ip_mask = new ipEdit(this,tr("Mask: "));
     all->addWidget(ip_mask);
-    ip_gateway = new ipEdit(tr("Gateway: "));
+    ip_gateway = new ipEdit(this,tr("Gateway: "));
     all->addWidget(ip_gateway);
     QHBoxLayout *temp = new QHBoxLayout;
     temp->addWidget( new QLabel(tr("Interface: ")) );

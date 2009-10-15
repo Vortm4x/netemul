@@ -123,8 +123,8 @@ QWidget* designerDialog::createIpTab()
 {
     QWidget *ip = new QWidget;
     QVBoxLayout *lay = new QVBoxLayout;
-    senderIp = new ipEdit( tr("Sender ip: ") );
-    receiverIp = new ipEdit( tr("Receiver ip: ") );
+    senderIp = new ipEdit( this,tr("Sender ip: ") );
+    receiverIp = new ipEdit( this,tr("Receiver ip: ") );
     lay->addWidget( senderIp );
     lay->addWidget( receiverIp );
     QGroupBox *box = new QGroupBox;
@@ -168,8 +168,8 @@ QWidget* designerDialog::createArpTab()
     le_arpReceiverMac->setText("00:00:00:00:00:00");
     list << lb_arpReceiverMac << le_arpReceiverMac;
     lay->addLayout( createLayout( list ) );
-    arpSenderIp = new ipEdit( tr("Sender ip: ") );
-    arpReceiverIp = new ipEdit( tr("Receiver ip: ") );
+    arpSenderIp = new ipEdit( this,tr("Sender ip: ") );
+    arpReceiverIp = new ipEdit( this,tr("Receiver ip: ") );
     lay->addWidget( arpSenderIp );
     lay->addWidget( arpReceiverIp );
     lay->addStretch(1);

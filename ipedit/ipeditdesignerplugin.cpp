@@ -33,7 +33,7 @@ QString ipEditDesignerPlugin::domXml() const
 
 QWidget* ipEditDesignerPlugin::createWidget(QWidget *parent)
 {
-    return new ipEdit(tr("Enter text: "),parent);
+    return new ipEdit(parent,tr("Enter text: "));
 }
 
 Q_EXPORT_PLUGIN2(ipeditdesignerplugin , ipEditDesignerPlugin )

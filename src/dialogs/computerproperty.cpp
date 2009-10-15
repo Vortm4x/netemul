@@ -30,7 +30,7 @@ computerProperty::computerProperty()
     QVBoxLayout *all = new QVBoxLayout;
     QVBoxLayout *prop = new QVBoxLayout;
     QHBoxLayout *temp = new QHBoxLayout;
-    gateway = new ipEdit(tr("Default gateway:"));
+    gateway = new ipEdit(this,tr("Default gateway:"));
     connect( gateway , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
     temp->addWidget(gateway,0,Qt::AlignLeft);
     prop->addLayout(temp);

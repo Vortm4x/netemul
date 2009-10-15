@@ -68,7 +68,7 @@ void dhcpServerProgramm::addStaticRecord(staticRecord *rec)
 
 void dhcpServerProgramm::showProperty()
 {
-    dhcpServerProperty *d = new dhcpServerProperty;
+    dhcpServerProperty *d = new dhcpServerProperty(device);
     d->setProgramm(this);
     d->exec();
 }

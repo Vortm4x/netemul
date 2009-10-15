@@ -62,11 +62,11 @@ adapterProperty::adapterProperty(adapterSetting *s)
     all->addLayout(temp);
     connect(le_mac, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    le_ip = new ipEdit(tr("Ip-address: "));
+    le_ip = new ipEdit(this,tr("Ip-address: "));
     all->addWidget(le_ip);
     connect(le_ip, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    le_mask = new ipEdit(tr("Mask: "));
+    le_mask = new ipEdit(this,tr("Mask: "));
     all->addWidget(le_mask);
 
     lb_statics = new QLabel;

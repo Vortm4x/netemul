@@ -49,11 +49,11 @@ hubProperty::hubProperty()
     temp->addWidget(le_mac);
     connect( le_mac , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
     all->addLayout(temp);
-    le_ip = new ipEdit(tr("Ip-address: "));
+    le_ip = new ipEdit(this,tr("Ip-address: "));
     all->addWidget(le_ip);
     connect( le_ip , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
 
-    le_mask = new ipEdit(tr("Mask: "));
+    le_mask = new ipEdit(this,tr("Mask: "));
     all->addWidget(le_mask);
     connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 

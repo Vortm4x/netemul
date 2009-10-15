@@ -19,30 +19,19 @@
 ****************************************************************************************/
 #include "dhcpserverproperty.h"
 #include "dhcpserverprogramm.h"
+#include "smartdevice.h"
 
-dhcpServerProperty::dhcpServerProperty(QWidget *parent) : QDialog(parent)
-{
+dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
+{    
     setupUi(this);
+    device = dev;
     setAttribute(Qt::WA_DeleteOnClose);
-    begin = new ipEdit(tr("From "));
-    begin->setEnabled(false);
-    end = new ipEdit(tr("to"));
-    end->setEnabled(false);
-    mask = new ipEdit(tr("Mask"));
-    mask->setEnabled(false);
-    gatew = new ipEdit(tr("Gateway"));
-    gatew->setEnabled(false);
-    QHBoxLayout *l = new QHBoxLayout;
-    l->addWidget(begin);
-    l->addWidget(end);
-    lay->addLayout(l);
-    l = new QHBoxLayout;
-    l->addWidget(mask);
-    l->addWidget(gatew);
-    lay->addLayout(l);
     QStringList list;
     list << tr("Mac") << tr("Ip") << tr("Mask") << tr("Gateway");
-    tw_static->setHorizontalHeaderLabels(list);    
+    tw_static->setHorizontalHeaderLabels(list);
+    tw_static->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    foreach ( interface *i, device->interfaces() )
+        cb_interface->addItem( i->name() );    
 }
 
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
@@ -62,10 +51,10 @@ void dhcpServerProperty::deleteRecord()
 
 void dhcpServerProperty::changeState(bool b)
 {
-    begin->setEnabled(b);
-    end->setEnabled(b);
-    mask->setEnabled(b);
-    gatew->setEnabled(b);
+    ie_begin->setEnabled(b);
+    ie_end->setEnabled(b);
+    ie_mask->setEnabled(b);
+    ie_gatew->setEnabled(b);
 }
 
 void dhcpServerProperty::apply()

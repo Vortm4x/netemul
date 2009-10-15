@@ -32,7 +32,6 @@ INCLUDEPATH += . \
     src/states \
     src/commands
 QT += script
-SUBDIRS += ipedit
 
 # Default translations path
 TRANSLATIONS_PATH = "translation"
@@ -126,4 +125,3 @@ unix {
 DEFINES += DOC_PATH=\\\"$${DOC_PATH}\\\"
 DEFINES += SCRIPT_PATH=\\\"$${SCRIPT_PATH}\\\"
 DEFINES += TRANSLATIONS_PATH=\\\"$${TRANSLATIONS_PATH}\\\"
-FORMS += 
