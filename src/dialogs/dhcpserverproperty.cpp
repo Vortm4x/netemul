@@ -31,7 +31,7 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
     tw_static->setHorizontalHeaderLabels(list);
     tw_static->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     foreach ( interface *i, device->interfaces() )
-        cb_interface->addItem( i->name() );    
+        if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
 }
 
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
@@ -67,6 +67,7 @@ void dhcpServerProperty::apply()
         rec->gateway = ipAddress(tw_static->item(i,3)->text());
         rec->time = sb_time->value();
         if ( !myProgramm->containRecord(rec) ) myProgramm->addStaticRecord(rec);
+        myProgramm->setInterface( cb_interface->currentText() );
     }
     accept();
 }

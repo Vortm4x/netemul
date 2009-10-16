@@ -37,6 +37,12 @@ void dhcpServerProgramm::setDevice(smartDevice *s)
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
 }
 
+void dhcpServerProgramm::setInterface(QString inter)
+{
+    foreach ( interface *i, device->interfaces() )
+        if ( i->name() == inter ) myInterface = i;
+}
+
 void dhcpServerProgramm::execute(QByteArray data)
 {
     dhcpPacket packet(data);
@@ -51,6 +57,10 @@ void dhcpServerProgramm::execute(QByteArray data)
     udp.setSender( SERVER_SOCKET );
     udp.setReceiver( CLIENT_SOCKET );
     udp.pack( dhcp.toData() );
+    ipPacket p( myInterface->ip(), ipAddress::full() );
+    p.pack( udp.toData() );
+    p.setUpProtocol( ipPacket::udp );
+    myInterface->sendPacket(p);
 }
 
 bool dhcpServerProgramm::containRecord(staticRecord *rec)
