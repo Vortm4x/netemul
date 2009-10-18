@@ -162,7 +162,7 @@ QWidget* designerDialog::createArpTab()
     list << lb_arpSenderMac << le_arpSenderMac;
     lay->addLayout( createLayout( list ) );    
     list.clear();
-    lb_arpReceiverMac = new QLabel( tr("Reciver mac: ") );
+    lb_arpReceiverMac = new QLabel( tr("Receiver mac: ") );
     le_arpReceiverMac = new QLineEdit;
     le_arpReceiverMac->setInputMask("HH:HH:HH:HH:HH:HH;_");
     le_arpReceiverMac->setText("00:00:00:00:00:00");

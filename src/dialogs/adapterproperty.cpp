@@ -25,7 +25,6 @@
 #include "adapterproperty.h"
 #include "smartdevice.h"
 #include "ipedit.h"
-#include "interfacedialog.h"
 
 /*!
   Конструктор создает основной интерфейс диалога.
@@ -157,15 +156,11 @@ void adapterProperty::reset()
 //------------------------------------------------------------
 void adapterProperty::addInterface()
 {
-    interfaceDialog *d = new interfaceDialog;
-    if ( d->exec() ) {
-        sd->addInterface();
-        sd->setCurrent( tab_interfaces->count() );
-        tab_interfaces->addTab(  sd->isConnectSocketIcon() , sd->name() );
-        tab_interfaces->setCurrentIndex( tab_interfaces->count() - 1);
-        updateTab( tab_interfaces->count() - 1 );
-    }
-    delete d;
+    sd->addInterface();
+    sd->setCurrent( tab_interfaces->count() );
+    tab_interfaces->addTab(  sd->isConnectSocketIcon() , sd->name() );
+    tab_interfaces->setCurrentIndex( tab_interfaces->count() - 1);
+    updateTab( tab_interfaces->count() - 1 );
 }
 
 void adapterProperty::deleteInterface()
