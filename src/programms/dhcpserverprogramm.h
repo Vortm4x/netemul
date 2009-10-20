@@ -51,6 +51,7 @@ public:
     bool containRecord( staticRecord *rec);
     void addStaticRecord(staticRecord *rec);
     dhcpPacket buildOffer(staticRecord *rec) const;
+    QList<staticRecord*> statics() const { return myStatics; }
     void incTime() { }
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
@@ -58,7 +59,7 @@ public:
 public slots:
     void execute(QByteArray data);
 private:
-    QList<staticRecord*> statics;
+    QList<staticRecord*> myStatics;
     interface *myInterface;
     int xid;
     udpSocket *receiver;

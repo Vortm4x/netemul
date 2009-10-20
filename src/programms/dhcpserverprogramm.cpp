@@ -49,8 +49,8 @@ void dhcpServerProgramm::execute(QByteArray data)
     xid = packet.xid();
     dhcpPacket dhcp;
     if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {
-        if ( statics.isEmpty() ) return;
-        foreach ( staticRecord *i, statics )
+        if ( myStatics.isEmpty() ) return;
+        foreach ( staticRecord *i, myStatics )
             if ( i->chaddr == packet.chaddr() ) dhcp = buildOffer( i );
     }
     udpPacket udp;
@@ -65,15 +65,15 @@ void dhcpServerProgramm::execute(QByteArray data)
 
 bool dhcpServerProgramm::containRecord(staticRecord *rec)
 {
-    if ( statics.isEmpty() ) return false;
-    foreach (staticRecord *i, statics)
+    if ( myStatics.isEmpty() ) return false;
+    foreach (staticRecord *i, myStatics)
         if ( i == rec ) return true;
     return false;
 }
 
 void dhcpServerProgramm::addStaticRecord(staticRecord *rec)
 {
-    statics << rec;
+    myStatics << rec;
 }
 
 void dhcpServerProgramm::showProperty()
@@ -103,8 +103,8 @@ void dhcpServerProgramm::write(QDataStream &stream) const
 {
     stream << DHCPServer;
     programmRep::write(stream);
-    stream << statics.size();
-    foreach ( staticRecord *i , statics )
+    stream << myStatics.size();
+    foreach ( staticRecord *i , myStatics )
         i->write(stream);
 }
 //---------------------------------------------------
@@ -120,7 +120,7 @@ void dhcpServerProgramm::read(QDataStream &stream)
     for ( int i = 0 ; i < n ; i++ ) {
         staticRecord *t = new staticRecord;
         t->read(stream);
-        statics << t;
+        myStatics << t;
     }
 }
 //---------------------------------------------------

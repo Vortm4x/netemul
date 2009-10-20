@@ -37,6 +37,10 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 {
     myProgramm = prog;
+    foreach ( staticRecord *i, myProgramm->statics() ) {
+        tw_static->insertRow( tw_static->rowCount() );
+
+    }
 }
 
 void dhcpServerProperty::addRecord()
