@@ -43,10 +43,10 @@ public:
     virtual void read(QDataStream &stream);
 protected:
     smartDevice *device;
+    bool myEnable;
     QString myName; //!< Имя программы.
 private:
     quint8 countRef;
-    bool myEnable;
 };
 
 #endif // PROGRAMMREP_H

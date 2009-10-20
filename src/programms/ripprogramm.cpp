@@ -66,7 +66,7 @@ void ripProgramm::setDevice(smartDevice *s)
 */
 void ripProgramm::incTime()
 {
-    if ( !device->isRouter() ) return;
+    if ( !myEnable || !device->isRouter() ) return;
     timer++;
     if ( timer >= interval ) {
         sendUpdate(true);
@@ -83,6 +83,7 @@ void ripProgramm::incTime()
 */
 void ripProgramm::execute(QByteArray data)
 {
+    if ( !myEnable ) return;
     ipAddress sender;
     quint16 size;
     QDataStream d(data);
@@ -189,7 +190,7 @@ void ripProgramm::checkTable(routeRecord *r)
 */
 bool ripProgramm::interrupt(int u)
 {
-    if ( mySplitMode == SPLIT_NONE ) return false;
+    if ( !myEnable || mySplitMode == SPLIT_NONE ) return false;
     routeRecord *t = 0;
     switch (u) {
         case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.

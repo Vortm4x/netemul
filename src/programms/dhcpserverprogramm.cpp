@@ -103,6 +103,9 @@ void dhcpServerProgramm::write(QDataStream &stream) const
 {
     stream << DHCPServer;
     programmRep::write(stream);
+    stream << statics.size();
+    foreach ( staticRecord *i , statics )
+        i->write(stream);
 }
 //---------------------------------------------------
 /*!
@@ -112,5 +115,26 @@ void dhcpServerProgramm::write(QDataStream &stream) const
 void dhcpServerProgramm::read(QDataStream &stream)
 {
     programmRep::read(stream);
+    int n;
+    stream >> n;
+    for ( int i = 0 ; i < n ; i++ ) {
+        staticRecord *t = new staticRecord;
+        t->read(stream);
+        statics << t;
+    }
 }
 //---------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+void staticRecord::write(QDataStream &stream) const
+{
+    stream << chaddr << yiaddr << mask << gateway << time;
+}
+
+void staticRecord::read(QDataStream &stream)
+{
+    stream >> chaddr >> yiaddr >> mask >> gateway >> time;
+}

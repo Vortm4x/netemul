@@ -34,6 +34,8 @@ struct staticRecord {
     ipAddress mask;
     ipAddress gateway;
     int time;
+    void write(QDataStream &stream) const;
+    void read(QDataStream &stream);
 };
 
 class dhcpServerProgramm : public programmRep

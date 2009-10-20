@@ -51,6 +51,7 @@ void installDialog::install()
     }
     if ( list->currentRow() < 0 ) return;
     programm a(list->currentRow()+50);
+    a->setEnable(false);
     smart->installProgramm(a);
     accept();
 }

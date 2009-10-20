@@ -128,6 +128,7 @@ void dhcpClientProgramm::deleteInterface(const QString name)
   */
 void dhcpClientProgramm::observeInterface(const QString &name, bool b)
 {
+    if ( !myEnable ) return;
     interfaceState *temp = stateAt(name);
     if ( temp ) {
         if ( b ) return;
