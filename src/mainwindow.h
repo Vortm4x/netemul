@@ -68,6 +68,7 @@ public slots:
     void statistics();
     void showLogDialog();
     void aboutDialog();
+    void printDialog();
 protected:
     void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
     bool eventFilter(QObject *obj, QEvent *event);
@@ -87,7 +88,6 @@ private:
     void retranslate();
 
     QAction* createOneAction( QIcon icon = QIcon(),bool inGroup = false);
-
     QMenu *fileMenu; // Выпадающие меню: файл
     QMenu *editMenu;
     QMenu *viewMenu; // -- вид
@@ -130,6 +130,7 @@ private:
     QAction *logAct;
     QAction *aboutDeviceAct;
     QAction *designerPacketAct;
+    QAction *printAct;
 };
 
 #endif // MAINWINDOW_H

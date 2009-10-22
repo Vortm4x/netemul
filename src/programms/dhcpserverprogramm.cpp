@@ -23,10 +23,17 @@
 #include "smartdevice.h"
 #include "udpsocket.h"
 #include "udppacket.h"
+#include "dhcpservermodel.h"
 
 dhcpServerProgramm::dhcpServerProgramm()
 {
     myName = tr("DHCP server");
+    myDhcpModel = new dhcpServerModel;
+}
+
+dhcpServerProgramm::~dhcpServerProgramm()
+{
+    delete myDhcpModel;
 }
 
 void dhcpServerProgramm::setDevice(smartDevice *s)
@@ -49,9 +56,8 @@ void dhcpServerProgramm::execute(QByteArray data)
     xid = packet.xid();
     dhcpPacket dhcp;
     if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {
-        if ( myStatics.isEmpty() ) return;
-        foreach ( staticRecord *i, myStatics )
-            if ( i->chaddr == packet.chaddr() ) dhcp = buildOffer( i );
+        staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
+        if ( rec ) dhcp = buildOffer( rec );
     }
     udpPacket udp;
     udp.setSender( SERVER_SOCKET );
@@ -63,19 +69,6 @@ void dhcpServerProgramm::execute(QByteArray data)
     myInterface->sendPacket(p);
 }
 
-bool dhcpServerProgramm::containRecord(staticRecord *rec)
-{
-    if ( myStatics.isEmpty() ) return false;
-    foreach (staticRecord *i, myStatics)
-        if ( i == rec ) return true;
-    return false;
-}
-
-void dhcpServerProgramm::addStaticRecord(staticRecord *rec)
-{
-    myStatics << rec;
-}
-
 void dhcpServerProgramm::showProperty()
 {
     dhcpServerProperty *d = new dhcpServerProperty(device);
@@ -83,7 +76,7 @@ void dhcpServerProgramm::showProperty()
     d->exec();
 }
 
-dhcpPacket dhcpServerProgramm::buildOffer(staticRecord *rec) const
+dhcpPacket dhcpServerProgramm::buildOffer(staticDhcpRecord *rec) const
 {
     dhcpPacket p;
     p.setType( dhcpPacket::DHCPOFFER );
@@ -103,9 +96,7 @@ void dhcpServerProgramm::write(QDataStream &stream) const
 {
     stream << DHCPServer;
     programmRep::write(stream);
-    stream << myStatics.size();
-    foreach ( staticRecord *i , myStatics )
-        i->write(stream);
+    myDhcpModel->write(stream);
 }
 //---------------------------------------------------
 /*!
@@ -115,26 +106,7 @@ void dhcpServerProgramm::write(QDataStream &stream) const
 void dhcpServerProgramm::read(QDataStream &stream)
 {
     programmRep::read(stream);
-    int n;
-    stream >> n;
-    for ( int i = 0 ; i < n ; i++ ) {
-        staticRecord *t = new staticRecord;
-        t->read(stream);
-        myStatics << t;
-    }
+    myDhcpModel->read(stream);
 }
 //---------------------------------------------------
 
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
-void staticRecord::write(QDataStream &stream) const
-{
-    stream << chaddr << yiaddr << mask << gateway << time;
-}
-
-void staticRecord::read(QDataStream &stream)
-{
-    stream >> chaddr >> yiaddr >> mask >> gateway >> time;
-}

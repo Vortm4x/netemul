@@ -21,22 +21,13 @@
 #define DHCPSERVERPROGRAMM_H
 
 #include "programmrep.h"
-#include "macaddress.h"
-#include "ipaddress.h"
+
 
 class udpSocket;
 class dhcpPacket;
 class interface;
-
-struct staticRecord {
-    macAddress chaddr;
-    ipAddress yiaddr;
-    ipAddress mask;
-    ipAddress gateway;
-    int time;
-    void write(QDataStream &stream) const;
-    void read(QDataStream &stream);
-};
+class staticDhcpRecord;
+class dhcpServerModel;
 
 class dhcpServerProgramm : public programmRep
 {
@@ -44,25 +35,23 @@ class dhcpServerProgramm : public programmRep
 public:
     enum { DHCPServer = 52 , CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
     dhcpServerProgramm();
-    ~dhcpServerProgramm() { }
+    ~dhcpServerProgramm();
     void setDevice(smartDevice *s);
     void setInterface( QString inter );
-    void showProperty();
-    bool containRecord( staticRecord *rec);
-    void addStaticRecord(staticRecord *rec);
-    dhcpPacket buildOffer(staticRecord *rec) const;
-    QList<staticRecord*> statics() const { return myStatics; }
+    void showProperty();    
+    dhcpPacket buildOffer(staticDhcpRecord *rec) const;
     void incTime() { }
     bool interrupt(int) { return false; }
+    dhcpServerModel* dhcpModel() { return myDhcpModel; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 public slots:
     void execute(QByteArray data);
 private:
-    QList<staticRecord*> myStatics;
     interface *myInterface;
     int xid;
     udpSocket *receiver;
+    dhcpServerModel *myDhcpModel;
 };
 
 #endif // DHCPSERVERPROGRAMM_H

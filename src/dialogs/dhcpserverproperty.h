@@ -24,6 +24,7 @@
 #include "ipedit.h"
 
 class dhcpServerProgramm;
+class dhcpServerModel;
 class smartDevice;
 
 class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
@@ -41,6 +42,7 @@ protected:
     void changeEvent(QEvent *e);
 private:
     dhcpServerProgramm *myProgramm;
+    dhcpServerModel *myModel;
     smartDevice *device;
 };
 

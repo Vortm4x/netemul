@@ -32,7 +32,7 @@ routeModel::~routeModel()
 
 int routeModel::rowCount(const QModelIndex &r) const
 {
-    if ( r.isValid() ||( table.count() == 0 ) ) return 0;
+    if ( r.isValid() || table.isEmpty() ) return 0;
     return table.size();
 }
 

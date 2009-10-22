@@ -19,6 +19,7 @@
 ****************************************************************************************/
 #include "dhcpserverproperty.h"
 #include "dhcpserverprogramm.h"
+#include "dhcpservermodel.h"
 #include "smartdevice.h"
 
 dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
@@ -26,10 +27,6 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
     setupUi(this);
     device = dev;
     setAttribute(Qt::WA_DeleteOnClose);
-    QStringList list;
-    list << tr("Mac") << tr("Ip") << tr("Mask") << tr("Gateway");
-    tw_static->setHorizontalHeaderLabels(list);
-    tw_static->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     foreach ( interface *i, device->interfaces() )
         if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
 }
@@ -37,20 +34,18 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 {
     myProgramm = prog;
-    foreach ( staticRecord *i, myProgramm->statics() ) {
-        tw_static->insertRow( tw_static->rowCount() );
-
-    }
+    myModel = myProgramm->dhcpModel();
+    tv_static->setModel( myModel );
 }
 
 void dhcpServerProperty::addRecord()
 {
-    tw_static->insertRow(tw_static->rowCount());
+    myModel->insertRow( myModel->rowCount() );
 }
 
 void dhcpServerProperty::deleteRecord()
 {
-    tw_static->removeRow(tw_static->currentRow());
+    myModel->removeRow( tv_static->currentIndex().row() );
 }
 
 void dhcpServerProperty::changeState(bool b)
@@ -63,16 +58,6 @@ void dhcpServerProperty::changeState(bool b)
 
 void dhcpServerProperty::apply()
 {
-    for ( int i = 0; i < tw_static->rowCount(); i++ ) {
-        staticRecord *rec = new staticRecord;
-        rec->chaddr = macAddress(tw_static->item(i,0)->text());
-        rec->yiaddr = ipAddress(tw_static->item(i,1)->text());
-        rec->mask = ipAddress(tw_static->item(i,2)->text());
-        rec->gateway = ipAddress(tw_static->item(i,3)->text());
-        rec->time = sb_time->value();
-        if ( !myProgramm->containRecord(rec) ) myProgramm->addStaticRecord(rec);
-        myProgramm->setInterface( cb_interface->currentText() );
-    }
     accept();
 }
 

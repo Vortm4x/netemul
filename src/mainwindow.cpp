@@ -152,6 +152,7 @@ void MainWindow::retranslate()
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
     UPDATEACTION( designerPacketAct , tr("Packet desinger") , tr("Create user's packet") )
+    UPDATEACTION( printAct , tr("Print") , tr("Print user's network") )
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -277,6 +278,9 @@ void MainWindow::createAction()
     connect( aboutDeviceAct , SIGNAL(triggered()), SLOT(helpDialog()) );
 
     designerPacketAct = createOneAction( QIcon(":/im/images/cogwheel.png") );
+
+    printAct = createOneAction();
+    connect( printAct , SIGNAL(triggered()) , SLOT(printDialog()) );
 }
 
 //Создаем меню
@@ -290,6 +294,7 @@ void MainWindow::createMenu()
     fileMenu->addAction(saveAsAct);
     fileMenu->addAction(closeAct);
     fileMenu->addSeparator();
+    //fileMenu->addAction(printAct);
     fileMenu->addAction(exitAct);
 
     editMenu = menuBar()->addMenu(QString());
@@ -637,6 +642,11 @@ void MainWindow::aboutDialog()
 {
     aboutWindow *w = new aboutWindow;
     w->show();
+}
+
+void MainWindow::printDialog()
+{
+
 }
 
 void MainWindow::changeEvent(QEvent *e)
