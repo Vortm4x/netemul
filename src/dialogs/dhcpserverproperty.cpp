@@ -21,6 +21,8 @@
 #include "dhcpserverprogramm.h"
 #include "dhcpservermodel.h"
 #include "smartdevice.h"
+#include "macaddressdelegate.h"
+#include "ipaddressdelegate.h"
 
 dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
 {    
@@ -29,18 +31,30 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
     setAttribute(Qt::WA_DeleteOnClose);
     foreach ( interface *i, device->interfaces() )
         if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
+    macDelegate = new macAddressDelegate(this);
+    ipDelegate = new ipAddressDelegate(this);
+    tv_static->setItemDelegateForColumn(0, macDelegate );
+    for ( int i = 1 ; i <= 4 ; i++ )
+        tv_static->setItemDelegateForColumn(i,ipDelegate);
+}
+
+dhcpServerProperty::~dhcpServerProperty()
+{
+    delete macDelegate;
 }
 
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 {
     myProgramm = prog;
-    myModel = myProgramm->dhcpModel();
+    myModel = myProgramm->dhcpModel();   
     tv_static->setModel( myModel );
+    QHeaderView *h = tv_static->horizontalHeader();
+    h->setResizeMode( QHeaderView::Stretch );
 }
 
 void dhcpServerProperty::addRecord()
 {
-    myModel->insertRow( myModel->rowCount() );
+    myModel->insertRow( myModel->rowCount() );   
 }
 
 void dhcpServerProperty::deleteRecord()

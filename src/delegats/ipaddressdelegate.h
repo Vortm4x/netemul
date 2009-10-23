@@ -17,42 +17,24 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#ifndef IPEDIT_H
-#define IPEDIT_H
+#ifndef IPADDRESSDELEGATE_H
+#define IPADDRESSDELEGATE_H
 
-#include <QWidget>
-#include "ipaddress.h"
+#include <QItemDelegate>
 
-class QLineEdit;
-class QLabel;
-/**
-  Виджет для ввода ip адреса.
-*/
-class ipEdit : public QWidget
+class ipAddressDelegate : public QItemDelegate
 {
-    Q_OBJECT
-    Q_PROPERTY( QString labelText READ labelText WRITE setLabelText DESIGNABLE true)
-public:                
-    ipEdit(QWidget *parent = 0, QString str = "");
-    void setText(QString str);
-    ipAddress ipText() const { return ipAddress(text()); }
-    QString text() const;
-    void setLabelText(const QString text);
-    QString labelText() const;
-    void clear();   
-    QSize sizeHint() const;
-    void setLabelVisible(bool isVisible);
-public slots:
-    void setDefaultMask(quint8 u);
-    void changeMask(QString s);
-private:
-    QLabel *label;
-    QLineEdit *part[4];
-signals:
-    void textChanged(QString);
-    void maskChanged(quint8);
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+public:
+    ipAddressDelegate(QObject *parent = 0);
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&,
+                           const QModelIndex&) const;
+
+    void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    void setModelData(QWidget *editor, QAbstractItemModel *model,
+                       const QModelIndex &index) const;
+
+    void updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,
+                               const QModelIndex&) const;
 };
-//-----------------------------------------
-#endif // IPEDIT_H
+
+#endif // IPADDRESSDELEGATE_H

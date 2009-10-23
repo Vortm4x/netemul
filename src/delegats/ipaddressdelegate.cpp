@@ -17,42 +17,34 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#ifndef IPEDIT_H
-#define IPEDIT_H
+#include "ipaddressdelegate.h"
+#include <QLineEdit>
 
-#include <QWidget>
-#include "ipaddress.h"
-
-class QLineEdit;
-class QLabel;
-/**
-  Виджет для ввода ip адреса.
-*/
-class ipEdit : public QWidget
+ipAddressDelegate::ipAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
 {
-    Q_OBJECT
-    Q_PROPERTY( QString labelText READ labelText WRITE setLabelText DESIGNABLE true)
-public:                
-    ipEdit(QWidget *parent = 0, QString str = "");
-    void setText(QString str);
-    ipAddress ipText() const { return ipAddress(text()); }
-    QString text() const;
-    void setLabelText(const QString text);
-    QString labelText() const;
-    void clear();   
-    QSize sizeHint() const;
-    void setLabelVisible(bool isVisible);
-public slots:
-    void setDefaultMask(quint8 u);
-    void changeMask(QString s);
-private:
-    QLabel *label;
-    QLineEdit *part[4];
-signals:
-    void textChanged(QString);
-    void maskChanged(quint8);
-protected:
-    bool eventFilter(QObject *obj, QEvent *event);
-};
-//-----------------------------------------
-#endif // IPEDIT_H
+}
+
+QWidget* ipAddressDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+{
+    QLineEdit *line = new QLineEdit(parent);
+    return line;
+}
+
+void ipAddressDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+{
+    QString data = index.model()->data(index,Qt::EditRole ).toString();
+    QLineEdit *line = static_cast<QLineEdit*>(editor);
+    line->setText(data);
+}
+
+void ipAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const
+{
+    QLineEdit *line = static_cast<QLineEdit*>(editor);
+    QString data = line->text();
+    model->setData(index,data,Qt::EditRole);
+}
+
+void ipAddressDelegate::updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex&) const
+{
+    editor->setGeometry( option.rect );
+}

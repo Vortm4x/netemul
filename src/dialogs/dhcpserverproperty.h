@@ -26,12 +26,15 @@
 class dhcpServerProgramm;
 class dhcpServerModel;
 class smartDevice;
+class macAddressDelegate;
+class ipAddressDelegate;
 
 class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 {
     Q_OBJECT
 public:
     dhcpServerProperty(smartDevice *dev,QWidget *parent = 0);
+    ~dhcpServerProperty();
     void setProgramm( dhcpServerProgramm *prog );
 public slots:
     void addRecord();
@@ -41,6 +44,8 @@ public slots:
 protected:
     void changeEvent(QEvent *e);
 private:
+    macAddressDelegate *macDelegate;
+    ipAddressDelegate *ipDelegate;
     dhcpServerProgramm *myProgramm;
     dhcpServerModel *myModel;
     smartDevice *device;

@@ -21,7 +21,8 @@
 
 dhcpServerModel::~dhcpServerModel()
 {
-    qDebug("Nastya i'm destructor of dhcpServerModel, fix me please!!!");
+    qDeleteAll(table);
+    table.clear();
 }
 
 int dhcpServerModel::rowCount( const QModelIndex &r/* = QModelIndex() */) const
@@ -52,14 +53,15 @@ QVariant dhcpServerModel::headerData( int s , Qt::Orientation o, int role ) cons
 
 Qt::ItemFlags dhcpServerModel::flags(const QModelIndex &r) const
 {
-    return QAbstractTableModel::flags(r);
+    if ( !r.isValid() ) return Qt::ItemIsEditable;
+    return QAbstractTableModel::flags(r) | Qt::ItemIsEditable;
 }
 
 QVariant dhcpServerModel::data(const QModelIndex &r, int role/* = Qt::DisplayRole */) const
 {
     if ( !r.isValid() || table.isEmpty() ) return QVariant();
     staticDhcpRecord *rec = table.at( r.row() );
-    if ( role == Qt::DisplayRole )
+    if ( role == Qt::DisplayRole || role == Qt::EditRole )
         switch( r.column() ) {
             case 0: return rec->chaddr.toString();
             case 1: return rec->yiaddr.toString();
@@ -67,6 +69,24 @@ QVariant dhcpServerModel::data(const QModelIndex &r, int role/* = Qt::DisplayRol
             case 3: return rec->gateway.toString();
         }
     return QVariant();
+}
+
+bool dhcpServerModel::setData(const QModelIndex &index, const QVariant &value, int role/* = Qt::EditRole*/)
+{
+    if ( index.isValid() && role == Qt::EditRole ) {
+        staticDhcpRecord *rec = table.at(index.row());
+        if ( value.toString().isEmpty() ) return false;
+        switch ( index.column() ) {
+            case 0: rec->chaddr.setMac(value.toString()); break;
+            case 1: rec->yiaddr.setIp(value.toString()); break;
+            case 2: rec->mask.setIp(value.toString()); break;
+            case 3: rec->gateway.setIp(value.toString()); break;
+        }
+        table.replace( index.row(), rec);
+        emit dataChanged(index, index);
+        return true;
+    }
+    return false;
 }
 
 bool dhcpServerModel::insertRow(int row,const QModelIndex &parent)

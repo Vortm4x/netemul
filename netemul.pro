@@ -11,6 +11,7 @@ include(src/tools/tools.pri)
 include(src/packets/packets.pri)
 include(src/states/states.pri)
 include(src/commands/commands.pri)
+include(src/delegats/delegats.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -30,7 +31,8 @@ INCLUDEPATH += . \
     src/tools \
     src/packets \
     src/states \
-    src/commands
+    src/commands \
+    src/delegats
 QT += script
 
 # Default translations path

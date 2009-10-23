@@ -137,6 +137,11 @@ bool ipEdit::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj,event);
 }
 
+void ipEdit::setLabelVisible(bool isVisible)
+{
+    label->setVisible(isVisible);
+}
+
 void ipEdit::setLabelText(const QString text)
 {
     label->setText(text);
