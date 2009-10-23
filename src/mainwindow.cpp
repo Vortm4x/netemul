@@ -71,11 +71,15 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(view);
     retranslate();
     setOpenglMode( appSetting::hasOpengl() );
+    printer = 0;
+    printerPainter = 0;
 }
 
 MainWindow::~MainWindow()
 {
-
+    if ( printer ) {
+        delete printer;
+    }
 }
 
 //Событие закрытия
@@ -279,7 +283,7 @@ void MainWindow::createAction()
 
     designerPacketAct = createOneAction( QIcon(":/im/images/cogwheel.png") );
 
-    printAct = createOneAction();
+    printAct = createOneAction( QIcon(":/im/images/print.png") );
     connect( printAct , SIGNAL(triggered()) , SLOT(printDialog()) );
 }
 
@@ -294,7 +298,8 @@ void MainWindow::createMenu()
     fileMenu->addAction(saveAsAct);
     fileMenu->addAction(closeAct);
     fileMenu->addSeparator();
-    //fileMenu->addAction(printAct);
+    fileMenu->addAction(printAct);
+    fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
     editMenu = menuBar()->addMenu(QString());
@@ -451,6 +456,7 @@ void MainWindow::setEnabledFileItems(bool cur)
     saveAct->setEnabled(cur);
     saveAsAct->setEnabled(cur);
     showGridAct->setEnabled(cur);
+    printAct->setEnabled(cur);
 }
 /*!
     Слот вызываемый при изменении выделения на сцене.
@@ -646,7 +652,16 @@ void MainWindow::aboutDialog()
 
 void MainWindow::printDialog()
 {
-
+    if ( !printer ) {
+        printer = new QPrinter(QPrinter::HighResolution);
+    }
+    QPrintDialog dialog(printer,this);
+    if ( dialog.exec() == QDialog::Accepted ) {
+        printer->setDocName(file());
+        printerPainter = new QPainter(printer);
+        view->render(printerPainter);
+        printerPainter->end();
+    }
 }
 
 void MainWindow::changeEvent(QEvent *e)

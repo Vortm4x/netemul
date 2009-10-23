@@ -35,6 +35,8 @@ class QComboBox;
 class QMenu;
 class QAction;
 class QGraphicsView;
+class QPainter;
+class QPrinter;
 
 /*!
     Реализует главное окно программы.
@@ -80,6 +82,9 @@ private:
     myCanvas *canva;
     sceneControl *sceneControler;
     QGraphicsView *view; // Графическое представление нашей сцены
+
+    QPainter *printerPainter;
+    QPrinter *printer;
 
     void createMenu(); // Функция создания меню
     void createAction(); // -- событий
