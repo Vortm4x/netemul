@@ -51,7 +51,7 @@ class frame
 {
 public:
     enum { arp = 100 , ip = 101 };
-    enum { normal = 3 , broadcast = 4 };
+    enum { NORMAL = 3 , BROADCAST = 4 };
     frame() { d = new frameData; }
     frame(const frame &other) : d(other.d) { }
     frame(const QByteArray &b);

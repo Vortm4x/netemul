@@ -59,6 +59,8 @@ void devicePort::queueEvent()
     if ( senderQueue.isEmpty() ) return;
     if ( !myShared && myCable->isShared() && myCable->isBusy(this) ) return;
     frame t = senderQueue.dequeue();
+    if ( t.receiver().isBroadcast() ) t.setDifferent( frame::BROADCAST );
+    else t.setDifferent( frame::NORMAL );
     myCable->input(t.toData(),this);
 }
 //---------------------------------------------------

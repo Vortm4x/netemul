@@ -77,6 +77,7 @@ interface* smartDevice::ipToAdapter(const ipAddress a)
 
 void smartDevice::receivePacket(ipPacket p)
 {
+    if ( p.decTtl() == 0 ) return;
     interface *f = qobject_cast<interface*>(sender());
     if ( p.receiver() == f->ip() || p.isBroadcast(f->mask()) ) treatPacket(p);
     else routePacket(p);

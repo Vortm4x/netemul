@@ -43,7 +43,7 @@ QString frame::toString() const
 
 frameData::frameData()
 {
-    different = frame::normal;
+    different = frame::NORMAL;
 }
 
 QByteArray frameData::toArray() const

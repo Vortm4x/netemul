@@ -23,7 +23,7 @@ ipPacket::ipPacket(const QByteArray &b)
 {
     d = new ipPacketData;
     QDataStream s(b);
-    s >> d->sender >> d->receiver >> d->upProtocol >> d->data;
+    s >> d->sender >> d->receiver >> d->upProtocol >> d->data >> d->ttl;
 }
 
 ipPacket::ipPacket(ipAddress s,ipAddress r)
@@ -52,7 +52,7 @@ QByteArray ipPacket::toData() const
 QString ipPacket::toString() const
 {
     QString temp;
-    temp.append(QObject::tr("IP packet, sender: %1, receiver: %2").arg(d->sender.toString()).arg(d->receiver.toString()));
+    temp.append(QObject::tr("IP packet, sender: %1, receiver: %2 TTL: %3").arg(d->sender.toString()).arg(d->receiver.toString()).arg(d->ttl));
     return temp;
 }
 
@@ -64,6 +64,11 @@ quint16 ipPacket::receiverSocket() const
     return t;
 }
 
+quint8 ipPacket::decTtl()
+{
+    d->ttl--;
+    return d->ttl;
+}
 //----------------------------------------------------
 //----------------------------------------------------
 
@@ -74,7 +79,7 @@ QByteArray ipPacketData::toData() const
 {
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);
-    s << sender << receiver << upProtocol << data;
+    s << sender << receiver << upProtocol << data << ttl;
     return t;
 }
 
@@ -87,5 +92,6 @@ ipPacketData::ipPacketData(const ipPacketData &other) : QSharedData(other)
     receiver = other.receiver;
     data = other.data;
     upProtocol = other.upProtocol;
+    ttl = other.ttl;
 }
 

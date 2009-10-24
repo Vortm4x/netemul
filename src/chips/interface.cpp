@@ -61,7 +61,6 @@ void interface::receiveEvent(frame &fr,devicePort*)
 void interface::sendBroadcast(ipPacket &p)
 {
     frame f = createFrame( macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
-    f.setDifferent( frame::broadcast );
     f.pack( p.toData() );
     pushToSocket(f);
 }
@@ -177,7 +176,6 @@ void interface::sendArpRequest(ipAddress a)
     macAddress m;
     m.setBroadcast();
     frame f = createFrame(m, frame::arp);
-    f.setDifferent(frame::broadcast);
     f.pack(p.toData());
     pushToSocket(f);
 }
@@ -187,7 +185,6 @@ void interface::sendArpResponse(macAddress m, ipAddress a)
     arpPacket p(m, myMac, a, myIp, arpPacket::response);
     frame f = createFrame(m, frame::arp);
     f.pack(p.toData());
-    f.setDifferent(frame::normal);
     pushToSocket(f);
 }
 
