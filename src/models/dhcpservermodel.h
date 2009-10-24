@@ -34,7 +34,7 @@ struct staticDhcpRecord {
     void read(QDataStream &stream);
 };
 
-static const int COLUMN_COUNT = 4;
+static const int COLUMN_COUNT = 5;
 
 class dhcpServerModel : public QAbstractTableModel
 {

@@ -28,7 +28,7 @@ dhcpPacket::dhcpPacket(const QByteArray &data)
 {
     d = new dhcpPacketData;
     QDataStream s(data);
-    s >> d->xid >> d->type >> d->yiaddr >> d->siaddr >> d->chaddr;
+    s >> d->xid >> d->type >> d->yiaddr >> d->siaddr >> d->chaddr >> d->mask >> d->gateway >> d->time;
 }
 /*!
   * Выполняет сериализацию.
@@ -55,6 +55,9 @@ dhcpPacketData::dhcpPacketData(const dhcpPacketData &other) : QSharedData(other)
     yiaddr = other.yiaddr;
     siaddr = other.siaddr;
     chaddr = other.chaddr;
+    mask = other.mask;
+    gateway = other.gateway;
+    time = other.time;
 }
 /*!
   * Преобразует содержимое в последовательность байт.
@@ -63,7 +66,7 @@ QByteArray dhcpPacketData::toData() const
 {
     QByteArray d;
     QDataStream s(&d, QIODevice::WriteOnly);
-    s << xid << type << yiaddr << siaddr << chaddr;
+    s << xid << type << yiaddr << siaddr << chaddr << mask << gateway << time;
     return d;
 }
 //-------------------------------------------------------------------------------------------

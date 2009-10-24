@@ -27,7 +27,7 @@
 class dhcpPacketData : public QSharedData
 {
 public:
-    dhcpPacketData() { }
+    dhcpPacketData() { time = 0; }
     dhcpPacketData(const dhcpPacketData &other);
     ~dhcpPacketData() { }
     QByteArray toData() const;

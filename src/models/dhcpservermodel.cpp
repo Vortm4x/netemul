@@ -46,6 +46,7 @@ QVariant dhcpServerModel::headerData( int s , Qt::Orientation o, int role ) cons
             case 1: return tr("Ip-address");
             case 2: return tr("Mask");
             case 3: return tr("Gateway");
+            case 4: return tr("Time");
         }
     else return s+1;
     return QVariant();
@@ -67,6 +68,7 @@ QVariant dhcpServerModel::data(const QModelIndex &r, int role/* = Qt::DisplayRol
             case 1: return rec->yiaddr.toString();
             case 2: return rec->mask.toString();
             case 3: return rec->gateway.toString();
+            case 4: return rec->time;
         }
     return QVariant();
 }
@@ -81,6 +83,7 @@ bool dhcpServerModel::setData(const QModelIndex &index, const QVariant &value, i
             case 1: rec->yiaddr.setIp(value.toString()); break;
             case 2: rec->mask.setIp(value.toString()); break;
             case 3: rec->gateway.setIp(value.toString()); break;
+            case 4: rec->time = value.toInt(); break;
         }
         table.replace( index.row(), rec);
         emit dataChanged(index, index);

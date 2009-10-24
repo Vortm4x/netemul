@@ -72,6 +72,7 @@ void dhcpServerProperty::changeState(bool b)
 
 void dhcpServerProperty::apply()
 {
+    myProgramm->setInterface(cb_interface->currentText());
     accept();
 }
 

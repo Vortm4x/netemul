@@ -51,6 +51,8 @@ public:
     void setMac(const macAddress &m) { myMac = m; }
     void setIp(const QString str) { if ( !str.isEmpty() ) myIp.setIp(str); }
     void setMask(const QString str) { if ( !str.isEmpty() ) myMask.setIp(str); }
+    void setIp(const ipAddress address) { myIp = address; }
+    void setMask(const ipAddress address) { myMask = address; }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
     statistics chipStatistics() { return myStatistics; }

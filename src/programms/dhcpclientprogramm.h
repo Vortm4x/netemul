@@ -22,8 +22,9 @@
 
 #include <QIcon>
 #include "programmrep.h"
+#include "dhcppacket.h"
 
-static const int FIVE_MINUTE = 300;
+static const int MINUTE = 60;
 
 class interface;
 class udpSocket;
@@ -32,6 +33,8 @@ struct interfaceState {
     enum { CS_NONE , CS_WAIT_VARIANT , CS_WAIT_RESPONSE , CS_ALL_RIGHT };
     int state;
     int xid;
+    int time;
+    ipAddress serverAddress;
     QString name;
     interface *adapter;
 };
@@ -55,12 +58,18 @@ public:
     Qt::CheckState checkedState(const QString &name) const;
 public slots:
     void deleteInterface(const QString name);
+private slots:
+    void processData(QByteArray data);
 private:
+    void sendDhcpMessage(dhcpPacket message, interfaceState *state);
+    void sendRequest(const QString &name);
+    void sendDiscover(const QString &name);
+    void receiveOffer(dhcpPacket packet);
+    void receiveAck(dhcpPacket packet);
+    void restartSession( interfaceState *state);
     interfaceState* stateAt(const QString name);
     udpSocket *listener;
     QList<interfaceState*> states;
-    void sendDiscover(const QString &name);
-    int time;
 };
 
 #endif // DHCPCLIENTPROGRAMM_H

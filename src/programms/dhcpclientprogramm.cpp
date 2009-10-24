@@ -20,14 +20,12 @@
 #include "dhcpclientprogramm.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
-#include "dhcppacket.h"
 #include "dhcpclientproperty.h"
 #include "udppacket.h"
 
 dhcpClientProgramm::dhcpClientProgramm()
 {
     myName = tr("DHCP client");
-    time = 0;
 }
 
 dhcpClientProgramm::~dhcpClientProgramm()
@@ -38,7 +36,14 @@ dhcpClientProgramm::~dhcpClientProgramm()
 
 void dhcpClientProgramm::incTime()
 {
-    time++;
+    foreach ( interfaceState *i , states ) {
+        --i->time;
+        qDebug("%d - state: %d",i->time , i->state);
+        switch ( i->state ) {
+            case interfaceState::CS_ALL_RIGHT: if ( i->time == 0 ) restartSession(i); break;
+            case interfaceState::CS_WAIT_VARIANT: if ( i->time == 0 ) sendDiscover( i->name ); break;
+        }
+    }
 }
 /*!
   * Переопределяем функцию установки устройства чтобы соединиться со слотом.
@@ -49,7 +54,24 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
     programmRep::setDevice(s);
     listener = new udpSocket(s,CLIENT_SOCKET);
     listener->setBind("0.0.0.0");
+    connect( listener , SIGNAL(readyRead(QByteArray)) , SLOT(processData(QByteArray)) );
     connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
+}
+//------------------------------------------------------
+/*!
+  Посылает Request серверу
+  @param name - имя интерфейса
+  */
+void dhcpClientProgramm::sendRequest(const QString &name)
+{
+    interfaceState *t = stateAt(name);
+    if ( !t ) return;
+    dhcpPacket message;
+    message.setType( dhcpPacket::DHCPREQUEST );
+    message.setXid( t->xid );
+    message.setChaddr( t->adapter->mac() );
+    message.setSiaddr( t->serverAddress );
+    sendDhcpMessage(message,t);
 }
 //------------------------------------------------------
 /*!
@@ -60,19 +82,85 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
 { 
     interfaceState *t = stateAt(name);
     if ( !t ) return;
+    t->time = MINUTE;
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
     message.setChaddr( t->adapter->mac() );
+    sendDhcpMessage(message,t);
+}
+//--------------------------------------------------------------
+/*!
+  Обрабатывает входящие данные.
+  @param data - пришедщие данные.
+  */
+void dhcpClientProgramm::processData(QByteArray data)
+{
+    dhcpPacket packet(data);
+    switch ( packet.type() ) {
+        case dhcpPacket::DHCPOFFER: receiveOffer(packet); break;
+        case dhcpPacket::DHCPACK: receiveAck(packet); break;
+    }
+}
+//---------------------------------------------------------------
+/*!
+  Начинает заново сессию
+  @param state - указатель на сессию
+  */
+void dhcpClientProgramm::restartSession(interfaceState *state)
+{
+    qFatal("Implement it!");
+}
+//---------------------------------------------------------------
+/*!
+  Обрабатывает входящее предложение настроек.
+  @param packet - пакет с настройками.
+  */
+void dhcpClientProgramm::receiveOffer(dhcpPacket packet)
+{
+    foreach ( interfaceState *i , states )
+        if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_VARIANT ) {
+            i->state = interfaceState::CS_WAIT_RESPONSE;
+            i->serverAddress = packet.siaddr();
+            sendRequest( i->name );
+            return;
+        }
+}
+//---------------------------------------------------------------
+/*!
+  Обрабатывает вхоодящий АСК.
+  @param packet - ack пакет
+  */
+void dhcpClientProgramm::receiveAck(dhcpPacket packet)
+{
+    foreach ( interfaceState *i , states )
+        if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_RESPONSE ) {
+            i->state = interfaceState::CS_ALL_RIGHT;
+            i->adapter->setIp( packet.yiaddr() );
+            i->adapter->setMask( packet.mask() );
+            device->connectedNet(i->adapter);
+            device->setGateway( packet.gateway().toString() );
+            i->time = packet.time();
+        }
+}
+//---------------------------------------------------------------
+/*!
+  Отправляет пакет с нужного интерфейса.
+  @param message - пакет.
+  @param state - поток-отправитель.
+  */
+void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *state)
+{
     udpPacket udp;
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
     udp.pack( message.toData() );
-    ipPacket packet( t->adapter->ip() , ipAddress::full() );
+    ipPacket packet( state->adapter->ip() , ipAddress::full() );
     packet.pack( udp.toData() );
-    t->adapter->sendPacket( packet);
+    packet.setUpProtocol( ipPacket::udp );
+    state->adapter->sendPacket( packet);
 }
-//--------------------------------------------------------------
+//---------------------------------------------------------------
 /*!
   * Показывает диалог программы.
   */
@@ -139,8 +227,9 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     interfaceState *session = new interfaceState;
     session->name = name;
     session->xid = qrand()%5000;
-    session->state = interfaceState::CS_NONE;
+    session->state = interfaceState::CS_WAIT_VARIANT;
     session->adapter = device->adapter(name);
+    session->time = 0;
     states << session;
     sendDiscover(session->name);
 }
