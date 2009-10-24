@@ -97,7 +97,7 @@ bool dhcpServerModel::insertRow(int row,const QModelIndex &parent)
     Q_UNUSED(parent);
     staticDhcpRecord *newRecord = new staticDhcpRecord;
     newRecord->time = 0;
-    table.insert(row,newRecord);
+    table << newRecord;
     reset();
     return true;
 }
@@ -111,7 +111,7 @@ bool dhcpServerModel::removeRow(int row, const QModelIndex &parent)
     return true;
 }
 
-bool dhcpServerModel::containRecord(staticDhcpRecord *rec)
+bool dhcpServerModel::containRecord(staticDhcpRecord *rec) const
 {
     if ( table.isEmpty() ) return false;
     foreach ( staticDhcpRecord *i, table )
@@ -119,11 +119,19 @@ bool dhcpServerModel::containRecord(staticDhcpRecord *rec)
     return false;
 }
 
-staticDhcpRecord* dhcpServerModel::recordWithMac(macAddress cha)
+bool dhcpServerModel::containRecord(ipAddress ip) const
+{
+    if ( table.isEmpty() ) return false;
+    foreach ( staticDhcpRecord *i, table )
+        if ( i->yiaddr == ip ) return true;
+    return false;
+}
+
+staticDhcpRecord* dhcpServerModel::recordWithMac(macAddress cha) const
 {
     if ( table.isEmpty() ) return 0;
     foreach ( staticDhcpRecord *i, table )
-        if ( i->chaddr == cha ) return i;
+        if ( i->chaddr == cha ) { qDebug("%d", i->chaddr.toInt() );return i;}
     return 0;
 }
 

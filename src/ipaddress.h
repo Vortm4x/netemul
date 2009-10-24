@@ -30,13 +30,14 @@ public:
     ipAddress(const QString str);
     ipAddress(const char *str);
     ipAddress(const ipAddress &other);
+    ipAddress(const quint32 intIp);
     void setIp(const quint8 *cur);
     void setIp(const QString str);
     QString toString() const;
     bool isEmpty() const;
     bool isLoopBack() const { return myIp[0] == 127; }
     bool isFull() const;
-    unsigned int toInt() const;
+    quint32 toInt() const;
     quint8 at(int i) const { return myIp[i]; }
     ipAddress& operator=(const ipAddress &other);
     ipAddress operator&(const ipAddress &e1) const;
@@ -49,10 +50,11 @@ protected:
     friend QDataStream& operator>>(QDataStream &stream, ipAddress &address);
     friend QDataStream& operator<<(QDataStream &stream, const ipAddress &address);
 };
-inline unsigned int ipAddress::toInt() const
+inline quint32 ipAddress::toInt() const
 {
     return ( (myIp[0] << 24) + (myIp[1] << 16) + (myIp[2] << 8) +myIp[3]);
 }
+
 inline bool operator<(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() < e2.toInt(); }
 inline bool operator>(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() > e2.toInt(); }
 inline bool operator<=(const ipAddress &e1 , const ipAddress &e2) { return !(e1.toInt() > e2.toInt()); }

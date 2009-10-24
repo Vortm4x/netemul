@@ -102,6 +102,7 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
             return;
         }
         scene->putItems(coordMap);
+        coordMap.clear();
     }
     else {
         if ( !SelectRect ) return;

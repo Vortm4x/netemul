@@ -99,7 +99,10 @@ unix {
     translations.path = $${TRANSLATIONS_PATH}
     translations.files = ../translation/netemul_es.qm \
         ../translation/netemul_pt_BR.qm \
-        ../translation/netemul_ru.qm
+        ../translation/netemul_ru.qm \
+        ../translation/qt_es.qm \
+        ../translation/qt_pt.qm \
+        ../translation/qt_ru.qm
     INSTALLS += translations
     
     # Icons

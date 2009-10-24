@@ -34,7 +34,7 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
     macDelegate = new macAddressDelegate(this);
     ipDelegate = new ipAddressDelegate(this);
     tv_static->setItemDelegateForColumn(0, macDelegate );
-    for ( int i = 1 ; i <= 4 ; i++ )
+    for ( int i = 1 ; i <= 3 ; i++ )
         tv_static->setItemDelegateForColumn(i,ipDelegate);
 }
 
@@ -50,6 +50,13 @@ void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
     tv_static->setModel( myModel );
     QHeaderView *h = tv_static->horizontalHeader();
     h->setResizeMode( QHeaderView::Stretch );
+    cb_dynamic->setChecked(myProgramm->dynamic());
+    sb_time->setValue(myProgramm->time());
+    ie_begin->setText(myProgramm->beginIp().toString());
+    ie_end->setText(myProgramm->endIp().toString());
+    ie_mask->setText(myProgramm->mask().toString());
+    ie_gatew->setText(myProgramm->gateway().toString());
+    cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
 }
 
 void dhcpServerProperty::addRecord()
@@ -68,11 +75,19 @@ void dhcpServerProperty::changeState(bool b)
     ie_end->setEnabled(b);
     ie_mask->setEnabled(b);
     ie_gatew->setEnabled(b);
+    sb_time->setEnabled(b);
+    lb_term->setEnabled(b);
 }
 
 void dhcpServerProperty::apply()
 {
     myProgramm->setInterface(cb_interface->currentText());
+    myProgramm->setBegin(ie_begin->ipText());
+    myProgramm->setEnd(ie_end->ipText());
+    myProgramm->setMask(ie_mask->ipText());
+    myProgramm->setGateway(ie_gatew->ipText());
+    myProgramm->setTime(sb_time->value());
+    myProgramm->setDynamic(cb_dynamic->isChecked());
     accept();
 }
 

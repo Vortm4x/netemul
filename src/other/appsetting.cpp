@@ -38,7 +38,7 @@ int appSetting::_waitingTime = 45;
 int appSetting::_arpResponceTime = 45;
 bool appSetting::_hasOpengl = false;
 QString appSetting::_scriptPath = "";
-QTranslator* appSetting::mas[LANGUAGE_COUNT];
+QTranslator* appSetting::mas[LANGUAGE_COUNT*2];
 
 appSetting::appSetting()
 {
@@ -58,7 +58,7 @@ void appSetting::defaultNums()
     _speed = 100;
     _language = 0;
     _hasOpengl = false;
-    for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
+    for ( int i = 1 ; i < LANGUAGE_COUNT*2 ; i++)
         QCoreApplication::removeTranslator(mas[i]);
 }
 
@@ -66,10 +66,13 @@ void appSetting::readSetting()
 {
 #ifndef __TESTING__
     QString translationsPath(TRANSLATIONS_PATH);
-    for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) mas[i] = new QTranslator;
+    for ( int i = 0 ; i < LANGUAGE_COUNT*2 ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , translationsPath);
     mas[2]->load("netemul_pt_BR" , translationsPath);
     mas[3]->load("netemul_es" , translationsPath);
+    mas[5]->load("qt_ru", translationsPath);
+    mas[6]->load("qt_pt", translationsPath);
+    mas[7]->load("qt_es", translationsPath);
     QSettings setting("FROST","netemul");
     _defaultComputerCount = setting.value("computer/socketCount",1).toInt() ;
     _defaultHubCount = setting.value("hub/socketCount",4).toInt() ;
@@ -92,7 +95,7 @@ void appSetting::readSetting()
 void appSetting::writeSetting()
 {
 #ifndef __TESTING__
-    for ( int i = 0 ; i < LANGUAGE_COUNT ; i++ ) delete mas[i];
+    for ( int i = 0 ; i < LANGUAGE_COUNT*2 ; i++ ) delete mas[i];
     QSettings setting("FROST","netemul");
     setting.setValue("computer/socketCount" , _defaultComputerCount );
     setting.setValue("hub/socketCount" , _defaultHubCount );
@@ -116,7 +119,8 @@ void appSetting::setLanguage(int n)
 {
     if ( n == _language ) return;
     _language = n;
-    for ( int i = 1 ; i < LANGUAGE_COUNT ; i++)
-        if ( i != n ) QCoreApplication::removeTranslator(mas[i]);
+    for ( int i = 1 ; i < LANGUAGE_COUNT*2 ; i++)
+        if ( i != n%4 ) QCoreApplication::removeTranslator(mas[i]);
     QCoreApplication::installTranslator(mas[n]);
+    QCoreApplication::installTranslator(mas[n+4]);
 }

@@ -38,7 +38,7 @@ void dhcpClientProgramm::incTime()
 {
     foreach ( interfaceState *i , states ) {
         --i->time;
-        qDebug("%d - state: %d",i->time , i->state);
+        //qDebug("%d - state: %d",i->time , i->state);
         switch ( i->state ) {
             case interfaceState::CS_ALL_RIGHT: if ( i->time == 0 ) restartSession(i); break;
             case interfaceState::CS_WAIT_VARIANT: if ( i->time == 0 ) sendDiscover( i->name ); break;

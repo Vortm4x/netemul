@@ -50,8 +50,9 @@ public:
     bool removeRow(int row, const QModelIndex &parent = QModelIndex() );
     bool setData(const QModelIndex &index,const QVariant &value, int role = Qt::EditRole);
 
-    bool containRecord( staticDhcpRecord *rec);
-    staticDhcpRecord* recordWithMac(macAddress cha);
+    bool containRecord( staticDhcpRecord *rec) const;
+    bool containRecord(ipAddress ip) const;
+    staticDhcpRecord* recordWithMac(macAddress cha) const;
     void addStaticRecord(staticDhcpRecord *rec);
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

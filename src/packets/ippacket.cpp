@@ -31,6 +31,7 @@ ipPacket::ipPacket(ipAddress s,ipAddress r)
     d = new ipPacketData;
     d->sender = s ;
     d->receiver = r;
+    d->ttl = 64;
 }
 /*!
   Проверяет является ли пакет широковещательным.

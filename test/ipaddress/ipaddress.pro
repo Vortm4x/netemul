@@ -12,4 +12,4 @@ CONFIG  -= app_bundle
 TEMPLATE = app
 SOURCES += main.cpp \
            ../../src/ipaddress.cpp
-HEADERS += ../../srcipaddress.h
+HEADERS += ../../src/ipaddress.h

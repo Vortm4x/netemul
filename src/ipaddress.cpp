@@ -52,6 +52,14 @@ ipAddress::ipAddress(const ipAddress &other)
         myIp[i] = other.myIp[i];
 }
 
+ipAddress::ipAddress(const quint32 intIp)
+{
+    myIp[0] = intIp >> 24;
+    myIp[1] = intIp >> 16;
+    myIp[2] = intIp >> 8;
+    myIp[3] = intIp;
+}
+
 QString ipAddress::toString() const
 {
     QString temp = QString().setNum(myIp[0]);

@@ -9,6 +9,7 @@ private slots:
     void operators();
     void toInt();
     void isEmpty();
+    void toIp();
 };
 
 void TestIpAddress::saveAndLoad()
@@ -69,6 +70,19 @@ void TestIpAddress::isEmpty()
     QCOMPARE( a.isEmpty() , false );
     a.setIp("0.0.0.0");
     QCOMPARE( a.isEmpty() , true );
+}
+
+void TestIpAddress::toIp()
+{
+    ipAddress address("192.168.1.1");
+    quint32 intIp = address.toInt();
+    QCOMPARE( ipAddress(intIp) , address );
+    address.setIp("0.0.0.0");
+    intIp = address.toInt();
+    QCOMPARE( ipAddress(intIp) , address );
+    address.setIp("255.255.255.255");
+    intIp = address.toInt();
+    QCOMPARE( ipAddress(intIp) , address );
 }
 
 QTEST_MAIN(TestIpAddress)

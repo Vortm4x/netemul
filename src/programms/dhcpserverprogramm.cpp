@@ -24,6 +24,7 @@
 #include "udpsocket.h"
 #include "udppacket.h"
 #include "dhcpservermodel.h"
+#include <QMessageBox>
 
 dhcpServerProgramm::dhcpServerProgramm()
 {
@@ -55,18 +56,27 @@ void dhcpServerProgramm::setInterface(QString inter)
 
 void dhcpServerProgramm::execute(QByteArray data)
 {
+    qDebug() << "YA TUT!!!!";
     dhcpPacket packet(data);
     dhcpPacket dhcp;
-    if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {        
+    bool canSend = false;
+    if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {
         staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
-        if ( !rec ) return;
-        dhcp = buildOffer( rec,packet.xid() );
+        if ( rec ) dhcp = buildOffer( rec,packet.xid() );
+        else if ( myDynamic ) {
+            clientState *client = chooseDynamic(packet.chaddr(),packet.xid());
+            if ( !client ) return;
+            dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
+        }
+        canSend = true;
     }
-    if ( packet.type() == dhcpPacket::DHCPREQUEST ) {
-        clientState *cl = findClient( packet.xid() );
-        if ( !cl )  return;
-        dhcp = createDhcpPacket( cl, dhcpPacket::DHCPACK );
-    }
+    if (packet.type() == dhcpPacket::DHCPREQUEST ) {
+        clientState *client = findClient( packet.xid() );
+        if ( !client )  return;
+        dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
+        canSend = true;
+    }    
+    if ( !canSend ) return;
     udpPacket udp;
     udp.setSender( SERVER_SOCKET );
     udp.setReceiver( CLIENT_SOCKET );
@@ -82,6 +92,46 @@ void dhcpServerProgramm::showProperty()
     dhcpServerProperty *d = new dhcpServerProperty(device);
     d->setProgramm(this);
     d->exec();
+}
+
+/*!
+  Выбираем адрес из динамического диапазона.
+  @return указатель на созданную запись.
+  */
+clientState* dhcpServerProgramm::chooseDynamic(macAddress mac,int id)
+{    
+    if ( myBeginIp > myEndIp ) {
+        qDebug() << myBeginIp.toString() << myEndIp.toString();
+        QMessageBox::warning(0,tr("Wrong range"),tr("You enter a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
+        return NULL;
+    }
+    clientState *cl = new clientState;
+    bool isContains = false;
+    quint32 i = myBeginIp.toInt();
+    while ( i <= myEndIp.toInt() ) {
+        isContains = myDhcpModel->containRecord( ipAddress(i) );
+        foreach ( clientState *j, clients )
+            if ( j->ip == i ) {
+                isContains = true;
+                break;
+            }
+        if ( isContains ) {
+            i++;
+            isContains = false;
+        }
+        else {
+            cl->ip = ipAddress(i);
+            break;
+        }
+    }
+    if ( cl->ip.isEmpty() ) return NULL;
+    cl->mac = mac;
+    cl->xid = id;
+    cl->time = myTime;
+    cl->mask = myMask;
+    cl->gateway = myGateway;
+    clients << cl;
+    return cl;
 }
 
 dhcpPacket dhcpServerProgramm::buildOffer(staticDhcpRecord *rec, int id)
@@ -131,6 +181,12 @@ void dhcpServerProgramm::write(QDataStream &stream) const
     programmRep::write(stream);
     myDhcpModel->write(stream);
     stream << myInterface;
+    stream << myBeginIp;
+    stream << myEndIp;
+    stream << myMask;
+    stream << myGateway;
+    stream << myTime;
+    stream << myDynamic;
 }
 //---------------------------------------------------
 /*!
@@ -142,6 +198,12 @@ void dhcpServerProgramm::read(QDataStream &stream)
     programmRep::read(stream);
     myDhcpModel->read(stream);
     stream >> myInterface;
+    stream >> myBeginIp;
+    stream >> myEndIp;
+    stream >> myMask;
+    stream >> myGateway;
+    stream >> myTime;
+    stream >> myDynamic;
 }
 //---------------------------------------------------
 

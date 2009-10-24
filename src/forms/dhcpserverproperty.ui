@@ -124,7 +124,10 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="lb_term">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Lease term:</string>
      </property>
@@ -132,6 +135,9 @@
    </item>
    <item>
     <widget class="QSpinBox" name="sb_time">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
        <horstretch>0</horstretch>

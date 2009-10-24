@@ -23,15 +23,13 @@
 #include <QSharedData>
 #include "ipaddress.h"
 
-static const int DEFAULT_TTL = 1;
-
 /*!
   * Содержит в себе разделяемые между ip пакетами данные.
 */
 class ipPacketData : public QSharedData
 {
 public:
-    ipPacketData() { ttl = DEFAULT_TTL; }
+    ipPacketData() {  }
     ipPacketData(const ipPacketData &other);
     ~ipPacketData() {  }
     friend class ipPacket;
@@ -55,13 +53,14 @@ class ipPacket
 public:
     /*! Используется для обозначения протокола верхнего уровня. */
     enum { udp = 0 , tcp = 1 };
-    ipPacket() { d = new ipPacketData; }
+    ipPacket() { d = new ipPacketData; d->ttl = 64; }
     ipPacket(const QByteArray &b);
     ipPacket(ipAddress s,ipAddress r);
     ~ipPacket() { }
     ipPacket(const ipPacket &other) : d(other.d) { }
     QByteArray toData() const;
     QString toString() const;
+
     ipAddress sender() const { return d->sender; }
     ipAddress receiver() const { return d->receiver; }
     quint8 ttl() const { return d->ttl; }

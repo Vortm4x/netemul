@@ -40,6 +40,7 @@ struct clientState {
     ipAddress gateway;
     int time;
     clientState(staticDhcpRecord *rec);
+    clientState() { }
 };
 
 class dhcpServerProgramm : public programmRep
@@ -51,7 +52,20 @@ public:
     ~dhcpServerProgramm();
     void setDevice(smartDevice *s);
     void setInterface( QString inter );
-    void showProperty();       
+    void setBegin(ipAddress ip) { myBeginIp = ip; }
+    void setEnd(ipAddress ip) { myEndIp = ip; }
+    void setMask(ipAddress m) { myMask = m; }
+    void setGateway(ipAddress g) { myGateway = g; }
+    void setTime(int t) { myTime = t; }
+    void setDynamic(bool b) { myDynamic = b; }
+    ipAddress beginIp() { return myBeginIp; }
+    ipAddress endIp() { return myEndIp; }
+    ipAddress mask() { return myMask; }
+    ipAddress gateway() { return myGateway; }
+    QString interfaceName() { return myInterface; }
+    int time() { return myTime; }
+    bool dynamic() { return myDynamic; }
+    void showProperty();
     dhcpServerModel* dhcpModel() { return myDhcpModel; }
     clientState* findClient( int xid ) const;
     void incTime() { }
@@ -63,10 +77,17 @@ public slots:
 private:
     dhcpPacket buildOffer(staticDhcpRecord *rec, int id);
     dhcpPacket createDhcpPacket( clientState *client, int state ) const;
+    clientState* chooseDynamic(macAddress mac, int id);
     QList<clientState*> clients;
     QString myInterface;
     udpSocket *receiver;
     dhcpServerModel *myDhcpModel;
+    ipAddress myBeginIp;
+    ipAddress myEndIp;
+    ipAddress myMask;
+    ipAddress myGateway;
+    int myTime;
+    bool myDynamic;
 };
 
 #endif // DHCPSERVERPROGRAMM_H

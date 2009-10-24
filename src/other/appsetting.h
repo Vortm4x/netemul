@@ -65,7 +65,7 @@ public:
     static void readSetting();
     static void writeSetting();
 private:
-    static QTranslator *mas[LANGUAGE_COUNT];
+    static QTranslator *mas[LANGUAGE_COUNT*2];
     static int _defaultComputerCount;
     static int _defaultHubCount;
     static int _defaultRouterCount;
