@@ -19,6 +19,7 @@
 ****************************************************************************************/
 #include "ipaddressdelegate.h"
 #include <QLineEdit>
+#include <QStringList>
 
 ipAddressDelegate::ipAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
 {
@@ -41,6 +42,8 @@ void ipAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
 {
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     QString data = line->text();
+    QStringList list = data.split(".");
+    if ( list.size() != 4 ) return;
     model->setData(index,data,Qt::EditRole);
 }
 
