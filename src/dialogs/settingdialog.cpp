@@ -57,6 +57,11 @@ void settingDialog::currentValues()
     sb_waitingTime->setValue(appSetting::waitingTime());
 
     cb_opengl->setChecked( appSetting::hasOpengl() );
+
+    cb_autosave->setChecked( appSetting::isAutosave() );
+
+    sb_autosave->setValue( appSetting::autosaveInterval() );
+
     btn_apply->setEnabled(false);
 }
 
@@ -79,8 +84,15 @@ void settingDialog::apply()
     appSetting::setSendingNum(sb_send->value());
     appSetting::setWaitingTime(sb_waitingTime->value());
     appSetting::setHasOpengl( cb_opengl->isChecked() );
+    appSetting::setAutosaveInterval( sb_autosave->value() );
+    appSetting::setAutosave( cb_autosave->isChecked() );
     btn_apply->setEnabled(false);
     if ( sender() == btn_ok ) accept();
+}
+
+void settingDialog::autosaveChanged(bool isAutosave)
+{
+    sb_autosave->setEnabled(isAutosave);
 }
 
 void settingDialog::defaultSettings()

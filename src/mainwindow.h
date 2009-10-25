@@ -71,6 +71,10 @@ public slots:
     void showLogDialog();
     void aboutDialog();
     void printDialog();
+    void printPreviewDialog();
+    void paintInPreviewDialog(QPrinter *printer);
+private slots:
+    void autosave();
 protected:
     void closeEvent(QCloseEvent *event); // Событие вызываемое при попытке закрыть окно
     bool eventFilter(QObject *obj, QEvent *event);
@@ -85,6 +89,8 @@ private:
 
     QPainter *printerPainter;
     QPrinter *printer;
+
+    QTimer *autosaveTimer;
 
     void createMenu(); // Функция создания меню
     void createAction(); // -- событий
@@ -136,6 +142,7 @@ private:
     QAction *aboutDeviceAct;
     QAction *designerPacketAct;
     QAction *printAct;
+    QAction *printPreviewAct;
 };
 
 #endif // MAINWINDOW_H

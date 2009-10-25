@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>326</height>
+    <width>758</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Settings</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QListWidget" name="listWidget">
      <property name="minimumSize">
@@ -150,45 +150,16 @@
       <number>0</number>
      </property>
      <widget class="QWidget" name="general">
-      <layout class="QVBoxLayout" name="verticalLayout_14">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Animation speed:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSlider" name="sl_speed">
-           <property name="maximumSize">
-            <size>
-             <width>350</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="minimum">
-            <number>1</number>
-           </property>
-           <property name="maximum">
-            <number>10</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="tickPosition">
-            <enum>QSlider::TicksBothSides</enum>
-           </property>
-           <property name="tickInterval">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="cb_opengl">
+         <property name="text">
+          <string>Turn on/off OpenGL</string>
+         </property>
+        </widget>
        </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_13">
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout">
          <item>
           <widget class="QLabel" name="label_8">
            <property name="text">
@@ -228,22 +199,135 @@
          </item>
         </layout>
        </item>
-       <item>
-        <widget class="QCheckBox" name="cb_opengl">
-         <property name="text">
-          <string>Turn on/off OpenGL</string>
-         </property>
-        </widget>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QCheckBox" name="cb_autosave">
+           <property name="text">
+            <string>Autosave</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
-       <item>
+       <item row="1" column="1" rowspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>Animation speed:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <item>
+            <widget class="QSlider" name="sl_speed">
+             <property name="maximumSize">
+              <size>
+               <width>350</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="tickPosition">
+              <enum>QSlider::TicksBothSides</enum>
+             </property>
+             <property name="tickInterval">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>128</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Interval: </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sb_autosave">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>30</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="1">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>17</width>
+           <height>92</height>
           </size>
          </property>
         </spacer>
@@ -843,8 +927,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>757</x>
-     <y>315</y>
+     <x>747</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>637</x>
@@ -859,8 +943,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>661</x>
-     <y>315</y>
+     <x>651</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>349</x>
@@ -875,8 +959,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>570</x>
-     <y>315</y>
+     <x>560</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>269</x>
@@ -971,8 +1055,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>100</x>
-     <y>206</y>
+     <x>111</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>40</x>
@@ -1003,8 +1087,8 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>47</x>
-     <y>147</y>
+     <x>232</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>104</x>
@@ -1051,8 +1135,8 @@
    <slot>defaultSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>479</x>
-     <y>312</y>
+     <x>469</x>
+     <y>370</y>
     </hint>
     <hint type="destinationlabel">
      <x>303</x>
@@ -1099,12 +1183,60 @@
    <slot>applyEnable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>149</x>
-     <y>226</y>
+     <x>159</x>
+     <y>199</y>
     </hint>
     <hint type="destinationlabel">
      <x>179</x>
      <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_autosave</sender>
+   <signal>clicked()</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>189</x>
+     <y>173</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>142</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sb_autosave</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>applyEnable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>71</x>
+     <y>341</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cb_autosave</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>settingDialog</receiver>
+   <slot>autosaveChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>170</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>162</x>
+     <y>362</y>
     </hint>
    </hints>
   </connection>
@@ -1113,5 +1245,6 @@
   <slot>apply()</slot>
   <slot>applyEnable()</slot>
   <slot>defaultSettings()</slot>
+  <slot>autosaveChanged(bool)</slot>
  </slots>
 </ui>

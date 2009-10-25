@@ -34,5 +34,6 @@
         <file>images/fileload.png</file>
         <file>images/filesave.png</file>
         <file>images/print.png</file>
+        <file>images/print_preview.png</file>
     </qresource>
 </RCC>

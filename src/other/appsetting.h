@@ -61,6 +61,10 @@ public:
     static int sendingNum() { return _sendingNum; }
     static void setWaitingTime(int n) { _waitingTime = n; }
     static int waitingTime() { return _waitingTime; }
+    static bool isAutosave() { return _autosave; }
+    static void setAutosave(bool cur) { _autosave = cur; }
+    static int autosaveInterval() { return _autosaveInterval; }
+    static void setAutosaveInterval(int n) { _autosaveInterval = n; }
     static void defaultNums();
     static void readSetting();
     static void writeSetting();
@@ -78,6 +82,8 @@ private:
     static int _waitingTime;
     static bool _defaultHubManual;
     static bool _defaultSwitchManual;
+    static bool _autosave;
+    static int _autosaveInterval;
     static int _arpResponceTime;
     static QString _scriptPath;
     static bool _hasOpengl;

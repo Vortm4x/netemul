@@ -308,8 +308,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>794</x>
-     <y>386</y>
+     <x>789</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>49</x>
@@ -324,8 +324,8 @@
    <slot>addRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>695</x>
-     <y>245</y>
+     <x>694</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
      <x>234</x>
@@ -340,8 +340,8 @@
    <slot>deleteRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>794</x>
-     <y>245</y>
+     <x>789</x>
+     <y>214</y>
     </hint>
     <hint type="destinationlabel">
      <x>260</x>
@@ -356,8 +356,8 @@
    <slot>changeState(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>33</x>
-     <y>303</y>
+     <x>42</x>
+     <y>244</y>
     </hint>
     <hint type="destinationlabel">
      <x>114</x>
@@ -372,8 +372,8 @@
    <slot>apply()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>372</y>
+     <x>693</x>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>540</x>

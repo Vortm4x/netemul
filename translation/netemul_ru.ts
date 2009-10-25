@@ -4,27 +4,27 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="196"/>
+        <location filename="../src/mainwindow.cpp" line="205"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="204"/>
+        <location filename="../src/mainwindow.cpp" line="213"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="207"/>
+        <location filename="../src/mainwindow.cpp" line="216"/>
         <source>Ctrl+Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="245"/>
+        <location filename="../src/mainwindow.cpp" line="254"/>
         <source>Ctrl+Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="129"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
@@ -33,223 +33,231 @@
         <translation type="obsolete">Вы хотите выйти ?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="124"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="124"/>
+        <location filename="../src/mainwindow.cpp" line="131"/>
         <source>Create new network</source>
         <translation>Создать новую сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="125"/>
-        <location filename="../src/mainwindow.cpp" line="498"/>
+        <location filename="../src/mainwindow.cpp" line="520"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="125"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
         <source>Open existing file</source>
         <translation>Открыть существующую сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="132"/>
+        <source>Open...</source>
+        <translation>Открыть...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="126"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Save network</source>
         <translation>Сохранить сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="127"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Save as...</source>
-        <translation>Сохранить как ...</translation>
+        <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="127"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Save network as...</source>
         <translation>Сохранить сеть как ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="128"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="128"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Close current file</source>
         <translation>Закрыть текущий файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="130"/>
+        <location filename="../src/mainwindow.cpp" line="137"/>
         <source>Show grid</source>
         <translation>Показывать сетку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>Deleting object</source>
         <translation>Удалить объект</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>Programs</source>
         <translation>Программы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>Programs installed on device</source>
         <translation>Установленные программы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>Setting</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="136"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
+        <source>Setting...</source>
+        <translation>Настройки...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="143"/>
         <source>Statistics </source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="136"/>
+        <location filename="../src/mainwindow.cpp" line="143"/>
         <source>Show scene statistics </source>
         <translation>Показать статистику сцены</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="137"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>Move</source>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="137"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>Move objects</source>
         <translation>Перемещение объектов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Cable</source>
         <translation>Кабель</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Create connection</source>
         <translation>Создать соединение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Note</source>
         <translation>Записки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Insert text comment</source>
         <translation>Вставить текстовую надпись</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Unibus</source>
         <translation>Общая шина</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Add unibus</source>
         <translation>Добавить общую шину</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>Computer</source>
         <translation>Компьютер</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>Add computer</source>
         <translation>Добавить Компьютер</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Hub</source>
         <translation>Концентратор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Add hub</source>
         <translation>Добавить Концентратор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>Switch</source>
         <translation>Коммутатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>Add switch</source>
         <translation>Добавить Коммутатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Router</source>
         <translation>Маршрутизатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Add router</source>
         <translation>Добавить Маршрутизатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Send</source>
         <translation>Отправка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Send data</source>
         <translation>Отправить данные</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Execute scripts</source>
         <translation>Выполнить  сценарий</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Run existing scripts</source>
         <translation>Запустить готовые сценарии</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Show properties</source>
         <translation>Показать свойства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Packet desinger</source>
-        <translation>Конструктор пакетов</translation>
+        <translation type="obsolete">Конструктор пакетов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Create user&apos;s packet</source>
         <translation>Создать пользовательский пакет</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="165"/>
         <source>Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="276"/>
+        <location filename="../src/mainwindow.cpp" line="285"/>
         <source>Ctrl+F1</source>
         <translation></translation>
     </message>
@@ -266,59 +274,59 @@
         <translation type="obsolete">Редактировать таблицу маршрутизации</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="248"/>
+        <location filename="../src/mainwindow.cpp" line="257"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="150"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>About Qt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>File was modified</source>
         <translation>Файл был изменен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="106"/>
+        <location filename="../src/mainwindow.cpp" line="113"/>
         <source>File was modified, do you want to save changes?</source>
         <translation>Файл был изменен, вы хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="151"/>
         <source>About NetEmul</source>
         <translation>О программе NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>NetEmul Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Full help system program</source>
         <translation>Полная справка о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="138"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Netcards</source>
         <translation>Интерфейсы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="138"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Edit netcards</source>
         <translation>Редактировать интерфейсы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="620"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="642"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
-        <location filename="../src/mainwindow.cpp" line="621"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="643"/>
         <source>Stop simulation</source>
         <translation>Остановить симуляцию</translation>
     </message>
@@ -331,72 +339,97 @@
         <translation type="obsolete">Программы установленные на устройстве</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>Arp table</source>
         <translation>Arp таблица</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="159"/>
         <source>Show log</source>
         <translation>Показать журнал</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="159"/>
         <source>Show device log file</source>
         <translation>Показать журнал устройства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>About device</source>
         <translation>Об устройстве</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Information about device</source>
         <translation>Информация об устройстве</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
+        <source>Packet desinger...</source>
+        <translation>Конструктор пакетов...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="162"/>
+        <source>Print...</source>
+        <translation>Печать...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="162"/>
+        <source>Print user&apos;s network</source>
+        <translation>Напечать пользовательскую сеть</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <source>Preview...</source>
+        <translation>Предпросмотр...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <source>Preview network berfore printing</source>
+        <translation>Предпросмотр сети перед печатью</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="164"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="157"/>
+        <location filename="../src/mainwindow.cpp" line="166"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="167"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>Service</source>
         <translation>Сервис</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Scripts</source>
         <translation>Скрипты</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="170"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Devices</source>
         <translation>Устройства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>Controls</source>
         <translation>Управление</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="273"/>
+        <location filename="../src/mainwindow.cpp" line="282"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
@@ -405,30 +438,30 @@
         <translation type="obsolete">Log</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="484"/>
-        <location filename="../src/mainwindow.cpp" line="511"/>
+        <location filename="../src/mainwindow.cpp" line="506"/>
+        <location filename="../src/mainwindow.cpp" line="533"/>
         <source>Save file as ...</source>
         <translation>Сохранить файл как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="486"/>
-        <location filename="../src/mainwindow.cpp" line="499"/>
-        <location filename="../src/mainwindow.cpp" line="512"/>
+        <location filename="../src/mainwindow.cpp" line="508"/>
+        <location filename="../src/mainwindow.cpp" line="521"/>
+        <location filename="../src/mainwindow.cpp" line="534"/>
         <source>Networks(*.net)</source>
         <translation>Сети(*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="615"/>
+        <location filename="../src/mainwindow.cpp" line="637"/>
         <source>Play</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="616"/>
+        <location filename="../src/mainwindow.cpp" line="638"/>
         <source>Start simulation</source>
         <translation>Запустить симуляцию</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="261"/>
+        <location filename="../src/mainwindow.cpp" line="270"/>
         <source>Ctrl+I</source>
         <translation></translation>
     </message>
@@ -437,12 +470,12 @@
         <translation type="obsolete">Вы действительно хотите выйти?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="267"/>
+        <location filename="../src/mainwindow.cpp" line="276"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="270"/>
+        <location filename="../src/mainwindow.cpp" line="279"/>
         <source>Ctrl+Shift+A</source>
         <translation></translation>
     </message>
@@ -504,12 +537,12 @@
 </translation>
     </message>
     <message>
-        <location filename="../src/chips/interface.cpp" line="108"/>
+        <location filename="../src/chips/interface.cpp" line="107"/>
         <source>The network is not working correctly</source>
         <translation>Сеть работает не корректно</translation>
     </message>
     <message>
-        <location filename="../src/chips/interface.cpp" line="109"/>
+        <location filename="../src/chips/interface.cpp" line="108"/>
         <source>The network found a matching IP address</source>
         <translation>В сети обнаружено совпадение IP адресов</translation>
     </message>
@@ -551,9 +584,8 @@
         <translation>Ethernet, отправитель: %1 получатель: %2</translation>
     </message>
     <message>
-        <location filename="../src/packets/ippacket.cpp" line="55"/>
         <source>IP packet, sender: %1, receiver: %2</source>
-        <translation>IP пакет, отправитель: %1, получатель: %2</translation>
+        <translation type="obsolete">IP пакет, отправитель: %1, получатель: %2</translation>
     </message>
     <message>
         <location filename="../src/packets/udppacket.cpp" line="37"/>
@@ -610,6 +642,11 @@
         <location filename="../src/commands/addtextcommand.cpp" line="28"/>
         <source>Add note</source>
         <translation>Добавить комментарий</translation>
+    </message>
+    <message>
+        <location filename="../src/packets/ippacket.cpp" line="56"/>
+        <source>IP packet, sender: %1, receiver: %2 TTL: %3</source>
+        <translation>IP пакет, отправитель: %1, получатель: %2 TTL %3</translation>
     </message>
 </context>
 <context>
@@ -988,7 +1025,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>dhcpClientProgramm</name>
     <message>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="29"/>
+        <location filename="../src/programms/dhcpclientprogramm.cpp" line="28"/>
         <source>DHCP client</source>
         <translation>DHCP клиент</translation>
     </message>
@@ -1022,11 +1059,49 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     </message>
 </context>
 <context>
+    <name>dhcpServerModel</name>
+    <message>
+        <location filename="../src/models/dhcpservermodel.cpp" line="45"/>
+        <source>Mac-address</source>
+        <translation>Мас-адрес</translation>
+    </message>
+    <message>
+        <location filename="../src/models/dhcpservermodel.cpp" line="46"/>
+        <source>Ip-address</source>
+        <translation>Ip-адрес</translation>
+    </message>
+    <message>
+        <location filename="../src/models/dhcpservermodel.cpp" line="47"/>
+        <source>Mask</source>
+        <translation>Маска</translation>
+    </message>
+    <message>
+        <location filename="../src/models/dhcpservermodel.cpp" line="48"/>
+        <source>Gateway</source>
+        <translation>Шлюз</translation>
+    </message>
+    <message>
+        <location filename="../src/models/dhcpservermodel.cpp" line="49"/>
+        <source>Time</source>
+        <translation>Время</translation>
+    </message>
+</context>
+<context>
     <name>dhcpServerProgramm</name>
     <message>
-        <location filename="../src/programms/dhcpserverprogramm.cpp" line="29"/>
+        <location filename="../src/programms/dhcpserverprogramm.cpp" line="31"/>
         <source>DHCP server</source>
         <translation>DHCP сервер</translation>
+    </message>
+    <message>
+        <location filename="../src/programms/dhcpserverprogramm.cpp" line="105"/>
+        <source>Wrong range</source>
+        <translation>Ошибочный диапазон</translation>
+    </message>
+    <message>
+        <location filename="../src/programms/dhcpserverprogramm.cpp" line="105"/>
+        <source>You enter a wrong range of ip.</source>
+        <translation>Вы ввели ошибочный диапазон ip.</translation>
     </message>
 </context>
 <context>
@@ -1040,24 +1115,20 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation type="obsolete">до</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="30"/>
         <source>Mask</source>
-        <translation>Маска</translation>
+        <translation type="obsolete">Маска</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="30"/>
         <source>Gateway</source>
-        <translation>Шлюз</translation>
+        <translation type="obsolete">Шлюз</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="30"/>
         <source>Mac</source>
-        <translation>Мас</translation>
+        <translation type="obsolete">Мас</translation>
     </message>
     <message>
-        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="30"/>
         <source>Ip</source>
-        <translation>Ip</translation>
+        <translation type="obsolete">Ip</translation>
     </message>
 </context>
 <context>
@@ -1078,73 +1149,73 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation>Статические:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="114"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="98"/>
         <source>Add</source>
         <translation>Добавить</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="125"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="109"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="138"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="132"/>
         <source>Lease term:</source>
         <translation>Срок аренды:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="157"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="154"/>
         <source> s</source>
         <translation> сек</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="173"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="122"/>
         <source>Dynamic:</source>
         <translation>Динамические: </translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="185"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="201"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="221"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="237"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="175"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="191"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="211"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="227"/>
         <source>Ip address</source>
         <translation>Ip адрес</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="188"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="204"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="224"/>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="240"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="178"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="194"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="214"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="230"/>
         <source>The field for ip-address.</source>
         <translation>Поле ip адреса.</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="191"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="181"/>
         <source>From:</source>
         <translation>От:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="207"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="197"/>
         <source>to:</source>
         <translation>до:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="227"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="217"/>
         <source>Mask:</source>
         <translation>Маска:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="243"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="233"/>
         <source>Gateway:</source>
         <translation>Шлюз:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="280"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="270"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="291"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="281"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1899,15 +1970,15 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation>Маршрутизатор</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="580"/>
+        <location filename="../src/forms/settingdialog.ui" line="664"/>
         <source>Lifetime arp-entries: </source>
         <translation>Время жизни arp-записей:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="475"/>
-        <location filename="../src/forms/settingdialog.ui" line="605"/>
-        <location filename="../src/forms/settingdialog.ui" line="635"/>
-        <location filename="../src/forms/settingdialog.ui" line="723"/>
+        <location filename="../src/forms/settingdialog.ui" line="559"/>
+        <location filename="../src/forms/settingdialog.ui" line="689"/>
+        <location filename="../src/forms/settingdialog.ui" line="719"/>
+        <location filename="../src/forms/settingdialog.ui" line="807"/>
         <source> s</source>
         <translation> сек</translation>
     </message>
@@ -1922,131 +1993,141 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="159"/>
+        <location filename="../src/forms/settingdialog.ui" line="231"/>
         <source>Animation speed:</source>
         <translation>Скорость анимации: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="195"/>
+        <location filename="../src/forms/settingdialog.ui" line="166"/>
         <source>Language: </source>
         <translation>Язык приложения: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="209"/>
+        <location filename="../src/forms/settingdialog.ui" line="180"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="214"/>
+        <location filename="../src/forms/settingdialog.ui" line="185"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="219"/>
+        <location filename="../src/forms/settingdialog.ui" line="190"/>
         <source>Brazillian Portuguese</source>
         <translation>Бразильский португальский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="224"/>
+        <location filename="../src/forms/settingdialog.ui" line="195"/>
         <source>Spanish</source>
         <translation>Испанский</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="234"/>
+        <location filename="../src/forms/settingdialog.ui" line="157"/>
         <source>Turn on/off OpenGL</source>
         <translation>Включить/Выключить OpenGL</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="260"/>
+        <location filename="../src/forms/settingdialog.ui" line="207"/>
+        <source>Autosave</source>
+        <translation>Автосохранение</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="284"/>
+        <source>Interval: </source>
+        <translation>Интервал:</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/settingdialog.ui" line="344"/>
         <source>Nubmer of interfaces by default:</source>
         <translation>Количество интерфейсов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="274"/>
+        <location filename="../src/forms/settingdialog.ui" line="358"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="279"/>
-        <location filename="../src/forms/settingdialog.ui" line="526"/>
+        <location filename="../src/forms/settingdialog.ui" line="363"/>
+        <location filename="../src/forms/settingdialog.ui" line="610"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="284"/>
+        <location filename="../src/forms/settingdialog.ui" line="368"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="289"/>
-        <location filename="../src/forms/settingdialog.ui" line="342"/>
-        <location filename="../src/forms/settingdialog.ui" line="415"/>
-        <location filename="../src/forms/settingdialog.ui" line="531"/>
+        <location filename="../src/forms/settingdialog.ui" line="373"/>
+        <location filename="../src/forms/settingdialog.ui" line="426"/>
+        <location filename="../src/forms/settingdialog.ui" line="499"/>
+        <location filename="../src/forms/settingdialog.ui" line="615"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="294"/>
-        <location filename="../src/forms/settingdialog.ui" line="347"/>
-        <location filename="../src/forms/settingdialog.ui" line="420"/>
-        <location filename="../src/forms/settingdialog.ui" line="536"/>
+        <location filename="../src/forms/settingdialog.ui" line="378"/>
+        <location filename="../src/forms/settingdialog.ui" line="431"/>
+        <location filename="../src/forms/settingdialog.ui" line="504"/>
+        <location filename="../src/forms/settingdialog.ui" line="620"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="299"/>
-        <location filename="../src/forms/settingdialog.ui" line="352"/>
+        <location filename="../src/forms/settingdialog.ui" line="383"/>
+        <location filename="../src/forms/settingdialog.ui" line="436"/>
         <source>6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="328"/>
+        <location filename="../src/forms/settingdialog.ui" line="412"/>
         <source>Number of ports by default</source>
         <translation>Количество портов по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="357"/>
-        <location filename="../src/forms/settingdialog.ui" line="425"/>
-        <location filename="../src/forms/settingdialog.ui" line="546"/>
+        <location filename="../src/forms/settingdialog.ui" line="441"/>
+        <location filename="../src/forms/settingdialog.ui" line="509"/>
+        <location filename="../src/forms/settingdialog.ui" line="630"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="362"/>
-        <location filename="../src/forms/settingdialog.ui" line="430"/>
+        <location filename="../src/forms/settingdialog.ui" line="446"/>
+        <location filename="../src/forms/settingdialog.ui" line="514"/>
         <source>12</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="367"/>
-        <location filename="../src/forms/settingdialog.ui" line="440"/>
+        <location filename="../src/forms/settingdialog.ui" line="451"/>
+        <location filename="../src/forms/settingdialog.ui" line="524"/>
         <source>24</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="372"/>
-        <location filename="../src/forms/settingdialog.ui" line="450"/>
+        <location filename="../src/forms/settingdialog.ui" line="456"/>
+        <location filename="../src/forms/settingdialog.ui" line="534"/>
         <source>48</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="401"/>
-        <location filename="../src/forms/settingdialog.ui" line="512"/>
+        <location filename="../src/forms/settingdialog.ui" line="485"/>
+        <location filename="../src/forms/settingdialog.ui" line="596"/>
         <source>Number of ports by default: </source>
         <translation>Количество портов по умолчанию: </translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="435"/>
+        <location filename="../src/forms/settingdialog.ui" line="519"/>
         <source>16</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="445"/>
+        <location filename="../src/forms/settingdialog.ui" line="529"/>
         <source>32</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="462"/>
+        <location filename="../src/forms/settingdialog.ui" line="546"/>
         <source>Switching table&apos;s records lifetime:</source>
         <translation>Время жизни записей таблицы коммутации:</translation>
     </message>
@@ -2055,47 +2136,47 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation type="obsolete">Время жизни записей таблицы коммутации</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="541"/>
+        <location filename="../src/forms/settingdialog.ui" line="625"/>
         <source>7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="551"/>
+        <location filename="../src/forms/settingdialog.ui" line="635"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="622"/>
+        <location filename="../src/forms/settingdialog.ui" line="706"/>
         <source>Expectation time for arp-responce</source>
         <translation>Время ожидания arp-ответа</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="669"/>
+        <location filename="../src/forms/settingdialog.ui" line="753"/>
         <source>Number of repeat sendings:</source>
         <translation>Количество повторных отправок:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="698"/>
+        <location filename="../src/forms/settingdialog.ui" line="782"/>
         <source>Waiting confirmation time:</source>
         <translation>Время ожидания подтверждения соединения:</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="770"/>
+        <location filename="../src/forms/settingdialog.ui" line="854"/>
         <source>Default</source>
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="784"/>
+        <location filename="../src/forms/settingdialog.ui" line="868"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="795"/>
+        <location filename="../src/forms/settingdialog.ui" line="879"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../src/forms/settingdialog.ui" line="812"/>
+        <location filename="../src/forms/settingdialog.ui" line="896"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2103,7 +2184,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="415"/>
+        <location filename="../src/devices/smartdevice.cpp" line="416"/>
         <source>eth%1</source>
         <translation></translation>
     </message>

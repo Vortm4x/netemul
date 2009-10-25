@@ -71,6 +71,9 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(view);
     retranslate();
     setOpenglMode( appSetting::hasOpengl() );
+    autosaveTimer = new QTimer(this);
+    autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
+    connect( autosaveTimer , SIGNAL(timeout()) , SLOT(autosave()) );
     printer = 0;
     printerPainter = 0;
 }
@@ -126,7 +129,7 @@ QAction* MainWindow::createOneAction(QIcon icon/*= QIcon()*/,bool inGroup /*=fal
 void MainWindow::retranslate()
 {
     UPDATEACTION(newAct , tr("New"),tr("Create new network") )
-    UPDATEACTION( openAct , tr("Open"),tr("Open existing file") )
+    UPDATEACTION( openAct , tr("Open..."),tr("Open existing file") )
     UPDATEACTION( saveAct , tr("Save"),tr("Save network") )
     UPDATEACTION( saveAsAct , tr("Save as..."),tr("Save network as...") )
     UPDATEACTION( closeAct , tr("Close"),tr("Close current file") )
@@ -135,7 +138,7 @@ void MainWindow::retranslate()
     UPDATEACTION( arpAct , tr("Arp table"), tr("Arp table") );
     UPDATEACTION( deleteAct , tr("Delete"),tr("Deleting object") )
     UPDATEACTION( progAct , tr("Programs"), tr("Programs installed on device") )
-    UPDATEACTION( settingAct ,  tr("Setting") , tr("Setting") )
+    UPDATEACTION( settingAct ,  tr("Setting...") , tr("Setting") )
     UPDATEACTION( playAct , tr("Stop") , tr("Stop simulation") )
     UPDATEACTION( staticsAct , tr("Statistics ") , tr("Show scene statistics ") )
     UPDATEACTION( moveAct , tr("Move"),tr("Move objects") )
@@ -155,8 +158,9 @@ void MainWindow::retranslate()
     UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
-    UPDATEACTION( designerPacketAct , tr("Packet desinger") , tr("Create user's packet") )
-    UPDATEACTION( printAct , tr("Print") , tr("Print user's network") )
+    UPDATEACTION( designerPacketAct , tr("Packet desinger...") , tr("Create user's packet") )
+    UPDATEACTION( printAct , tr("Print...") , tr("Print user's network") )
+    UPDATEACTION( printPreviewAct , tr("Preview...") , tr("Preview network berfore printing") );
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -285,6 +289,10 @@ void MainWindow::createAction()
 
     printAct = createOneAction( QIcon(":/im/images/print.png") );
     connect( printAct , SIGNAL(triggered()) , SLOT(printDialog()) );
+
+    printPreviewAct = createOneAction( QIcon(":/im/images/print_preview.png") );
+    connect( printPreviewAct , SIGNAL(triggered()) , SLOT(printPreviewDialog()) );
+
 }
 
 //Создаем меню
@@ -299,6 +307,7 @@ void MainWindow::createMenu()
     fileMenu->addAction(closeAct);
     fileMenu->addSeparator();
     fileMenu->addAction(printAct);
+    fileMenu->addAction(printPreviewAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
@@ -457,6 +466,7 @@ void MainWindow::setEnabledFileItems(bool cur)
     saveAsAct->setEnabled(cur);
     showGridAct->setEnabled(cur);
     printAct->setEnabled(cur);
+    printPreviewAct->setEnabled(cur);
 }
 /*!
     Слот вызываемый при изменении выделения на сцене.
@@ -477,6 +487,7 @@ void MainWindow::setting()
     d->exec();
     canva->setAnimateSpeed( appSetting::animateSpeed() );
     setOpenglMode( appSetting::hasOpengl() );
+    autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
 }
 
 void MainWindow::setOpenglMode(bool mode)
@@ -662,6 +673,28 @@ void MainWindow::printDialog()
         view->render(printerPainter);
         printerPainter->end();
     }
+}
+
+void MainWindow::paintInPreviewDialog(QPrinter *printer)
+{
+    printer->newPage();
+    QPainter painter(printer);
+    view->render(&painter);
+}
+
+void MainWindow::printPreviewDialog()
+{
+    if ( !printer ) {
+        printer = new QPrinter(QPrinter::HighResolution);
+    }
+    QPrintPreviewDialog dialog(printer,this);
+    connect( &dialog , SIGNAL(paintRequested(QPrinter*)) , SLOT(paintInPreviewDialog(QPrinter*)));
+    dialog.exec();
+}
+
+void MainWindow::autosave()
+{
+    if ( appSetting::isAutosave()  && canva->isOpen() ) saveFile();
 }
 
 void MainWindow::changeEvent(QEvent *e)

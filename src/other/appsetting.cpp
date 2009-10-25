@@ -37,6 +37,8 @@ int appSetting::_sendingNum = 1;
 int appSetting::_waitingTime = 45;
 int appSetting::_arpResponceTime = 45;
 bool appSetting::_hasOpengl = false;
+bool appSetting::_autosave = false;
+int appSetting::_autosaveInterval = 10;
 QString appSetting::_scriptPath = "";
 QTranslator* appSetting::mas[LANGUAGE_COUNT*2];
 
@@ -58,6 +60,8 @@ void appSetting::defaultNums()
     _speed = 100;
     _language = 0;
     _hasOpengl = false;
+    _autosave = false;
+    _autosaveInterval = 10;
     for ( int i = 1 ; i < LANGUAGE_COUNT*2 ; i++)
         QCoreApplication::removeTranslator(mas[i]);
 }
@@ -89,6 +93,8 @@ void appSetting::readSetting()
     _sendingNum = setting.value("tcp/sendingNumber",1).toInt();
     _waitingTime = setting.value("tcp/waitingTime",80).toInt();
     _hasOpengl = setting.value("main/opengl",false).toBool();
+    _autosave = setting.value("main/autosave",false).toBool();
+    _autosaveInterval = setting.value("main/autosaveInterval",10).toInt();
 #endif
 }
 
@@ -112,6 +118,8 @@ void appSetting::writeSetting()
     setting.setValue("tcp/sendingNumber",_sendingNum);
     setting.setValue("tcp/waitingTime",_waitingTime);
     setting.setValue("main/opengl", _hasOpengl );
+    setting.setValue("main/autosave",_autosave);
+    setting.setValue("main/autosaveInterval",_autosaveInterval);
 #endif
 }
 

@@ -35,6 +35,7 @@ public slots:
     void apply();
     void applyEnable();
     void defaultSettings();
+    void autosaveChanged(bool isAutosave);
 protected:
     virtual void changeEvent(QEvent *e);
 };
