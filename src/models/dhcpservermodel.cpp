@@ -92,7 +92,7 @@ bool dhcpServerModel::setData(const QModelIndex &index, const QVariant &value, i
     return false;
 }
 
-bool dhcpServerModel::insertRow(int row,const QModelIndex &parent)
+bool dhcpServerModel::insertRow(int,const QModelIndex &parent)
 {
     Q_UNUSED(parent);
     staticDhcpRecord *newRecord = new staticDhcpRecord;

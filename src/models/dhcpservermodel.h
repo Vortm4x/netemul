@@ -46,7 +46,7 @@ public:
     QVariant headerData( int s , Qt::Orientation o, int role ) const;
     Qt::ItemFlags flags(const QModelIndex &r) const;
     QVariant data(const QModelIndex &r, int role = Qt::DisplayRole ) const;
-    bool insertRow(int row, const QModelIndex &parent = QModelIndex() );
+    bool insertRow(int, const QModelIndex &parent = QModelIndex() );
     bool removeRow(int row, const QModelIndex &parent = QModelIndex() );
     bool setData(const QModelIndex &index,const QVariant &value, int role = Qt::EditRole);
 

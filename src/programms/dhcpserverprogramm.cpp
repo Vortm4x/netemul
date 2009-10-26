@@ -84,6 +84,11 @@ void dhcpServerProgramm::executeRequest(dhcpPacket packet)
 {
     clientState *client = findClient( packet.xid() );
     if ( !client || client->state == clientState::IN_USE ) return;
+    if ( packet.siaddr() != device->adapter(myInterface)->ip() ) {
+        clients.removeOne(client);
+        delete client;
+        return;
+    }
     dhcpPacket dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
     sendDhcp(dhcp);
 }
