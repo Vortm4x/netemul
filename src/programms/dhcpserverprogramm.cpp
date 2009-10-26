@@ -24,7 +24,6 @@
 #include "udpsocket.h"
 #include "udppacket.h"
 #include "dhcpservermodel.h"
-#include <QMessageBox>
 
 dhcpServerProgramm::dhcpServerProgramm()
 {
@@ -60,33 +59,33 @@ void dhcpServerProgramm::setInterface(QString inter)
 void dhcpServerProgramm::execute(QByteArray data)
 {
     dhcpPacket packet(data);
-    dhcpPacket dhcp;
-    bool canSend = false;
-    if ( packet.type() == dhcpPacket::DHCPDISCOVER ) {
-        staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
-        if ( rec ) dhcp = buildOffer( rec,packet.xid() );
-        else if ( myDynamic ) {
-            clientState *client = chooseDynamic(packet);
-            if ( !client ) return;
-            dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
-        }
-        canSend = true;
+    switch ( packet.type() ) {
+        case dhcpPacket::DHCPDISCOVER : executeDiscover(packet); break;
+        case dhcpPacket::DHCPREQUEST : executeRequest(packet); break;
     }
-    if (packet.type() == dhcpPacket::DHCPREQUEST ) {
-        clientState *client = findClient( packet.xid() );
-        if ( !client || client->state == clientState::IN_USE )  return;
-        dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
-        canSend = true;
-    }    
-    if ( !canSend ) return;
-    udpPacket udp;
-    udp.setSender( SERVER_SOCKET );
-    udp.setReceiver( CLIENT_SOCKET );
-    udp.pack( dhcp.toData() );
-    ipPacket p( device->adapter(myInterface)->ip(), ipAddress::full() );
-    p.pack( udp.toData() );
-    p.setUpProtocol( ipPacket::udp );
-    device->adapter(myInterface)->sendPacket(p);
+
+}
+
+void dhcpServerProgramm::executeDiscover(dhcpPacket packet)
+{
+    dhcpPacket dhcp;
+    staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
+    if ( rec ) dhcp = buildOffer( rec,packet.xid() );
+    else if ( myDynamic ) {
+        clientState *client = chooseDynamic(packet);
+        if ( !client ) return;
+        dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
+    }
+    else return;
+    sendDhcp(dhcp);
+}
+
+void dhcpServerProgramm::executeRequest(dhcpPacket packet)
+{
+    clientState *client = findClient( packet.xid() );
+    if ( !client || client->state == clientState::IN_USE ) return;
+    dhcpPacket dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
+    sendDhcp(dhcp);
 }
 
 void dhcpServerProgramm::showProperty()
@@ -96,16 +95,24 @@ void dhcpServerProgramm::showProperty()
     d->exec();
 }
 
+void dhcpServerProgramm::sendDhcp(dhcpPacket packet) const
+{
+    udpPacket udp;
+    udp.setSender( SERVER_SOCKET );
+    udp.setReceiver( CLIENT_SOCKET );
+    udp.pack( packet.toData() );
+    ipPacket p( device->adapter(myInterface)->ip(), ipAddress::full() );
+    p.pack( udp.toData() );
+    p.setUpProtocol( ipPacket::udp );
+    device->adapter(myInterface)->sendPacket(p);
+}
+
 /*!
   Выбираем адрес из динамического диапазона.
   @return указатель на созданную запись.
   */
 clientState* dhcpServerProgramm::chooseDynamic(dhcpPacket packet)
-{    
-    if ( myBeginIp > myEndIp ) {
-        QMessageBox::warning(0,tr("Wrong range"),tr("You enter a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
-        return NULL;
-    }
+{
     clientState *cl = new clientState;
     cl->requestTimer = 0;
     if ( !packet.yiaddr().isEmpty() && !containClient(packet.yiaddr()) ) cl->ip = packet.yiaddr();

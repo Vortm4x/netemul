@@ -80,6 +80,9 @@ public:
 public slots:
     void execute(QByteArray data);
 private:
+    void executeDiscover(dhcpPacket packet);
+    void executeRequest(dhcpPacket packet);
+    void sendDhcp(dhcpPacket packet) const;
     dhcpPacket buildOffer(staticDhcpRecord *rec, int id);
     dhcpPacket createDhcpPacket( clientState *client, int state ) const;
     clientState* chooseDynamic(dhcpPacket packet);

@@ -17,6 +17,7 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
+#include <QMessageBox>
 #include "dhcpserverproperty.h"
 #include "dhcpserverprogramm.h"
 #include "dhcpservermodel.h"
@@ -36,6 +37,7 @@ dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 *
     tv_static->setItemDelegateForColumn(0, macDelegate );
     for ( int i = 1 ; i <= 3 ; i++ )
         tv_static->setItemDelegateForColumn(i,ipDelegate);
+    connect( ie_begin , SIGNAL(maskChanged(quint8)) , ie_mask , SLOT(setDefaultMask(quint8)) );
 }
 
 dhcpServerProperty::~dhcpServerProperty()
@@ -82,6 +84,10 @@ void dhcpServerProperty::changeState(bool b)
 
 void dhcpServerProperty::apply()
 {
+    if ( ie_begin->ipText() > ie_end->ipText() ) {
+        QMessageBox::warning(0,tr("Wrong range"),tr("You enter a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
     myProgramm->setInterface(cb_interface->currentText());
     myProgramm->setBegin(ie_begin->ipText());
     myProgramm->setEnd(ie_end->ipText());
