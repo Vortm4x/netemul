@@ -39,6 +39,8 @@ struct clientState {
     ipAddress mask;
     ipAddress gateway;
     int time;
+    int requestTimer;
+    enum { WAIT_REQUEST = 0, IN_USE = 1 };
     clientState(staticDhcpRecord *rec);
     clientState() { }
 };
@@ -57,18 +59,21 @@ public:
     void setMask(ipAddress m) { myMask = m; }
     void setGateway(ipAddress g) { myGateway = g; }
     void setTime(int t) { myTime = t; }
-    void setDynamic(bool b) { myDynamic = b; }
-    ipAddress beginIp() { return myBeginIp; }
-    ipAddress endIp() { return myEndIp; }
-    ipAddress mask() { return myMask; }
-    ipAddress gateway() { return myGateway; }
-    QString interfaceName() { return myInterface; }
-    int time() { return myTime; }
-    bool dynamic() { return myDynamic; }
+    void setWaitingTime(int t) { myWaitingTime = t; }
+    void setDynamic(bool b) { myDynamic = b; }   
+    ipAddress beginIp() const { return myBeginIp; }
+    ipAddress endIp() const { return myEndIp; }
+    ipAddress mask() const { return myMask; }
+    ipAddress gateway() const { return myGateway; }
+    QString interfaceName() const { return myInterface; }
+    int time() const { return myTime; }
+    int waitingTime() const { return myWaitingTime; }
+    bool dynamic() const { return myDynamic; }
     void showProperty();
     dhcpServerModel* dhcpModel() { return myDhcpModel; }
     clientState* findClient( int xid ) const;
-    void incTime() { }
+    ipAddress giveDynamicIp() const;
+    void incTime();
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
@@ -77,7 +82,8 @@ public slots:
 private:
     dhcpPacket buildOffer(staticDhcpRecord *rec, int id);
     dhcpPacket createDhcpPacket( clientState *client, int state ) const;
-    clientState* chooseDynamic(macAddress mac, int id);
+    clientState* chooseDynamic(dhcpPacket packet);
+    bool containClient(ipAddress ip) const;
     QList<clientState*> clients;
     QString myInterface;
     udpSocket *receiver;
@@ -87,6 +93,7 @@ private:
     ipAddress myMask;
     ipAddress myGateway;
     int myTime;
+    int myWaitingTime;
     bool myDynamic;
 };
 

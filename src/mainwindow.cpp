@@ -67,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
+    timeLabel = new QLabel;
+    statusBar()->addPermanentWidget(timeLabel);
     readSetting();
     setCentralWidget(view);
     retranslate();
@@ -390,6 +392,7 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
+    connect( canva , SIGNAL(tictac()) , SLOT(incTime()) );
     sceneControler = new sceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
@@ -695,6 +698,13 @@ void MainWindow::printPreviewDialog()
 void MainWindow::autosave()
 {
     if ( appSetting::isAutosave()  && canva->isOpen() ) saveFile();
+}
+
+void MainWindow::incTime()
+{
+    static QTime t(0,0,0);
+    static int n = 0;
+    timeLabel->setText( t.addSecs(++n).toString("hh:mm:ss") );
 }
 
 void MainWindow::changeEvent(QEvent *e)

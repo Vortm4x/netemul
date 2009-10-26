@@ -30,6 +30,9 @@ dhcpServerProgramm::dhcpServerProgramm()
 {
     myName = tr("DHCP server");
     myDhcpModel = new dhcpServerModel;
+    myDynamic = false;
+    myTime = 300;
+    myWaitingTime = 60;
 }
 
 dhcpServerProgramm::~dhcpServerProgramm()
@@ -56,7 +59,6 @@ void dhcpServerProgramm::setInterface(QString inter)
 
 void dhcpServerProgramm::execute(QByteArray data)
 {
-    qDebug() << "YA TUT!!!!";
     dhcpPacket packet(data);
     dhcpPacket dhcp;
     bool canSend = false;
@@ -64,7 +66,7 @@ void dhcpServerProgramm::execute(QByteArray data)
         staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
         if ( rec ) dhcp = buildOffer( rec,packet.xid() );
         else if ( myDynamic ) {
-            clientState *client = chooseDynamic(packet.chaddr(),packet.xid());
+            clientState *client = chooseDynamic(packet);
             if ( !client ) return;
             dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
         }
@@ -72,7 +74,7 @@ void dhcpServerProgramm::execute(QByteArray data)
     }
     if (packet.type() == dhcpPacket::DHCPREQUEST ) {
         clientState *client = findClient( packet.xid() );
-        if ( !client )  return;
+        if ( !client || client->state == clientState::IN_USE )  return;
         dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
         canSend = true;
     }    
@@ -98,35 +100,19 @@ void dhcpServerProgramm::showProperty()
   Выбираем адрес из динамического диапазона.
   @return указатель на созданную запись.
   */
-clientState* dhcpServerProgramm::chooseDynamic(macAddress mac,int id)
+clientState* dhcpServerProgramm::chooseDynamic(dhcpPacket packet)
 {    
     if ( myBeginIp > myEndIp ) {
-        qDebug() << myBeginIp.toString() << myEndIp.toString();
         QMessageBox::warning(0,tr("Wrong range"),tr("You enter a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
         return NULL;
     }
     clientState *cl = new clientState;
-    bool isContains = false;
-    quint32 i = myBeginIp.toInt();
-    while ( i <= myEndIp.toInt() ) {
-        isContains = myDhcpModel->containRecord( ipAddress(i) );
-        foreach ( clientState *j, clients )
-            if ( j->ip == i ) {
-                isContains = true;
-                break;
-            }
-        if ( isContains ) {
-            i++;
-            isContains = false;
-        }
-        else {
-            cl->ip = ipAddress(i);
-            break;
-        }
-    }
+    cl->requestTimer = 0;
+    if ( !packet.yiaddr().isEmpty() && !containClient(packet.yiaddr()) ) cl->ip = packet.yiaddr();
+    else cl->ip = giveDynamicIp();
     if ( cl->ip.isEmpty() ) return NULL;
-    cl->mac = mac;
-    cl->xid = id;
+    cl->mac = packet.chaddr();
+    cl->xid = packet.xid();
     cl->time = myTime;
     cl->mask = myMask;
     cl->gateway = myGateway;
@@ -137,6 +123,7 @@ clientState* dhcpServerProgramm::chooseDynamic(macAddress mac,int id)
 dhcpPacket dhcpServerProgramm::buildOffer(staticDhcpRecord *rec, int id)
 {
     clientState *c = new clientState(rec);
+    c->requestTimer = 0;
     c->xid = id;
     clients << c;
     return createDhcpPacket( c, dhcpPacket::DHCPOFFER );
@@ -146,6 +133,8 @@ dhcpPacket dhcpServerProgramm::buildOffer(staticDhcpRecord *rec, int id)
   */
 dhcpPacket dhcpServerProgramm::createDhcpPacket( clientState *client, int state ) const
 {
+    if ( state == dhcpPacket::DHCPOFFER ) client->state = clientState::WAIT_REQUEST;
+    else client->state = clientState::IN_USE;
     dhcpPacket p;
     p.setType( state );
     p.setXid( client->xid );
@@ -170,6 +159,51 @@ clientState* dhcpServerProgramm::findClient(int xid) const
     return NULL;
 }
 //------------------------------------------------------------
+/*!
+  Выбирает ip-адрес из динамического диапазона
+  @return выбранный адрес, или "0.0.0.0", если нет свободных адресов.
+  */
+ipAddress dhcpServerProgramm::giveDynamicIp() const
+{
+    bool isContains = false;
+    quint32 i = myBeginIp.toInt();
+    while ( i <= myEndIp.toInt() ) {
+        isContains = myDhcpModel->containRecord( ipAddress(i) ) || containClient(i);
+        if ( isContains ) {
+            i++;
+            isContains = false;
+        }
+        else {
+            return ipAddress(i);
+            break;
+        }
+    }
+    return ipAddress("0.0.0.0");
+}
+//-------------------------------------------------------------
+
+bool dhcpServerProgramm::containClient(ipAddress ip) const
+{
+    foreach ( clientState *j, clients )
+        if ( j->ip == ip ) return true;
+    return false;
+}
+
+void dhcpServerProgramm::incTime()
+{
+    bool canDelete = false;
+    foreach ( clientState *i, clients ) {
+        if ( i->state == clientState::WAIT_REQUEST ) {
+            if ( ++i->requestTimer == myWaitingTime ) canDelete = true;
+        }
+        else if ( --i->time == 0 ) canDelete = true;
+        if ( canDelete ) {
+            canDelete = false;
+            clients.removeOne(i);
+            delete i;
+        }
+    }
+}
 
 /*!
   Записывает отличительные черты в поток.
@@ -187,6 +221,7 @@ void dhcpServerProgramm::write(QDataStream &stream) const
     stream << myGateway;
     stream << myTime;
     stream << myDynamic;
+    stream << myWaitingTime;
 }
 //---------------------------------------------------
 /*!
@@ -204,6 +239,7 @@ void dhcpServerProgramm::read(QDataStream &stream)
     stream >> myGateway;
     stream >> myTime;
     stream >> myDynamic;
+    stream >> myWaitingTime;
 }
 //---------------------------------------------------
 

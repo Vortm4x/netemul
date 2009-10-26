@@ -37,6 +37,7 @@ class QAction;
 class QGraphicsView;
 class QPainter;
 class QPrinter;
+class QLabel;
 
 /*!
     Реализует главное окно программы.
@@ -73,6 +74,7 @@ public slots:
     void printDialog();
     void printPreviewDialog();
     void paintInPreviewDialog(QPrinter *printer);
+    void incTime();
 private slots:
     void autosave();
 protected:
@@ -97,6 +99,8 @@ private:
     void createScene(); // -- сцены
     void createTools(); // -- Панелей инструментов =)
     void retranslate();
+
+    QLabel *timeLabel;
 
     QAction* createOneAction( QIcon icon = QIcon(),bool inGroup = false);
     QMenu *fileMenu; // Выпадающие меню: файл

@@ -57,6 +57,7 @@ void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
     ie_mask->setText(myProgramm->mask().toString());
     ie_gatew->setText(myProgramm->gateway().toString());
     cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
+    sb_waitingTime->setValue( myProgramm->waitingTime() );
 }
 
 void dhcpServerProperty::addRecord()
@@ -88,6 +89,7 @@ void dhcpServerProperty::apply()
     myProgramm->setGateway(ie_gatew->ipText());
     myProgramm->setTime(sb_time->value());
     myProgramm->setDynamic(cb_dynamic->isChecked());
+    myProgramm->setWaitingTime(sb_waitingTime->value());
     accept();
 }
 

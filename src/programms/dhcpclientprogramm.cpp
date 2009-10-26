@@ -26,6 +26,7 @@
 dhcpClientProgramm::dhcpClientProgramm()
 {
     myName = tr("DHCP client");
+    myOfferTime = 60;
 }
 
 dhcpClientProgramm::~dhcpClientProgramm()
@@ -38,7 +39,6 @@ void dhcpClientProgramm::incTime()
 {
     foreach ( interfaceState *i , states ) {
         --i->time;
-        //qDebug("%d - state: %d",i->time , i->state);
         switch ( i->state ) {
             case interfaceState::CS_ALL_RIGHT: if ( i->time == 0 ) restartSession(i); break;
             case interfaceState::CS_WAIT_VARIANT: if ( i->time == 0 ) sendDiscover( i->name ); break;
@@ -69,7 +69,7 @@ void dhcpClientProgramm::sendRequest(const QString &name)
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPREQUEST );
     message.setXid( t->xid );
-    message.setChaddr( t->adapter->mac() );
+    message.setChaddr( device->adapter(t->name)->mac() );
     message.setSiaddr( t->serverAddress );
     sendDhcpMessage(message,t);
 }
@@ -82,11 +82,13 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
 { 
     interfaceState *t = stateAt(name);
     if ( !t ) return;
+    t->state = interfaceState::CS_WAIT_VARIANT;
     t->time = MINUTE;
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
-    message.setChaddr( t->adapter->mac() );
+    message.setChaddr( device->adapter(t->name)->mac() );
+    if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
     sendDhcpMessage(message,t);
 }
 //--------------------------------------------------------------
@@ -105,11 +107,15 @@ void dhcpClientProgramm::processData(QByteArray data)
 //---------------------------------------------------------------
 /*!
   Начинает заново сессию
-  @param state - указатель на сессию
+  @param session - указатель на сессию
   */
-void dhcpClientProgramm::restartSession(interfaceState *state)
+void dhcpClientProgramm::restartSession(interfaceState *session)
 {
-    qFatal("Implement it!");
+    device->adapter(session->name)->setIp(tr("0.0.0.0"));
+    device->adapter(session->name)->setMask(tr("0.0.0.0"));
+    device->connectedNet( device->adapter( session->name ) );
+    device->setGateway("0.0.0.0");
+    sendDiscover( session->name );
 }
 //---------------------------------------------------------------
 /*!
@@ -136,11 +142,12 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
     foreach ( interfaceState *i , states )
         if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_RESPONSE ) {
             i->state = interfaceState::CS_ALL_RIGHT;
-            i->adapter->setIp( packet.yiaddr() );
-            i->adapter->setMask( packet.mask() );
-            device->connectedNet(i->adapter);
+            device->adapter(i->name)->setIp( packet.yiaddr() );
+            device->adapter(i->name)->setMask( packet.mask() );
+            device->connectedNet(device->adapter(i->name));
             device->setGateway( packet.gateway().toString() );
             i->time = packet.time();
+            i->lastIp = packet.yiaddr();
         }
 }
 //---------------------------------------------------------------
@@ -155,10 +162,10 @@ void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *sta
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
     udp.pack( message.toData() );
-    ipPacket packet( state->adapter->ip() , ipAddress::full() );
+    ipPacket packet( device->adapter(state->name)->ip() , ipAddress::full() );
     packet.pack( udp.toData() );
     packet.setUpProtocol( ipPacket::udp );
-    state->adapter->sendPacket( packet);
+    device->adapter(state->name)->sendPacket( packet);
 }
 //---------------------------------------------------------------
 /*!
@@ -227,8 +234,6 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     interfaceState *session = new interfaceState;
     session->name = name;
     session->xid = qrand()%5000;
-    session->state = interfaceState::CS_WAIT_VARIANT;
-    session->adapter = device->adapter(name);
     session->time = 0;
     states << session;
     sendDiscover(session->name);
@@ -248,6 +253,9 @@ void dhcpClientProgramm::write(QDataStream &stream) const
 {
     stream << DHCPClient;
     programmRep::write(stream);
+    stream << myOfferTime;
+    stream << states.size();
+    foreach ( interfaceState *i , states ) i->write(stream);
 }
 //---------------------------------------------------
 /*!
@@ -257,5 +265,25 @@ void dhcpClientProgramm::write(QDataStream &stream) const
 void dhcpClientProgramm::read(QDataStream &stream)
 {
     programmRep::read(stream);
+    stream >> myOfferTime;
+    int n;
+    stream >> n;
+    for ( int i = 0 ; i < n ; i++ ) {
+        interfaceState *temp = new interfaceState;
+        temp->read(stream);
+        temp->state = interfaceState::CS_WAIT_VARIANT;
+        states << temp;
+    }
 }
 //---------------------------------------------------
+//---------------------------------------------------
+void interfaceState::write(QDataStream &stream) const
+{
+    stream << xid << time << serverAddress << lastIp << name;
+}
+
+void interfaceState::read(QDataStream &stream)
+{
+    stream >> xid >> time >> serverAddress >> lastIp >> name;
+}
+

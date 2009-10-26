@@ -131,7 +131,7 @@ staticDhcpRecord* dhcpServerModel::recordWithMac(macAddress cha) const
 {
     if ( table.isEmpty() ) return 0;
     foreach ( staticDhcpRecord *i, table )
-        if ( i->chaddr == cha ) { qDebug("%d", i->chaddr.toInt() );return i;}
+        if ( i->chaddr == cha ) return i;
     return 0;
 }
 

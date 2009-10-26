@@ -35,8 +35,10 @@ struct interfaceState {
     int xid;
     int time;
     ipAddress serverAddress;
+    ipAddress lastIp;
     QString name;
-    interface *adapter;
+    void write(QDataStream &stream) const;
+    void read(QDataStream &stream);
 };
 
 class dhcpClientProgramm : public programmRep
@@ -50,6 +52,8 @@ public:
     void setDevice(smartDevice *s);
     void showProperty();
     void incTime();
+    void setOfferTime(int time) { myOfferTime = time; }
+    int offerTime() const { return myOfferTime; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
     void observeInterface(const QString &name, bool b);
@@ -66,8 +70,9 @@ private:
     void sendDiscover(const QString &name);
     void receiveOffer(dhcpPacket packet);
     void receiveAck(dhcpPacket packet);
-    void restartSession( interfaceState *state);
+    void restartSession( interfaceState *session);
     interfaceState* stateAt(const QString name);
+    int myOfferTime;
     udpSocket *listener;
     QList<interfaceState*> states;
 };

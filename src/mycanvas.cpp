@@ -49,7 +49,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myOpen = false;
     myModified = false;
     myState = abstractState::initialize(this);
-    commandStack.setUndoLimit(5);
+    commandStack.setUndoLimit(7);
 }
 //------------------------------------------------------------------
 /*!
@@ -283,7 +283,10 @@ void myCanvas::ticTime()
         i->deciSecondTimerEvent();
         if ( !n ) i->secondTimerEvent();
     }
-    if ( !n ) n = 9;
+    if ( !n ) {
+        n = 9;
+        emit tictac();
+    }
 }
 
 void myCanvas::emulateTime()

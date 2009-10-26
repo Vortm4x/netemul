@@ -33,6 +33,7 @@ void dhcpClientProperty::setProgramm(dhcpClientProgramm *prog)
         QListWidgetItem *item = new QListWidgetItem( myProgramm->isConnectSocketIcon(i), i , lw_interfaces );
         item->setCheckState( myProgramm->checkedState( i ) );
     }
+    sb_offerTime->setValue( prog->offerTime() );
 }
 
 void dhcpClientProperty::apply()
@@ -41,6 +42,7 @@ void dhcpClientProperty::apply()
         QListWidgetItem *t = lw_interfaces->item(i);
         myProgramm->observeInterface( t->text() , t->checkState() == Qt::Checked );
     }
+    myProgramm->setOfferTime( sb_offerTime->value() );
     accept();
 }
 

@@ -167,7 +167,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="ipEdit" name="ie_begin">
+      <widget class="ipEdit" name="ie_begin" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -177,13 +177,13 @@
        <property name="whatsThis">
         <string>The field for ip-address.</string>
        </property>
-       <property name="labelText">
+       <property name="labelText" stdset="0">
         <string>From:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="ipEdit" name="ie_end">
+      <widget class="ipEdit" name="ie_end" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -193,7 +193,7 @@
        <property name="whatsThis">
         <string>The field for ip-address.</string>
        </property>
-       <property name="labelText">
+       <property name="labelText" stdset="0">
         <string>to:</string>
        </property>
       </widget>
@@ -203,7 +203,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="ipEdit" name="ie_mask">
+      <widget class="ipEdit" name="ie_mask" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -213,13 +213,13 @@
        <property name="whatsThis">
         <string>The field for ip-address.</string>
        </property>
-       <property name="labelText">
+       <property name="labelText" stdset="0">
         <string>Mask:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="ipEdit" name="ie_gatew">
+      <widget class="ipEdit" name="ie_gatew" native="true">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -229,12 +229,35 @@
        <property name="whatsThis">
         <string>The field for ip-address.</string>
        </property>
-       <property name="labelText">
+       <property name="labelText" stdset="0">
         <string>Gateway:</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Wating time for request from dhcp-client:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSpinBox" name="sb_waitingTime">
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="minimum">
+      <number>60</number>
+     </property>
+     <property name="maximum">
+      <number>300</number>
+     </property>
+    </widget>
    </item>
    <item>
     <spacer name="verticalSpacer">
