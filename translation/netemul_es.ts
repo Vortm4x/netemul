@@ -4,7 +4,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="136"/>
+        <location filename="../src/mainwindow.cpp" line="138"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
@@ -14,72 +14,87 @@
         <translation type="obsolete">¿Realmente desea salir?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="133"/>
         <source>Create new network</source>
         <translation>Creaer nueva red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="520"/>
+        <location filename="../src/mainwindow.cpp" line="143"/>
+        <source>Settings...</source>
+        <translation>Configuraciones...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="143"/>
+        <source>Settings</source>
+        <translation>Configuraciones</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="163"/>
+        <source>Packet designer...</source>
+        <translation>Diseñador de paquetes...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="523"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Open existing file</source>
         <translation>Abrir archivo existente</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="133"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>Save network</source>
         <translation>Guardar red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>Save as...</source>
         <translation>Guardar como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="134"/>
+        <location filename="../src/mainwindow.cpp" line="136"/>
         <source>Save network as...</source>
         <translation>Guardar red como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
+        <location filename="../src/mainwindow.cpp" line="137"/>
         <source>Close</source>
         <translation>Cerrar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="135"/>
+        <location filename="../src/mainwindow.cpp" line="137"/>
         <source>Close current file</source>
         <translation>Cerrar archivo actual</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="137"/>
+        <location filename="../src/mainwindow.cpp" line="139"/>
         <source>Show grid</source>
         <translation>Mostrar grilla</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="138"/>
+        <location filename="../src/mainwindow.cpp" line="140"/>
         <source>Arp table</source>
         <translation>Tabla arp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>Delete</source>
         <translation>Borrar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="139"/>
+        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>Deleting object</source>
         <translation>Borrando objeto</translation>
     </message>
@@ -96,368 +111,357 @@
         <translation type="obsolete">¿Realmente desea salir del programa?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="115"/>
         <source>File was modified</source>
         <translation>El archivo ha sido modificado</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="115"/>
         <source>File was modified, do you want to save changes?</source>
         <translation>El archivo ha sido modificado ¿desea guardar los cambios?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="132"/>
+        <location filename="../src/mainwindow.cpp" line="134"/>
         <source>Open...</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
         <source>Programs</source>
         <translation>Programas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="140"/>
+        <location filename="../src/mainwindow.cpp" line="142"/>
         <source>Programs installed on device</source>
         <translation>Programas instalados en el dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
         <source>Setting</source>
-        <translation>Configuración</translation>
+        <translation type="obsolete">Configuración</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
-        <source>Setting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
-        <location filename="../src/mainwindow.cpp" line="642"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="645"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
-        <location filename="../src/mainwindow.cpp" line="643"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="646"/>
         <source>Stop simulation</source>
         <translation>Parar simulación</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Statistics </source>
         <translation>Estadísticas</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Show scene statistics </source>
         <translation>Mostrar las estadísticas de la escena</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Move objects</source>
         <translation>Mover objetos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Netcards</source>
         <translation>Tarjetas de red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Edit netcards</source>
         <translation>Editar tarjetas de red</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Cable</source>
         <translation>Cable</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Create connection</source>
         <translation>Crear conexión</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Note</source>
         <translation>Nota</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Insert text comment</source>
         <translation>Insertar comentario de texto</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>NetEmul Help</source>
         <translation>Ayuda de NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>Full help system program</source>
         <translatorcomment>Really don&apos;t know if the english phrase is correct</translatorcomment>
         <translation>Ayuda completa del programa de sistema</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="151"/>
         <source>Unibus</source>
         <translation>Unibus</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="151"/>
         <source>Add unibus</source>
         <translation>Agregar unibus</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="150"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Computer</source>
         <translation>Computadora</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="150"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Add computer</source>
         <translation>Agregar computadora</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>About NetEmul</source>
         <translation>Acerca de NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Hub</source>
         <translation>Hub</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Add hub</source>
         <translation>Agregar hub</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Switch</source>
         <translation>Switch</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
         <source>Add switch</source>
         <translation>Agregar switch</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Router</source>
         <translation>Router</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Add router</source>
         <translation>Agregar router</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Send</source>
         <translation>Enviar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Send data</source>
         <translation>Enviar datos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Execute scripts</source>
         <translation>Ejecutar scripts</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Run existing scripts</source>
         <translation>Correr scripts existentes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="157"/>
+        <location filename="../src/mainwindow.cpp" line="159"/>
         <source>About Qt</source>
         <translation>Acerca de Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Properties</source>
         <translation>Propiedades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Show properties</source>
         <translation>Mostrar propiedades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Show log</source>
         <translation>Mostrar el registro</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Show device log file</source>
         <translation>Mostrar el archivo de registro del dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>About device</source>
         <translation>Acerca del dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>Information about device</source>
         <translation>Información sobre el dispositivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Create user&apos;s packet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
-        <source>Packet desinger...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
-        <source>Print...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
-        <source>Print user&apos;s network</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
-        <source>Preview...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
-        <source>Preview network berfore printing</source>
-        <translation type="unfinished"></translation>
+        <translation>Crear paquete de usuario</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="164"/>
+        <source>Print...</source>
+        <translation>Imprimir...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="164"/>
+        <source>Print user&apos;s network</source>
+        <translation>Imprimir la red del usuario</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="165"/>
+        <source>Preview...</source>
+        <translation>Previsualizar...</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="165"/>
+        <source>Preview network berfore printing</source>
+        <translation>Previsualizar la red antes de imprimir</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="166"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="165"/>
+        <location filename="../src/mainwindow.cpp" line="167"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="166"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>View</source>
         <translation>Ver</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="167"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Object</source>
         <translation>Objeto</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="170"/>
         <source>Service</source>
         <translation>Servicio</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Scripts</source>
         <translation>Scripts</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="170"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="171"/>
+        <location filename="../src/mainwindow.cpp" line="173"/>
         <source>Devices</source>
         <translation>Dispositivos</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Controls</source>
         <translation>Controles</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="205"/>
+        <location filename="../src/mainwindow.cpp" line="207"/>
         <source>Ctrl+X</source>
         <translation>Ctrl+X</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="213"/>
+        <location filename="../src/mainwindow.cpp" line="215"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="216"/>
+        <location filename="../src/mainwindow.cpp" line="218"/>
         <source>Ctrl+Alt+S</source>
         <translation>Ctrl+Alt+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="254"/>
+        <location filename="../src/mainwindow.cpp" line="256"/>
         <source>Ctrl+Alt+P</source>
         <translation>Ctrl+Alt+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="257"/>
+        <location filename="../src/mainwindow.cpp" line="259"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="270"/>
+        <location filename="../src/mainwindow.cpp" line="272"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="276"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Ctrl+P</source>
         <translation>Ctrl+P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="279"/>
+        <location filename="../src/mainwindow.cpp" line="281"/>
         <source>Ctrl+Shift+A</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="282"/>
+        <location filename="../src/mainwindow.cpp" line="284"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="285"/>
+        <location filename="../src/mainwindow.cpp" line="287"/>
         <source>Ctrl+F1</source>
         <translation>Ctrl+F1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="506"/>
-        <location filename="../src/mainwindow.cpp" line="533"/>
+        <location filename="../src/mainwindow.cpp" line="509"/>
+        <location filename="../src/mainwindow.cpp" line="536"/>
         <source>Save file as ...</source>
         <translation>Guardar archivo como...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="508"/>
-        <location filename="../src/mainwindow.cpp" line="521"/>
-        <location filename="../src/mainwindow.cpp" line="534"/>
+        <location filename="../src/mainwindow.cpp" line="511"/>
+        <location filename="../src/mainwindow.cpp" line="524"/>
+        <location filename="../src/mainwindow.cpp" line="537"/>
         <source>Networks(*.net)</source>
         <translation>Redes (*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="637"/>
+        <location filename="../src/mainwindow.cpp" line="640"/>
         <source>Play</source>
         <translation>Ejecutar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="638"/>
+        <location filename="../src/mainwindow.cpp" line="641"/>
         <source>Start simulation</source>
         <translation>Empezar la simulación</translation>
     </message>
@@ -606,7 +610,7 @@
     <message>
         <location filename="../src/packets/ippacket.cpp" line="56"/>
         <source>IP packet, sender: %1, receiver: %2 TTL: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Paquete IP; transmisor: %1, receptor: %2 TTL: %3</translation>
     </message>
 </context>
 <context>
@@ -654,7 +658,7 @@ Omilaeva Anastasia - Desarrollador.</translation>
         <source>Thanks to</source>
         <translation>Gracias a</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="78"/>
         <source>Konstantin Andreev - Author of the idea and creator of the icons, 
 Arina Shelest - Author of the logotype.
@@ -682,7 +686,7 @@ Márcio Moraes</translation>
         <source>Translation</source>
         <translation>Traducciones</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/forms/aboutwindow.ui" line="96"/>
         <source>Семенов Павел - Русский
 Márcio Moraes - Português brasileiro
@@ -796,7 +800,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="29"/>
         <source>Properties</source>
-        <translation type="unfinished">Propiedades</translation>
+        <translation>Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/computerproperty.cpp" line="33"/>
@@ -842,142 +846,142 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="41"/>
         <source>Main</source>
-        <translation type="unfinished"></translation>
+        <translation>Principal</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="42"/>
         <source>Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Trama</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="43"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="109"/>
         <source>Ip</source>
-        <translation type="unfinished"></translation>
+        <translation>IP</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="44"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="110"/>
         <source>Arp</source>
-        <translation type="unfinished">Arp</translation>
+        <translation>ARP</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="45"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="132"/>
         <source>Tcp</source>
-        <translation type="unfinished">TCP</translation>
+        <translation>TCP</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="46"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="133"/>
         <source>Udp</source>
-        <translation type="unfinished"></translation>
+        <translation>UDP</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="52"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="53"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="61"/>
         <source>Packet designer</source>
-        <translation type="unfinished"></translation>
+        <translation>Diseñador de paquetes</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="68"/>
         <source>Choose interface: </source>
-        <translation type="unfinished"></translation>
+        <translation>Elegir interfaces:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="78"/>
         <source>Count: </source>
-        <translation type="unfinished"></translation>
+        <translation>Cuenta:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="94"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="158"/>
         <source>Sender mac: </source>
-        <translation type="unfinished"></translation>
+        <translation>MAC del transmisor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="101"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="165"/>
         <source>Receiver mac: </source>
-        <translation type="unfinished"></translation>
+        <translation>MAC del receptor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="126"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="171"/>
         <source>Sender ip: </source>
-        <translation type="unfinished"></translation>
+        <translation>IP del transmisor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="127"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="172"/>
         <source>Receiver ip: </source>
-        <translation type="unfinished"></translation>
+        <translation>IP del receptor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="151"/>
         <source>Response</source>
-        <translation type="unfinished"></translation>
+        <translation>Respuesta</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="152"/>
         <source>Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Pedido</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="185"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="232"/>
         <source>Sender port: </source>
-        <translation type="unfinished"></translation>
+        <translation>Puerto del transmisor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="190"/>
         <location filename="../src/dialogs/designerdialog.cpp" line="238"/>
         <source>Receiver port: </source>
-        <translation type="unfinished"></translation>
+        <translation>Puerto del receptor:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="197"/>
         <source>Sequence number: </source>
-        <translation type="unfinished"></translation>
+        <translation>Número de secuencia:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="202"/>
         <source>Ack number: </source>
-        <translation type="unfinished"></translation>
+        <translation>Número de ACK:</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="209"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Banderas</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="211"/>
         <source>SYN</source>
-        <translation type="unfinished"></translation>
+        <translation>SYN</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="212"/>
         <source>ACK</source>
-        <translation type="unfinished"></translation>
+        <translation>ACK</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="216"/>
         <source>RST</source>
-        <translation type="unfinished"></translation>
+        <translation>RST</translation>
     </message>
     <message>
         <location filename="../src/dialogs/designerdialog.cpp" line="217"/>
         <source>FIN</source>
-        <translation type="unfinished"></translation>
+        <translation>FIN</translation>
     </message>
 </context>
 <context>
@@ -986,6 +990,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <location filename="../src/programms/dhcpclientprogramm.cpp" line="28"/>
         <source>DHCP client</source>
         <translation>Cliente DHCP</translation>
+    </message>
+    <message>
+        <location filename="../src/programms/dhcpclientprogramm.cpp" line="114"/>
+        <location filename="../src/programms/dhcpclientprogramm.cpp" line="115"/>
+        <source>0.0.0.0</source>
+        <translation>0.0.0.0</translation>
     </message>
 </context>
 <context>
@@ -996,19 +1006,28 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <translation>Propiedades del cliente DHCP</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpclientproperty.ui" line="20"/>
         <source>Choose interfaces which must be
  under DHCP control: </source>
-        <translation>Elija las interfaces que deben
+        <translation type="obsolete">Elija las interfaces que deben
 estar bajo control de DHCP:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpclientproperty.ui" line="46"/>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="20"/>
+        <source>Choose interfaces which must&lt;br&gt; be under DHCP control: </source>
+        <translation>Elija las interfaces bajo control&lt;br&gt; de DHCP:</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="32"/>
+        <source>Waiting time for offers&lt;br&gt; from dhcp-server</source>
+        <translation>Tiempo de espera de oferta de un &lt;br&gt;servidor DHCP</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="75"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpclientproperty.ui" line="57"/>
+        <location filename="../src/forms/dhcpclientproperty.ui" line="86"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1018,45 +1037,35 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/models/dhcpservermodel.cpp" line="45"/>
         <source>Mac-address</source>
-        <translation type="unfinished">Dirección MAC</translation>
+        <translation>Dirección MAC</translation>
     </message>
     <message>
         <location filename="../src/models/dhcpservermodel.cpp" line="46"/>
         <source>Ip-address</source>
-        <translation type="unfinished">Dirección IP</translation>
+        <translation>Dirección IP</translation>
     </message>
     <message>
         <location filename="../src/models/dhcpservermodel.cpp" line="47"/>
         <source>Mask</source>
-        <translation type="unfinished">Máscara</translation>
+        <translation>Máscara</translation>
     </message>
     <message>
         <location filename="../src/models/dhcpservermodel.cpp" line="48"/>
         <source>Gateway</source>
-        <translation type="unfinished">Puerta de enlace</translation>
+        <translation>Puerta de enlace</translation>
     </message>
     <message>
         <location filename="../src/models/dhcpservermodel.cpp" line="49"/>
         <source>Time</source>
-        <translation type="unfinished">Tiempo</translation>
+        <translation>Tiempo</translation>
     </message>
 </context>
 <context>
     <name>dhcpServerProgramm</name>
     <message>
-        <location filename="../src/programms/dhcpserverprogramm.cpp" line="31"/>
+        <location filename="../src/programms/dhcpserverprogramm.cpp" line="30"/>
         <source>DHCP server</source>
         <translation>Servidor DHCP</translation>
-    </message>
-    <message>
-        <location filename="../src/programms/dhcpserverprogramm.cpp" line="105"/>
-        <source>Wrong range</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/programms/dhcpserverprogramm.cpp" line="105"/>
-        <source>You enter a wrong range of ip.</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1094,16 @@ estar bajo control de DHCP:</translation>
         <source>Ip</source>
         <translation type="obsolete">IP</translation>
     </message>
+    <message>
+        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="88"/>
+        <source>Wrong range</source>
+        <translation>Rango incorrecto</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogs/dhcpserverproperty.cpp" line="88"/>
+        <source>You have entered a wrong IP range.</source>
+        <translation>Ha ingresado un rango de IP erróneo.</translation>
+    </message>
 </context>
 <context>
     <name>dhspServerProperty</name>
@@ -1096,7 +1115,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="34"/>
         <source>Choose interface:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="66"/>
@@ -1134,7 +1153,7 @@ estar bajo control de DHCP:</translation>
         <location filename="../src/forms/dhcpserverproperty.ui" line="211"/>
         <location filename="../src/forms/dhcpserverproperty.ui" line="227"/>
         <source>Ip address</source>
-        <translation type="unfinished"></translation>
+        <translation>Dirección IP</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="178"/>
@@ -1142,35 +1161,40 @@ estar bajo control de DHCP:</translation>
         <location filename="../src/forms/dhcpserverproperty.ui" line="214"/>
         <location filename="../src/forms/dhcpserverproperty.ui" line="230"/>
         <source>The field for ip-address.</source>
-        <translation type="unfinished"></translation>
+        <translation>El campo para la dirección IP.</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="181"/>
         <source>From:</source>
-        <translation type="unfinished"></translation>
+        <translation>Desde:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="197"/>
         <source>to:</source>
-        <translation type="unfinished"></translation>
+        <translation>hacia:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="217"/>
         <source>Mask:</source>
-        <translation type="unfinished"></translation>
+        <translation>Máscara:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="233"/>
         <source>Gateway:</source>
-        <translation type="unfinished"></translation>
+        <translation>Puerta de enlace:</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="270"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="242"/>
+        <source>Wating time for request from dhcp-client:</source>
+        <translation>Tiempo de espera de un cliente de DHCP:</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="293"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/forms/dhcpserverproperty.ui" line="281"/>
+        <location filename="../src/forms/dhcpserverproperty.ui" line="304"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -1233,7 +1257,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="31"/>
         <source>Properties</source>
-        <translation type="unfinished">Propiedades</translation>
+        <translation>Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/hubproperty.cpp" line="45"/>
@@ -1538,12 +1562,12 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/mycanvas.cpp" line="191"/>
         <source>Outdated version of the file, file can&apos;t be opened</source>
-        <translation type="unfinished"></translation>
+        <translation>Versión antigua del archivo, el mismo no puede ser abierto</translation>
     </message>
     <message>
         <location filename="../src/mycanvas.cpp" line="239"/>
         <source>Opening file for writing is impossible %1</source>
-        <translation type="unfinished"></translation>
+        <translation>No es posible abrir el archivo para escritura %1</translation>
     </message>
     <message>
         <source>Opening file for writeng is impossible</source>
@@ -1780,7 +1804,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="33"/>
         <source>Properties</source>
-        <translation type="unfinished">Propiedades</translation>
+        <translation>Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/routerproperty.cpp" line="36"/>
@@ -1949,12 +1973,12 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="207"/>
         <source>Autosave</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoguardar</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="284"/>
         <source>Interval: </source>
-        <translation type="unfinished"></translation>
+        <translation>Intervalo:</translation>
     </message>
     <message>
         <location filename="../src/forms/settingdialog.ui" line="344"/>
@@ -2273,7 +2297,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="31"/>
         <source>Properties</source>
-        <translation type="unfinished">Propiedades</translation>
+        <translation>Propiedades</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="45"/>
