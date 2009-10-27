@@ -26,7 +26,7 @@
 #include "ipaddressdelegate.h"
 
 dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
-{    
+{
     setupUi(this);
     device = dev;
     setAttribute(Qt::WA_DeleteOnClose);
@@ -48,7 +48,7 @@ dhcpServerProperty::~dhcpServerProperty()
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 {
     myProgramm = prog;
-    myModel = myProgramm->dhcpModel();   
+    myModel = myProgramm->dhcpModel();
     tv_static->setModel( myModel );
     QHeaderView *h = tv_static->horizontalHeader();
     h->setResizeMode( QHeaderView::Stretch );
@@ -64,7 +64,7 @@ void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 
 void dhcpServerProperty::addRecord()
 {
-    myModel->insertRow( myModel->rowCount() );   
+    myModel->insertRow( myModel->rowCount() );
 }
 
 void dhcpServerProperty::deleteRecord()
@@ -85,7 +85,7 @@ void dhcpServerProperty::changeState(bool b)
 void dhcpServerProperty::apply()
 {
     if ( ie_begin->ipText() > ie_end->ipText() ) {
-        QMessageBox::warning(0,tr("Wrong range"),tr("You enter a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
     myProgramm->setInterface(cb_interface->currentText());
