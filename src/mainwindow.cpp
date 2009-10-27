@@ -140,7 +140,7 @@ void MainWindow::retranslate()
     UPDATEACTION( arpAct , tr("Arp table"), tr("Arp table") );
     UPDATEACTION( deleteAct , tr("Delete"),tr("Deleting object") )
     UPDATEACTION( progAct , tr("Programs"), tr("Programs installed on device") )
-    UPDATEACTION( settingAct ,  tr("Setting...") , tr("Setting") )
+    UPDATEACTION( settingAct ,  tr("Settings...") , tr("Settings") )
     UPDATEACTION( playAct , tr("Stop") , tr("Stop simulation") )
     UPDATEACTION( staticsAct , tr("Statistics ") , tr("Show scene statistics ") )
     UPDATEACTION( moveAct , tr("Move"),tr("Move objects") )
@@ -160,7 +160,7 @@ void MainWindow::retranslate()
     UPDATEACTION( propertyAct , tr("Properties") , tr("Show properties")  )
     UPDATEACTION( logAct , tr("Show log") , tr("Show device log file") )
     UPDATEACTION( aboutDeviceAct , tr("About device") , tr("Information about device") )
-    UPDATEACTION( designerPacketAct , tr("Packet desinger...") , tr("Create user's packet") )
+    UPDATEACTION( designerPacketAct , tr("Packet designer...") , tr("Create user's packet") )
     UPDATEACTION( printAct , tr("Print...") , tr("Print user's network") )
     UPDATEACTION( printPreviewAct , tr("Preview...") , tr("Preview network berfore printing") );
     fileMenu->setTitle(tr("File"));
@@ -486,7 +486,7 @@ void MainWindow::selectionChange()
 // Слот окна настроек
 void MainWindow::setting()
 {
-    settingDialog *d = new settingDialog;    
+    settingDialog *d = new settingDialog;
     d->exec();
     canva->setAnimateSpeed( appSetting::animateSpeed() );
     setOpenglMode( appSetting::hasOpengl() );
