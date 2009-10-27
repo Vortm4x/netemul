@@ -85,7 +85,7 @@ void dhcpServerProperty::changeState(bool b)
 void dhcpServerProperty::apply()
 {
     if ( ie_begin->ipText() > ie_end->ipText() ) {
-        QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong range of ip."), QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong IP range."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
     myProgramm->setInterface(cb_interface->currentText());
