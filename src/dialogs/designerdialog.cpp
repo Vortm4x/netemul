@@ -269,7 +269,7 @@ void designerDialog::apply()
             tcp.setReceiver( sb_tcpReceiverPort->value() );
             tcp.setSequence( sb_sequence->value() );
             tcp.setAck( sb_ack->value() );
-            quint8 flag;
+            quint8 flag = 0;
             if ( cb_ack->isChecked() ) flag |= tcpPacket::ACK;
             if ( cb_fin->isChecked() ) flag |= tcpPacket::FIN;
             if ( cb_reset->isChecked() ) flag |= tcpPacket::RST;

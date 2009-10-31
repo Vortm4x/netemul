@@ -48,7 +48,7 @@ class MainWindow : public QMainWindow
     Q_DISABLE_COPY(MainWindow)
 public:
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent, QStringList param);
     ~MainWindow();
     QString& file() { return myFile; } // Получить имя текущего файла
     void setFile(const QString &text) { myFile = text; } // Задать текущий файл
@@ -82,6 +82,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event);
     void changeEvent(QEvent *e);
 private:
+    void openFile(QString name);
     int saveFileDialog();
     void setOpenglMode(bool mode);
     QString myFile; // Имя текущего файла

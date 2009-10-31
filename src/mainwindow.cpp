@@ -51,8 +51,7 @@
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
 
 // Конструктор главной формы
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
 {
     QCoreApplication::setApplicationVersion("0.9.6");
     createAction(); // Создаем события
@@ -78,6 +77,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect( autosaveTimer , SIGNAL(timeout()) , SLOT(autosave()) );
     printer = 0;
     printerPainter = 0;
+    if ( param.size() > 1 ) {
+        if ( QFile::exists( param.at(1) ) == false ) exit(0);
+        openFile( param.at(1) );
+    }
 }
 
 MainWindow::~MainWindow()
@@ -518,16 +521,21 @@ bool MainWindow::saveFile()
     return true;
 }
 
+void MainWindow::openFile(QString name)
+{
+    setWindowTitle(name);
+    setEnabledFileItems(true);
+    showGridAct->setChecked(true);
+    canva->openScene(name);
+}
+
 void MainWindow::openFile()
 {
     QString t = QFileDialog::getOpenFileName(this,tr("Open"),
                                              QDir::currentPath(),tr("Networks(*.net)"));
     if ( t.isEmpty() ) return;
     myFile = t;
-    setWindowTitle( t );
-    setEnabledFileItems(true);
-    showGridAct->setChecked(true);
-    canva->openScene(t);
+    openFile( myFile );
 }
 
 //Слот сохранить как =)

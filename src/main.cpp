@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 //                    "QMenu { background-color : black ; color : white }"
 //                    "QPushBoutton {background-color : black ; color : white }"
 //                    "QWidget { background-color : black ; color : white}");
-    MainWindow w;
+    MainWindow w(0, a.arguments() );
     w.show();
     return a.exec();
 }
