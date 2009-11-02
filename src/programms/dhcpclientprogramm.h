@@ -45,9 +45,10 @@ class dhcpClientProgramm : public programmRep
 {
     Q_OBJECT
 public:
-    enum { DHCPClient = 51 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
+    enum { DHCPClient = 1 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
     dhcpClientProgramm();
     ~dhcpClientProgramm();
+    int id() const { return DHCPClient; }
     bool interrupt(int) { return false; }
     void setDevice(smartDevice *s);
     void showProperty();

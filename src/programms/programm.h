@@ -26,7 +26,7 @@
 class programm
 {
 public:
-    enum { RIP = 50 , DHCPClient = 51 , DHCPServer = 52 };
+    enum { RIP = 0 , DHCPClient = 1 , DHCPServer = 2 };
     programm() { qFatal("Error programm constructor!"); }
     programm(int n);
     programm(QDataStream &stream);

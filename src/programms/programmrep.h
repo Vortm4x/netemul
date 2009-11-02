@@ -41,6 +41,7 @@ public:
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    virtual int id() const = 0;
 protected:
     smartDevice *device;
     bool myEnable;

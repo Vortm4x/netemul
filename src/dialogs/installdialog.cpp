@@ -22,7 +22,9 @@
 #include "ripprogramm.h"
 #include "smartdevice.h"
 
-//#define DHCP_WORK
+
+
+#define DHCP_WORK
 
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
 {
@@ -44,13 +46,13 @@ void installDialog::setDevice(smartDevice *d)
 */
 void installDialog::install()
 {
-    if ( smart->hasProgramm( list->currentItem()->text() ) ) {
+    if ( smart->hasProgramm( list->currentRow() ) ) {
             QMessageBox::warning(0,tr("Error") , tr("Program already installed.") ,
                                  QMessageBox::Ok , QMessageBox::Ok );
             return;
     }
     if ( list->currentRow() < 0 ) return;
-    programm a(list->currentRow()+50);
+    programm a(list->currentRow());
     a->setEnable(false);
     smart->installProgramm(a);
     accept();

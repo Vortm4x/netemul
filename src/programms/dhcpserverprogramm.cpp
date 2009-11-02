@@ -42,12 +42,12 @@ dhcpServerProgramm::~dhcpServerProgramm()
 void dhcpServerProgramm::setDevice(smartDevice *s)
 {
     programmRep::setDevice(s);
-    receiver = new udpSocket(device, SERVER_SOCKET);
-    receiver->setBind("0.0.0.0");
+    receiver = new udpSocket(device, SERVER_SOCKET);    
     foreach ( interface *i, device->interfaces() ) {
         if ( i->isConnect() ) myInterface = i->name();
         break;
     }
+    receiver->setBind(device->adapter(myInterface)->ip());
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
 }
 

@@ -49,9 +49,10 @@ class dhcpServerProgramm : public programmRep
 {
     Q_OBJECT
 public:
-    enum { DHCPServer = 52 , CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
+    enum { DHCPServer = 2 , CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
     dhcpServerProgramm();
     ~dhcpServerProgramm();
+    int id() const { return DHCPServer; }
     void setDevice(smartDevice *s);
     void setInterface( QString inter );
     void setBegin(ipAddress ip) { myBeginIp = ip; }

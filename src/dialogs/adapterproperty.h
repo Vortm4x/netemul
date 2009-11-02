@@ -59,6 +59,7 @@ private:
     ipEdit *le_mask;
     QPushButton *btn_add;
     QPushButton *btn_del;
+    QCheckBox *cb_auto;
 };
 
 #endif // ADAPTERPROPERTY_H

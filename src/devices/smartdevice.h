@@ -91,7 +91,7 @@ public:
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
-    bool hasProgramm(const QString name);
+    bool hasProgramm(int id);
     ipAddress gateway() const;
     routeModel* routeTable() { return myRouteTable; }
     QList<arpModel*> arpModels();
@@ -156,6 +156,7 @@ public:
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
     QString statics() const { return sd->myInterfaces.at(cur)->staticsString(); }
     void sendArpRequest(ipAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
+    bool hasDhcpClient() { return sd->hasProgramm( programm::DHCPClient ); }
     bool canManageInterface() const { return sd->canManageInterface(); }
     void addInterface() { sd->addInterface(); }
     void deleteInterface(const QString &name) { sd->deleteInterface(name); }

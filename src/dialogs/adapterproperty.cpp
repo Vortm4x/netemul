@@ -61,7 +61,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     all->addLayout(temp);
     connect(le_mac, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
-    le_ip = new ipEdit(this,tr("Ip-address: "));
+    le_ip = new ipEdit(this,tr("Ip-address: "));    
     all->addWidget(le_ip);
     connect(le_ip, SIGNAL(textChanged(QString)), SLOT(applyEnable()));
 
@@ -77,6 +77,9 @@ adapterProperty::adapterProperty(adapterSetting *s)
     QHBoxLayout *b = new QHBoxLayout;
     b->addStretch(1);
     if ( sd->canManageInterface() ) {
+        cb_auto = new QCheckBox(tr("Receive settings automatically"));
+        all->addWidget( cb_auto );
+        cb_auto->setEnabled( sd->hasDhcpClient() );
         btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , tr("Add") );
         btn_del = new QPushButton(QIcon(":/im/images/edit_remove.png") , tr("Delete") );
         connect( btn_add , SIGNAL(clicked()) , SLOT(addInterface()) );
@@ -128,6 +131,7 @@ void adapterProperty::updateTab(int n)
     le_ip->setText( sd->ip() );
     le_mask->setText( sd->mask() );
     lb_statics->setText( sd->statics() );
+   // cb_auto->setChecked( sd
     if (sd) sd->setCheckedSocket( sd->name() );
 }
 //-----------------------------------------------------

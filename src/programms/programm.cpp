@@ -22,9 +22,11 @@
 #include "dhcpserverprogramm.h"
 #include "dhcpclientprogramm.h"
 
+static const int MAGIC_PROGRAMM_NUMBER = 50;
+
 programm::programm(int n)
 {
-    switch ( n ) {
+    switch ( n%MAGIC_PROGRAMM_NUMBER ) {
         case RIP: rep = new ripProgramm; break;
         case DHCPClient : rep = new dhcpClientProgramm; break;
         case DHCPServer : rep = new dhcpServerProgramm; break;
@@ -37,7 +39,7 @@ programm::programm(QDataStream &stream)
 {
     int n;
     stream >> n;
-    switch (n) {
+    switch (n%MAGIC_PROGRAMM_NUMBER) {
         case RIP: rep = new ripProgramm; break;
         case DHCPClient : rep = new dhcpClientProgramm; break;
         case DHCPServer : rep = new dhcpServerProgramm; break;

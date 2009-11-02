@@ -27,7 +27,7 @@ class routeModel;
 class routeRecord;
 class udpSocket;
 
-static const qint8 infinity = 16;
+static const qint8 INFINITY = 16;
 
 /*!
   Реализует Rip-программу.
@@ -36,8 +36,9 @@ class ripProgramm : public programmRep
 {
     Q_OBJECT
 public:
-    enum { defaultTtl = 30 , RIP = 50 , ttl = 6 };
+    enum { defaultTtl = 30 , RIP = 0 , ttl = 6 };
     enum { SPLIT_NONE , SPLIT_HORIZONT , SPLIT_WIH_POISON };
+    int id() const { return RIP; }
     ripProgramm();
     ~ripProgramm();
     void setDevice(smartDevice *s);

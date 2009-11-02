@@ -457,10 +457,10 @@ statistics smartDevice::deviceStatistics() const
     return s;
 }
 
-bool smartDevice::hasProgramm(const QString name)
+bool smartDevice::hasProgramm(int id)
 {
     foreach ( programm i , myProgramms )
-        if ( i->name() == name ) return true;
+        if ( i->id() == id ) return true;
     return false;
 }
 
