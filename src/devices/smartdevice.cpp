@@ -29,6 +29,7 @@
 #include "routemodel.h"
 #include "tcpsocket.h"
 #include "udpsocket.h"
+#include "dhcpclientprogramm.h"
 
 smartDevice::smartDevice() : myRouter(false)
 {
@@ -223,18 +224,6 @@ void smartDevice::treatPacket(ipPacket &p)
 }
 //--------------------------------------------------
 /*!
-  Ищет программу по ее названию.
-  @param n - название программы.
-  @return Указатель на программу, либо NULL если такой программы нет.
-*/
-programm smartDevice::programmAt(const QString n) const
-{
-    foreach ( programm i , myProgramms )
-        if ( i->name() == n ) return i;
-    return programm();
-}
-//----------------------------------------------------
-/*!
   Узнает ip-адрес интерфейса лежащего в той же сети что и указанный адрес.
   @param a - Адрес для поиска.
   @return ip-адрес интерфейса.
@@ -246,6 +235,15 @@ ipAddress smartDevice::findInterfaceIp(ipAddress a)
         if ( (i->mask() & a ) == ( i->ip() & i->mask() ) ) return i->ip();
     }
     return ipAddress();
+}
+//------------------------------------------------------
+/*!
+  */
+programm smartDevice::programmAt(const quint16 p) const
+{
+    foreach ( programm i , myProgramms )
+        if ( i->id() == p ) return i;
+    return programm();
 }
 //------------------------------------------------------
 /*!
@@ -503,6 +501,18 @@ void adapterSetting::connectedNet()
     sd->connectedNet(sd->myInterfaces.at(cur));
 }
 //--------------------------------------------------------------------------
+
+bool adapterSetting::isUnderDhcpControl() const
+{
+    dhcpClientProgramm *t = qobject_cast<dhcpClientProgramm*>( sd->programmAt(programm::DHCPClient).impl() );
+    return t->isUnderDhcpControl( sd->myInterfaces.at(cur)->name() );
+}
+
+void adapterSetting::setUnderDhcpControl(bool isUnder)
+{
+    dhcpClientProgramm *t = qobject_cast<dhcpClientProgramm*>( sd->programmAt( programm::DHCPClient).impl() );
+    t->observeInterface( sd->myInterfaces.at(cur)->name() , isUnder );
+}
 
 
 

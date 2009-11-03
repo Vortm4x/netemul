@@ -38,6 +38,7 @@ void programmDialog::updateList()
     foreach ( programm i, s->programms() ){
         QListWidgetItem *item = new QListWidgetItem(i->name());
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
+        item->setData( Qt::UserRole , i->id() );
         if ( i->isEnable() ) item->setCheckState(Qt::Checked);
         else item->setCheckState(Qt::Unchecked);
         list->addItem(item);
@@ -53,7 +54,7 @@ void programmDialog::programmChanged()
 void programmDialog::stateChanged(QListWidgetItem *item)
 {
     if ( !item ) return;
-    s->programmAt( item->text() )->setEnable( item->checkState() == Qt::Checked );
+    s->programmAt( item->data( Qt::UserRole).toInt() )->setEnable( item->checkState() == Qt::Checked );
 }
 
 void programmDialog::setDevice( smartDevice *d )
@@ -69,8 +70,8 @@ void programmDialog::apply()
 {
     for ( int i = 0; i < list->count(); i++) {
         QListWidgetItem *n = list->item(i);
-        if (n->checkState() == Qt::Checked ) s->programmAt( n->text())->setEnable(true);
-        else s->programmAt( n->text())->setEnable(false);
+        if (n->checkState() == Qt::Checked ) s->programmAt( n->data(Qt::UserRole).toInt() )->setEnable(true);
+        else s->programmAt( n->data(Qt::UserRole).toInt() )->setEnable(false);
     }
     accept();
 }
@@ -94,13 +95,13 @@ void programmDialog::add()
 void programmDialog::remove()
 {
     QListWidgetItem *w = list->currentItem();
-    s->removeProgramm( s->programmAt(w->text()) );
+    s->removeProgramm( s->programmAt(w->data(Qt::UserRole).toInt() ) );
     updateList();
 }
 
 void programmDialog::settings()
 {
-    s->programmAt( list->currentItem()->text() )->showProperty();
+    s->programmAt( list->currentItem()->data(Qt::UserRole).toInt() )->showProperty();
 }
 
 //-----------------------------------------------------

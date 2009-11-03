@@ -48,6 +48,7 @@ private slots:
     void deleteInterface();
     void reset();
     void changeTab(int n);
+    void onAutoClicked(bool isAuto);
     void apply();
 private:
     adapterSetting *sd;

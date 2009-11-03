@@ -78,6 +78,7 @@ adapterProperty::adapterProperty(adapterSetting *s)
     b->addStretch(1);
     if ( sd->canManageInterface() ) {
         cb_auto = new QCheckBox(tr("Receive settings automatically"));
+        connect( cb_auto , SIGNAL(clicked(bool)) , SLOT(onAutoClicked(bool)) );
         all->addWidget( cb_auto );
         cb_auto->setEnabled( sd->hasDhcpClient() );
         btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , tr("Add") );
@@ -121,7 +122,7 @@ void adapterProperty::changeTab(int n)
 //--------------------------------------------------------
 /*!
   Обновляет содержимое диалога в зависимости от выбранного адапетра.
-  @param d указатель на сокет выбранного интерфейса.
+  @param d - указатель на сокет выбранного интерфейса.
 */
 void adapterProperty::updateTab(int n)
 {
@@ -131,7 +132,11 @@ void adapterProperty::updateTab(int n)
     le_ip->setText( sd->ip() );
     le_mask->setText( sd->mask() );
     lb_statics->setText( sd->statics() );
-   // cb_auto->setChecked( sd
+    cb_auto->setChecked(false);
+    if ( sd->hasDhcpClient() ) {
+        onAutoClicked( sd->isUnderDhcpControl() );
+        cb_auto->setChecked( sd->isUnderDhcpControl() );
+    }
     if (sd) sd->setCheckedSocket( sd->name() );
 }
 //-----------------------------------------------------
@@ -145,6 +150,9 @@ void adapterProperty::apply()
     sd->setMask( le_mask->text() );
     sd->connectedNet();
     sd->setCurrent( tab_interfaces->currentIndex() );
+    if ( sd->hasDhcpClient() ) {
+        sd->setUnderDhcpControl( cb_auto->isChecked() );
+    }
     if ( sd->isConnect() ) sd->sendArpRequest(le_ip->text());
     if ( sender() == btn_ok ) accept();
 }
@@ -185,4 +193,10 @@ void adapterProperty::deleteInterface()
     tab_interfaces->removeTab( sd->current() );
     tab_interfaces->setCurrentIndex(0);
     updateTab(0);
+}
+
+void adapterProperty::onAutoClicked(bool isAuto)
+{
+    le_ip->setEnabled( !isAuto );
+    le_mask->setEnabled( !isAuto );
 }

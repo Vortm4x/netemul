@@ -81,7 +81,6 @@ public:
     int trafficDigit() const;
     ipAddress findInterfaceIp(ipAddress a);
     programm programmAt(const quint16 p) const;
-    programm programmAt(const QString n) const;
     void removeProgramm(programm p);
     void installProgramm( programm p);
     bool sendInterrupt(int u);
@@ -156,7 +155,9 @@ public:
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
     QString statics() const { return sd->myInterfaces.at(cur)->staticsString(); }
     void sendArpRequest(ipAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
-    bool hasDhcpClient() { return sd->hasProgramm( programm::DHCPClient ); }
+    bool hasDhcpClient() const { return sd->hasProgramm( programm::DHCPClient ); }
+    bool isUnderDhcpControl() const;
+    void setUnderDhcpControl(bool isUnder);
     bool canManageInterface() const { return sd->canManageInterface(); }
     void addInterface() { sd->addInterface(); }
     void deleteInterface(const QString &name) { sd->deleteInterface(name); }

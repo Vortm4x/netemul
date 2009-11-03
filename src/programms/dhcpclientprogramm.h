@@ -55,6 +55,7 @@ public:
     void incTime();
     void setOfferTime(int time) { myOfferTime = time; }
     int offerTime() const { return myOfferTime; }
+    bool isUnderDhcpControl(const QString name) const;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
     void observeInterface(const QString &name, bool b);
@@ -73,6 +74,7 @@ private:
     void receiveAck(dhcpPacket packet);
     void restartSession( interfaceState *session);
     interfaceState* stateAt(const QString name);
+    void resetClient( interfaceState *session);
     int myOfferTime;
     udpSocket *listener;
     QList<interfaceState*> states;

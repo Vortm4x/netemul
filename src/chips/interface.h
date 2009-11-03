@@ -74,6 +74,7 @@ public:
     QString name() const { return myName; }
 signals:
     void receivedPacket(ipPacket);
+    void equalIpDetected();
 private:
     QString myName;
     devicePort *mySocket;

@@ -104,6 +104,7 @@ void interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
         if ( arp.senderIp() == myIp ) {
+            emit equalIpDetected();
             QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
                                  QObject::tr("The network found a matching IP address"),
                                  QMessageBox::Ok, QMessageBox::Ok);

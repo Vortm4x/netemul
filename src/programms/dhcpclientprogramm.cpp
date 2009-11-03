@@ -31,6 +31,8 @@ dhcpClientProgramm::dhcpClientProgramm()
 
 dhcpClientProgramm::~dhcpClientProgramm()
 {
+    foreach ( interfaceState *i , states )
+        resetClient( i );
     qDeleteAll(states);
     delete listener;
 }
@@ -58,6 +60,24 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
     connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
 }
 //------------------------------------------------------
+
+void dhcpClientProgramm::resetClient(interfaceState *session)
+{
+    device->adapter(session->name)->setIp(tr("0.0.0.0"));
+    device->adapter(session->name)->setMask(tr("0.0.0.0"));
+    device->connectedNet( device->adapter( session->name ) );
+    device->setGateway("0.0.0.0");
+}
+
+bool dhcpClientProgramm::isUnderDhcpControl(const QString name) const
+{
+    foreach ( interfaceState *i , states )
+        if ( i->name == name ) {
+            return true;
+        }
+    return false;
+}
+
 /*!
   Посылает Request серверу
   @param name - имя интерфейса
@@ -111,10 +131,7 @@ void dhcpClientProgramm::processData(QByteArray data)
   */
 void dhcpClientProgramm::restartSession(interfaceState *session)
 {
-    device->adapter(session->name)->setIp(tr("0.0.0.0"));
-    device->adapter(session->name)->setMask(tr("0.0.0.0"));
-    device->connectedNet( device->adapter( session->name ) );
-    device->setGateway("0.0.0.0");
+    resetClient(session);
     sendDiscover( session->name );
 }
 //---------------------------------------------------------------

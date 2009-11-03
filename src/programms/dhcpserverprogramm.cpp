@@ -73,7 +73,7 @@ void dhcpServerProgramm::executeDiscover(dhcpPacket packet)
     if ( rec ) dhcp = buildOffer( rec,packet.xid() );
     else if ( myDynamic ) {
         clientState *client = chooseDynamic(packet);
-        if ( !client ) return;
+        if ( !client ) return;        
         dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
     }
     else return;
@@ -187,7 +187,6 @@ ipAddress dhcpServerProgramm::giveDynamicIp() const
         }
         else {
             return ipAddress(i);
-            break;
         }
     }
     return ipAddress("0.0.0.0");
