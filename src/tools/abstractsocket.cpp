@@ -34,7 +34,8 @@ abstractSocket::~abstractSocket()
 
 bool abstractSocket::isOurData(ipAddress address, quint16 port)
 {
-    if ( myBind.isEmpty() || myBind == address )
+    if ( myBind.isEmpty() || myBind == address ) {
         if ( port == myBindPort ) return true;
+    }
     return false;
 }

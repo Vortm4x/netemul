@@ -25,8 +25,6 @@
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
-//    list->item(1)->setFlags( list->item(1)->flags() | Qt::ItemIsEnabled );
-//    list->item(2)->setFlags( list->item(2)->flags() | Qt::ItemIsEnabled );
     setAttribute(Qt::WA_DeleteOnClose);
 }
 

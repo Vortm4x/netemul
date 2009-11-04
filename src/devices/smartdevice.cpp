@@ -31,6 +31,7 @@
 #include "udpsocket.h"
 #include "dhcpclientprogramm.h"
 
+
 smartDevice::smartDevice() : myRouter(false)
 {
     myReady = false;
@@ -252,6 +253,7 @@ programm smartDevice::programmAt(const quint16 p) const
 */
 void smartDevice::removeProgramm(programm p)
 {
+    p->setDevice(NULL);
     myProgramms.removeOne(p);
 }
 //------------------------------------------------------

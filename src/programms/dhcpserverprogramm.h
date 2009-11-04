@@ -40,7 +40,7 @@ struct clientState {
     ipAddress gateway;
     int time;
     int requestTimer;
-    enum { WAIT_REQUEST = 0, IN_USE = 1 };
+    enum { WAIT_REQUEST = 0, IN_USE = 1, DECLINE = 2 };
     clientState(staticDhcpRecord *rec);
     clientState() { }
 };
@@ -71,8 +71,7 @@ public:
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
     void showProperty();
-    dhcpServerModel* dhcpModel() { return myDhcpModel; }
-    clientState* findClient( int xid ) const;
+    dhcpServerModel* dhcpModel() { return myDhcpModel; }    
     ipAddress giveDynamicIp() const;
     void incTime();
     bool interrupt(int) { return false; }
@@ -83,11 +82,14 @@ public slots:
 private:
     void executeDiscover(dhcpPacket packet);
     void executeRequest(dhcpPacket packet);
+    void executeDecline(dhcpPacket packet);
     void sendDhcp(dhcpPacket packet) const;
-    dhcpPacket buildOffer(staticDhcpRecord *rec, int id);
     dhcpPacket createDhcpPacket( clientState *client, int state ) const;
+    clientState* chooseStatic(dhcpPacket packet);
     clientState* chooseDynamic(dhcpPacket packet);
-    bool containClient(ipAddress ip) const;
+    clientState* findClient( int xid ) const;
+    clientState* findClient(ipAddress ip) const;
+    void makeAnswer(clientState* client, int type);
     QList<clientState*> clients;
     QString myInterface;
     udpSocket *receiver;

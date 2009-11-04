@@ -31,8 +31,6 @@ dhcpClientProgramm::dhcpClientProgramm()
 
 dhcpClientProgramm::~dhcpClientProgramm()
 {
-    foreach ( interfaceState *i , states )
-        resetClient( i );
     qDeleteAll(states);
     delete listener;
 }
@@ -41,9 +39,12 @@ void dhcpClientProgramm::incTime()
 {
     foreach ( interfaceState *i , states ) {
         --i->time;
-        switch ( i->state ) {
-            case interfaceState::CS_ALL_RIGHT: if ( i->time == 0 ) restartSession(i); break;
-            case interfaceState::CS_WAIT_VARIANT: if ( i->time == 0 ) sendDiscover( i->name ); break;
+        if ( i->time == 0 ) {
+            switch ( i->state ) {
+                case interfaceState::CS_ALL_RIGHT: restartSession(i); break;
+                case interfaceState::CS_WAIT_VARIANT: sendDiscover( i->name ); break;
+                case interfaceState::CS_WAIT_RESPONSE: sendRequest(i->name ); break;
+            }
         }
     }
 }
@@ -53,11 +54,18 @@ void dhcpClientProgramm::incTime()
   */
 void dhcpClientProgramm::setDevice(smartDevice *s)
 {
+    if ( s == 0 ) {
+        foreach ( interfaceState *i , states ) resetClient(i);
+        return;
+    }
     programmRep::setDevice(s);
     listener = new udpSocket(s,CLIENT_SOCKET);
     listener->setBind("0.0.0.0");
     connect( listener , SIGNAL(readyRead(QByteArray)) , SLOT(processData(QByteArray)) );
     connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
+    foreach ( interfaceState *i , states ) {
+        resetClient( i );
+    }
 }
 //------------------------------------------------------
 
@@ -86,6 +94,11 @@ void dhcpClientProgramm::sendRequest(const QString &name)
 {
     interfaceState *t = stateAt(name);
     if ( !t ) return;
+    if ( REPEAT_COUNT < ++t->count ) {
+        restartSession(t);
+        return;
+    }
+    t->time = myOfferTime;
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPREQUEST );
     message.setXid( t->xid );
@@ -103,7 +116,8 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
     interfaceState *t = stateAt(name);
     if ( !t ) return;
     t->state = interfaceState::CS_WAIT_VARIANT;
-    t->time = MINUTE;
+    t->time = myOfferTime;
+    t->count = 0;
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
@@ -112,6 +126,17 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
     sendDhcpMessage(message,t);
 }
 //--------------------------------------------------------------
+void dhcpClientProgramm::sendDecLine(const QString &name)
+{
+    interfaceState *t = stateAt(name);
+    if ( !t ) return;
+    dhcpPacket message;
+    message.setType( dhcpPacket::DHCPDECLINE );
+    message.setXid( t->xid );
+    if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
+    message.setChaddr( device->adapter( t->name )->mac() );
+    sendDhcpMessage( message , t );
+}
 /*!
   Обрабатывает входящие данные.
   @param data - пришедщие данные.
@@ -165,6 +190,8 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
             device->setGateway( packet.gateway().toString() );
             i->time = packet.time();
             i->lastIp = packet.yiaddr();
+            device->adapter(i->name)->sendArpRequest( packet.yiaddr() );
+            return;
         }
 }
 //---------------------------------------------------------------
@@ -244,6 +271,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     interfaceState *temp = stateAt(name);
     if ( temp ) {
         if ( b ) return;
+        resetClient( temp );
         states.removeOne(temp);
         delete temp;
         return;
@@ -252,10 +280,25 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     session->name = name;
     session->xid = qrand()%5000;
     session->time = 0;
+    connect( device->adapter(session->name) , SIGNAL(equalIpDetected()) , SLOT(onDetectEqualIp()) );
     states << session;
     sendDiscover(session->name);
 }
 //--------------------------------------------------------------------
+
+void dhcpClientProgramm::onDetectEqualIp()
+{
+    interface *t = qobject_cast<interface*>(sender());
+    interfaceState *client = 0;
+    foreach ( interfaceState *i , states )
+        if ( device->adapter(  i->name ) == t ) client = i;
+    if ( !client ) return;
+    sendDecLine(client->name);
+    client->xid = qrand()%5000;
+    client->lastIp.setIp("0.0.0.0");
+    restartSession( client);
+}
+
 Qt::CheckState dhcpClientProgramm::checkedState(const QString &name) const
 {
     foreach ( interfaceState *i , states )

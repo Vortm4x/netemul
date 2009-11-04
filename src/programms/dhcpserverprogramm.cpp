@@ -25,6 +25,8 @@
 #include "udppacket.h"
 #include "dhcpservermodel.h"
 
+#include <iostream>
+
 dhcpServerProgramm::dhcpServerProgramm()
 {
     myName = tr("DHCP server");
@@ -41,13 +43,14 @@ dhcpServerProgramm::~dhcpServerProgramm()
 
 void dhcpServerProgramm::setDevice(smartDevice *s)
 {
+    if ( s == 0 ) return;
     programmRep::setDevice(s);
     receiver = new udpSocket(device, SERVER_SOCKET);    
     foreach ( interface *i, device->interfaces() ) {
         if ( i->isConnect() ) myInterface = i->name();
         break;
     }
-    receiver->setBind(device->adapter(myInterface)->ip());
+    receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
 }
 
@@ -62,54 +65,53 @@ void dhcpServerProgramm::execute(QByteArray data)
     switch ( packet.type() ) {
         case dhcpPacket::DHCPDISCOVER : executeDiscover(packet); break;
         case dhcpPacket::DHCPREQUEST : executeRequest(packet); break;
+        case dhcpPacket::DHCPDECLINE : executeDecline(packet); break;
     }
-
 }
 
 void dhcpServerProgramm::executeDiscover(dhcpPacket packet)
 {
-    dhcpPacket dhcp;
-    staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
-    if ( rec ) dhcp = buildOffer( rec,packet.xid() );
-    else if ( myDynamic ) {
-        clientState *client = chooseDynamic(packet);
-        if ( !client ) return;        
-        dhcp = createDhcpPacket(client,dhcpPacket::DHCPOFFER);
+    clientState *client = findClient( packet.xid() );
+    if ( client && client->state == clientState::IN_USE ) return;
+    client = chooseStatic(packet);
+    if ( client ) {
+        makeAnswer(client, dhcpPacket::DHCPOFFER);
+        return;
     }
-    else return;
-    sendDhcp(dhcp);
+    if ( !myDynamic ) return;
+    client = chooseDynamic(packet);
+    if ( client ) makeAnswer(client,dhcpPacket::DHCPOFFER);
 }
 
 void dhcpServerProgramm::executeRequest(dhcpPacket packet)
 {
     clientState *client = findClient( packet.xid() );
-    if ( !client || client->state == clientState::IN_USE ) return;
+    if ( !client ) return;
     if ( packet.siaddr() != device->adapter(myInterface)->ip() ) {
         clients.removeOne(client);
         delete client;
         return;
     }
-    dhcpPacket dhcp = createDhcpPacket( client, dhcpPacket::DHCPACK );
-    sendDhcp(dhcp);
+    makeAnswer( client, dhcpPacket::DHCPACK );
 }
 
-void dhcpServerProgramm::showProperty()
+void dhcpServerProgramm::executeDecline(dhcpPacket packet)
 {
-    dhcpServerProperty *d = new dhcpServerProperty(device);
-    d->setProgramm(this);
-    d->exec();
+    clientState *client = findClient(packet.yiaddr());
+    if ( !client ) return;    
+    client->state = clientState::DECLINE;
 }
 
-void dhcpServerProgramm::sendDhcp(dhcpPacket packet) const
+clientState* dhcpServerProgramm::chooseStatic(dhcpPacket packet)
 {
-    udpPacket udp;
-    udp.setSender( SERVER_SOCKET );
-    udp.setReceiver( CLIENT_SOCKET );
-    udp.pack( packet.toData() );
-    ipPacket p( device->adapter(myInterface)->ip(), ipAddress::full() );
-    p.pack( udp.toData() );
-    p.setUpProtocol( ipPacket::udp );
-    device->adapter(myInterface)->sendPacket(p);
+    staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
+    if ( !rec ) return 0;
+    clientState *client = new clientState(rec);
+    if ( findClient(client->ip) ) return 0;
+    client->requestTimer = 0;
+    client->xid = packet.xid();
+    clients << client;
+    return client;
 }
 
 /*!
@@ -120,7 +122,8 @@ clientState* dhcpServerProgramm::chooseDynamic(dhcpPacket packet)
 {
     clientState *cl = new clientState;
     cl->requestTimer = 0;
-    if ( !packet.yiaddr().isEmpty() && !containClient(packet.yiaddr()) ) cl->ip = packet.yiaddr();
+    clientState *c = findClient(packet.yiaddr());
+    if ( !packet.yiaddr().isEmpty() && !c ) cl->ip = packet.yiaddr();
     else cl->ip = giveDynamicIp();
     if ( cl->ip.isEmpty() ) return NULL;
     cl->mac = packet.chaddr();
@@ -132,16 +135,11 @@ clientState* dhcpServerProgramm::chooseDynamic(dhcpPacket packet)
     return cl;
 }
 
-dhcpPacket dhcpServerProgramm::buildOffer(staticDhcpRecord *rec, int id)
-{
-    clientState *c = new clientState(rec);
-    c->requestTimer = 0;
-    c->xid = id;
-    clients << c;
-    return createDhcpPacket( c, dhcpPacket::DHCPOFFER );
-}
-
 /*!
+  Создаем dhcp пакет.
+  @param client - запись клиента на основе которой будем создавать пакет.
+  @param state - тип отправляемого сообщения.
+  @return созданный пакет.
   */
 dhcpPacket dhcpServerProgramm::createDhcpPacket( clientState *client, int state ) const
 {
@@ -160,17 +158,46 @@ dhcpPacket dhcpServerProgramm::createDhcpPacket( clientState *client, int state 
 }
 //------------------------------------------------------------
 
-/*! Ищет в списке клиента с данным идентификатрором
+void dhcpServerProgramm::sendDhcp(dhcpPacket packet) const
+{
+    udpPacket udp;
+    udp.setSender( SERVER_SOCKET );
+    udp.setReceiver( CLIENT_SOCKET );
+    udp.pack( packet.toData() );
+    ipPacket p( device->adapter(myInterface)->ip(), ipAddress::full() );
+    p.pack( udp.toData() );
+    p.setUpProtocol( ipPacket::udp );
+    device->adapter(myInterface)->sendPacket(p);
+}
+
+void dhcpServerProgramm::makeAnswer(clientState *client, int type)
+{
+    dhcpPacket dhcp = createDhcpPacket(client,type);
+    sendDhcp(dhcp);
+}
+
+/*! Ищет в списке клиента с данным идентификатрором и проверкой состояния записи.
   @param xid - идентификатрор.
-  @return указатель на запись из списка, если xid совпали, или NULL в противном случае.
+  @return указатель на запись из списка, если xid совпали, или 0 в противном случае.
   */
 clientState* dhcpServerProgramm::findClient(int xid) const
 {
     foreach ( clientState *i, clients )
-        if ( i->xid == xid ) return i;
-    return NULL;
+        if ( i->xid == xid && i->state != clientState::DECLINE ) return i;
+    return 0;
 }
 //------------------------------------------------------------
+/*! Ищет в списке клиента с данным ip-адресом.
+  @param ip - адрес.
+  @return указатель на запись из списка, если ip совпали, или 0 в противном случае.
+  */
+clientState* dhcpServerProgramm::findClient(ipAddress ip) const
+{
+    foreach ( clientState *i, clients )
+        if ( i->ip == ip ) return i;
+    return 0;
+}
+//--------------------------------------------------------------
 /*!
   Выбирает ip-адрес из динамического диапазона
   @return выбранный адрес, или "0.0.0.0", если нет свободных адресов.
@@ -180,7 +207,7 @@ ipAddress dhcpServerProgramm::giveDynamicIp() const
     bool isContains = false;
     quint32 i = myBeginIp.toInt();
     while ( i <= myEndIp.toInt() ) {
-        isContains = myDhcpModel->containRecord( ipAddress(i) ) || containClient(i);
+        isContains = myDhcpModel->containRecord( ipAddress(i) ) || findClient(ipAddress(i));
         if ( isContains ) {
             i++;
             isContains = false;
@@ -193,13 +220,6 @@ ipAddress dhcpServerProgramm::giveDynamicIp() const
 }
 //-------------------------------------------------------------
 
-bool dhcpServerProgramm::containClient(ipAddress ip) const
-{
-    foreach ( clientState *j, clients )
-        if ( j->ip == ip ) return true;
-    return false;
-}
-
 void dhcpServerProgramm::incTime()
 {
     bool canDelete = false;
@@ -207,13 +227,20 @@ void dhcpServerProgramm::incTime()
         if ( i->state == clientState::WAIT_REQUEST ) {
             if ( ++i->requestTimer == myWaitingTime ) canDelete = true;
         }
-        else if ( --i->time == 0 ) canDelete = true;
+        else if ( i->state == clientState::IN_USE && --i->time == 0 ) canDelete = true;
         if ( canDelete ) {
             canDelete = false;
             clients.removeOne(i);
             delete i;
         }
     }
+}
+
+void dhcpServerProgramm::showProperty()
+{
+    dhcpServerProperty *d = new dhcpServerProperty(device);
+    d->setProgramm(this);
+    d->exec();
 }
 
 /*!

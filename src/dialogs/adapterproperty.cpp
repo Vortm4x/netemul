@@ -76,11 +76,12 @@ adapterProperty::adapterProperty(adapterSetting *s)
     all->addStretch(1);
     QHBoxLayout *b = new QHBoxLayout;
     b->addStretch(1);
+    cb_auto = new QCheckBox(tr("Receive settings automatically"));
+    connect( cb_auto , SIGNAL(clicked(bool)) , SLOT(onAutoClicked(bool)) );
+    connect( cb_auto , SIGNAL(clicked()) , SLOT(applyEnable()) );
+    all->addWidget( cb_auto );
+    cb_auto->setEnabled( sd->hasDhcpClient() );
     if ( sd->canManageInterface() ) {
-        cb_auto = new QCheckBox(tr("Receive settings automatically"));
-        connect( cb_auto , SIGNAL(clicked(bool)) , SLOT(onAutoClicked(bool)) );
-        all->addWidget( cb_auto );
-        cb_auto->setEnabled( sd->hasDhcpClient() );
         btn_add = new QPushButton(QIcon(":/im/images/edit_add.png") , tr("Add") );
         btn_del = new QPushButton(QIcon(":/im/images/edit_remove.png") , tr("Delete") );
         connect( btn_add , SIGNAL(clicked()) , SLOT(addInterface()) );

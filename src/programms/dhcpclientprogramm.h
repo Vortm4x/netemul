@@ -25,6 +25,7 @@
 #include "dhcppacket.h"
 
 static const int MINUTE = 60;
+static const int REPEAT_COUNT = 3;
 
 class interface;
 class udpSocket;
@@ -34,6 +35,7 @@ struct interfaceState {
     int state;
     int xid;
     int time;
+    qint8 count;
     ipAddress serverAddress;
     ipAddress lastIp;
     QString name;
@@ -66,10 +68,12 @@ public slots:
     void deleteInterface(const QString name);
 private slots:
     void processData(QByteArray data);
+    void onDetectEqualIp();
 private:
     void sendDhcpMessage(dhcpPacket message, interfaceState *state);
     void sendRequest(const QString &name);
     void sendDiscover(const QString &name);
+    void sendDecLine(const QString &name);
     void receiveOffer(dhcpPacket packet);
     void receiveAck(dhcpPacket packet);
     void restartSession( interfaceState *session);

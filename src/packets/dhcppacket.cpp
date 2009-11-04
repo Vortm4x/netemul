@@ -19,6 +19,8 @@
 ****************************************************************************************/
 #include "dhcppacket.h"
 
+static const QString TYPES_DHCP_MESSAGES[] = { "DHCPDISCOVER" , "DHCPOFFER" , "DHCPREQUEST" , "DHCPACK" , "DHCPDECLINE" };
+
 dhcpPacket::dhcpPacket()
 {
     d = new dhcpPacketData;
@@ -43,8 +45,7 @@ QByteArray dhcpPacket::toData() const
   */
 QString dhcpPacket::typeString() const
 {
-    const QString names[] = { "DHCPDISCOVER" , "DHCPOFFER" , "DHCPREQUEST" , "DHCPACK" };
-    return names[ d->type ];
+    return TYPES_DHCP_MESSAGES[ d->type ];
 }
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------

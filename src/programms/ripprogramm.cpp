@@ -54,6 +54,7 @@ void ripProgramm::clearTemp()
 
 void ripProgramm::setDevice(smartDevice *s)
 {
+    if ( s == 0 ) return;
     device = s;
     model = device->routeTable();
     receiver = new udpSocket(s,mySocket);

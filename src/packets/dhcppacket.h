@@ -51,7 +51,7 @@ public:
     dhcpPacket(const dhcpPacket &other) : d(other.d) { }
     ~dhcpPacket() { }
     QByteArray toData() const;
-    enum { DHCPDISCOVER , DHCPOFFER , DHCPREQUEST , DHCPACK };
+    enum { DHCPDISCOVER , DHCPOFFER , DHCPREQUEST , DHCPACK , DHCPDECLINE };
     void setYiaddr(ipAddress a) { d->yiaddr = a; }
     void setSiaddr(ipAddress a) { d->siaddr = a; }
     void setMask(ipAddress a) { d->mask = a; }
