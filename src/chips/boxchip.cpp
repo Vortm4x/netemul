@@ -58,6 +58,7 @@ bool boxChip::setSocketsCount(int n)
             mySockets.pop_back();
         }
     }
+    emit socketsCountChanged();
     return true;
 }
 

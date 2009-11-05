@@ -25,8 +25,6 @@
 #include "udppacket.h"
 #include "dhcpservermodel.h"
 
-#include <iostream>
-
 dhcpServerProgramm::dhcpServerProgramm()
 {
     myName = tr("DHCP server");
@@ -39,6 +37,8 @@ dhcpServerProgramm::dhcpServerProgramm()
 dhcpServerProgramm::~dhcpServerProgramm()
 {
     delete myDhcpModel;
+    delete receiver;
+    clients.clear();
 }
 
 void dhcpServerProgramm::setDevice(smartDevice *s)

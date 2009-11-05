@@ -50,8 +50,10 @@ public:
 #ifndef __TESTING__
     void setCheckedSocket(const QString &port);
     virtual void write(QDataStream &stream) const;
-    virtual void read(QDataStream &stream);
+    virtual void read(QDataStream &stream);    
 #endif  
+signals:
+    void socketsCountChanged();
 protected:
     QVector<devicePort*> mySockets;
 };

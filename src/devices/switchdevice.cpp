@@ -80,7 +80,7 @@ void switchDevice::secondTimerEvent()
 //----------------------------------------------------------------------------
 switchModel* switchTableSetting::switchTable()
 {
-    return sw->concreteChip()->model();
+    return sw->concreteChip()->modelAt( sw->concreteChip()->vlanAt(0) );
 }
 
 

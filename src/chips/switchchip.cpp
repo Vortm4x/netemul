@@ -20,15 +20,25 @@
 #include "switchchip.h"
 #include "deviceport.h"
 #include "switchmodel.h"
+#include <QStringList>
+
+#include <iostream>
 
 switchChip::switchChip(int c /* = 4 */ ) : boxChip(c)
 {
-    switchTable = new switchModel;
+    virtualNetwork *vlan = new virtualNetwork("VLAN1", this);
+    myVlans << vlan;
+    connect( this, SIGNAL(socketsCountChanged()), SLOT(checkPorts()) );
 }
 
 switchChip::~switchChip()
 {
-    delete switchTable;
+    myVlans.clear();
+}
+
+switchModel* switchChip::modelAt(virtualNetwork *vlan) const
+{
+    return vlan->table();
 }
 
 void switchChip::receiveEvent(frame &fr,devicePort *sender)
@@ -36,27 +46,79 @@ void switchChip::receiveEvent(frame &fr,devicePort *sender)
     checkReceive(fr);
     emit receiveData(fr,tr("LAN%1").arg(sender->num()));
 
-    switchTable->contains( fr.sender() , sender );
-
-    devicePort *t = switchTable->portWithMac( fr.receiver() );
-    if ( t && t->isConnect() ) {
-        checkSend(fr);
-        emit sendData(fr, tr("LAN%1").arg(t->num()));
-        t->pushToSend(fr);
-        return;
-    }
-    foreach ( devicePort *i , mySockets ) {
-        if ( i != sender && i->isConnect() ) {
-            checkSend(fr);
-            emit sendData(fr, tr("LAN%1").arg(i->num()));
-            i->pushToSend(fr);
-        }
-    }
+    foreach ( virtualNetwork *i, myVlans )
+        if ( i->containPort(sender) ) i->recieveEvent(fr, sender);
 }
 
 void switchChip::secondTimerEvent()
 {
-    switchTable->updateMac();
+    foreach ( virtualNetwork *i, myVlans )
+        i->secondTimerEvent();
 }
 
+void switchChip::sendDataSignal(frame &fr, QString port)
+{
+    emit sendData(fr, port);
+}
+
+void switchChip::checkPorts()
+{
+    if ( myVlans.count() > 1 ) return;
+    myVlans.at(0)->includeAllPorts(sockets());
+}
+
+
+/****************************VLAN********************************/
+
+virtualNetwork::virtualNetwork(const QString name,switchChip *chip)
+{
+    myTable = new switchModel;
+    myName = name;
+    mySwitchChip = chip;
+    includeAllPorts(mySwitchChip->sockets());
+}
+
+virtualNetwork::~virtualNetwork()
+{
+    myDevicePorts.clear();
+    delete myTable;
+    delete mySwitchChip;
+}
+
+void virtualNetwork::recieveEvent(frame &fr, devicePort *sender)
+{
+    myTable->contains( fr.sender() , sender );
+
+    devicePort *t = myTable->portWithMac( fr.receiver() );
+    if ( t && t->isConnect() ) {
+        mySwitchChip->checkSend(fr);
+        mySwitchChip->sendDataSignal(fr, tr("LAN%1").arg(t->num()));
+        t->pushToSend(fr);
+        return;
+    }
+    foreach ( devicePort *i , myDevicePorts )
+        if ( i != sender && i->isConnect() ) {
+            mySwitchChip->checkSend(fr);
+            mySwitchChip->sendDataSignal(fr, tr("LAN%1").arg(i->num()));
+            i->pushToSend(fr);
+        }
+}
+
+bool virtualNetwork::containPort(devicePort *port) const
+{
+    foreach ( devicePort *i, myDevicePorts )
+        if ( i->num() == port->num() ) return true;
+    return false;
+}
+
+void virtualNetwork::includeAllPorts(QStringList list)
+{
+    for ( int i = 0; i < list.size(); i++ )        
+        if ( !myDevicePorts.contains(mySwitchChip->socket(list.at(i))) ) myDevicePorts << mySwitchChip->socket(list.at(i));
+}
+
+void virtualNetwork::secondTimerEvent()
+{
+    myTable->updateMac();
+}
 

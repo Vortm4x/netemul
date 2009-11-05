@@ -23,6 +23,7 @@
 #include "boxchip.h"
 
 class switchModel;
+class virtualNetwork;
 
 class switchChip : public boxChip
 {
@@ -31,12 +32,44 @@ public:
     switchChip(int c = 4);
     ~switchChip();
     void receiveEvent(frame &fr,devicePort *sender);
-    void deleteFromTable(macAddress mac);
     void dialog();
     void secondTimerEvent();
-    switchModel* model() { return switchTable; }
+    void sendDataSignal(frame &fr, QString port);
+    switchModel* modelAt(virtualNetwork *vlan) const;
+    virtualNetwork* vlanAt(int n) const { return myVlans.at(n); }
+public slots:
+    void checkPorts();
 private:
-    switchModel *switchTable;
+    QList<virtualNetwork*> myVlans;
+};
+
+
+// VLAN
+
+class virtualNetwork : public QObject
+{
+    Q_OBJECT
+// Инициализация
+public:
+    virtualNetwork(const QString name,switchChip *chip);
+    ~virtualNetwork();
+public:
+    void recieveEvent(frame&fr, devicePort *sender);
+    void secondTimerEvent();
+// Работа со списком
+public:
+    bool containPort(devicePort *port) const;
+    void includeAllPorts(QStringList list);
+// Атрибуты
+public:
+    void setName(QString n) { myName = n; }
+    QString name() const { return myName; }
+    switchModel* table() const { return myTable; }   
+private:
+    QList<devicePort*> myDevicePorts;
+    QString myName;
+    switchChip *mySwitchChip;
+    switchModel *myTable;
 };
 
 #endif // SWITCHCHIP_H
