@@ -9,4 +9,6 @@ FORMS += src/forms/programmdialog.ui \
     src/forms/aboutwindow.ui \
     src/forms/dhcpclientproperty.ui \
     src/forms/ripproperty.ui \
-    src/forms/dhcpserverproperty.ui
+    src/forms/dhcpserverproperty.ui \
+    src/forms/virtualnetworkdialog.ui \
+    src/forms/devicenotedialog.ui

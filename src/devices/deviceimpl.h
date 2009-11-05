@@ -34,6 +34,7 @@ class deviceImpl : public QObject
     Q_PROPERTY(bool router READ isRouter WRITE setRouter)
 public:
     deviceImpl();
+    void showDeviceNoteDialog();
     virtual ~deviceImpl() { }
 
     virtual int type() const = 0;
@@ -60,6 +61,7 @@ public:
     virtual void showDesignerDialog() { qFatal("Error designer!"); }
 
     virtual bool isShared() const { return false; }
+    virtual bool isManagedVirtualNetwork() const { return false; }
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);

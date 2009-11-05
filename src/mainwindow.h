@@ -73,6 +73,7 @@ public slots:
     void aboutDialog();
     void printDialog();
     void printPreviewDialog();
+    void showVirtualNetworkDialog();
     void paintInPreviewDialog(QPrinter *printer);
     void incTime();
 private slots:
@@ -148,6 +149,8 @@ private:
     QAction *designerPacketAct;
     QAction *printAct;
     QAction *printPreviewAct;
+    QAction *virtualNetworkAct;
+    QAction *noteAct;
 };
 
 #endif // MAINWINDOW_H

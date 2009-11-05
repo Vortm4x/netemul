@@ -21,7 +21,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
-#include <QtGui/QPlainTextEdit>
 #include "hubproperty.h"
 #include "hubdevice.h"
 #include "ipedit.h"
@@ -67,12 +66,6 @@ hubProperty::hubProperty()
     connect( btn_reset , SIGNAL(clicked()), SLOT(reset()) );
     all->addWidget(btn_reset , 0 , Qt::AlignRight );
 
-    te_text = new QPlainTextEdit;
-    connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
-    te_text->setFixedHeight(100);
-    te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(tr("Description:")));
-    all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);
     setLayout(all);
@@ -92,7 +85,6 @@ void hubProperty::setHub(hubSetting *s)
     le_ip->setText( st->snmpIp() );
     le_mask->setText( st->snmpMask() );
     lb_statics->setText( st->statics() );
-    te_text->setPlainText( st->note() );
     btn_apply->setEnabled(false);
 }
 
@@ -115,7 +107,6 @@ void hubProperty::apply()
     st->setMac(le_mac->text());
     st->setIp(le_ip->text());
     st->setIp(le_mask->text());
-    st->setNote( te_text->toPlainText() );
     if ( sender() == btn_ok ) accept();
 }
 

@@ -25,7 +25,7 @@
 class QComboBox;
 class QLineEdit;
 class QLabel;
-class QPlainTextEdit;
+class QCheckBox;
 
 class boxSetting;
 class ipEdit;
@@ -36,14 +36,15 @@ class switchProperty : public dialogTemplate
     Q_DISABLE_COPY(switchProperty)
 public:
     switchProperty();
+    ~switchProperty();
     void setSwitch(boxSetting *d);
 private:
     boxSetting *sw;
     QComboBox *cb_count;    
+    QCheckBox *chb_manual;
     QLabel *lb_statics;
     QLabel *lb_mac;
     QLineEdit *le_mac;
-    QPlainTextEdit *te_text;
     ipEdit *le_ip;
     ipEdit *le_mask;
 public slots:

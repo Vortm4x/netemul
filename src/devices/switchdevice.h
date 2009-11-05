@@ -43,6 +43,7 @@ public:
     void dialog();
     void tableDialog();
     bool hasTable() const { return true; }
+    bool isManagedVirtualNetwork() const { return ( myManual ) ? true : false; }
     switchChip* concreteChip();
     void secondTimerEvent();
     QString deviceName() const { return "switch"; }

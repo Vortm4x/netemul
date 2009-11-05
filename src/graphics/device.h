@@ -60,6 +60,7 @@ public:
     QString deviceCommandName() const { return impl->deviceCommandName(); }
     bool isSmart() const { return impl->isSmart(); }
     bool isConnect() const { return myCableList.count(); }
+    bool isManagedVirtualNetwork() const { return impl->isManagedVirtualNetwork(); }
     void dialog() { impl->dialog(); setToolTip( impl->note() ); }
     void tableDialog() const { impl->tableDialog(); }
     void adapterDialog() const { impl->adapterDialog(); }
@@ -67,6 +68,7 @@ public:
     void arpDialog() const { impl->arpDialog(); }
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     void showDesignerDialog() const { impl->showDesignerDialog(); }
+    void showDeviceNoteDialog() const { impl->showDeviceNoteDialog(); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isShared() const { return impl->isShared(); }
     bool isConnectSocket(const QString &str) const { return impl->isConnectSocket(str); }

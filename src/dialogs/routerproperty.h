@@ -26,7 +26,6 @@ class routerSetting;
 class QCheckBox;
 class QGroupBox;
 class QComboBox;
-class QPlainTextEdit;
 
 class routerProperty : public dialogTemplate
 {
@@ -37,7 +36,6 @@ public:
     void setRouter(routerSetting *r);
 private:
     routerSetting *rt;
-    QPlainTextEdit *te_text;
     QCheckBox *cb_route;
     QComboBox *cb_count;
 public slots:

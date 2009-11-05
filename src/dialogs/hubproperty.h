@@ -25,7 +25,6 @@
 class QComboBox;
 class QLineEdit;
 class QLabel;
-class QPlainTextEdit;
 class QPushButton;
 
 class ipEdit;
@@ -45,7 +44,6 @@ private:
     QLabel *lb_mac;
     QLabel *lb_conflict;
     QLineEdit *le_mac;
-    QPlainTextEdit *te_text;
     ipEdit *le_ip;
     ipEdit *le_mask;
 public slots:

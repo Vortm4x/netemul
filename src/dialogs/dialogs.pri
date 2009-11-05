@@ -19,7 +19,9 @@ HEADERS += src/dialogs/adapterproperty.h \
     src/dialogs/dhcpclientproperty.h \
     src/dialogs/ripproperty.h \
     src/dialogs/dhcpserverproperty.h \
-    src/dialogs/designerdialog.h
+    src/dialogs/designerdialog.h \
+    src/dialogs/virtualnetworkdialog.h \
+    src/dialogs/devicenotedialog.h
 SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/computerproperty.cpp \
     src/dialogs/connectdialog.cpp \
@@ -41,4 +43,7 @@ SOURCES += src/dialogs/adapterproperty.cpp \
     src/dialogs/dhcpclientproperty.cpp \
     src/dialogs/ripproperty.cpp \
     src/dialogs/dhcpserverproperty.cpp \
-    src/dialogs/designerdialog.cpp
+    src/dialogs/designerdialog.cpp \
+    src/dialogs/virtualnetworkdialog.cpp \
+    src/dialogs/devicenotedialog.cpp
+

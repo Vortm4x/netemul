@@ -33,11 +33,14 @@ void sceneControl::observeSelection()
         emit selectOneDevice(true);
         emit selectSmartDevice( t->isSmart() );
         emit selectComputer( t->isCanSend() );
+        emit selectVirtualNetworkDevice( t->isManagedVirtualNetwork() );
     }
     else {
         emit selectSmartDevice(false);
         emit selectOneDevice(false);
         emit selectTableDevice(false);
+        emit selectComputer(false);
+        emit selectVirtualNetworkDevice(false);
     }
 }
 
@@ -86,6 +89,12 @@ void sceneControl::showDesignerDialog() const
 {
     device *t = scene->oneSelectedDevice();
     t->showDesignerDialog();
+}
+
+void sceneControl::showDeviceNoteDialog() const
+{
+    device *t = scene->oneSelectedDevice();
+    t->showDeviceNoteDialog();
 }
 
 bool sceneControl::isSelect() const

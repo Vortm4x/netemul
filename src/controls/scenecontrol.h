@@ -48,11 +48,13 @@ public slots:
     void arpDialog() const;
     void showLogDialog(logDialog *log) const;
     void showDesignerDialog() const;
+    void showDeviceNoteDialog() const;
 signals:
     void selectOneDevice(bool);
     void selectTableDevice(bool);
     void selectSmartDevice(bool);
     void selectComputer(bool);
+    void selectVirtualNetworkDevice(bool);
 };
 
 #endif // SCENECONTROL_H

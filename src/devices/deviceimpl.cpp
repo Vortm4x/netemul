@@ -18,12 +18,20 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "deviceimpl.h"
+#include "devicenotedialog.h"
 
 deviceImpl::deviceImpl()
 {
 
 }
 //----------------------------------------------------------
+
+void deviceImpl::showDeviceNoteDialog()
+{
+    deviceNoteDialog *d = new deviceNoteDialog;
+    d->setDevice( new deviceSetting(this) );
+    d->show();
+}
 
 void deviceImpl::write(QDataStream &stream) const
 {

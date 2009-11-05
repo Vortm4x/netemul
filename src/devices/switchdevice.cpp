@@ -50,11 +50,8 @@ void switchDevice::read(QDataStream &stream)
 void switchDevice::dialog()
 {
     switchProperty *d = new switchProperty;
-    boxSetting *set = new boxSetting(this);
-    d->setSwitch(set);
-    d->exec();
-    delete set;
-    delete d;
+    d->setSwitch( new boxSetting(this) );
+    d->show();
 }
 
 void switchDevice::tableDialog()

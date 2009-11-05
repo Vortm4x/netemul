@@ -43,6 +43,7 @@
 #include "statisticsscene.h"
 #include "logdialog.h"
 #include "aboutwindow.h"
+#include "virtualnetworkdialog.h"
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -166,6 +167,8 @@ void MainWindow::retranslate()
     UPDATEACTION( designerPacketAct , tr("Packet designer...") , tr("Create user's packet") )
     UPDATEACTION( printAct , tr("Print...") , tr("Print user's network") )
     UPDATEACTION( printPreviewAct , tr("Preview...") , tr("Preview network berfore printing") );
+    UPDATEACTION( virtualNetworkAct , tr("Configure VLAN...") , tr("Configure VLAN") );
+    UPDATEACTION( noteAct , tr("Set description...") , tr("Set description of device") );
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -298,6 +301,9 @@ void MainWindow::createAction()
     printPreviewAct = createOneAction( QIcon(":/im/images/print_preview.png") );
     connect( printPreviewAct , SIGNAL(triggered()) , SLOT(printPreviewDialog()) );
 
+    virtualNetworkAct = createOneAction();
+
+    noteAct = createOneAction();
 }
 
 //Создаем меню
@@ -329,9 +335,11 @@ void MainWindow::createMenu()
     itemMenu->addAction(adapterAct);
     itemMenu->addAction(progAct);
     itemMenu->addAction(arpAct);
+    itemMenu->addAction(virtualNetworkAct);
     itemMenu->addAction(logAct);
     itemMenu->addAction(designerPacketAct);
     itemMenu->addAction(aboutDeviceAct);
+    itemMenu->addAction(noteAct);
     itemMenu->addAction(deleteAct);
     itemMenu->setEnabled(false);
 
@@ -374,6 +382,7 @@ void MainWindow::createTools()
     controlBar->addAction(progAct);
     controlBar->addAction(tableAct);
     controlBar->addAction(arpAct);
+    //controlBar->addAction(virtualNetworkAct);
     controlBar->addAction(logAct);
     controlBar->addAction(designerPacketAct);
     controlBar->addSeparator();
@@ -404,6 +413,7 @@ void MainWindow::createScene()
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , adapterAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , progAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectSmartDevice(bool)) , arpAct , SLOT(setVisible(bool)) );
+    connect( sceneControler , SIGNAL(selectVirtualNetworkDevice(bool)) , virtualNetworkAct , SLOT(setVisible(bool)) );
     connect( sceneControler , SIGNAL(selectComputer(bool)) , designerPacketAct , SLOT(setVisible(bool)) );
     connect( designerPacketAct , SIGNAL(triggered()) , sceneControler , SLOT(showDesignerDialog()) );
     connect( adapterAct , SIGNAL(triggered()) , sceneControler , SLOT(adapterDialog()) );
@@ -412,6 +422,7 @@ void MainWindow::createScene()
     connect( progAct , SIGNAL(triggered()) , sceneControler , SLOT(programmsDialog()) );
     connect( arpAct , SIGNAL(triggered()) , sceneControler , SLOT(arpDialog()) );
     connect( logAct , SIGNAL(triggered()) , SLOT(showLogDialog()) );
+    connect( noteAct , SIGNAL(triggered()) , sceneControler , SLOT(showDeviceNoteDialog()) );
     QAction *t = canva->undoAction(this);
     t->setIcon( QIcon(":/im/images/undo.png") );
     t->setShortcut(QKeySequence::Undo);
@@ -701,6 +712,12 @@ void MainWindow::printPreviewDialog()
     QPrintPreviewDialog dialog(printer,this);
     connect( &dialog , SIGNAL(paintRequested(QPrinter*)) , SLOT(paintInPreviewDialog(QPrinter*)));
     dialog.exec();
+}
+
+void MainWindow::showVirtualNetworkDialog()
+{
+    virtualNetworkDialog *d = new virtualNetworkDialog;
+    d->show();
 }
 
 void MainWindow::autosave()

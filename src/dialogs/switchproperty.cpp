@@ -21,7 +21,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
-#include <QtGui/QPlainTextEdit>
+#include <QtGui/QCheckBox>
 #include "switchproperty.h"
 #include "switchdevice.h"
 #include "ipedit.h"
@@ -40,6 +40,10 @@ switchProperty::switchProperty()
     temp->addWidget(t);
     temp->addWidget(cb_count);
     all->addLayout(temp);
+
+    chb_manual = new QCheckBox(tr("Manageable"));
+    connect( chb_manual , SIGNAL(clicked()) , SLOT(applyEnable()) );
+    all->addWidget(chb_manual);
 
     temp = new QHBoxLayout;
     lb_mac = new QLabel(tr("Mac-address: "));
@@ -65,15 +69,15 @@ switchProperty::switchProperty()
     connect( btn_reset , SIGNAL(clicked()), SLOT(reset()) );
     all->addWidget(btn_reset , 0 , Qt::AlignRight );
 
-    te_text = new QPlainTextEdit;
-    connect( te_text , SIGNAL(textChanged()) , SLOT(applyEnable()) );
-    te_text->setFixedHeight(100);
-    te_text->setMaximumBlockCount(5);
-    all->addWidget( new QLabel(tr("Description:")));
-    all->addWidget(te_text);
     all->addStretch(1);
     all->addLayout(lay);
     setLayout(all);
+    setAttribute( Qt::WA_DeleteOnClose );
+}
+
+switchProperty::~switchProperty()
+{
+    delete sw;
 }
 
 void switchProperty::setSwitch(boxSetting *d)
@@ -84,7 +88,7 @@ void switchProperty::setSwitch(boxSetting *d)
     le_ip->setText( d->snmpIp() );
     le_mask->setText( d->snmpMask() );
     lb_statics->setText( d->statics() );
-    te_text->setPlainText(  d->note() );
+    chb_manual->setChecked( d->isManual() );
     btn_apply->setEnabled(false);
 }
 
@@ -107,7 +111,7 @@ void switchProperty::apply()
     sw->setMac(le_mac->text());
     sw->setIp(le_ip->text());
     sw->setMask(le_mask->text());
-    sw->setNote( te_text->toPlainText() );
+    sw->setManual( chb_manual );
     if ( sender() == btn_ok ) accept();
 }
 
