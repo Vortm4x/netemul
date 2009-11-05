@@ -202,6 +202,7 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
   */
 void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *state)
 {
+    if (!device->adapter(state->name)->isConnect() ) return;
     udpPacket udp;
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
