@@ -24,6 +24,7 @@
 #include "udpsocket.h"
 #include "udppacket.h"
 #include "dhcpservermodel.h"
+#include <QMessageBox>
 
 dhcpServerProgramm::dhcpServerProgramm()
 {
@@ -31,7 +32,7 @@ dhcpServerProgramm::dhcpServerProgramm()
     myDhcpModel = new dhcpServerModel;
     myDynamic = false;
     myTime = 300;
-    myWaitingTime = 60;
+    myWaitingTime = 60;   
 }
 
 dhcpServerProgramm::~dhcpServerProgramm()
@@ -52,6 +53,7 @@ void dhcpServerProgramm::setDevice(smartDevice *s)
     }
     receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
+    connect( device, SIGNAL(interfaceConnected(QString)), SLOT(checkInterface(QString)) );
 }
 
 void dhcpServerProgramm::setInterface(QString inter)
@@ -59,8 +61,17 @@ void dhcpServerProgramm::setInterface(QString inter)
     myInterface = inter;
 }
 
+void dhcpServerProgramm::checkInterface(QString port)
+{
+    if ( myInterface.isEmpty() ) setInterface(port);
+}
+
 void dhcpServerProgramm::execute(QByteArray data)
 {
+    if ( device->adapter(myInterface)->ip().isEmpty() ) {
+        QMessageBox::warning(0,tr("Warning"),tr("Your DHCP server isn't configured."), QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
     dhcpPacket packet(data);
     switch ( packet.type() ) {
         case dhcpPacket::DHCPDISCOVER : executeDiscover(packet); break;

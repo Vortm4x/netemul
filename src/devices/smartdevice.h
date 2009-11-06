@@ -108,6 +108,7 @@ public slots:
     virtual quint64 receiveFrameCount(const QString &name) { return adapter(name)->countRecFrame(); }
 signals:
     void interfaceDeleted(QString);
+    void interfaceConnected(QString);
 protected:
     interface* adapter(const QString &name);
     interface* addInterface(const QString &name);

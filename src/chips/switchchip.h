@@ -59,12 +59,13 @@ public:
 // Работа со списком
 public:
     bool containPort(devicePort *port) const;
-    void includeAllPorts(QStringList list);
+    void includeAllPorts(QStringList list);    
 // Атрибуты
 public:
     void setName(QString n) { myName = n; }
     QString name() const { return myName; }
-    switchModel* table() const { return myTable; }   
+    switchModel* table() const { return myTable; }
+    QStringList devicePorts() const;
 private:
     QList<devicePort*> myDevicePorts;
     QString myName;

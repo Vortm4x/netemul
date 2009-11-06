@@ -52,6 +52,8 @@ public:
     enum { DHCPServer = 2 , CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
     dhcpServerProgramm();
     ~dhcpServerProgramm();
+// Атрибуты
+public:
     int id() const { return DHCPServer; }
     void setDevice(smartDevice *s);
     void setInterface( QString inter );
@@ -70,26 +72,37 @@ public:
     int time() const { return myTime; }
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
-    void showProperty();
-    dhcpServerModel* dhcpModel() { return myDhcpModel; }    
+    dhcpServerModel* dhcpModel() { return myDhcpModel; }
+public:
+    void showProperty();        
     ipAddress giveDynamicIp() const;
     void incTime();
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+// Слоты
 public slots:
     void execute(QByteArray data);
+    void checkInterface(QString port);
+// Обработка пакетов
 private:
     void executeDiscover(dhcpPacket packet);
     void executeRequest(dhcpPacket packet);
     void executeDecline(dhcpPacket packet);
+// Функции создания и отправки ответа
+private:
+    void makeAnswer(clientState* client, int type);
     void sendDhcp(dhcpPacket packet) const;
     dhcpPacket createDhcpPacket( clientState *client, int state ) const;
+// Функции выбора и нахождения записи клиента
+private:
     clientState* chooseStatic(dhcpPacket packet);
     clientState* chooseDynamic(dhcpPacket packet);
     clientState* findClient( int xid ) const;
     clientState* findClient(ipAddress ip) const;
-    void makeAnswer(clientState* client, int type);
+
+// Переменные
+private:
     QList<clientState*> clients;
     QString myInterface;
     udpSocket *receiver;

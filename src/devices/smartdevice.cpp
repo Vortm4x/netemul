@@ -117,6 +117,7 @@ void smartDevice::addConnection(const QString &port,cableDev *c)
 {
     adapter(port)->setConnect(true,c);
     connectedNet(adapter(port));
+    emit interfaceConnected(port);
 }
 
 void smartDevice::deleteConnection(cableDev *c)

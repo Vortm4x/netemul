@@ -114,7 +114,16 @@ bool virtualNetwork::containPort(devicePort *port) const
 void virtualNetwork::includeAllPorts(QStringList list)
 {
     for ( int i = 0; i < list.size(); i++ )        
-        if ( !myDevicePorts.contains(mySwitchChip->socket(list.at(i))) ) myDevicePorts << mySwitchChip->socket(list.at(i));
+        if ( !myDevicePorts.contains(mySwitchChip->socket(list.at(i))) )
+            myDevicePorts << mySwitchChip->socket(list.at(i));
+}
+
+QStringList virtualNetwork::devicePorts() const
+{
+    QStringList list;
+    foreach ( devicePort *i, myDevicePorts )
+        list << tr("LAN%1").arg(i->num()) ;
+    return list;
 }
 
 void virtualNetwork::secondTimerEvent()
