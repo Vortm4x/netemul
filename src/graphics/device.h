@@ -46,6 +46,7 @@ public:
     QRect pixmapRect;
     device(int t);
     device(QDataStream &stream);
+    device(QXmlStreamReader &stream);
     ~device();
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     QRectF boundingRect() const {
@@ -69,6 +70,7 @@ public:
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     void showDesignerDialog() const { impl->showDesignerDialog(); }
     void showDeviceNoteDialog() const { impl->showDeviceNoteDialog(); }
+    void showVirtualNetworkDialog() const {  impl->showVirtualNetworkDialog(); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isShared() const { return impl->isShared(); }
     bool isConnectSocket(const QString &str) const { return impl->isConnectSocket(str); }
@@ -86,6 +88,8 @@ public:
     static bool isConnectDevices(device *s, device *e);
     QList<cableDev*> cables() const { return myCableList; }
     bool hasTable() const { return impl->hasTable(); }
+
+    void writeXml(QXmlStreamWriter &stream) const;
 private:
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства

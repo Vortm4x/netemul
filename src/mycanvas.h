@@ -24,6 +24,8 @@
 #include <QtGui/QUndoStack>
 #include "textitem.h"
 
+static const int UNDO_LIMIT = 7;
+
 class QMenu;
 class QAction;
 class cableDev;
@@ -100,6 +102,8 @@ public slots:
     bool isPlayed() const { return myTimer; }
     void saveScene(QString fileName);
     void openScene(QString fileName);
+    void saveSceneXml(QString fileName);
+    void openSceneXml(QString fileName);
     deviceImpl* addComputer(int x,int y);
     deviceImpl* addSwitch(int x,int y);
     deviceImpl* addHub(int x,int y);

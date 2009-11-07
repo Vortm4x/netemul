@@ -73,7 +73,6 @@ public slots:
     void aboutDialog();
     void printDialog();
     void printPreviewDialog();
-    void showVirtualNetworkDialog();
     void paintInPreviewDialog(QPrinter *printer);
     void incTime();
 private slots:

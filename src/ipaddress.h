@@ -44,6 +44,7 @@ public:
     ipAddress operator~() const;
     ipAddress operator|(const ipAddress &e1) const;
     static ipAddress full() { return ipAddress("255.255.255.255"); }
+    void writeXml() const { }
 private:
     quint8 myIp[4];
 protected:

@@ -43,7 +43,6 @@
 #include "statisticsscene.h"
 #include "logdialog.h"
 #include "aboutwindow.h"
-#include "virtualnetworkdialog.h"
 
 #ifndef QT_NO_OPENGL
 #include <QtOpenGL/QtOpenGL>
@@ -230,30 +229,38 @@ void MainWindow::createAction()
     moveAct = createOneAction(QIcon(":/im/images/arrow.png"),true);
     moveAct->setData( myCanvas::move*10 + myCanvas::noDev );
     moveAct->setChecked(true);
+    moveAct->setShortcut(tr("Ctrl+1"));
 
     cableAct = createOneAction(QIcon(":/im/images/cable.png"),true);
     cableAct->setData( myCanvas::cable*10 + myCanvas::noDev );
+    cableAct->setShortcut(tr("Ctrl+2"));
 
     textAct = createOneAction(QIcon(":/im/images/note.png"), true);
     textAct->setData( myCanvas::text*10 + myCanvas::noDev );
+    textAct->setShortcut(tr("Ctrl+3"));
 
     shareBusAct = createOneAction(QIcon(":/im/images/sharebus.png"),true);
     shareBusAct->setData( myCanvas::insert*10 + myCanvas::busDev);
 
     computerAct = createOneAction(QIcon(":/im/images/computer.png"),true);
     computerAct->setData( myCanvas::insert*10 + myCanvas::compDev);
+    computerAct->setShortcut(tr("Ctrl+4"));
 
     hubAct = createOneAction(QIcon(":/im/images/hub.png"),true);
     hubAct->setData( myCanvas::insert*10 + myCanvas::hubDev );
+    hubAct->setShortcut(tr("Ctrl+5"));
 
     switchAct = createOneAction(QIcon(":/im/images/switch.png"),true);
     switchAct->setData( myCanvas::insert*10 + myCanvas::switchDev );
+    switchAct->setShortcut(tr("Ctrl+6"));
 
     routerAct = createOneAction(QIcon(":/im/images/router.png") , true);
     routerAct->setData( myCanvas::insert*10 + myCanvas::routerDev );
+    routerAct->setShortcut(tr("Ctrl+7"));
 
     sendAct = createOneAction(QIcon(":/im/images/left_right.png"),true);
     sendAct->setData( myCanvas::send* 10 + myCanvas::noDev);
+    sendAct->setShortcut(tr("Ctrl+8"));
 
     testAct = createOneAction();
     connect( testAct , SIGNAL(triggered()) , SLOT(test()));
@@ -423,6 +430,7 @@ void MainWindow::createScene()
     connect( arpAct , SIGNAL(triggered()) , sceneControler , SLOT(arpDialog()) );
     connect( logAct , SIGNAL(triggered()) , SLOT(showLogDialog()) );
     connect( noteAct , SIGNAL(triggered()) , sceneControler , SLOT(showDeviceNoteDialog()) );
+    connect( virtualNetworkAct , SIGNAL(triggered()) , sceneControler , SLOT(showVirtualNetworkDialog()) );
     QAction *t = canva->undoAction(this);
     t->setIcon( QIcon(":/im/images/undo.png") );
     t->setShortcut(QKeySequence::Undo);
@@ -520,15 +528,16 @@ void MainWindow::setOpenglMode(bool mode)
 bool MainWindow::saveFile()
 {
     if ( myFile.isEmpty() ) {
-       QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
-                                                QDir::currentPath(),
-                                                tr("Networks(*.net)"));
-       if ( t.isEmpty() ) return false;
-       if ( !t.contains(".net") ) t.push_back(".net");
-       myFile = t;
+       saveAsFile();
+       return true;
     }
     setWindowTitle( myFile );
-    canva->saveScene(myFile);
+    if ( myFile.endsWith("net") ) {
+        canva->saveScene(myFile);
+    }
+    else {
+        canva->saveSceneXml(myFile);
+    }
     return true;
 }
 
@@ -537,13 +546,18 @@ void MainWindow::openFile(QString name)
     setWindowTitle(name);
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
-    canva->openScene(name);
+    if ( name.endsWith("net") ) {
+        canva->openScene(name);
+    }
+    else {
+        canva->openSceneXml(name);
+    }
 }
 
 void MainWindow::openFile()
 {
     QString t = QFileDialog::getOpenFileName(this,tr("Open"),
-                                             QDir::currentPath(),tr("Networks(*.net)"));
+                                             QDir::currentPath(),tr("Networks(*.net);;XML files(*.xml)"));
     if ( t.isEmpty() ) return;
     myFile = t;
     openFile( myFile );
@@ -553,12 +567,11 @@ void MainWindow::openFile()
 void MainWindow::saveAsFile()
 {
     QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
-                                             QApplication::applicationDirPath(),tr("Networks(*.net)"));
+                                             QApplication::applicationDirPath(),tr("Networks(*.net);;XML files(*.xml)"));
     if ( t.isEmpty() ) return ;
-    if ( !t.contains(".net") ) t.push_back(".net");
+    if ( !t.endsWith(".net") && !t.endsWith(".xml") ) t.push_back(".xml");
     myFile = t;
-    setWindowTitle( myFile );
-    canva->saveScene(myFile);
+    saveFile();
 }
 
 // Фильтр для виев айтем =)
@@ -712,12 +725,6 @@ void MainWindow::printPreviewDialog()
     QPrintPreviewDialog dialog(printer,this);
     connect( &dialog , SIGNAL(paintRequested(QPrinter*)) , SLOT(paintInPreviewDialog(QPrinter*)));
     dialog.exec();
-}
-
-void MainWindow::showVirtualNetworkDialog()
-{
-    virtualNetworkDialog *d = new virtualNetworkDialog;
-    d->show();
 }
 
 void MainWindow::autosave()

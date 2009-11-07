@@ -68,6 +68,32 @@ device::device(QDataStream &stream)
     setToolTip( impl->note() );
 }
 
+device::device(QXmlStreamReader &stream)
+{
+    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
+    pixmapRect = devRect.adjusted(3,3,-3,-3);
+    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
+    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
+    QPointF p;
+    int tp = stream.attributes().value("type").toString().toInt();
+    switch (tp) {
+        case compDev : impl = new computer; break;
+        case hubDev : impl = new hubDevice; break;
+        case switchDev : impl = new switchDevice; break;
+        case routerDev : impl = new routerDevice; break;
+        default: break;
+    }
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "x" ) p.setX( stream.readElementText().toDouble() );
+        else if ( stream.name() == "y" ) p.setY( stream.readElementText().toDouble() );
+        else if ( stream.name() == "deviceimpl" ) impl->readXml(stream);
+    }
+    setPos(p);
+    setToolTip( impl->note() );
+}
+
 device::~device()
 {
     delete impl;
@@ -138,6 +164,22 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
     scene()->clearSelection();
 }
 //----------------------------------------------------------------
+
+void device::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeStartElement("device");
+    stream.writeAttribute("type" , QString::number(impl->type()) );
+    stream.writeStartElement("x");
+    stream.writeCharacters( QString::number( pos().x() ) );
+    stream.writeEndElement();
+    stream.writeStartElement("y");
+    stream.writeCharacters( QString::number( pos().y() ) );
+    stream.writeEndElement();
+
+    impl->writeXml(stream);
+
+    stream.writeEndElement();
+}
 
 void device::addConnection(const QString &port, cableDev *c)
 {

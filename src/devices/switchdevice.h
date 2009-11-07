@@ -44,6 +44,7 @@ public:
     void tableDialog();
     bool hasTable() const { return true; }
     bool isManagedVirtualNetwork() const { return ( myManual ) ? true : false; }
+    void showVirtualNetworkDialog();
     switchChip* concreteChip();
     void secondTimerEvent();
     QString deviceName() const { return "switch"; }
@@ -65,5 +66,11 @@ private:
     switchDevice *sw;
 };
 
+class virtualNetworkSetting {
+public:
+    virtualNetworkSetting( switchDevice *device ) : myDevice(device) { }
+private:
+    switchDevice *myDevice;
+};
 
 #endif // SWITCHDEVICE_H

@@ -38,8 +38,27 @@ void deviceImpl::write(QDataStream &stream) const
     stream << myNote;
 }
 
+void deviceImpl::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeStartElement("deviceimpl");
+    stream.writeStartElement("note");
+    stream.writeCharacters( myNote );
+    stream.writeEndElement();
+    stream.writeEndElement();
+}
+
 void deviceImpl::read(QDataStream &stream)
 {
     stream >> myNote;
 }
+
+void deviceImpl::readXml(QXmlStreamReader &stream)
+{
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "note" ) myNote = stream.readElementText();
+    }
+}
+
 

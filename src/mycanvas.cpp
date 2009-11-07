@@ -49,7 +49,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myOpen = false;
     myModified = false;
     myState = abstractState::initialize(this);
-    commandStack.setUndoLimit(7);
+    commandStack.setUndoLimit(UNDO_LIMIT);
 }
 //------------------------------------------------------------------
 /*!
@@ -228,6 +228,50 @@ void myCanvas::openScene(QString fileName)
     myModified = false;
 }
 //-----------------------------------------------------------------------
+
+void myCanvas::openSceneXml(QString fileName)
+{
+    newFile();
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << tr("Opening file for reading is impossible");
+        return;
+    }
+    QXmlStreamReader s(&file);
+    QPointF p;
+    QString str;
+    QApplication::changeOverrideCursor(Qt::WaitCursor);
+    while ( !s.atEnd() ) {
+        s.readNext();
+        if ( s.isStartElement() ) {
+            if ( s.name() == "netemul" && s.attributes().value("version") == QCoreApplication::applicationVersion() ) {
+                while ( !s.atEnd() ) {
+                    s.readNext();
+                    if ( s.isEndElement() ) break;
+
+                    if ( s.isStartElement() ) {
+                        if ( s.name() == "device" ) {
+                            device *item = new device(s);
+                            item->setMenu(itemMenu);
+                            addItem(item);
+                            myDevices << item;
+                        }
+                    }
+                }
+            }
+            else {
+                s.raiseError(tr("The file is not an NetEmul version %1 file.").arg(QCoreApplication::applicationVersion()));
+                emit fileClosed();
+            }
+        }
+    }
+    file.close();
+    QApplication::restoreOverrideCursor();
+    emit fileOpened();
+    qDebug() << tr("Scene was been open from %1").arg(fileName) ;
+    myModified = false;
+}
+
 /*!
   Сохраняет сцену в файл.
   @param fileName - имя файла в который осуществляется сохранение.
@@ -257,6 +301,28 @@ void myCanvas::saveScene(QString fileName)
         s << i->toPlainText();
     }
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
+    file.close();
+    QApplication::restoreOverrideCursor();
+    qDebug() << tr("Scene was been saved in %1").arg(fileName) ;
+    myModified = false;
+}
+
+void myCanvas::saveSceneXml(QString fileName)
+{
+    QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly)) {
+        qDebug() << tr("Opening file for writing is impossible %1").arg(fileName);
+        return;
+    }
+    QApplication::changeOverrideCursor(Qt::WaitCursor);
+    QXmlStreamWriter s(&file);
+    s.setAutoFormatting(true);
+    s.writeStartDocument();
+    s.writeStartElement("netemul");
+    s.writeAttribute("version",QCoreApplication::applicationVersion() );
+    foreach ( device *i , myDevices )
+        i->writeXml(s);
+    s.writeEndDocument();
     file.close();
     QApplication::restoreOverrideCursor();
     qDebug() << tr("Scene was been saved in %1").arg(fileName) ;

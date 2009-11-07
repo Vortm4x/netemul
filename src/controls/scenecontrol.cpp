@@ -97,6 +97,11 @@ void sceneControl::showDeviceNoteDialog() const
     t->showDeviceNoteDialog();
 }
 
+void sceneControl::showVirtualNetworkDialog() const
+{
+    scene->oneSelectedDevice()->showVirtualNetworkDialog();
+}
+
 bool sceneControl::isSelect() const
 {
     if ( scene->oneSelectedDevice() ) return true;

@@ -59,6 +59,7 @@ public:
     virtual void programmsDialog() { qFatal("error not compability"); }
     virtual void arpDialog() { qFatal("error not compability"); }
     virtual void showDesignerDialog() { qFatal("Error designer!"); }
+    virtual void showVirtualNetworkDialog() { qFatal("Error virtual network"); }
 
     virtual bool isShared() const { return false; }
     virtual bool isManagedVirtualNetwork() const { return false; }
@@ -83,6 +84,9 @@ public:
     virtual bool isRouter() const { qFatal("No router!"); return false; }
     virtual void setRouter(bool) { qFatal("No router!"); }
     virtual void detectCollision() { }
+
+    virtual void writeXml(QXmlStreamWriter &stream) const;
+    virtual void readXml(QXmlStreamReader &stream);
 public slots:
     virtual void setCheckedSocket(const QString&) { }
     virtual void setIp(const QString&, const QString&) { }

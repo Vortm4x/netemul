@@ -49,6 +49,7 @@ public slots:
     void showLogDialog(logDialog *log) const;
     void showDesignerDialog() const;
     void showDeviceNoteDialog() const;
+    void showVirtualNetworkDialog() const;
 signals:
     void selectOneDevice(bool);
     void selectTableDevice(bool);

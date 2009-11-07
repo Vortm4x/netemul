@@ -22,6 +22,7 @@
 #include "switchproperty.h"
 #include "switchchip.h"
 #include "appsetting.h"
+#include "virtualnetworkdialog.h"
 
 switchDevice::switchDevice(int c /* =0 */)
 {
@@ -61,6 +62,13 @@ void switchDevice::tableDialog()
     t->exec();
     delete t;
     delete set;
+}
+
+void switchDevice::showVirtualNetworkDialog()
+{
+    virtualNetworkDialog *d = new virtualNetworkDialog;
+    d->setDevice( new virtualNetworkSetting(this) );
+    d->show();
 }
 
 switchChip* switchDevice::concreteChip()
