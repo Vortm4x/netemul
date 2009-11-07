@@ -46,12 +46,32 @@ void abstractChip::write(QDataStream &stream) const
     stream << myStatistics;
 }
 
+void abstractChip::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeStartElement("abstractchip");
+    stream.writeTextElement("mac", myMac.toString() );
+    stream.writeTextElement("ip", myIp.toString() );
+    stream.writeTextElement("mask", myMask.toString() );
+    stream.writeEndElement();
+}
+
 void abstractChip::read(QDataStream &stream)
 {
     stream >> myMac;
     stream >> myIp;
     stream >> myMask;
     stream >> myStatistics;
+}
+
+void abstractChip::readXml(QXmlStreamReader &stream)
+{
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "mac" ) myMac.setMac( stream.readElementText() );
+        else if ( stream.name() == "ip" ) myIp.setIp( stream.readElementText() );
+        else if ( stream.name() == "mask" ) myMask.setIp( stream.readElementText() );
+    }
 }
 
 void abstractChip::checkReceive(frame &f)

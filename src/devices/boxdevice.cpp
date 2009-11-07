@@ -35,10 +35,27 @@ void boxDevice::write(QDataStream &stream) const
     chip->write(stream);
 }
 
+void boxDevice::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeStartElement("boxchip");
+    deviceImpl::writeXml(stream);
+    stream.writeEndElement();
+}
+
 void boxDevice::read(QDataStream &stream)
 {
     deviceImpl::read(stream);
     chip->read(stream);
+}
+
+void boxDevice::readXml(QXmlStreamReader &stream)
+{
+    qDebug(" - %s", stream.name().toString().toAscii().data() );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "deviceimpl" ) deviceImpl::readXml(stream);
+    }
 }
 
 void boxDevice::deciSecondTimerEvent()

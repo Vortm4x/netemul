@@ -50,8 +50,10 @@ public slots:
 protected:
     bool myManual;
     boxChip *chip;
+    virtual void writeXml(QXmlStreamWriter &stream) const;
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    virtual void readXml(QXmlStreamReader &stream);
 };
 
 class boxSetting : public deviceSetting {

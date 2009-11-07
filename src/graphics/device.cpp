@@ -88,7 +88,7 @@ device::device(QXmlStreamReader &stream)
         if ( stream.isEndElement() ) break;
         if ( stream.name() == "x" ) p.setX( stream.readElementText().toDouble() );
         else if ( stream.name() == "y" ) p.setY( stream.readElementText().toDouble() );
-        else if ( stream.name() == "deviceimpl" ) impl->readXml(stream);
+        else if ( stream.name() == "boxchip" || stream.name() == "smartdevice" ) impl->readXml(stream);
     }
     setPos(p);
     setToolTip( impl->note() );

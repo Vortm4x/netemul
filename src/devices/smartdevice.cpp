@@ -147,6 +147,16 @@ void smartDevice::write(QDataStream &stream) const
         stream << i;
 }
 //-------------------------------------------------
+
+void smartDevice::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeStartElement("smartdevice");
+    deviceImpl::writeXml(stream);
+    for ( int i = 0 ; i < myInterfaces.size() ; i++ )
+        myInterfaces.at(i)->writeXml(stream);
+    stream.writeEndElement();
+}
+
 void smartDevice::read(QDataStream &stream)
 {
     deviceImpl::read(stream);
@@ -166,6 +176,23 @@ void smartDevice::read(QDataStream &stream)
         installProgramm(p);
     }
 }
+
+void smartDevice::readXml(QXmlStreamReader &stream)
+{
+    qDeleteAll(myInterfaces);
+    myInterfaces.clear();
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "abstractchip" ) {
+            interface *p = addInterface(QString());
+            p->readXml(stream);
+        } else if (stream.name() == "deviceimpl" )  {
+            deviceImpl::readXml(stream);
+        }
+    }
+}
+
 /*!
   Задает устройству шлюз по умолчанию.
   @param str - строка с адресом.

@@ -20,6 +20,8 @@
 #ifndef ABSTRACTCHIP_H
 #define ABSTRACTCHIP_H
 
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include "statistics.h"
 
 #include "macaddress.h"
@@ -55,6 +57,8 @@ public:
     void setMask(const ipAddress address) { myMask = address; }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    virtual void writeXml(QXmlStreamWriter &stream) const;
+    virtual void readXml(QXmlStreamReader &stream);
     statistics chipStatistics() { return myStatistics; }
     quint64 countRecFrame() { return myStatistics.receiveFrames(); }
     quint64 countRecPacket() { return myStatistics.receivePackets(); }
