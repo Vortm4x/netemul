@@ -195,10 +195,35 @@ void interface::write(QDataStream &stream) const
     stream << myName;
 }
 
+void interface::writeXml(QXmlStreamWriter &stream) const
+{
+    abstractChip::writeXml(stream);
+    stream.writeStartElement("interface");
+    stream.writeTextElement("name",myName);
+    stream.writeEndElement();
+}
+
 void interface::read(QDataStream &stream)
 {
     abstractChip::read(stream);
     stream >> myName;
+}
+
+void interface::readXml(QXmlStreamReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "chipimpl" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "abstractchip") abstractChip::readXml(stream);
+        else if ( stream.name() == "interface" ) {
+            while ( !stream.atEnd() ) {
+                stream.readNext();
+                if ( stream.isEndElement() ) break;
+                if ( stream.name() == "name" ) myName = stream.readElementText();
+            }
+        }
+    }
 }
 
 bool interface::isBusy() const

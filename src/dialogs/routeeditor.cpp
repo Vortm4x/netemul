@@ -95,7 +95,7 @@ routeEditor::routeEditor(smartDevice *s)
     readSetting();
     setLayout(all);
     setAttribute(Qt::WA_DeleteOnClose);
-    dev->setCheckedSocket( suffixList.at(0) );    
+    if ( suffixList.size() > 0 ) dev->setCheckedSocket( suffixList.at(0) );
 }
 
 routeEditor::~routeEditor()

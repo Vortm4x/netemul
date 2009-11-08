@@ -238,6 +238,16 @@ void routeModel::write(QDataStream &stream) const
         stream << *i;
 }
 
+void routeModel::writeXml(QXmlStreamWriter &stream) const
+{
+    foreach ( routeRecord *i , table )
+        if ( i->mode == staticMode ) {
+            stream.writeStartElement("routerecord");
+            i->writeXml(stream);
+            stream.writeEndElement();
+        }
+}
+
 void routeModel::read(QDataStream &stream)
 {
     table.clear();
@@ -250,3 +260,44 @@ void routeModel::read(QDataStream &stream)
         addToTable(t);
     }
 }
+
+void routeModel::readXml(QXmlStreamReader &stream)
+{
+    table.clear();
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "routerecord" ) {
+            routeRecord *t = new routeRecord;
+            t->mode = staticMode;
+            t->readXml(stream);
+            addToTable(t);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+
+void routeRecord::writeXml(QXmlStreamWriter &stream) const
+{
+    stream.writeTextElement("destination",dest.toString() );
+    stream.writeTextElement("mask",mask.toString() );
+    stream.writeTextElement("gateway",gateway.toString() );
+    stream.writeTextElement("metric",QString::number(metric) );
+    stream.writeTextElement("out", out.toString() );
+}
+
+void routeRecord::readXml(QXmlStreamReader &stream)
+{
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "destination" ) dest.setIp( stream.readElementText() );
+        else if ( stream.name() == "mask" ) mask.setIp( stream.readElementText() );
+        else if ( stream.name() == "gateway" ) gateway.setIp( stream.readElementText() );
+        else if ( stream.name() == "metric" ) metric = stream.readElementText().toInt() ;
+        else if ( stream.name() == "out" ) out.setIp( stream.readElementText() );
+    }
+}
+

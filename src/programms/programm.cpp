@@ -57,9 +57,7 @@ programm::programm(const programm &other)
 
 programm::~programm()
 {
-    if ( --rep->countRef <= 0 ) {
-        delete rep;
-    }
+    if ( --rep->countRef <= 0 ) delete rep;
 }
 
 programm& programm::operator=(const programm &other)
@@ -69,5 +67,4 @@ programm& programm::operator=(const programm &other)
     rep = other.rep;
     return *this;
 }
-
 

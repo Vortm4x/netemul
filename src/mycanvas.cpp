@@ -244,23 +244,21 @@ void myCanvas::openSceneXml(QString fileName)
     while ( !s.atEnd() ) {
         s.readNext();
         if ( s.isStartElement() ) {
-            if ( s.name() == "netemul" && s.attributes().value("version") == QCoreApplication::applicationVersion() ) {
+            if ( s.name() == "netemul") {
                 while ( !s.atEnd() ) {
                     s.readNext();
                     if ( s.isEndElement() ) break;
-
-                    if ( s.isStartElement() ) {
-                        if ( s.name() == "device" ) {
-                            device *item = new device(s);
-                            item->setMenu(itemMenu);
-                            addItem(item);
-                            myDevices << item;
-                        }
+                    if ( !s.isStartElement() ) continue;
+                    if ( s.name() == "device" ) {
+                        device *item = new device(s);
+                        item->setMenu(itemMenu);
+                        addItem(item);
+                        myDevices << item;
                     }
                 }
             }
             else {
-                s.raiseError(tr("The file is not an NetEmul version %1 file.").arg(QCoreApplication::applicationVersion()));
+                s.raiseError(tr("The file is not a NetEmul file."));
                 emit fileClosed();
             }
         }

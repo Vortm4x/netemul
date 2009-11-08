@@ -22,6 +22,8 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include "ipaddress.h"
 
 struct routeRecord {
@@ -37,6 +39,8 @@ public:
     QString modeString() const;
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
+    void writeXml(QXmlStreamWriter &stream) const;
+    void readXml(QXmlStreamReader &stream);
 };
 
 typedef QList<routeRecord*> routeTable;
@@ -68,6 +72,8 @@ public:
     void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
     bool isConnectedMode(QModelIndex curr);
     void write(QDataStream &stream) const;
+    void writeXml(QXmlStreamWriter &stream) const;
+    void readXml(QXmlStreamReader &stream);
     void read(QDataStream &stream);
 signals:
     void recordAdding(routeRecord*,int);

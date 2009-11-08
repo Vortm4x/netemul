@@ -35,7 +35,7 @@ public:
     programm& operator=(const programm &other);
     bool operator==(const programm &other) { return rep == other.rep; }
     programmRep* operator->() const { return rep; }
-    programmRep* impl() { return rep; }
+    programmRep* impl() { return rep; }    
 private:
     programmRep *rep;
 protected:

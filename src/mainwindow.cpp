@@ -50,6 +50,9 @@
 
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
 
+#define FILES_TYPES_XML "XML files(*.xml);;Networks(*.net)"
+#define FILES_TYPES_NET "Networks(*.net);;XML files(*.xml)"
+
 // Конструктор главной формы
 MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
 {
@@ -557,7 +560,7 @@ void MainWindow::openFile(QString name)
 void MainWindow::openFile()
 {
     QString t = QFileDialog::getOpenFileName(this,tr("Open"),
-                                             QDir::currentPath(),tr("Networks(*.net);;XML files(*.xml)"));
+                                             QDir::currentPath(),tr(FILES_TYPES_NET));
     if ( t.isEmpty() ) return;
     myFile = t;
     openFile( myFile );
@@ -567,7 +570,7 @@ void MainWindow::openFile()
 void MainWindow::saveAsFile()
 {
     QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
-                                             QApplication::applicationDirPath(),tr("Networks(*.net);;XML files(*.xml)"));
+                                             QApplication::applicationDirPath(),tr(FILES_TYPES_NET));
     if ( t.isEmpty() ) return ;
     if ( !t.endsWith(".net") && !t.endsWith(".xml") ) t.push_back(".xml");
     myFile = t;

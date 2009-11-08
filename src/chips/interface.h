@@ -70,6 +70,8 @@ public:
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    virtual void writeXml(QXmlStreamWriter &stream) const;
+    virtual void readXml(QXmlStreamReader &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
 signals:

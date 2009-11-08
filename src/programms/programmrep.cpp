@@ -47,3 +47,17 @@ void programmRep::read(QDataStream &stream)
     stream >> myEnable;
 }
 //-------------------------------------------
+
+void programmRep::writeXml(QXmlStreamWriter &stream) const
+{    
+    stream.writeTextElement("enable", ( myEnable ) ? "1" : "0" );
+}
+
+void programmRep::readXml(QXmlStreamReader &stream)
+{
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "enable" ) myEnable = stream.readElementText().toInt();
+    }
+}
