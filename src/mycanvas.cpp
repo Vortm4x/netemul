@@ -36,6 +36,8 @@
 #include "abstractstate.h"
 #include "deletecommand.h"
 #include "addcablecommand.h"
+#include "scenexmlwriter.h"
+#include "scenexmlreader.h"
 
 /*!
   Конструктор проводит начальную инициализацию сцены.
@@ -44,7 +46,7 @@
 */
 myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {
-    itemMenu = context; // меню из аргумента                    
+    myItemMenu = context; // меню из аргумента
     myTimer = 0;       
     myOpen = false;
     myModified = false;
@@ -59,7 +61,7 @@ myCanvas::~myCanvas()
 {
     clear();
     myDevices.clear();
-    connections.clear();
+    myConnections.clear();
     myTextItems.clear();
 }
 //------------------------------------------------------------------
@@ -111,7 +113,7 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
     if ( myType == -1 ) myType = nowType;
     device *t = new device(myType);
     t->setPos( calibrate(coor) );
-    t->setMenu(itemMenu);
+    t->setMenu(myItemMenu);
     addItem(t);
     myDevices << t;
     return t;
@@ -152,7 +154,7 @@ void myCanvas::closeFile()
     myDevices.clear();
     setBackgroundBrush(QBrush(Qt::lightGray));
     setSceneRect(0,0,1,1);
-    connections.clear();
+    myConnections.clear();
     myTextItems.clear();
     if ( myTimer ) stop();
     myOpen = false;
@@ -199,7 +201,7 @@ void myCanvas::openScene(QString fileName)
     s >> n;
     for ( i = 0 ; i < n ; i++ ) {
         item = new device(s);
-        item->setMenu(itemMenu);
+        item->setMenu(myItemMenu);
         addItem(item);
         myDevices << item;
     }
@@ -237,32 +239,9 @@ void myCanvas::openSceneXml(QString fileName)
         qDebug() << tr("Opening file for reading is impossible");
         return;
     }
-    QXmlStreamReader s(&file);
-    QPointF p;
-    QString str;
     QApplication::changeOverrideCursor(Qt::WaitCursor);
-    while ( !s.atEnd() ) {
-        s.readNext();
-        if ( s.isStartElement() ) {
-            if ( s.name() == "netemul") {
-                while ( !s.atEnd() ) {
-                    s.readNext();
-                    if ( s.isEndElement() ) break;
-                    if ( !s.isStartElement() ) continue;
-                    if ( s.name() == "device" ) {
-                        device *item = new device(s);
-                        item->setMenu(itemMenu);
-                        addItem(item);
-                        myDevices << item;
-                    }
-                }
-            }
-            else {
-                s.raiseError(tr("The file is not a NetEmul file."));
-                emit fileClosed();
-            }
-        }
-    }
+    sceneXmlReader s(this);
+    s.readScene(&file);
     file.close();
     QApplication::restoreOverrideCursor();
     emit fileOpened();
@@ -288,8 +267,8 @@ void myCanvas::saveScene(QString fileName)
     s << myDevices.size();
     foreach(device *i, myDevices)
         s << *i;
-    s << connections.count();
-    foreach (cableDev *i, connections) {
+    s << myConnections.count();
+    foreach (cableDev *i, myConnections) {
         s << i->line().p1() << i->line().p2();
         s << i->startSocketName() << i->endSocketName() ;
     }
@@ -313,14 +292,8 @@ void myCanvas::saveSceneXml(QString fileName)
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
-    QXmlStreamWriter s(&file);
-    s.setAutoFormatting(true);
-    s.writeStartDocument();
-    s.writeStartElement("netemul");
-    s.writeAttribute("version",QCoreApplication::applicationVersion() );
-    foreach ( device *i , myDevices )
-        i->writeXml(s);
-    s.writeEndDocument();
+    sceneXmlWriter s(this);
+    s.writeScene(&file);
     file.close();
     QApplication::restoreOverrideCursor();
     qDebug() << tr("Scene was been saved in %1").arg(fileName) ;
@@ -340,7 +313,7 @@ void myCanvas::timerEvent(QTimerEvent*)
 void myCanvas::ticTime()
 {
     static int n = 9;
-    foreach ( cableDev *t , connections)
+    foreach ( cableDev *t , myConnections)
         if ( t->isBusy() ) t->motion();
     n--;
     foreach ( device *i, myDevices ) {
@@ -360,7 +333,7 @@ void myCanvas::emulateTime()
 
 bool myCanvas::isEnd() const
 {
-    foreach ( cableDev *t , connections ) {
+    foreach ( cableDev *t , myConnections ) {
         if ( t->isBusy() ) return false;
     }
     foreach ( device *i , myDevices )
@@ -571,13 +544,13 @@ void myCanvas::unregisterDevice(device *dev)
 void myCanvas::registerCable(cableDev *cable)
 {
     addItem(cable); // И добавляем его на сцену =)
-    connections << cable;
+    myConnections << cable;
 }
 
 void myCanvas::unregisterCable(cableDev *cable)
 {
     removeItem(cable);
-    connections.removeOne(cable);
+    myConnections.removeOne(cable);
 }
 
 void myCanvas::registerText(textItem *t)

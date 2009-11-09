@@ -24,8 +24,6 @@
 #include <QtGui/QUndoStack>
 #include "textitem.h"
 
-static const int UNDO_LIMIT = 7;
-
 class QMenu;
 class QAction;
 class cableDev;
@@ -34,6 +32,12 @@ class devicePort;
 class device;
 class deviceImpl;
 class abstractState;
+
+typedef QList<device*> deviceList;
+typedef QList<textItem*> textItemList;
+typedef QList<cableDev*> cableList;
+
+static const int UNDO_LIMIT = 7;
 
 /*!
     Класс в котором содержиться вся логика отображения, именно в нем реализована
@@ -72,7 +76,7 @@ public:
     device* deviceInPoint(QPointF p);
     QPointF calibrate(QPointF c);
     int devicesCount() const { return myDevices.size(); }
-    int cablesCount() const { return connections.size(); }
+    int cablesCount() const { return myConnections.size(); }
     QAction* undoAction(QObject *obj) { return commandStack.createUndoAction(obj); }
     QAction* redoAction(QObject *obj) { return commandStack.createRedoAction(obj); }
     void registerDevice(device *dev);    
@@ -124,11 +128,27 @@ private:
     int lastId;
     abstractState *myState;        
 
-    QList<device*> myDevices; //!< Список всех устройств на сцене.
-    QList<textItem*> myTextItems; //!< Список всех надписей на сцене.
+public:
+    deviceList devices() { return myDevices; }
+private:
+    deviceList myDevices; //!< Список всех устройств на сцене.
 
-    QMenu *itemMenu; // Меню для устройства
-    QList<cableDev*> connections;
+public:
+    textItemList textItems() const { return myTextItems; }
+private:
+    textItemList myTextItems; //!< Список всех надписей на сцене.
+
+public:
+    cableList connections() const { return myConnections; }
+private:
+    cableList myConnections;
+
+public:
+    QMenu* itemMenu() { return myItemMenu; }
+    void setItemMenu(QMenu *menu) { myItemMenu = menu; }
+private:
+    QMenu *myItemMenu; // Меню для устройства
+
     int nowType; // Текущее устройство
 
     int myTimer;

@@ -46,7 +46,7 @@ void abstractChip::write(QDataStream &stream) const
     stream << myStatistics;
 }
 
-void abstractChip::writeXml(QXmlStreamWriter &stream) const
+void abstractChip::writeXml(sceneXmlWriter &stream) const
 {
     stream.writeStartElement("abstractchip");
     stream.writeTextElement("mac", myMac.toString() );
@@ -63,7 +63,7 @@ void abstractChip::read(QDataStream &stream)
     stream >> myStatistics;
 }
 
-void abstractChip::readXml(QXmlStreamReader &stream)
+void abstractChip::readXml(sceneXmlReader &stream)
 {
     while ( !stream.atEnd() ) {
         stream.readNext();

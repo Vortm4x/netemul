@@ -68,7 +68,7 @@ device::device(QDataStream &stream)
     setToolTip( impl->note() );
 }
 
-device::device(QXmlStreamReader &stream)
+device::device(sceneXmlReader &stream)
 {
     devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
     pixmapRect = devRect.adjusted(3,3,-3,-3);
@@ -165,7 +165,7 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 }
 //----------------------------------------------------------------
 
-void device::writeXml(QXmlStreamWriter &stream) const
+void device::writeXml(sceneXmlWriter &stream) const
 {
     stream.writeStartElement("device");
     stream.writeAttribute("type" , QString::number(impl->type()) );

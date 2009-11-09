@@ -46,7 +46,7 @@ public:
     QRect pixmapRect;
     device(int t);
     device(QDataStream &stream);
-    device(QXmlStreamReader &stream);
+    device(sceneXmlReader &stream);
     ~device();
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     QRectF boundingRect() const {
@@ -89,7 +89,7 @@ public:
     QList<cableDev*> cables() const { return myCableList; }
     bool hasTable() const { return impl->hasTable(); }
 
-    void writeXml(QXmlStreamWriter &stream) const;
+    void writeXml(sceneXmlWriter &stream) const;
 private:
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства

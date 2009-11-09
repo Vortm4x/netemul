@@ -21,8 +21,8 @@
 #define PROGRAMMREP_H
 
 #include <QDataStream>
-#include <QXmlStreamWriter>
-#include <QXmlStreamReader>
+#include "scenexmlwriter.h"
+#include "scenexmlreader.h"
 
 class device;
 class smartDevice;
@@ -43,8 +43,8 @@ public:
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXml(QXmlStreamWriter &stream) const;
-    virtual void readXml(QXmlStreamReader &stream);
+    virtual void writeXml(sceneXmlWriter &stream) const;
+    virtual void readXml(sceneXmlReader &stream);
     virtual int id() const = 0;
 protected:
     smartDevice *device;

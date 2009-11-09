@@ -245,3 +245,6 @@ void ripProgramm::read(QDataStream &stream)
 }
 //---------------------------------------------------
 
+
+
+

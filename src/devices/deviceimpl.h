@@ -22,6 +22,8 @@
 
 
 #include <QtScript>
+#include "scenexmlwriter.h"
+#include "scenexmlreader.h"
 #include "statistics.h"
 
 class cableDev;
@@ -85,8 +87,8 @@ public:
     virtual void setRouter(bool) { qFatal("No router!"); }
     virtual void detectCollision() { }
 
-    virtual void writeXml(QXmlStreamWriter &stream) const;
-    virtual void readXml(QXmlStreamReader &stream);
+    virtual void writeXml(sceneXmlWriter &stream) const;
+    virtual void readXml(sceneXmlReader &stream);
 public slots:
     virtual void setCheckedSocket(const QString&) { }
     virtual void setIp(const QString&, const QString&) { }

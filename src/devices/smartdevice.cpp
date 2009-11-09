@@ -18,6 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include <QtCore/QtDebug>
+#include <QMessageBox>
 #include "smartdevice.h"
 #ifndef __TESTING__
 #include "routeeditor.h"
@@ -148,7 +149,7 @@ void smartDevice::write(QDataStream &stream) const
 }
 //-------------------------------------------------
 
-void smartDevice::writeXml(QXmlStreamWriter &stream) const
+void smartDevice::writeXml(sceneXmlWriter &stream) const
 {
     deviceImpl::writeXml(stream);
     stream.writeStartElement("smartdevice");
@@ -190,7 +191,7 @@ void smartDevice::read(QDataStream &stream)
     }
 }
 
-void smartDevice::readXml(QXmlStreamReader &stream)
+void smartDevice::readXml(sceneXmlReader &stream)
 {
     Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
     qDeleteAll(myInterfaces);
@@ -232,7 +233,12 @@ void smartDevice::setGateway(const QString &str)
     routeRecord *i = myRouteTable->recordAt("0.0.0.0"); // Ищем старый шлюз
     if ( i ) myRouteTable->deleteFromTable(i); // Удаляем его
     ipAddress a = findInterfaceIp(t);
-    if ( a.isEmpty() ) return;
+    if ( a.isEmpty() ) {
+        QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
+                                 QObject::tr("Can't set this gateway! See adapter settings!"),
+                                 QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
     myRouteTable->addToTable(ipAddress(),ipAddress(),t,a,0,routeModel::staticMode);
 }
 //--------------------------------------------------------------

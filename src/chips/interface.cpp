@@ -195,7 +195,7 @@ void interface::write(QDataStream &stream) const
     stream << myName;
 }
 
-void interface::writeXml(QXmlStreamWriter &stream) const
+void interface::writeXml(sceneXmlWriter &stream) const
 {
     abstractChip::writeXml(stream);
     stream.writeStartElement("interface");
@@ -209,7 +209,7 @@ void interface::read(QDataStream &stream)
     stream >> myName;
 }
 
-void interface::readXml(QXmlStreamReader &stream)
+void interface::readXml(sceneXmlReader &stream)
 {
     Q_ASSERT( stream.isStartElement() && stream.name() == "chipimpl" );
     while ( !stream.atEnd() ) {

@@ -48,12 +48,12 @@ void programmRep::read(QDataStream &stream)
 }
 //-------------------------------------------
 
-void programmRep::writeXml(QXmlStreamWriter &stream) const
+void programmRep::writeXml(sceneXmlWriter &stream) const
 {    
     stream.writeTextElement("enable", ( myEnable ) ? "1" : "0" );
 }
 
-void programmRep::readXml(QXmlStreamReader &stream)
+void programmRep::readXml(sceneXmlReader &stream)
 {
     while ( !stream.atEnd() ) {
         stream.readNext();

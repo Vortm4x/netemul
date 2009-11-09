@@ -238,7 +238,7 @@ void routeModel::write(QDataStream &stream) const
         stream << *i;
 }
 
-void routeModel::writeXml(QXmlStreamWriter &stream) const
+void routeModel::writeXml(sceneXmlWriter &stream) const
 {
     foreach ( routeRecord *i , table )
         if ( i->mode == staticMode ) {
@@ -261,7 +261,7 @@ void routeModel::read(QDataStream &stream)
     }
 }
 
-void routeModel::readXml(QXmlStreamReader &stream)
+void routeModel::readXml(sceneXmlReader &stream)
 {
     table.clear();
     while ( !stream.atEnd() ) {
@@ -279,7 +279,7 @@ void routeModel::readXml(QXmlStreamReader &stream)
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-void routeRecord::writeXml(QXmlStreamWriter &stream) const
+void routeRecord::writeXml(sceneXmlWriter &stream) const
 {
     stream.writeTextElement("destination",dest.toString() );
     stream.writeTextElement("mask",mask.toString() );
@@ -288,7 +288,7 @@ void routeRecord::writeXml(QXmlStreamWriter &stream) const
     stream.writeTextElement("out", out.toString() );
 }
 
-void routeRecord::readXml(QXmlStreamReader &stream)
+void routeRecord::readXml(sceneXmlReader &stream)
 {
     while ( !stream.atEnd() ) {
         stream.readNext();

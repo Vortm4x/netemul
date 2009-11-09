@@ -21,8 +21,6 @@
 #define STATISTICS_H
 
 #include <QtCore/QDataStream>
-#include <QtCore/QXmlStreamWriter>
-#include <QtCore/QXmlStreamReader>
 
 class statistics
 {
@@ -44,8 +42,6 @@ public:
     void incSendFrames() { mySendFrames++; }
     void incSendPackets() { mySendPackets++; }
     void incReceivePackets() { myReceivePackets++; }
-    void writeXml(QXmlStreamWriter &stream) const;
-    void readXml(QXmlStreamReader &stream);
 private:
     quint64 myReceiveFrames;
     quint64 mySendFrames;
