@@ -35,7 +35,7 @@ ripProgramm::ripProgramm()
     mySocket = 520;
     interval = defaultTtl;
     timer = qrand()%30;
-    myHasTriggerUpdate = true;
+    myTriggerUpdate = true;
     mySplitMode = SPLIT_HORIZONT;
 }
 //--------------------------------------------------------------
@@ -231,7 +231,7 @@ void ripProgramm::write(QDataStream &stream) const
 {
     stream << RIP;
     programmRep::write(stream);
-    stream << mySplitMode << myHasTriggerUpdate;
+    stream << mySplitMode << myTriggerUpdate;
 }
 //---------------------------------------------------
 /*!
@@ -241,7 +241,7 @@ void ripProgramm::write(QDataStream &stream) const
 void ripProgramm::read(QDataStream &stream)
 {
     programmRep::read(stream);
-    stream >> mySplitMode >> myHasTriggerUpdate;
+    stream >> mySplitMode >> myTriggerUpdate;
 }
 //---------------------------------------------------
 

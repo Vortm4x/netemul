@@ -36,13 +36,7 @@ device::device(int t)
     pixmapRect = devRect.adjusted(3,3,-3,-3);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
-    switch (t) {
-        case compDev : impl = new computer; break;
-        case hubDev : impl = new hubDevice; break;
-        case switchDev : impl = new switchDevice; break;
-        case routerDev : impl = new routerDevice; break;
-        default: break;
-    }
+    createImpl(t);
     setToolTip( impl->note() );
 }
 
@@ -57,13 +51,7 @@ device::device(QDataStream &stream)
     stream >> p;
     setPos(p);
     stream >> tp;
-    switch (tp) {
-        case compDev : impl = new computer; break;
-        case hubDev : impl = new hubDevice; break;
-        case switchDev : impl = new switchDevice; break;
-        case routerDev : impl = new routerDevice; break;
-        default: break;
-    }
+    createImpl(tp);
     impl->read(stream);
     setToolTip( impl->note() );
 }
@@ -76,13 +64,7 @@ device::device(sceneXmlReader &stream)
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     QPointF p;
     int tp = stream.attributes().value("type").toString().toInt();
-    switch (tp) {
-        case compDev : impl = new computer; break;
-        case hubDev : impl = new hubDevice; break;
-        case switchDev : impl = new switchDevice; break;
-        case routerDev : impl = new routerDevice; break;
-        default: break;
-    }
+    createImpl(tp);
     while ( !stream.atEnd() ) {
         stream.readNext();
         if ( stream.isEndElement() ) break;
@@ -92,6 +74,17 @@ device::device(sceneXmlReader &stream)
     }
     setPos(p);
     setToolTip( impl->note() );
+}
+
+void device::createImpl(int n)
+{
+    switch (n) {
+        case compDev : impl = new computer; break;
+        case hubDev : impl = new hubDevice; break;
+        case switchDev : impl = new switchDevice; break;
+        case routerDev : impl = new routerDevice; break;
+        default: break;
+    }
 }
 
 device::~device()

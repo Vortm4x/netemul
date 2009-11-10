@@ -37,6 +37,7 @@ public:
     programmRep* operator->() const { return rep; }
     programmRep* impl() { return rep; }    
 private:
+    void createImpl(int n);
     programmRep *rep;
 protected:
     friend QDataStream& operator<<(QDataStream &stream,const programm &p);

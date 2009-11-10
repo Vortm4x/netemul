@@ -36,7 +36,7 @@ void ripProperty::setProgramm( ripProgramm *prog)
 void ripProperty::apply()
 {
     myProgramm->setSplitMode( cb_split->currentIndex() );
-    myProgramm->setHasTriggerUpdate( chb_update->isChecked() );
+    myProgramm->setTriggerUpdate( chb_update->isChecked() );
     accept();
 }
 

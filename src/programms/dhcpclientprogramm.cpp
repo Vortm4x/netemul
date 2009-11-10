@@ -31,13 +31,13 @@ dhcpClientProgramm::dhcpClientProgramm()
 
 dhcpClientProgramm::~dhcpClientProgramm()
 {
-    qDeleteAll(states);
+    qDeleteAll(myStates);
     delete listener;
 }
 
 void dhcpClientProgramm::incTime()
 {
-    foreach ( interfaceState *i , states ) {
+    foreach ( interfaceState *i , myStates ) {
         --i->time;
         if ( i->time == 0 ) {
             switch ( i->state ) {
@@ -55,7 +55,7 @@ void dhcpClientProgramm::incTime()
 void dhcpClientProgramm::setDevice(smartDevice *s)
 {
     if ( s == 0 ) {
-        foreach ( interfaceState *i , states ) resetClient(i);
+        foreach ( interfaceState *i , myStates ) resetClient(i);
         return;
     }
     programmRep::setDevice(s);
@@ -63,7 +63,7 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
     listener->setBind("0.0.0.0");
     connect( listener , SIGNAL(readyRead(QByteArray)) , SLOT(processData(QByteArray)) );
     connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
-    foreach ( interfaceState *i , states ) {
+    foreach ( interfaceState *i , myStates ) {
         resetClient( i );
     }
 }
@@ -79,7 +79,7 @@ void dhcpClientProgramm::resetClient(interfaceState *session)
 
 bool dhcpClientProgramm::isUnderDhcpControl(const QString name) const
 {
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( i->name == name ) {
             return true;
         }
@@ -166,7 +166,7 @@ void dhcpClientProgramm::restartSession(interfaceState *session)
   */
 void dhcpClientProgramm::receiveOffer(dhcpPacket packet)
 {
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_VARIANT ) {
             i->state = interfaceState::CS_WAIT_RESPONSE;
             i->serverAddress = packet.siaddr();
@@ -181,7 +181,7 @@ void dhcpClientProgramm::receiveOffer(dhcpPacket packet)
   */
 void dhcpClientProgramm::receiveAck(dhcpPacket packet)
 {
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_RESPONSE ) {
             i->state = interfaceState::CS_ALL_RIGHT;
             device->adapter(i->name)->setIp( packet.yiaddr() );
@@ -230,7 +230,7 @@ void dhcpClientProgramm::showProperty()
   */
 interfaceState* dhcpClientProgramm::stateAt(const QString name)
 {
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( i->name == name ) return i;
     return 0;
 }
@@ -257,7 +257,7 @@ void dhcpClientProgramm::deleteInterface(const QString name)
 {
     interfaceState *t = stateAt(name);
     if ( !t ) return;
-    states.removeOne(t);
+    myStates.removeOne(t);
     delete t;
 }
 //--------------------------------------------------------------------
@@ -273,7 +273,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     if ( temp ) {
         if ( b ) return;
         resetClient( temp );
-        states.removeOne(temp);
+        myStates.removeOne(temp);
         delete temp;
         return;
     }
@@ -282,7 +282,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     session->xid = qrand()%5000;
     session->time = 0;
     connect( device->adapter(session->name) , SIGNAL(equalIpDetected()) , SLOT(onDetectEqualIp()) );
-    states << session;
+    myStates << session;
     sendDiscover(session->name);
 }
 //--------------------------------------------------------------------
@@ -291,7 +291,7 @@ void dhcpClientProgramm::onDetectEqualIp()
 {
     interface *t = qobject_cast<interface*>(sender());
     interfaceState *client = 0;
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( device->adapter(  i->name ) == t ) client = i;
     if ( !client ) return;
     sendDecLine(client->name);
@@ -302,7 +302,7 @@ void dhcpClientProgramm::onDetectEqualIp()
 
 Qt::CheckState dhcpClientProgramm::checkedState(const QString &name) const
 {
-    foreach ( interfaceState *i , states )
+    foreach ( interfaceState *i , myStates )
         if ( i->name == name ) return Qt::Checked;
     return Qt::Unchecked;
 }
@@ -315,8 +315,8 @@ void dhcpClientProgramm::write(QDataStream &stream) const
     stream << DHCPClient;
     programmRep::write(stream);
     stream << myOfferTime;
-    stream << states.size();
-    foreach ( interfaceState *i , states ) i->write(stream);
+    stream << myStates.size();
+    foreach ( interfaceState *i , myStates ) i->write(stream);
 }
 //---------------------------------------------------
 /*!
@@ -333,9 +333,43 @@ void dhcpClientProgramm::read(QDataStream &stream)
         interfaceState *temp = new interfaceState;
         temp->read(stream);
         temp->state = interfaceState::CS_WAIT_VARIANT;
-        states << temp;
+        myStates << temp;
     }
 }
+
+void dhcpClientProgramm::writeXml(sceneXmlWriter &stream) const
+{
+    const QMetaObject *meta = metaObject();
+    for ( int i = 1 ; i < meta->propertyCount() ; i++ ) {
+        QMetaProperty temp = meta->property(i);
+        stream.writeTextElement( temp.name() , temp.read(this).toString() );
+    }
+    foreach ( interfaceState *i , myStates ) {
+        stream.writeStartElement("interface");
+        i->writeXml(stream);
+        stream.writeEndElement();
+    }
+}
+
+void dhcpClientProgramm::readXml(sceneXmlReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "programm" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
+            setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
+        } else if ( stream.name() == "interface" ) {
+            interfaceState *temp = new interfaceState;
+            temp->readXml(stream);
+            temp->state = interfaceState::CS_WAIT_VARIANT;
+            myStates << temp;
+        } else {
+            stream.readUnknownElement();
+        }
+    }
+}
+
 //---------------------------------------------------
 //---------------------------------------------------
 void interfaceState::write(QDataStream &stream) const
@@ -343,8 +377,32 @@ void interfaceState::write(QDataStream &stream) const
     stream << xid << time << serverAddress << lastIp << name;
 }
 
+void interfaceState::writeXml(sceneXmlWriter &stream) const
+{
+    stream.writeTextElement("xid", QString::number(xid) );
+    stream.writeTextElement("time", QString::number(time) );
+    stream.writeTextElement("server", serverAddress.toString() );
+    stream.writeTextElement("lastip", lastIp.toString() );
+    stream.writeTextElement("name", name);
+}
+
 void interfaceState::read(QDataStream &stream)
 {
     stream >> xid >> time >> serverAddress >> lastIp >> name;
 }
+
+void interfaceState::readXml(sceneXmlReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "interface" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "xid" ) xid = stream.readElementText().toInt();
+        else if ( stream.name() == "time" ) time = stream.readElementText().toInt();
+        else if ( stream.name() == "server" ) serverAddress.setIp( stream.readElementText() );
+        else if ( stream.name() == "lastip" ) lastIp.setIp( stream.readElementText() );
+        else if ( stream.name() == "name" ) name = stream.readElementText();
+    }
+}
+
 

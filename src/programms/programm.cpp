@@ -26,26 +26,25 @@ static const int MAGIC_PROGRAMM_NUMBER = 50;
 
 programm::programm(int n)
 {
-    switch ( n%MAGIC_PROGRAMM_NUMBER ) {
-        case RIP: rep = new ripProgramm; break;
-        case DHCPClient : rep = new dhcpClientProgramm; break;
-        case DHCPServer : rep = new dhcpServerProgramm; break;
-        default: break;
-    }
-    rep->countRef = 1;
+    createImpl(n);
 }
 
 programm::programm(QDataStream &stream)
 {
     int n;
     stream >> n;
+    createImpl(n);
+    rep->read(stream);    
+}
+
+void programm::createImpl(int n)
+{
     switch (n%MAGIC_PROGRAMM_NUMBER) {
         case RIP: rep = new ripProgramm; break;
         case DHCPClient : rep = new dhcpClientProgramm; break;
         case DHCPServer : rep = new dhcpServerProgramm; break;
         default: break;
     }
-    rep->read(stream);
     rep->countRef = 1;
 }
 

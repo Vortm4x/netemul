@@ -19,6 +19,7 @@
 ****************************************************************************************/
 #include "programmrep.h"
 #include <QtDebug>
+#include <QMetaProperty>
 
 programmRep::programmRep()
 {
@@ -50,7 +51,11 @@ void programmRep::read(QDataStream &stream)
 
 void programmRep::writeXml(sceneXmlWriter &stream) const
 {    
-    stream.writeTextElement("enable", ( myEnable ) ? "1" : "0" );
+    const QMetaObject *meta = metaObject();
+    for ( int i = 1 ; i < meta->propertyCount() ; i++ ) {
+        QMetaProperty temp = meta->property(i);
+        stream.writeTextElement( temp.name() , temp.read(this).toString() );
+    }
 }
 
 void programmRep::readXml(sceneXmlReader &stream)
@@ -58,6 +63,10 @@ void programmRep::readXml(sceneXmlReader &stream)
     while ( !stream.atEnd() ) {
         stream.readNext();
         if ( stream.isEndElement() ) break;
-        if ( stream.name() == "enable" ) myEnable = stream.readElementText().toInt();
+        if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
+            setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
+        } else {
+            stream.readUnknownElement();
+        }
     }
 }

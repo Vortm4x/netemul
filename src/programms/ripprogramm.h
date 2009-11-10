@@ -35,6 +35,8 @@ static const qint8 INFINITY = 16;
 class ripProgramm : public programmRep
 {
     Q_OBJECT
+    Q_PROPERTY( bool triggerUpdate READ hasTriggerUpdate WRITE setTriggerUpdate )
+    Q_PROPERTY( int splitMode READ splitMode WRITE setSplitMode )
 public:
     enum { defaultTtl = 30 , RIP = 0 , ttl = 6 };
     enum { SPLIT_NONE , SPLIT_HORIZONT , SPLIT_WIH_POISON };
@@ -48,8 +50,8 @@ public:
     void incTime();
     int splitMode() const { return mySplitMode; }
     void setSplitMode(int mode) { mySplitMode = mode; }
-    bool hasTriggerUpdate() const { return myHasTriggerUpdate; }
-    void setHasTriggerUpdate(bool has) { myHasTriggerUpdate = has; }
+    bool hasTriggerUpdate() const { return myTriggerUpdate; }
+    void setTriggerUpdate(bool has) { myTriggerUpdate = has; }
     void showProperty();
 private slots:
     void execute(QByteArray data);
@@ -57,7 +59,7 @@ private:
     void checkTable( routeRecord *r );
     void sendUpdate(bool isAll);
     int mySplitMode;
-    bool myHasTriggerUpdate;
+    bool myTriggerUpdate;
     quint16 mySocket;
     udpSocket *receiver;
     void addToTemp(routeRecord *r);

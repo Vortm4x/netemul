@@ -20,6 +20,7 @@
 #ifndef DHCPCLIENTPROGRAMM_H
 #define DHCPCLIENTPROGRAMM_H
 
+#include <QMetaType>
 #include <QIcon>
 #include "programmrep.h"
 #include "dhcppacket.h"
@@ -41,11 +42,16 @@ struct interfaceState {
     QString name;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+    void writeXml(sceneXmlWriter &stream) const;
+    void readXml(sceneXmlReader &stream);
 };
+
+typedef QList<interfaceState*> sessionList;
 
 class dhcpClientProgramm : public programmRep
 {
     Q_OBJECT
+    Q_PROPERTY( int offerTime READ offerTime WRITE setOfferTime )
 public:
     enum { DHCPClient = 1 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
     dhcpClientProgramm();
@@ -55,10 +61,10 @@ public:
     void setDevice(smartDevice *s);
     void showProperty();
     void incTime();
-    void setOfferTime(int time) { myOfferTime = time; }
-    int offerTime() const { return myOfferTime; }
     bool isUnderDhcpControl(const QString name) const;
     void write(QDataStream &stream) const;
+    void writeXml(sceneXmlWriter &stream) const;
+    void readXml(sceneXmlReader &stream);
     void read(QDataStream &stream);
     void observeInterface(const QString &name, bool b);
     QStringList interfacesList() const;
@@ -69,6 +75,18 @@ public slots:
 private slots:
     void processData(QByteArray data);
     void onDetectEqualIp();
+//Property
+public:
+    void setOfferTime(int time) { myOfferTime = time; }
+    int offerTime() const { return myOfferTime; }
+private:
+    int myOfferTime;
+
+public:
+    sessionList states() { return myStates; }
+private:
+    sessionList myStates;
+
 private:
     void sendDhcpMessage(dhcpPacket message, interfaceState *state);
     void sendRequest(const QString &name);
@@ -79,9 +97,7 @@ private:
     void restartSession( interfaceState *session);
     interfaceState* stateAt(const QString name);
     void resetClient( interfaceState *session);
-    int myOfferTime;
     udpSocket *listener;
-    QList<interfaceState*> states;
 };
 
 #endif // DHCPCLIENTPROGRAMM_H

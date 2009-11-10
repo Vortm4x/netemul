@@ -91,6 +91,7 @@ public:
 
     void writeXml(sceneXmlWriter &stream) const;
 private:
+    void createImpl(int n);
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
 protected:

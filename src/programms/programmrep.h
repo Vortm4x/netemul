@@ -30,6 +30,7 @@ class smartDevice;
 class programmRep : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY( bool enable READ isEnable WRITE setEnable )
 public:
     friend class programm;
     programmRep();
