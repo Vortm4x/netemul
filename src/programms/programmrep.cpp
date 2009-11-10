@@ -65,8 +65,6 @@ void programmRep::readXml(sceneXmlReader &stream)
         if ( stream.isEndElement() ) break;
         if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
             setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
-        } else {
-            stream.readUnknownElement();
         }
     }
 }

@@ -277,6 +277,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
         delete temp;
         return;
     }
+    if ( !b ) return;
     interfaceState *session = new interfaceState;
     session->name = name;
     session->xid = qrand()%5000;
@@ -364,8 +365,6 @@ void dhcpClientProgramm::readXml(sceneXmlReader &stream)
             temp->readXml(stream);
             temp->state = interfaceState::CS_WAIT_VARIANT;
             myStates << temp;
-        } else {
-            stream.readUnknownElement();
         }
     }
 }

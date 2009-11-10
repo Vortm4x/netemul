@@ -59,7 +59,6 @@ void computerProperty::setDevice(computerSetting *c)
 
 void computerProperty::apply()
 {
-    if (gateway->text() != "0.0.0.0" )
     comp->setGateway(gateway->text());
     comp->setRouter( cb_route->isChecked() );
     if ( sender() == btn_ok ) accept();

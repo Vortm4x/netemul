@@ -56,14 +56,14 @@ void dhcpServerProgramm::setDevice(smartDevice *s)
     connect( device, SIGNAL(interfaceConnected(QString)), SLOT(checkInterface(QString)) );
 }
 
-void dhcpServerProgramm::setInterface(QString inter)
+void dhcpServerProgramm::setInterfaceName(QString inter)
 {
     myInterface = inter;
 }
 
 void dhcpServerProgramm::checkInterface(QString port)
 {
-    if ( myInterface.isEmpty() ) setInterface(port);
+    if ( myInterface.isEmpty() ) setInterfaceName(port);
 }
 
 void dhcpServerProgramm::execute(QByteArray data)
@@ -273,6 +273,16 @@ void dhcpServerProgramm::write(QDataStream &stream) const
     stream << myWaitingTime;
 }
 //---------------------------------------------------
+
+void dhcpServerProgramm::writeXml(sceneXmlWriter &stream) const
+{
+    const QMetaObject *meta = metaObject();
+    for ( int i = 1; i < meta->propertyCount(); i++ ){
+        QMetaProperty temp = meta->property(i);
+        stream.writeTextElement( temp.name(), temp.read(this).toString() );
+    }
+}
+
 /*!
   Считывает отличительные черты из потока.
   @param stream - поток для чтения.
@@ -291,6 +301,18 @@ void dhcpServerProgramm::read(QDataStream &stream)
     stream >> myWaitingTime;
 }
 //---------------------------------------------------
+
+void dhcpServerProgramm::readXml(sceneXmlReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "programm" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( property( stream.name().toString().toLocal8Bit() ).isValid() )
+                setProperty( stream.name().toString().toLocal8Bit() , stream.readElementText() );
+    }
+}
+
 
 //---------------------------------------------------
 clientState::clientState(staticDhcpRecord *rec)

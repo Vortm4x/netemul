@@ -2,6 +2,8 @@
 #include "mycanvas.h"
 #include "device.h"
 
+#include <QtDebug>
+
 sceneXmlReader::sceneXmlReader(myCanvas *scene) : myScene(scene)
 {
 
@@ -24,7 +26,10 @@ void sceneXmlReader::readScene(QIODevice *dev)
 
 void sceneXmlReader::readUnknownElement()
 {
-    Q_ASSERT(isStartElement());
+    if ( !isStartElement() ) {
+        qDebug() << name() << tokenString() ;
+        qFatal("panic");
+    }
 
     while (!atEnd()) {
         readNext();

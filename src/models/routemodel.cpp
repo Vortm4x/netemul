@@ -263,6 +263,7 @@ void routeModel::read(QDataStream &stream)
 
 void routeModel::readXml(sceneXmlReader &stream)
 {
+    Q_ASSERT( stream.isStartElement() && stream.name() == "routetable" );
     table.clear();
     while ( !stream.atEnd() ) {
         stream.readNext();

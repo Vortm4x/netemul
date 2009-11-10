@@ -48,6 +48,14 @@ struct clientState {
 class dhcpServerProgramm : public programmRep
 {
     Q_OBJECT
+    Q_PROPERTY( QString interfaceName READ interfaceName WRITE setInterfaceName )
+    Q_PROPERTY( QString beginIp READ beginIp WRITE setBeginIp )
+    Q_PROPERTY( QString endIp READ endIp WRITE setEndIp )
+    Q_PROPERTY( QString mask READ mask WRITE setMask )
+    Q_PROPERTY( QString gateway READ gateway WRITE setGateway )
+    Q_PROPERTY( int time READ time WRITE setTime )
+    Q_PROPERTY( int waitingTime READ waitingTime WRITE setWaitingTime )
+    Q_PROPERTY( bool dynamic READ dynamic WRITE setDynamic )
 public:
     enum { DHCPServer = 2 , CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
     dhcpServerProgramm();
@@ -56,19 +64,19 @@ public:
 public:
     int id() const { return DHCPServer; }
     void setDevice(smartDevice *s);
-    void setInterface( QString inter );
-    void setBegin(ipAddress ip) { myBeginIp = ip; }
-    void setEnd(ipAddress ip) { myEndIp = ip; }
-    void setMask(ipAddress m) { myMask = m; }
-    void setGateway(ipAddress g) { myGateway = g; }
+    void setInterfaceName( QString inter );
+    void setBeginIp(QString ip) { myBeginIp.setIp(ip); }
+    void setEndIp(QString ip) { myEndIp.setIp(ip); }
+    void setMask(QString m) { myMask.setIp(m); }
+    void setGateway(QString g) { myGateway.setIp(g); }
     void setTime(int t) { myTime = t; }
     void setWaitingTime(int t) { myWaitingTime = t; }
-    void setDynamic(bool b) { myDynamic = b; }   
-    ipAddress beginIp() const { return myBeginIp; }
-    ipAddress endIp() const { return myEndIp; }
-    ipAddress mask() const { return myMask; }
-    ipAddress gateway() const { return myGateway; }
+    void setDynamic(bool b) { myDynamic = b; }
     QString interfaceName() const { return myInterface; }
+    QString beginIp() const { return myBeginIp.toString(); }
+    QString endIp() const { return myEndIp.toString(); }
+    QString mask() const { return myMask.toString(); }
+    QString gateway() const { return myGateway.toString(); }
     int time() const { return myTime; }
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
@@ -80,6 +88,8 @@ public:
     bool interrupt(int) { return false; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+    void writeXml(sceneXmlWriter &stream) const;
+    void readXml(sceneXmlReader &stream);
 // Слоты
 public slots:
     void execute(QByteArray data);

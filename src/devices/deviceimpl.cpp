@@ -54,6 +54,7 @@ void deviceImpl::read(QDataStream &stream)
 
 void deviceImpl::readXml(sceneXmlReader &stream)
 {
+    Q_ASSERT( stream.isStartElement() && stream.name() == "deviceimpl" );
     while ( !stream.atEnd() ) {
         stream.readNext();
         if ( stream.isEndElement() ) break;

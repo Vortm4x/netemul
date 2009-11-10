@@ -54,10 +54,10 @@ void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
     h->setResizeMode( QHeaderView::Stretch );
     cb_dynamic->setChecked(myProgramm->dynamic());
     sb_time->setValue(myProgramm->time());
-    ie_begin->setText(myProgramm->beginIp().toString());
-    ie_end->setText(myProgramm->endIp().toString());
-    ie_mask->setText(myProgramm->mask().toString());
-    ie_gatew->setText(myProgramm->gateway().toString());
+    ie_begin->setText(myProgramm->beginIp());
+    ie_end->setText(myProgramm->endIp());
+    ie_mask->setText(myProgramm->mask());
+    ie_gatew->setText(myProgramm->gateway());
     cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
     sb_waitingTime->setValue( myProgramm->waitingTime() );
 }
@@ -88,11 +88,11 @@ void dhcpServerProperty::apply()
         QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong IP range."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    myProgramm->setInterface(cb_interface->currentText());
-    myProgramm->setBegin(ie_begin->ipText());
-    myProgramm->setEnd(ie_end->ipText());
-    myProgramm->setMask(ie_mask->ipText());
-    myProgramm->setGateway(ie_gatew->ipText());
+    myProgramm->setInterfaceName(cb_interface->currentText());
+    myProgramm->setBeginIp(ie_begin->ipText().toString());
+    myProgramm->setEndIp(ie_end->ipText().toString());
+    myProgramm->setMask(ie_mask->ipText().toString());
+    myProgramm->setGateway(ie_gatew->ipText().toString());
     myProgramm->setTime(sb_time->value());
     myProgramm->setDynamic(cb_dynamic->isChecked());
     myProgramm->setWaitingTime(sb_waitingTime->value());

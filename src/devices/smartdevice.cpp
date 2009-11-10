@@ -232,6 +232,7 @@ void smartDevice::setGateway(const QString &str)
     ipAddress t(str);
     routeRecord *i = myRouteTable->recordAt("0.0.0.0"); // Ищем старый шлюз
     if ( i ) myRouteTable->deleteFromTable(i); // Удаляем его
+    if ( t.isEmpty() ) return;
     ipAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) {
         QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
