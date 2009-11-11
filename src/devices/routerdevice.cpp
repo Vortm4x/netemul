@@ -23,6 +23,9 @@
 #include "appsetting.h"
 #include <QMessageBox>
 
+DECLARE_STATIC_PROTOTYPE(routerDevice)
+DEFINETION_PROTOTYPE_FUNCTION(routerDevice)
+
 routerDevice::routerDevice(int c /* = 0 */)
 {
     if ( !c ) c = appSetting::defaultRouterCount();

@@ -25,6 +25,7 @@
 class routerDevice : public smartDevice
 {
     Q_OBJECT
+    DECLARE_PROTOTYPE(routerDevice)
 public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }

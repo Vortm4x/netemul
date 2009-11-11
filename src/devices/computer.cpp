@@ -26,6 +26,9 @@
 #include "designerdialog.h"
 #endif
 
+DECLARE_STATIC_PROTOTYPE(computer)
+DEFINETION_PROTOTYPE_FUNCTION(computer)
+
 computer::computer(int c /* = 0 */)
 {
     if ( !c ) c = appSetting::defaultComputerCount();

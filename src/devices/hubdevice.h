@@ -27,10 +27,11 @@ class frame;
 class hubDevice : public boxDevice
 {
     Q_OBJECT
+    DECLARE_PROTOTYPE(hubDevice)
 public:
     int type() const { return hubDev; }
     enum { hubDev = 4 };
-    hubDevice(int c = 0);
+    Q_INVOKABLE hubDevice(int c = 0);
     ~hubDevice();
     void dialog();
     void detectCollision();

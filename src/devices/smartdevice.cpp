@@ -149,26 +149,27 @@ void smartDevice::write(QDataStream &stream) const
 }
 //-------------------------------------------------
 
-void smartDevice::writeXml(sceneXmlWriter &stream) const
+void smartDevice::writeXmlImpl(sceneXmlWriter &stream) const
 {
-    deviceImpl::writeXml(stream);
-    stream.writeStartElement("smartdevice");
-    stream.writeAttribute("routing", ( myRouter ) ? "1" : "0" );
-    for ( int i = 0 ; i < myInterfaces.size() ; i++ ) {
-        stream.writeStartElement("chipimpl");
-        myInterfaces.at(i)->writeXml(stream);
-        stream.writeEndElement();
-    }
-    stream.writeStartElement("routetable");
-    myRouteTable->writeXml(stream);
-    stream.writeEndElement();    
-    foreach ( programm i, myProgramms ) {
-        stream.writeStartElement("programm");
-        stream.writeAttribute( "id",QString::number(i->id()) );
-        i->writeXml(stream);
-        stream.writeEndElement();
-    }
-    stream.writeEndElement();
+    Q_UNUSED(stream)
+//    deviceImpl::writeXml(stream);
+//    stream.writeStartElement("smartdevice");
+//    stream.writeAttribute("routing", ( myRouter ) ? "1" : "0" );
+//    for ( int i = 0 ; i < myInterfaces.size() ; i++ ) {
+//        stream.writeStartElement("chipimpl");
+//        myInterfaces.at(i)->writeXml(stream);
+//        stream.writeEndElement();
+//    }
+//    stream.writeStartElement("routetable");
+//    myRouteTable->writeXml(stream);
+//    stream.writeEndElement();
+//    foreach ( programm i, myProgramms ) {
+//        stream.writeStartElement("programm");
+//        stream.writeAttribute( "id",QString::number(i->id()) );
+//        i->writeXml(stream);
+//        stream.writeEndElement();
+//    }
+//    stream.writeEndElement();
 }
 
 void smartDevice::read(QDataStream &stream)
@@ -191,36 +192,37 @@ void smartDevice::read(QDataStream &stream)
     }
 }
 
-void smartDevice::readXml(sceneXmlReader &stream)
+void smartDevice::readXmlImpl(sceneXmlReader &stream)
 {
-    Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
-    qDeleteAll(myInterfaces);
-    myInterfaces.clear();
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "smartdevice" ) {
-            myRouter = stream.attributes().value("routing").toString().toInt();
-            while ( !stream.atEnd() ) {
-                stream.readNext();
-                if ( stream.isEndElement() ) break;
-                if ( stream.name() == "chipimpl" ) {
-                    interface *p = addInterface(QString());
-                    p->readXml(stream);
-                } else if (stream.name() == "routetable" ) {
-                    myRouteTable->readXml(stream);
-                }
-                else if ( stream.name() == "programm" ) {                    
-                    int id = stream.attributes().value("id").toString().toInt();
-                    programm p(id);
-                    p->readXml(stream);
-                    installProgramm(p);
-                }
-            }
-        } else if (stream.name() == "deviceimpl" )  {
-            deviceImpl::readXml(stream);
-        }
-    }
+    Q_UNUSED(stream);
+//    Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
+//    qDeleteAll(myInterfaces);
+//    myInterfaces.clear();
+//    while ( !stream.atEnd() ) {
+//        stream.readNext();
+//        if ( stream.isEndElement() ) break;
+//        if ( stream.name() == "smartdevice" ) {
+//            myRouter = stream.attributes().value("routing").toString().toInt();
+//            while ( !stream.atEnd() ) {
+//                stream.readNext();
+//                if ( stream.isEndElement() ) break;
+//                if ( stream.name() == "chipimpl" ) {
+//                    interface *p = addInterface(QString());
+//                    p->readXml(stream);
+//                } else if (stream.name() == "routetable" ) {
+//                    myRouteTable->readXml(stream);
+//                }
+//                else if ( stream.name() == "programm" ) {
+//                    int id = stream.attributes().value("id").toString().toInt();
+//                    programm p(id);
+//                    p->readXml(stream);
+//                    installProgramm(p);
+//                }
+//            }
+//        } else if (stream.name() == "deviceimpl" )  {
+//            deviceImpl::readXml(stream);
+//        }
+//    }
 }
 
 /*!

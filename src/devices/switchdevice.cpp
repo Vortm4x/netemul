@@ -24,6 +24,9 @@
 #include "appsetting.h"
 #include "virtualnetworkdialog.h"
 
+DECLARE_STATIC_PROTOTYPE(switchDevice)
+DEFINETION_PROTOTYPE_FUNCTION(switchDevice)
+
 switchDevice::switchDevice(int c /* =0 */)
 {
     if (!c) c = appSetting::defaultSwitchCount();

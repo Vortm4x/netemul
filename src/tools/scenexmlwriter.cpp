@@ -15,5 +15,12 @@ void sceneXmlWriter::writeScene(QIODevice *dev)
     writeAttribute("version",QCoreApplication::applicationVersion() );
     foreach ( device::device *i , myScene->devices() )
         i->writeXml(*this);
+    foreach ( textItem *i , myScene->textItems() ) {
+        writeStartElement("textitem");
+        writeAttribute("x" , QString::number( i->pos().x() ) );
+        writeAttribute("y", QString::number( i->pos().y() ) );
+        writeCharacters( i->toPlainText() );
+        writeEndElement();
+    }
     writeEndDocument();
 }

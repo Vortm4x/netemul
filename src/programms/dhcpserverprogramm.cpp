@@ -281,6 +281,9 @@ void dhcpServerProgramm::writeXml(sceneXmlWriter &stream) const
         QMetaProperty temp = meta->property(i);
         stream.writeTextElement( temp.name(), temp.read(this).toString() );
     }
+    stream.writeStartElement("statictable");
+    myDhcpModel->writeXml(stream);
+    stream.writeEndElement();
 }
 
 /*!
@@ -309,7 +312,9 @@ void dhcpServerProgramm::readXml(sceneXmlReader &stream)
         stream.readNext();
         if ( stream.isEndElement() ) break;
         if ( property( stream.name().toString().toLocal8Bit() ).isValid() )
-                setProperty( stream.name().toString().toLocal8Bit() , stream.readElementText() );
+            setProperty( stream.name().toString().toLocal8Bit() , stream.readElementText() );
+        if ( stream.name() == "statictable" )
+            myDhcpModel->readXml(stream);
     }
 }
 

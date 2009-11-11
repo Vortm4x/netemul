@@ -33,6 +33,7 @@ class switchChip;
 class switchDevice : public boxDevice
 {
     Q_OBJECT
+    DECLARE_PROTOTYPE(switchDevice)
 public:
     friend class switchTableSetting;
     enum { switchDev = 5 };

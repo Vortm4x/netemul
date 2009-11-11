@@ -26,6 +26,20 @@
 #include "scenexmlreader.h"
 #include "statistics.h"
 
+#define DECLARE_PROTOTYPE(CLASS) public: \
+                                    deviceImpl* prototype() const; \
+                                 private: \
+                                    static CLASS *myPrototype;
+#define DECLARE_STATIC_PROTOTYPE(CLASS) CLASS *CLASS::myPrototype = 0;
+#define DEFINETION_PROTOTYPE_FUNCTION(CLASS) deviceImpl* CLASS::prototype() const \
+                                              { \
+                                                if ( !myPrototype ) { \
+                                                      myPrototype = new CLASS; \
+                                                      Q_ASSERT( myPrototype != 0 ); \
+                                                } \
+                                                return myPrototype; \
+                                              }
+
 class cableDev;
 class logDialog;
 
@@ -65,13 +79,17 @@ public:
 
     virtual bool isShared() const { return false; }
     virtual bool isManagedVirtualNetwork() const { return false; }
-
+// Writing and reading
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
+    void writeXml(sceneXmlWriter &stream) const;
+    void readXml(sceneXmlReader &stream);
+    virtual void writeXmlImpl(sceneXmlWriter &stream) const = 0;
+    virtual void readXmlImpl(sceneXmlReader &stream) = 0;
 
     virtual QString deviceName() const = 0;
     virtual QString deviceCommandName() const = 0;
-    virtual void secondTimerEvent() { qDebug() << "123"; }
+    virtual void secondTimerEvent() { }
     virtual void deciSecondTimerEvent() { }
     virtual QString nameToIp(const QString &name) const { Q_UNUSED(name) return QString(); }
 
@@ -79,16 +97,16 @@ public:
     virtual void addConnection(const QString &port , cableDev *c) = 0;
     virtual void deleteConnection(cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
+public:
+    virtual deviceImpl* prototype() const = 0;
 
     virtual statistics deviceStatistics() const = 0;
     virtual int trafficDigit() const = 0;
 
-    virtual bool isRouter() const { qFatal("No router!"); return false; }
-    virtual void setRouter(bool) { qFatal("No router!"); }
+    virtual bool isRouter() const { return false; }
+    virtual void setRouter(bool) { }
     virtual void detectCollision() { }
 
-    virtual void writeXml(sceneXmlWriter &stream) const;
-    virtual void readXml(sceneXmlReader &stream);
 public slots:
     virtual void setCheckedSocket(const QString&) { }
     virtual void setIp(const QString&, const QString&) { }

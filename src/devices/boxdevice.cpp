@@ -35,9 +35,10 @@ void boxDevice::write(QDataStream &stream) const
     chip->write(stream);
 }
 
-void boxDevice::writeXml(sceneXmlWriter &stream) const
+void boxDevice::writeXmlImpl(sceneXmlWriter &stream) const
 {
-    deviceImpl::writeXml(stream);
+    Q_UNUSED(stream)
+//    deviceImpl::writeXml(stream);
 }
 
 void boxDevice::read(QDataStream &stream)
@@ -46,14 +47,15 @@ void boxDevice::read(QDataStream &stream)
     chip->read(stream);
 }
 
-void boxDevice::readXml(sceneXmlReader &stream)
+void boxDevice::readXmlImpl(sceneXmlReader &stream)
 {
-    Q_ASSERT( stream.isStartElement() && stream.name() == "impl");
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "deviceimpl" ) deviceImpl::readXml(stream);
-    }
+    Q_UNUSED(stream)
+//    Q_ASSERT( stream.isStartElement() && stream.name() == "impl");
+//    while ( !stream.atEnd() ) {
+//        stream.readNext();
+//        if ( stream.isEndElement() ) break;
+//        if ( stream.name() == "deviceimpl" ) deviceImpl::readXml(stream);
+//    }
 }
 
 void boxDevice::deciSecondTimerEvent()

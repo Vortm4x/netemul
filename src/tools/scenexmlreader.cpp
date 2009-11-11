@@ -52,6 +52,12 @@ void sceneXmlReader::readNetemul()
            item->setMenu(myScene->itemMenu() );
            myScene->registerDevice(item);
         }
+        else if ( name() == "textitem" ) {
+            QPointF p;
+            p.setX( attributes().value("x").toString().toDouble() );
+            p.setY( attributes().value("y").toString().toDouble() );
+            myScene->createTextItem( p , readElementText() );
+        }
     }
 }
 

@@ -22,6 +22,9 @@
 #include "appsetting.h"
 #include "hubchip.h"
 
+DECLARE_STATIC_PROTOTYPE(hubDevice)
+DEFINETION_PROTOTYPE_FUNCTION(hubDevice)
+
 hubDevice::hubDevice(int c /* = 0 */ )
 {
     if (!c) c = appSetting::defaultHubCount();

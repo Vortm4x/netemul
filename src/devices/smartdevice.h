@@ -122,8 +122,8 @@ protected:
     routeModel *myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXml(sceneXmlWriter &stream) const;
-    virtual void readXml(sceneXmlReader &stream);
+    virtual void writeXmlImpl(sceneXmlWriter &stream) const;
+    virtual void readXmlImpl(sceneXmlReader &stream);
 // FRIENDS:
 public:
     friend class tcpSocket;

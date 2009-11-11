@@ -40,11 +40,12 @@ void deviceImpl::write(QDataStream &stream) const
 
 void deviceImpl::writeXml(sceneXmlWriter &stream) const
 {
-    stream.writeStartElement("deviceimpl");
-    stream.writeStartElement("note");
-    stream.writeCharacters( myNote );
-    stream.writeEndElement();
-    stream.writeEndElement();
+    const QMetaObject *meta = metaObject();
+    for ( int i = 1 ; i < meta->propertyCount() ; i++ ) {
+        QMetaProperty temp = meta->property(i);
+        if ( temp.read(this).toString() != prototype()->property( temp.name()  ) )
+            stream.writeTextElement( temp.name() , temp.read(this).toString() );
+    }
 }
 
 void deviceImpl::read(QDataStream &stream)
@@ -54,11 +55,13 @@ void deviceImpl::read(QDataStream &stream)
 
 void deviceImpl::readXml(sceneXmlReader &stream)
 {
-    Q_ASSERT( stream.isStartElement() && stream.name() == "deviceimpl" );
+    Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
     while ( !stream.atEnd() ) {
         stream.readNext();
         if ( stream.isEndElement() ) break;
-        if ( stream.name() == "note" ) myNote = stream.readElementText();
+        if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
+            setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
+        }
     }
 }
 

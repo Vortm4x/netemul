@@ -147,6 +147,15 @@ void dhcpServerModel::write(QDataStream &stream) const
         i->write(stream);
 }
 
+void dhcpServerModel::writeXml(sceneXmlWriter &stream) const
+{
+    foreach ( staticDhcpRecord *i, table ) {
+        stream.writeStartElement("staticrecord");
+        i->writeXml(stream);
+        stream.writeEndElement();
+    }
+}
+
 void dhcpServerModel::read(QDataStream &stream)
 {
     int s;
@@ -158,6 +167,20 @@ void dhcpServerModel::read(QDataStream &stream)
     }
 }
 
+void dhcpServerModel::readXml(sceneXmlReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "statictable" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "staticrecord" ) {
+            staticDhcpRecord *rec = new staticDhcpRecord;
+            rec->readXml(stream);
+            addStaticRecord(rec);
+        }
+    }
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -166,7 +189,30 @@ void staticDhcpRecord::write(QDataStream &stream) const
     stream << chaddr << yiaddr << mask << gateway << time;
 }
 
+void staticDhcpRecord::writeXml(sceneXmlWriter &stream) const
+{
+    stream.writeTextElement( "mac", chaddr.toString() );
+    stream.writeTextElement( "ip", yiaddr.toString() );
+    stream.writeTextElement( "mask" , mask.toString() );
+    stream.writeTextElement( "gateway", gateway.toString() );
+    stream.writeTextElement( "time", QString::number(time) );
+}
+
 void staticDhcpRecord::read(QDataStream &stream)
 {
     stream >> chaddr >> yiaddr >> mask >> gateway >> time;
+}
+
+void staticDhcpRecord::readXml(sceneXmlReader &stream)
+{
+    Q_ASSERT( stream.isStartElement() && stream.name() == "staticrecord" );
+    while ( !stream.atEnd() ) {
+        stream.readNext();
+        if ( stream.isEndElement() ) break;
+        if ( stream.name() == "mac" ) chaddr.setMac(stream.readElementText());
+        if ( stream.name() == "ip" ) yiaddr.setIp(stream.readElementText());
+        if ( stream.name() == "mask" ) mask.setIp(stream.readElementText());
+        if ( stream.name() == "gateway" ) gateway.setIp(stream.readElementText());
+        if ( stream.name() == "time" ) time = stream.readElementText().toInt();
+    }
 }
