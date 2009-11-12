@@ -27,7 +27,7 @@ class routeModel;
 class routeRecord;
 class udpSocket;
 
-static const qint8 INFINITY = 16;
+static const qint8 RIP_INFINITY = 16;
 
 /*!
   Реализует Rip-программу.

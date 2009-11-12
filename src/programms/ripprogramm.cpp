@@ -94,7 +94,7 @@ void ripProgramm::execute(QByteArray data)
     for ( int i = 0; i < count ; i++ ) {
         routeRecord *t = new routeRecord;
         d >> t->dest >> t->mask >> t->metric;
-        Q_ASSERT( t->metric >= 0 && t->metric <= INFINITY);
+        Q_ASSERT( t->metric >= 0 && t->metric <= RIP_INFINITY);
         t->metric++;
         t->out = device->findInterfaceIp( sender );
         t->gateway = sender;
@@ -122,20 +122,20 @@ void ripProgramm::sendUpdate(bool isAll)
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
                 routeRecord *t = model->recordAt(j);
                 if ( t->dest.isLoopBack() ) continue;
-                qint8 metric = ( t->time == ttl ) ? INFINITY : t->metric;
+                qint8 metric = ( t->time == ttl ) ? RIP_INFINITY : t->metric;
                 if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
                     if ( mySplitMode == SPLIT_HORIZONT ) continue;
-                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < INFINITY ) continue;
+                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < RIP_INFINITY ) continue;
                 }
                 d << t->dest << t->mask << metric;
             }
         }
         else {
             foreach ( routeRecord *j , tempList ) {
-                qint8 metric = ( j->time == ttl ) ? INFINITY : j->metric;
+                qint8 metric = ( j->time == ttl ) ? RIP_INFINITY : j->metric;
                 if ( ( j->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
                     if ( mySplitMode == SPLIT_HORIZONT ) continue;
-                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < INFINITY ) continue;
+                    else if ( mySplitMode == SPLIT_WIH_POISON && metric < RIP_INFINITY ) continue;
                 }
                 d << j->dest << j->mask << metric;
             }
