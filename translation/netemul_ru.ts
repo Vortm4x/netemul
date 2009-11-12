@@ -45,7 +45,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Packet designer...</source>
-        <translation type="unfinished"></translation>
+        <translation>Конструктор пакетов...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="564"/>
@@ -349,12 +349,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="151"/>
         <source>Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="151"/>
         <source>Settings</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="169"/>
@@ -403,22 +403,22 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Configure VLAN...</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка VLAN...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Configure VLAN</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройка VLAN</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Set description...</source>
-        <translation type="unfinished"></translation>
+        <translation>Задать описание...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Set description of device</source>
-        <translation type="unfinished"></translation>
+        <translation>Задать описание для устройства</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="176"/>
@@ -463,42 +463,42 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="237"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="241"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="245"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="252"/>
         <source>Ctrl+4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="256"/>
         <source>Ctrl+5</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="260"/>
         <source>Ctrl+6</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="264"/>
         <source>Ctrl+7</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="268"/>
         <source>Ctrl+8</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="302"/>
@@ -720,12 +720,12 @@
     <message>
         <location filename="../src/devices/smartdevice.cpp" line="241"/>
         <source>Can&apos;t set this gateway! See adapter settings!</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможнов выставить шлюз! Проверьте настройки адаптеров!</translation>
     </message>
     <message>
         <location filename="../src/tools/scenexmlreader.cpp" line="22"/>
         <source>The file is not a NetEmul file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Этот файл не является файлом NetEmul.</translation>
     </message>
 </context>
 <context>
@@ -849,7 +849,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="79"/>
         <source>Receive settings automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Получать настройки автоматически</translation>
     </message>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="85"/>
@@ -1108,24 +1108,28 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>deviceNoteDialog</name>
     <message>
-        <location filename="../src/forms/devicenotedialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation type="obsolete">Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/devicenotedialog.ui" line="14"/>
+        <source>Description</source>
+        <translation>Описание</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="20"/>
         <source>Description:</source>
-        <translation type="unfinished">Описание:</translation>
+        <translation>Описание:</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="49"/>
         <source>Ok</source>
-        <translation type="unfinished">Ок</translation>
+        <translation>Ок</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="60"/>
         <source>Cancel</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Отмена</translation>
     </message>
 </context>
 <context>
@@ -1134,12 +1138,6 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <location filename="../src/programms/dhcpclientprogramm.cpp" line="28"/>
         <source>DHCP client</source>
         <translation>DHCP клиент</translation>
-    </message>
-    <message>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="74"/>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="75"/>
-        <source>0.0.0.0</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1161,12 +1159,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="20"/>
         <source>Choose interfaces which must&lt;br&gt; be under DHCP control: </source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите интерфейсы, &lt;br&gt; контролируемые DHCP:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="32"/>
         <source>Waiting time for offers&lt;br&gt; from dhcp-server</source>
-        <translation type="unfinished"></translation>
+        <translation>Время ожидания &lt;br&gt;предложения dhcp-сервера</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpclientproperty.ui" line="75"/>
@@ -1217,12 +1215,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="72"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Внимание</translation>
     </message>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="72"/>
         <source>Your DHCP server isn&apos;t configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>DHCP сервер не настроен.</translation>
     </message>
     <message>
         <source>Wrong range</source>
@@ -1262,12 +1260,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="88"/>
         <source>Wrong range</source>
-        <translation type="unfinished">Ошибочный диапазон</translation>
+        <translation>Ошибочный диапазон</translation>
     </message>
     <message>
         <location filename="../src/dialogs/dhcpserverproperty.cpp" line="88"/>
         <source>You have entered a wrong IP range.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы указали неверный диапазон IP адресов.</translation>
     </message>
 </context>
 <context>
@@ -1351,7 +1349,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="242"/>
         <source>Wating time for request from dhcp-client:</source>
-        <translation type="unfinished"></translation>
+        <translation>Время ожидания ответа dhcp-клиента:</translation>
     </message>
     <message>
         <location filename="../src/forms/dhcpserverproperty.ui" line="293"/>
@@ -1759,7 +1757,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <location filename="../src/mycanvas.cpp" line="229"/>
         <location filename="../src/mycanvas.cpp" line="248"/>
         <source>Scene was been open from %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/mycanvas.cpp" line="260"/>
@@ -1771,7 +1769,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <location filename="../src/mycanvas.cpp" line="283"/>
         <location filename="../src/mycanvas.cpp" line="299"/>
         <source>Scene was been saved in %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Opening file for writing is impossible</source>
@@ -2516,7 +2514,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="44"/>
         <source>Manageable</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляемый</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="49"/>
@@ -2739,7 +2737,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <location filename="../src/chips/switchchip.cpp" line="102"/>
         <location filename="../src/chips/switchchip.cpp" line="125"/>
         <source>LAN%1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2747,7 +2745,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
     <message>
         <location filename="../src/forms/virtualnetworkdialog.ui" line="13"/>
         <source>Dialog</source>
-        <translation type="unfinished">Настройки</translation>
+        <translation>Настройки</translation>
     </message>
 </context>
 </TS>

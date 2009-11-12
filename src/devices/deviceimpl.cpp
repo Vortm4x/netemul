@@ -30,7 +30,7 @@ void deviceImpl::showDeviceNoteDialog()
 {
     deviceNoteDialog *d = new deviceNoteDialog;
     d->setDevice( new deviceSetting(this) );
-    d->show();
+    d->exec();
 }
 
 void deviceImpl::write(QDataStream &stream) const

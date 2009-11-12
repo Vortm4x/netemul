@@ -71,8 +71,8 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
 
 void dhcpClientProgramm::resetClient(interfaceState *session)
 {
-    device->adapter(session->name)->setIp(tr("0.0.0.0"));
-    device->adapter(session->name)->setMask(tr("0.0.0.0"));
+    device->adapter(session->name)->setIp(ipAddress("0.0.0.0"));
+    device->adapter(session->name)->setMask(ipAddress("0.0.0.0"));
     device->connectedNet( device->adapter( session->name ) );
     device->setGateway("0.0.0.0");
 }

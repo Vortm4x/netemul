@@ -1067,7 +1067,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     <name>deviceNoteDialog</name>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1092,12 +1092,6 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
         <location filename="../src/programms/dhcpclientprogramm.cpp" line="28"/>
         <source>DHCP client</source>
         <translation>Cliente DHCP</translation>
-    </message>
-    <message>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="74"/>
-        <location filename="../src/programms/dhcpclientprogramm.cpp" line="75"/>
-        <source>0.0.0.0</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

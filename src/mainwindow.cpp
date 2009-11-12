@@ -315,7 +315,7 @@ void MainWindow::createAction()
 
     virtualNetworkAct = createOneAction();
 
-    noteAct = createOneAction();
+    noteAct = createOneAction(QIcon(":/im/images/description.png") );
 }
 
 //Создаем меню
