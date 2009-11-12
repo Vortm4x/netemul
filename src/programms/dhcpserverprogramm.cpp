@@ -218,7 +218,8 @@ ipAddress dhcpServerProgramm::giveDynamicIp() const
     bool isContains = false;
     quint32 i = myBeginIp.toInt();
     while ( i <= myEndIp.toInt() ) {
-        isContains = myDhcpModel->containRecord( ipAddress(i) ) || findClient(ipAddress(i));
+        isContains = myDhcpModel->containRecord( ipAddress(i) ) || findClient(ipAddress(i))
+                     || device->adapter(myInterface)->ip().toInt() == i;
         if ( isContains ) {
             i++;
             isContains = false;

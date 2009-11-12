@@ -44,8 +44,6 @@ private:
     QLabel *lb_mac;
     QLabel *lb_conflict;
     QLineEdit *le_mac;
-    ipEdit *le_ip;
-    ipEdit *le_mask;
 public slots:
     void apply();
 private slots:

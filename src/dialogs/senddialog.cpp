@@ -58,7 +58,7 @@ void sendDialog::checkAccept()
 {
     if (myState == sender) {
         mySize = sizeSlider->value();
-        myBroadcast = check->checkState();
+//        myBroadcast = check->checkState();
         if ( rtn_tcp->isChecked() ) myProtocol = TCP;
         else myProtocol = UDP;
     } else {
@@ -80,9 +80,9 @@ void sendDialog::prepare()
         connect( sizeBox, SIGNAL(valueChanged(int)),sizeSlider, SLOT(setValue(int)));
         connect(sizeSlider , SIGNAL(valueChanged(int)) ,sizeBox, SLOT(setValue(int)));
         sizeBox->setValue(50);
-        check = new QCheckBox(tr("Broadcast"));
-        check->setChecked(false);
-        check->setEnabled(false);
+//        check = new QCheckBox(tr("Broadcast"));
+//        check->setChecked(false);
+//        check->setEnabled(false);
         okButton = new QPushButton(QIcon(":/im/images/ok.png"),tr("Next"));
         QGroupBox *box = new QGroupBox(tr("Choose protocol:"));
         QVBoxLayout *btn = new QVBoxLayout;
@@ -99,7 +99,7 @@ void sendDialog::prepare()
         temp->addWidget(sizeSlider);
         temp->addWidget(sizeBox);
         all->addLayout(temp);
-        all->addWidget(check);
+//        all->addWidget(check);
         all->addStretch(1);
     }
     else {

@@ -54,14 +54,6 @@ switchProperty::switchProperty()
     all->addLayout(temp);
     connect( le_mac , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
-    le_ip = new ipEdit(this,tr("Ip-address: "));
-    all->addWidget(le_ip);
-    connect( le_ip , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
-
-    le_mask = new ipEdit(this,tr("Mask: "));
-    all->addWidget(le_mask);
-    connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
-
     lb_statics = new QLabel;
     all->addWidget(lb_statics);
 
@@ -85,8 +77,6 @@ void switchProperty::setSwitch(boxSetting *d)
     sw = d;
     cb_count->setCurrentIndex( cb_count->findText( QString::number( d->socketsCount() ) ) );
     le_mac->setText( d->snmpMac() );
-    le_ip->setText( d->snmpIp() );
-    le_mask->setText( d->snmpMask() );
     lb_statics->setText( d->statics() );
     chb_manual->setChecked( d->isManual() );
     btn_apply->setEnabled(false);
@@ -109,8 +99,6 @@ void switchProperty::apply()
             return;
         }
     sw->setMac(le_mac->text());
-    sw->setIp(le_ip->text());
-    sw->setMask(le_mask->text());
     sw->setManual( chb_manual );
     if ( sender() == btn_ok ) accept();
 }

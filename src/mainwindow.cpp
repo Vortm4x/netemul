@@ -49,10 +49,11 @@
 #endif
 
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
-#define FILES_CURRENT_TYPES FILES_TYPES_NET
+#define FILES_CURRENT_TYPES FILES_TYPES_NO
 
 #define FILES_TYPES_XML "XML files(*.xml);;Networks(*.net)"
 #define FILES_TYPES_NET "Networks(*.net);;XML files(*.xml)"
+#define FILES_TYPES_NO "Networks(*.net)"
 
 // Конструктор главной формы
 MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
@@ -346,7 +347,7 @@ void MainWindow::createMenu()
     itemMenu->addAction(adapterAct);
     itemMenu->addAction(progAct);
     itemMenu->addAction(arpAct);
-    itemMenu->addAction(virtualNetworkAct);
+    //itemMenu->addAction(virtualNetworkAct);
     itemMenu->addAction(logAct);
     itemMenu->addAction(designerPacketAct);
     itemMenu->addAction(aboutDeviceAct);
@@ -573,7 +574,7 @@ void MainWindow::saveAsFile()
     QString t = QFileDialog::getSaveFileName(this,tr("Save file as ..."),
                                              QApplication::applicationDirPath(),tr(FILES_CURRENT_TYPES));
     if ( t.isEmpty() ) return ;
-    if ( !t.endsWith(".net") && !t.endsWith(".xml") ) t.push_back(".xml");
+    if ( !t.endsWith(".net") && !t.endsWith(".xml") ) t.push_back(".net");
     myFile = t;
     saveFile();
 }

@@ -48,13 +48,6 @@ hubProperty::hubProperty()
     temp->addWidget(le_mac);
     connect( le_mac , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
     all->addLayout(temp);
-    le_ip = new ipEdit(this,tr("Ip-address: "));
-    all->addWidget(le_ip);
-    connect( le_ip , SIGNAL(textChanged(QString)) , SLOT(applyEnable()) );
-
-    le_mask = new ipEdit(this,tr("Mask: "));
-    all->addWidget(le_mask);
-    connect( le_mask , SIGNAL(textChanged(QString)) , SLOT(applyEnable()));
 
     lb_statics= new QLabel;
     all->addWidget(lb_statics);
@@ -82,8 +75,6 @@ void hubProperty::setHub(hubSetting *s)
     cb_count->setCurrentIndex( cb_count->findText( QString::number(st->socketsCount() ) ));
     lb_conflict->setText( tr("Number of collisions: %1").arg( st->collisions() ) );
     le_mac->setText( st->snmpMac() );
-    le_ip->setText( st->snmpIp() );
-    le_mask->setText( st->snmpMask() );
     lb_statics->setText( st->statics() );
     btn_apply->setEnabled(false);
 }
@@ -105,8 +96,6 @@ void hubProperty::apply()
             return;
         }
     st->setMac(le_mac->text());
-    st->setIp(le_ip->text());
-    st->setIp(le_mask->text());
     if ( sender() == btn_ok ) accept();
 }
 

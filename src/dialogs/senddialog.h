@@ -70,7 +70,7 @@ private:
     QLabel *caption;
     QLabel *sizeCaption;
     QListWidget *list;
-    QCheckBox *check;
+//    QCheckBox *check;
     QVBoxLayout *all;
 };
 

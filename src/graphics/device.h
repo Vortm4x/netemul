@@ -62,14 +62,14 @@ public:
     bool isSmart() const { return impl->isSmart(); }
     bool isConnect() const { return myCableList.count(); }
     bool isManagedVirtualNetwork() const { return impl->isManagedVirtualNetwork(); }
-    void dialog() { impl->dialog(); setToolTip( impl->note() ); }
+    void dialog() { impl->dialog(); }
     void tableDialog() const { impl->tableDialog(); }
     void adapterDialog() const { impl->adapterDialog(); }
     void programmsDialog() const { impl->programmsDialog(); }
     void arpDialog() const { impl->arpDialog(); }
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     void showDesignerDialog() const { impl->showDesignerDialog(); }
-    void showDeviceNoteDialog() const { impl->showDeviceNoteDialog(); }
+    void showDeviceNoteDialog() { impl->showDeviceNoteDialog(); setToolTip( impl->note() ); }
     void showVirtualNetworkDialog() const {  impl->showVirtualNetworkDialog(); }
     bool isCanSend() const { return impl->isCanSend() && isConnect() ; }
     bool isShared() const { return impl->isShared(); }
