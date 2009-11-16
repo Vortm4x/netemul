@@ -350,22 +350,22 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Configure VLAN...</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar VLAN...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Configure VLAN</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar VLAN</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Set description...</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer descripción...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Set description of device</source>
-        <translation type="unfinished"></translation>
+        <translation>Establecer descripción del dispositivo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="176"/>
@@ -430,42 +430,42 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="237"/>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="241"/>
         <source>Ctrl+2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+2</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="245"/>
         <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
+        <translation>libqt4-dev</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="252"/>
         <source>Ctrl+4</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+4</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="256"/>
         <source>Ctrl+5</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+5</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="260"/>
         <source>Ctrl+6</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+6</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="264"/>
         <source>Ctrl+7</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+7</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="268"/>
         <source>Ctrl+8</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+8</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="274"/>
@@ -672,12 +672,12 @@
     <message>
         <location filename="../src/devices/smartdevice.cpp" line="241"/>
         <source>Can&apos;t set this gateway! See adapter settings!</source>
-        <translation type="unfinished"></translation>
+        <translation>¡No puedo encontrar ésta puerta de enlace! ¡Ver la configuración del adaptador!</translation>
     </message>
     <message>
         <location filename="../src/tools/scenexmlreader.cpp" line="22"/>
         <source>The file is not a NetEmul file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Éste no es un archivo de NetEmul.</translation>
     </message>
 </context>
 <context>
@@ -798,7 +798,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="79"/>
         <source>Receive settings automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Recibir configuraciones automáticamente</translation>
     </message>
     <message>
         <location filename="../src/dialogs/adapterproperty.cpp" line="85"/>
@@ -1060,22 +1060,22 @@ Lisandro Damián Nicanor Pérez Meyer - Español</translation>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="14"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="20"/>
         <source>Description:</source>
-        <translation type="unfinished">Descripción:</translation>
+        <translation>Descripción:</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="49"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="../src/forms/devicenotedialog.ui" line="60"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1162,12 +1162,12 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="72"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
+        <translation>Advertencia</translation>
     </message>
     <message>
         <location filename="../src/programms/dhcpserverprogramm.cpp" line="72"/>
         <source>Your DHCP server isn&apos;t configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Su servidor DHCP no está configurado</translation>
     </message>
 </context>
 <context>
@@ -2411,7 +2411,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="44"/>
         <source>Manageable</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrable</translation>
     </message>
     <message>
         <location filename="../src/dialogs/switchproperty.cpp" line="49"/>
@@ -2634,7 +2634,7 @@ estar bajo control de DHCP:</translation>
         <location filename="../src/chips/switchchip.cpp" line="102"/>
         <location filename="../src/chips/switchchip.cpp" line="125"/>
         <source>LAN%1</source>
-        <translation type="unfinished">LAN%1</translation>
+        <translation>LAN%1</translation>
     </message>
 </context>
 <context>
@@ -2642,7 +2642,7 @@ estar bajo control de DHCP:</translation>
     <message>
         <location filename="../src/forms/virtualnetworkdialog.ui" line="13"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Diálogo</translation>
     </message>
 </context>
 </TS>
