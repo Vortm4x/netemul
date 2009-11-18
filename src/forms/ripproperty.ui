@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Rip programm property</string>
+   <string>Rip program property</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
