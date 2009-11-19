@@ -108,6 +108,7 @@ unix {
     # Icons
     icons.path = $${PREFIX}/share/netemul/pixmap/
     icons.files = ../images/NetEmul.png
+    icons.files = ../images/NetEmul_32x32.png
     INSTALLS += icons
     
     # Desktop
