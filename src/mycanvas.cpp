@@ -226,7 +226,7 @@ void myCanvas::openScene(QString fileName)
     file.close();
     QApplication::restoreOverrideCursor();
     emit fileOpened();
-    qDebug() << tr("Scene was been open from %1").arg(fileName) ;
+    qDebug() << tr("Scene opened from %1").arg(fileName) ;
     myModified = false;
 }
 //-----------------------------------------------------------------------
@@ -245,7 +245,7 @@ void myCanvas::openSceneXml(QString fileName)
     file.close();
     QApplication::restoreOverrideCursor();
     emit fileOpened();
-    qDebug() << tr("Scene was been open from %1").arg(fileName) ;
+    qDebug() << tr("Scene opened from %1").arg(fileName) ;
     myModified = false;
 }
 
@@ -280,7 +280,7 @@ void myCanvas::saveScene(QString fileName)
     if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
     file.close();
     QApplication::restoreOverrideCursor();
-    qDebug() << tr("Scene was been saved in %1").arg(fileName) ;
+    qDebug() << tr("Scene saved in %1").arg(fileName) ;
     myModified = false;
 }
 
@@ -296,7 +296,7 @@ void myCanvas::saveSceneXml(QString fileName)
     s.writeScene(&file);
     file.close();
     QApplication::restoreOverrideCursor();
-    qDebug() << tr("Scene was been saved in %1").arg(fileName) ;
+    qDebug() << tr("Scene saved in %1").arg(fileName) ;
     myModified = false;
 }
 //-------------------------------------------------------------------------
