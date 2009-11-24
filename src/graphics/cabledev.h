@@ -26,6 +26,7 @@
 
 class device;
 class devicePort;
+class cableTextItem;
 
 static const qreal NORMAL_SIZE = 2.5;
 static const qreal COLLISION_SIZE = 5.0;
@@ -47,7 +48,7 @@ public:
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
-        return QRectF(line().p1(),line().p2()).normalized().adjusted(-5,-5,5,5);
+        return QRectF(line().p1(),line().p2()).normalized();
     }
     bool isCollisionCable() const { return isCollision; }
     cableDev(device *start,device *end,QString sp, QString ep,int s = 5);
@@ -65,11 +66,12 @@ public:
     void input(QByteArray b,devicePort *cur);;
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
+    void setShowLabel(bool b);
     QString startSocketName() const;
     QString endSocketName() const;
     void deleteConnect();
-    void killRandomPackets(QQueue<bitStream*> stream);
-    void killCurrentPackets();
+    QPointF startLabelPoint() const { return line().pointAt(0.3); }
+    QPointF endLabelPoint() const { return line().pointAt(0.7); }
     void startCollision();
     void registerCable();
     void unregisterCable();
@@ -77,11 +79,15 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget = 0); // Как будем рисовать
 private:
+    void killRandomPackets(QQueue<bitStream*> stream);
+    void killCurrentPackets();
     bool isCollision;
     bool myChecked;
     bool myShared;
     QQueue<bitStream*> fromStartQueue;
     QQueue<bitStream*> fromEndQueue;
+    cableTextItem *textStart;
+    cableTextItem *textEnd;
     device *myStartDev; //!< Указатель на устройтсво начала.
     device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;

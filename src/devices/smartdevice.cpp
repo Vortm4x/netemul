@@ -96,7 +96,14 @@ void smartDevice::routePacket(ipPacket &p)
     if ( !t ) return;
     ipAddress gw;
     if ( t->out != t->gateway ) gw = t->gateway;
-    ipToAdapter(t->out)->sendPacket(p,gw);
+    interface *f = ipToAdapter( t->out );
+    if ( !f ) {
+        QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
+                                 QObject::tr("Can't route packet! See adapter settings!"),
+                                 QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+    f->sendPacket(p,gw);
 }
 //---------------------------------------------
 /*!
@@ -380,6 +387,14 @@ void smartDevice::arpDialog()
 #endif
 }
 
+QStringList smartDevice::featuresList() const
+{
+    QStringList t;
+    foreach ( programm i , myProgramms )
+        t << i->featureName();
+    return t;
+}
+
 QStringList smartDevice::sockets() const
 {
     QStringList t;
@@ -512,6 +527,7 @@ void smartDevice::installProgramm(programm p)
 {
     p->setDevice(this);
     myProgramms << p;
+    myView->onImplChange();
 }
 //-----------------------------------------------------------
 

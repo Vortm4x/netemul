@@ -98,6 +98,7 @@ public slots:
     void editorLostFocus(textItem *t);
     void setMode(int modScene,int curDev);
     void setShowGrid(bool b);
+    void setShowLabels(bool b);
     void removeDevice();
     void newScene();
     void closeScene();

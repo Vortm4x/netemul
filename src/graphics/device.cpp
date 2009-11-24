@@ -32,20 +32,12 @@
 
 device::device(int t)
 {
-    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
-    pixmapRect = devRect.adjusted(3,3,-3,-3);
-    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
-    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     createImpl(t);
     setToolTip( impl->note() );
 }
 
 device::device(QDataStream &stream)
 {
-    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
-    pixmapRect = devRect.adjusted(3,3,-3,-3);
-    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
-    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     QPointF p;
     int tp;
     stream >> p;
@@ -58,10 +50,6 @@ device::device(QDataStream &stream)
 
 device::device(sceneXmlReader &stream)
 {
-    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
-    pixmapRect = devRect.adjusted(3,3,-3,-3);
-    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
-    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     QPointF p;
     int tp = stream.attributes().value("type").toString().toInt();
     createImpl(tp);
@@ -78,6 +66,10 @@ device::device(sceneXmlReader &stream)
 
 void device::createImpl(int n)
 {
+    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
+    pixmapRect = devRect.adjusted(3,3,-3,-3);
+    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
+    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
     switch (n) {
         case compDev : impl = new computer; break;
         case hubDev : impl = new hubDevice; break;
@@ -85,6 +77,7 @@ void device::createImpl(int n)
         case routerDev : impl = new routerDevice; break;
         default: break;
     }
+    impl->setVisualizator(this);
 }
 
 device::~device()
@@ -98,8 +91,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     Q_UNUSED(widget); // Эти параметры
     QList<QGraphicsItem*> collides = collidingItems();
     foreach ( QGraphicsItem* item , collides)
-        if ( item->type() == cableDev::Type || item->type() == QGraphicsLineItem::Type
-             || item->type() == textItem::Type ) collides.removeOne(item);
+        if ( item->type() != device::Type ) collides.removeOne(item);
     QLinearGradient tempGrad(device::rectDevX , device::rectDevY ,-device::rectDevX,-device::rectDevY);
     tempGrad.setColorAt(0,Qt::white);
     if (isSelected()) {
@@ -122,13 +114,17 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
         case routerDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/router.png")); break;
         default: break;
     }
+
      // Потом картинку
     if ( isConnect() ) {
         if ( impl->isReady() ) painter->setBrush(Qt::green);
         else painter->setBrush(Qt::yellow);
     }
-    else painter->setBrush(Qt::red);
+    else {
+        painter->setBrush(Qt::red);
+    }
     painter->drawEllipse(-17,-17,6,6);
+
     int traffic = impl->trafficDigit();
     if ( !traffic ) return;
     traffic = traffic/5+1;
@@ -203,6 +199,10 @@ bool device::isConnectDevices(device *s , device *e)
     return false;
 }
 
+void device::onImplChange()
+{
+    myFeatures = impl->featuresList();
+}
 
 
 

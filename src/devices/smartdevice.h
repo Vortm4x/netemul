@@ -63,6 +63,7 @@ public:
     bool isBusy() const;
     QStringList sockets() const;
     QStringList interfacesIp() const;
+    QStringList featuresList() const;
     void addInterface();
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
     QIcon isConnectSocketIcon(const QString &socket) const;

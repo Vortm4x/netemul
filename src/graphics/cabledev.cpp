@@ -21,6 +21,7 @@
 #include "device.h"
 #include "deviceport.h"
 #include "appsetting.h"
+#include "cabletextitem.h"
 
 cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
 {
@@ -36,6 +37,12 @@ cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
     if ( myStartDev->isShared() || myEndDev->isShared() ) myShared = true;
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
     setZValue(-1000.0); // Кидаем его на самый-самый задний план
+    textStart = new cableTextItem(this, this->scene() );
+    textStart->setStart(true);
+    textStart->setPlainText( myStartName.mid(3) );
+    textEnd = new cableTextItem(this , this->scene() );
+    textEnd->setStart(false);
+    textEnd->setPlainText( myEndName.mid(3) );
 }
 
 cableDev::~cableDev()
@@ -63,6 +70,8 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->drawLine(line());
     painter->setPen(QPen(Qt::black,1));
 
+    //painter->drawRect( boundingRect() );
+
     foreach ( bitStream *i , fromEndQueue ) {
         painter->setBrush(i->color);
         painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
@@ -77,6 +86,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
 //--------------------------------------------------------------------
 void cableDev::updatePosition()
 {
+    //qDebug() << boundingRect() << pos();
     QLineF line(myStartDev->pos(), myEndDev->pos());
     setLine(line);
     update(boundingRect());
@@ -222,6 +232,12 @@ void cableDev::unregisterCable()
     myEndDev->update();
     myStartPort = 0;
     myEndPort = 0;
+}
+
+void cableDev::setShowLabel(bool b)
+{
+    textStart->setVisible(b);
+    textEnd->setVisible(b);
 }
 
 

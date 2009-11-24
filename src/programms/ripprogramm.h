@@ -53,6 +53,7 @@ public:
     bool hasTriggerUpdate() const { return myTriggerUpdate; }
     void setTriggerUpdate(bool has) { myTriggerUpdate = has; }
     void showProperty();
+    virtual QString featureName() const { return "R"; }
 private slots:
     void execute(QByteArray data);
 private:

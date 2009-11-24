@@ -25,6 +25,7 @@
 #include "scenexmlwriter.h"
 #include "scenexmlreader.h"
 #include "statistics.h"
+#include "visualizable.h"
 
 #define DECLARE_PROTOTYPE(CLASS) public: \
                                     deviceImpl* prototype() const; \
@@ -56,6 +57,7 @@ public:
     virtual int type() const = 0;
 
     virtual QStringList sockets() const = 0;
+    virtual QStringList featuresList() const { return QStringList(); }
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
@@ -97,6 +99,8 @@ public:
     virtual void addConnection(const QString &port , cableDev *c) = 0;
     virtual void deleteConnection(cableDev *c) = 0;
     virtual bool isCanSend() const { return false; }
+
+    void setVisualizator( visualizable *view ) { myView = view; }
 public:
     virtual deviceImpl* prototype() const = 0;
 
@@ -118,6 +122,8 @@ public slots:
     virtual quint64 receivePacketCount(const QString&) { return 0; }
     virtual quint64 sendFrameCount(const QString&) { return 0; }
     virtual quint64 receiveFrameCount(const QString&) { return 0; }
+protected:
+    visualizable *myView;
 private:
     QString myNote;
 };

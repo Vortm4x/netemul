@@ -81,6 +81,7 @@ public:
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
     dhcpServerModel* dhcpModel() { return myDhcpModel; }
+    virtual QString featureName() const { return "DS"; }
 public:
     void showProperty();        
     ipAddress giveDynamicIp() const;

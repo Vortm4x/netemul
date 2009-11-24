@@ -25,6 +25,7 @@
 #include <QIcon>
 #include "deviceimpl.h"
 #include "statistics.h"
+#include "visualizable.h"
 
 class cableDev;
 class logDialog;
@@ -34,7 +35,7 @@ class logDialog;
   хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
   Класс содержит несколько виртуальных функций, только переопределив которые, мы сможем его унаследовать.
 */
-class device : public QGraphicsItem
+class device : public QGraphicsItem , public visualizable
 {
 public:
     enum sizeDevices { rectDevX = -23 , rectDevY = -23 , rectDevWidth = 46 , rectDevHeight = 46 };
@@ -90,10 +91,13 @@ public:
     bool hasTable() const { return impl->hasTable(); }
 
     void writeXml(sceneXmlWriter &stream) const;
+
+    void onImplChange();
 private:
     void createImpl(int n);
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
+    QStringList myFeatures;
 protected:
     QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);

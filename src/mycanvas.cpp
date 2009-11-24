@@ -104,6 +104,7 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
     addCableCommand *com = new addCableCommand(this, cable);
     commandStack.push(com);
     myModified = true;
+    cable->updatePosition();
     return cable;
 }
 //-------------------------------------------------------------------------
@@ -357,6 +358,11 @@ device* myCanvas::deviceInPoint(QPointF p)
     return 0;
 }
 
+void myCanvas::setShowLabels(bool b)
+{
+    foreach ( cableDev *i , myConnections )
+        i->setShowLabel(b);
+}
 
 void myCanvas::setShowGrid(bool b)
 {

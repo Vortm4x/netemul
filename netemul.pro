@@ -12,6 +12,7 @@ include(src/packets/packets.pri)
 include(src/states/states.pri)
 include(src/commands/commands.pri)
 include(src/delegats/delegats.pri)
+include(src/interfaces/interfaces.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -32,7 +33,8 @@ INCLUDEPATH += . \
     src/packets \
     src/states \
     src/commands \
-    src/delegats
+    src/delegats \
+    src/interfaces
 QT += script
 
 QMAKE_POST_LINK += cd ipedit && qmake && make && cd ..

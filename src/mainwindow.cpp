@@ -173,6 +173,7 @@ void MainWindow::retranslate()
     UPDATEACTION( printPreviewAct , tr("Preview...") , tr("Preview network berfore printing") );
     UPDATEACTION( virtualNetworkAct , tr("Configure VLAN...") , tr("Configure VLAN") );
     UPDATEACTION( noteAct , tr("Set description...") , tr("Set description of device") );
+    UPDATEACTION( cableLabelAct , tr("Show labels") , tr("Show labels on cables") );
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -316,6 +317,10 @@ void MainWindow::createAction()
     virtualNetworkAct = createOneAction();
 
     noteAct = createOneAction(QIcon(":/im/images/description.png") );
+
+    cableLabelAct = createOneAction();
+    cableLabelAct->setCheckable(true);
+    cableLabelAct->setChecked(true);
 }
 
 //Создаем меню
@@ -340,6 +345,7 @@ void MainWindow::createMenu()
     viewMenu->addAction( deviceBar->toggleViewAction() );
     viewMenu->addAction( controlBar->toggleViewAction() );
     viewMenu->addAction(showGridAct);
+    viewMenu->addAction( cableLabelAct );
 
     itemMenu = menuBar()->addMenu(QString());
     itemMenu->addAction(propertyAct);
@@ -411,6 +417,7 @@ void MainWindow::createScene()
     canva->setBackgroundBrush(QBrush(Qt::lightGray));
     canva->setSceneRect(0,0,10,10);
     connect( showGridAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowGrid(bool)));
+    connect( cableLabelAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowLabels(bool)) );
     connect( canva , SIGNAL(uncheck()) , SLOT(uncheck()));
     connect( deleteAct , SIGNAL(triggered()) , canva , SLOT(removeDevice()));
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
