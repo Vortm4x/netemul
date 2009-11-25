@@ -61,6 +61,8 @@ public:
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;
+    virtual QString pixmapName() const = 0;
+
     virtual bool isBusy() const = 0;
 
     const QString& note() const { return myNote; }

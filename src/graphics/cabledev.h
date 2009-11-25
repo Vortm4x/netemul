@@ -57,24 +57,36 @@ public:
     void motion();
     bool isBusy() const { return fromStartQueue.count() || fromEndQueue.count(); }
     bool isBusy(const devicePort *d);
-    device* start() { return myStartDev; }
-    device* end() { return myEndDev; }
-    devicePort* startPort() { return myStartPort; }
-    devicePort* endPort() { return myEndPort; }
     void insertInPort(devicePort *p);
     int isShared() const { return myShared; }
     void input(QByteArray b,devicePort *cur);;
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
     void setShowLabel(bool b);
-    QString startSocketName() const;
-    QString endSocketName() const;
+    void setFastInfo(bool b, device *dev, QString info);
+
     void deleteConnect();
     QPointF startLabelPoint() const { return line().pointAt(0.3); }
     QPointF endLabelPoint() const { return line().pointAt(0.7); }
     void startCollision();
     void registerCable();
     void unregisterCable();
+
+public:
+    device* start() { return myStartDev; }
+    device* end() { return myEndDev; }
+    devicePort* startPort() { return myStartPort; }
+    devicePort* endPort() { return myEndPort; }
+    QString startSocketName() const;
+    QString endSocketName() const;
+private:
+    QString myStartName;
+    QString myEndName;
+    device *myStartDev; //!< Указатель на устройтсво начала.
+    device *myEndDev; //!< Указатель на устройство конца.
+    devicePort *myStartPort;
+    devicePort *myEndPort;
+
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget = 0); // Как будем рисовать
@@ -88,12 +100,6 @@ private:
     QQueue<bitStream*> fromEndQueue;
     cableTextItem *textStart;
     cableTextItem *textEnd;
-    device *myStartDev; //!< Указатель на устройтсво начала.
-    device *myEndDev; //!< Указатель на устройство конца.
-    devicePort *myStartPort;
-    devicePort *myEndPort;
-    QString myStartName;
-    QString myEndName;
     int mySpeed;
 };
 

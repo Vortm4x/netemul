@@ -43,6 +43,7 @@ public:
 
     QString deviceName() const { return "comp"; }
     QString deviceCommandName() const { return tr("Computer"); }
+    QString pixmapName() const { return ":/im/images/computer.png"; }
     bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
     void sendConstructedFrame(QString Interface,frame Frame, int count);

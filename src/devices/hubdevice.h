@@ -38,6 +38,7 @@ public:
     bool isShared() const { return true; }
     QString deviceName() const { return "hub"; }
     QString deviceCommandName() const { return tr("Hub"); }
+    QString pixmapName() const { return ":/im/images/hub.png"; }
     friend class hubSetting;
 protected:
     void write(QDataStream &stream) const;

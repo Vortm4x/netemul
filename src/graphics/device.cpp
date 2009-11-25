@@ -106,15 +106,8 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
         tempGrad.setColorAt(1,Qt::white);
     }
     painter->setBrush(QBrush(tempGrad));
-    painter->drawRoundedRect(devRect,5,5); //Рисуем край нашего компьютера
-    switch ( impl->type() ) {
-        case compDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/computer.png")); break;
-        case hubDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/hub.png")); break;
-        case switchDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/switch.png")); break;
-        case routerDev : painter->drawPixmap(pixmapRect,QPixmap(":/im/images/router.png")); break;
-        default: break;
-    }
-
+    painter->drawRoundedRect(devRect,5,5);
+    painter->drawPixmap(pixmapRect,QPixmap(impl->pixmapName()));
      // Потом картинку
     if ( isConnect() ) {
         if ( impl->isReady() ) painter->setBrush(Qt::green);

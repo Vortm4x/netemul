@@ -51,6 +51,7 @@ public:
     QString deviceName() const { return "switch"; }
     QString deviceCommandName() const { return tr("Switch"); }
     QString tableName() const { return tr("Switching table"); }
+    QString pixmapName() const { return ":/im/images/switch.png"; }
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

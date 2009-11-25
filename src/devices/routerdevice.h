@@ -32,6 +32,7 @@ public:
     routerDevice(int c = 0);
     QString deviceName() const { return "router"; }
     QString deviceCommandName() const { return tr("Router"); }
+    QString pixmapName() const { return ":/im/images/router.png"; }
     bool canManageInterface() const { return false; }
     void dialog();
 protected:
