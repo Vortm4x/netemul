@@ -48,7 +48,7 @@ public:
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
-        return QRectF(line().p1(),line().p2()).normalized();
+        return QRectF(line().p1(),line().p2()).normalized(); //.adjusted(-5,-5,5,5);
     }
     bool isCollisionCable() const { return isCollision; }
     cableDev(device *start,device *end,QString sp, QString ep,int s = 5);

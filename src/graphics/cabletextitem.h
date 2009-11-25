@@ -10,7 +10,10 @@ public:
     enum { Type = UserType + 4 };
     int type() const { return Type; }
     cableTextItem(QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
+
     ~cableTextItem() { }
+
+    void updatePosition();
 protected:
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
 

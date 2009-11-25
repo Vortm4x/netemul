@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
+    //view->setViewportUpdateMode( QGraphicsView::SmartViewportUpdate );
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
     timeLabel = new QLabel;
@@ -77,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     setCentralWidget(view);
     retranslate();
     setOpenglMode( appSetting::hasOpengl() );
+    cableLabelAct->setChecked( appSetting::isShowLabel() );
+    canva->setShowLabels( appSetting::isShowLabel() );
     autosaveTimer = new QTimer(this);
     autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
     connect( autosaveTimer , SIGNAL(timeout()) , SLOT(autosave()) );
@@ -504,6 +507,7 @@ void MainWindow::setEnabledFileItems(bool cur)
     showGridAct->setEnabled(cur);
     printAct->setEnabled(cur);
     printPreviewAct->setEnabled(cur);
+    cableLabelAct->setEnabled(cur);
 }
 /*!
     Слот вызываемый при изменении выделения на сцене.
@@ -525,6 +529,8 @@ void MainWindow::setting()
     canva->setAnimateSpeed( appSetting::animateSpeed() );
     setOpenglMode( appSetting::hasOpengl() );
     autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
+    cableLabelAct->setChecked( appSetting::isShowLabel() );
+    canva->setShowLabels( appSetting::isShowLabel() );
 }
 
 void MainWindow::setOpenglMode(bool mode)

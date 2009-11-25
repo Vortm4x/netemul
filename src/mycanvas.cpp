@@ -362,6 +362,7 @@ void myCanvas::setShowLabels(bool b)
 {
     foreach ( cableDev *i , myConnections )
         i->setShowLabel(b);
+    appSetting::setShowLabel(b);
 }
 
 void myCanvas::setShowGrid(bool b)

@@ -40,9 +40,11 @@ cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
     textStart = new cableTextItem(this, this->scene() );
     textStart->setStart(true);
     textStart->setPlainText( myStartName.mid(3) );
+    textStart->setVisible( appSetting::isShowLabel() );
     textEnd = new cableTextItem(this , this->scene() );
     textEnd->setStart(false);
     textEnd->setPlainText( myEndName.mid(3) );
+    textEnd->setVisible( appSetting::isShowLabel() );
 }
 
 cableDev::~cableDev()
@@ -70,6 +72,7 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
     painter->drawLine(line());
     painter->setPen(QPen(Qt::black,1));
 
+    //painter->setBrush( Qt::NoBrush );
     //painter->drawRect( boundingRect() );
 
     foreach ( bitStream *i , fromEndQueue ) {
@@ -81,15 +84,14 @@ void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QW
         painter->setBrush(i->color);
         painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
     }
-
 }
 //--------------------------------------------------------------------
 void cableDev::updatePosition()
 {
-    //qDebug() << boundingRect() << pos();
-    QLineF line(myStartDev->pos(), myEndDev->pos());
-    setLine(line);
+    setLine( QLineF(myStartDev->pos(), myEndDev->pos()) );
     update(boundingRect());
+    textStart->updatePosition();
+    textEnd->updatePosition();
 }
 /*!
   Принимает кадр от устройства отправителя и начинает его транспартировку.
