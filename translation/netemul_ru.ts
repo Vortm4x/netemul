@@ -4,27 +4,27 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../src/mainwindow.cpp" line="217"/>
+        <location filename="../src/mainwindow.cpp" line="221"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="225"/>
+        <location filename="../src/mainwindow.cpp" line="229"/>
         <source>Ctrl+D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="228"/>
+        <location filename="../src/mainwindow.cpp" line="232"/>
         <source>Ctrl+Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="274"/>
+        <location filename="../src/mainwindow.cpp" line="278"/>
         <source>Ctrl+Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="146"/>
+        <location filename="../src/mainwindow.cpp" line="149"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
@@ -33,87 +33,87 @@
         <translation type="obsolete">Вы хотите выйти ?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="141"/>
+        <location filename="../src/mainwindow.cpp" line="144"/>
         <source>Create new network</source>
         <translation>Создать новую сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="171"/>
+        <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Packet designer...</source>
         <translation>Конструктор пакетов...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="564"/>
+        <location filename="../src/mainwindow.cpp" line="577"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Open existing file</source>
         <translation>Открыть существующую сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="142"/>
+        <location filename="../src/mainwindow.cpp" line="145"/>
         <source>Open...</source>
         <translation>Открыть...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="143"/>
+        <location filename="../src/mainwindow.cpp" line="146"/>
         <source>Save network</source>
         <translation>Сохранить сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Save as...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="144"/>
+        <location filename="../src/mainwindow.cpp" line="147"/>
         <source>Save network as...</source>
         <translation>Сохранить сеть как ...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="145"/>
+        <location filename="../src/mainwindow.cpp" line="148"/>
         <source>Close current file</source>
         <translation>Закрыть текущий файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="147"/>
+        <location filename="../src/mainwindow.cpp" line="150"/>
         <source>Show grid</source>
         <translation>Показывать сетку</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="152"/>
         <source>Deleting object</source>
         <translation>Удалить объект</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="150"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>Programs</source>
         <translation>Программы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="150"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>Programs installed on device</source>
         <translation>Установленные программы</translation>
     </message>
@@ -126,122 +126,122 @@
         <translation type="obsolete">Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Statistics </source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="156"/>
         <source>Show scene statistics </source>
         <translation>Показать статистику сцены</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Move</source>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="154"/>
+        <location filename="../src/mainwindow.cpp" line="157"/>
         <source>Move objects</source>
         <translation>Перемещение объектов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="159"/>
         <source>Cable</source>
         <translation>Кабель</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="156"/>
+        <location filename="../src/mainwindow.cpp" line="159"/>
         <source>Create connection</source>
         <translation>Создать соединение</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="157"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Note</source>
         <translation>Записки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="157"/>
+        <location filename="../src/mainwindow.cpp" line="160"/>
         <source>Insert text comment</source>
         <translation>Вставить текстовую надпись</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>Unibus</source>
         <translation>Общая шина</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="159"/>
+        <location filename="../src/mainwindow.cpp" line="162"/>
         <source>Add unibus</source>
         <translation>Добавить общую шину</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Computer</source>
         <translation>Компьютер</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="160"/>
+        <location filename="../src/mainwindow.cpp" line="163"/>
         <source>Add computer</source>
         <translation>Добавить Компьютер</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
+        <location filename="../src/mainwindow.cpp" line="165"/>
         <source>Hub</source>
         <translation>Концентратор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="162"/>
+        <location filename="../src/mainwindow.cpp" line="165"/>
         <source>Add hub</source>
         <translation>Добавить Концентратор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="166"/>
         <source>Switch</source>
         <translation>Коммутатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="163"/>
+        <location filename="../src/mainwindow.cpp" line="166"/>
         <source>Add switch</source>
         <translation>Добавить Коммутатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="164"/>
+        <location filename="../src/mainwindow.cpp" line="167"/>
         <source>Router</source>
         <translation>Маршрутизатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="164"/>
+        <location filename="../src/mainwindow.cpp" line="167"/>
         <source>Add router</source>
         <translation>Добавить Маршрутизатор</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="165"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>Send</source>
         <translation>Отправка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="165"/>
+        <location filename="../src/mainwindow.cpp" line="168"/>
         <source>Send data</source>
         <translation>Отправить данные</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="166"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Execute scripts</source>
         <translation>Выполнить  сценарий</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="166"/>
+        <location filename="../src/mainwindow.cpp" line="169"/>
         <source>Run existing scripts</source>
         <translation>Запустить готовые сценарии</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="168"/>
+        <location filename="../src/mainwindow.cpp" line="171"/>
         <source>Show properties</source>
         <translation>Показать свойства</translation>
     </message>
@@ -250,17 +250,17 @@
         <translation type="obsolete">Конструктор пакетов</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="171"/>
+        <location filename="../src/mainwindow.cpp" line="174"/>
         <source>Create user&apos;s packet</source>
         <translation>Создать пользовательский пакет</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="177"/>
+        <location filename="../src/mainwindow.cpp" line="181"/>
         <source>Edit</source>
         <translation>Правка</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="305"/>
+        <location filename="../src/mainwindow.cpp" line="309"/>
         <source>Ctrl+F1</source>
         <translation></translation>
     </message>
@@ -277,59 +277,59 @@
         <translation type="obsolete">Редактировать таблицу маршрутизации</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="277"/>
+        <location filename="../src/mainwindow.cpp" line="281"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="167"/>
+        <location filename="../src/mainwindow.cpp" line="170"/>
         <source>About Qt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>File was modified</source>
         <translation>Файл был изменен</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="123"/>
+        <location filename="../src/mainwindow.cpp" line="126"/>
         <source>File was modified, do you want to save changes?</source>
         <translation>Файл был изменен, вы хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="161"/>
+        <location filename="../src/mainwindow.cpp" line="164"/>
         <source>About NetEmul</source>
         <translation>О программе NetEmul</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>NetEmul Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="158"/>
+        <location filename="../src/mainwindow.cpp" line="161"/>
         <source>Full help system program</source>
         <translation>Полная справка о программе</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Netcards</source>
         <translation>Интерфейсы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="158"/>
         <source>Edit netcards</source>
         <translation>Редактировать интерфейсы</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
-        <location filename="../src/mainwindow.cpp" line="682"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="695"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="152"/>
-        <location filename="../src/mainwindow.cpp" line="683"/>
+        <location filename="../src/mainwindow.cpp" line="155"/>
+        <location filename="../src/mainwindow.cpp" line="696"/>
         <source>Stop simulation</source>
         <translation>Остановить симуляцию</translation>
     </message>
@@ -342,37 +342,37 @@
         <translation type="obsolete">Программы установленные на устройстве</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="148"/>
+        <location filename="../src/mainwindow.cpp" line="151"/>
         <source>Arp table</source>
         <translation>Arp таблица</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="151"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>Show log</source>
         <translation>Показать журнал</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="169"/>
+        <location filename="../src/mainwindow.cpp" line="172"/>
         <source>Show device log file</source>
         <translation>Показать журнал устройства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="170"/>
+        <location filename="../src/mainwindow.cpp" line="173"/>
         <source>About device</source>
         <translation>Об устройстве</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="170"/>
+        <location filename="../src/mainwindow.cpp" line="173"/>
         <source>Information about device</source>
         <translation>Информация об устройстве</translation>
     </message>
@@ -381,127 +381,137 @@
         <translation type="obsolete">Конструктор пакетов...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Print...</source>
         <translation>Печать...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="172"/>
+        <location filename="../src/mainwindow.cpp" line="175"/>
         <source>Print user&apos;s network</source>
         <translation>Напечать пользовательскую сеть</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>Preview...</source>
         <translation>Предпросмотр...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="173"/>
+        <location filename="../src/mainwindow.cpp" line="176"/>
         <source>Preview network berfore printing</source>
         <translation>Предпросмотр сети перед печатью</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="174"/>
+        <location filename="../src/mainwindow.cpp" line="177"/>
         <source>Configure VLAN...</source>
         <translation>Настройка VLAN...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="174"/>
+        <location filename="../src/mainwindow.cpp" line="177"/>
         <source>Configure VLAN</source>
         <translation>Настройка VLAN</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="178"/>
         <source>Set description...</source>
         <translation>Задать описание...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="175"/>
+        <location filename="../src/mainwindow.cpp" line="178"/>
         <source>Set description of device</source>
         <translation>Задать описание для устройства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="179"/>
+        <source>Show labels</source>
+        <translation>Показывать надписи</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="179"/>
+        <source>Show labels on cables</source>
+        <translation>Показывать надписи на проводах</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="180"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="178"/>
+        <location filename="../src/mainwindow.cpp" line="182"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="179"/>
+        <location filename="../src/mainwindow.cpp" line="183"/>
         <source>Object</source>
         <translation>Объект</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="180"/>
+        <location filename="../src/mainwindow.cpp" line="184"/>
         <source>Service</source>
         <translation>Сервис</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="181"/>
+        <location filename="../src/mainwindow.cpp" line="185"/>
         <source>Scripts</source>
         <translation>Скрипты</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="182"/>
+        <location filename="../src/mainwindow.cpp" line="186"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="183"/>
+        <location filename="../src/mainwindow.cpp" line="187"/>
         <source>Devices</source>
         <translation>Устройства</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="184"/>
+        <location filename="../src/mainwindow.cpp" line="188"/>
         <source>Controls</source>
         <translation>Управление</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="237"/>
+        <location filename="../src/mainwindow.cpp" line="241"/>
         <source>Ctrl+1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="241"/>
+        <location filename="../src/mainwindow.cpp" line="245"/>
         <source>Ctrl+2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="245"/>
+        <location filename="../src/mainwindow.cpp" line="249"/>
         <source>Ctrl+3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="252"/>
+        <location filename="../src/mainwindow.cpp" line="256"/>
         <source>Ctrl+4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="256"/>
+        <location filename="../src/mainwindow.cpp" line="260"/>
         <source>Ctrl+5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="260"/>
+        <location filename="../src/mainwindow.cpp" line="264"/>
         <source>Ctrl+6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="264"/>
+        <location filename="../src/mainwindow.cpp" line="268"/>
         <source>Ctrl+7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="268"/>
+        <location filename="../src/mainwindow.cpp" line="272"/>
         <source>Ctrl+8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="302"/>
+        <location filename="../src/mainwindow.cpp" line="306"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
@@ -510,7 +520,7 @@
         <translation type="obsolete">Log</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="574"/>
+        <location filename="../src/mainwindow.cpp" line="587"/>
         <source>Save file as ...</source>
         <translation>Сохранить файл как...</translation>
     </message>
@@ -519,17 +529,17 @@
         <translation type="obsolete">Сети(*.net)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="677"/>
+        <location filename="../src/mainwindow.cpp" line="690"/>
         <source>Play</source>
         <translation>Запустить</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="678"/>
+        <location filename="../src/mainwindow.cpp" line="691"/>
         <source>Start simulation</source>
         <translation>Запустить симуляцию</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="290"/>
+        <location filename="../src/mainwindow.cpp" line="294"/>
         <source>Ctrl+I</source>
         <translation></translation>
     </message>
@@ -538,12 +548,12 @@
         <translation type="obsolete">Вы действительно хотите выйти?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
+        <location filename="../src/mainwindow.cpp" line="300"/>
         <source>Ctrl+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="299"/>
+        <location filename="../src/mainwindow.cpp" line="303"/>
         <source>Ctrl+Shift+A</source>
         <translation></translation>
     </message>
@@ -606,7 +616,8 @@
     </message>
     <message>
         <location filename="../src/chips/interface.cpp" line="108"/>
-        <location filename="../src/devices/smartdevice.cpp" line="240"/>
+        <location filename="../src/devices/smartdevice.cpp" line="101"/>
+        <location filename="../src/devices/smartdevice.cpp" line="247"/>
         <source>The network is not working correctly</source>
         <translation>Сеть работает не корректно</translation>
     </message>
@@ -718,7 +729,12 @@
         <translation>IP пакет, отправитель: %1, получатель: %2 TTL %3</translation>
     </message>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="241"/>
+        <location filename="../src/devices/smartdevice.cpp" line="102"/>
+        <source>Can&apos;t route packet! See adapter settings!</source>
+        <translation>Невозможно маршрутизировать пакет! Проверьте настройки!</translation>
+    </message>
+    <message>
+        <location filename="../src/devices/smartdevice.cpp" line="248"/>
         <source>Can&apos;t set this gateway! See adapter settings!</source>
         <translation>Невозможнов выставить шлюз! Проверьте настройки адаптеров!</translation>
     </message>
@@ -1472,8 +1488,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
         <translation type="obsolete">Настройки</translation>
     </message>
     <message>
-        <location filename="../src/forms/installdialog.ui" line="20"/>
         <source>Programms</source>
+        <translation type="obsolete">Программы</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/installdialog.ui" line="20"/>
+        <source>Programs</source>
         <translation>Программы</translation>
     </message>
     <message>
@@ -1738,38 +1758,38 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>myCanvas</name>
     <message>
-        <location filename="../src/mycanvas.cpp" line="184"/>
-        <location filename="../src/mycanvas.cpp" line="239"/>
+        <location filename="../src/mycanvas.cpp" line="185"/>
+        <location filename="../src/mycanvas.cpp" line="240"/>
         <source>Opening file for reading is impossible</source>
         <translation>Невозможно открыть файл для чтения</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="193"/>
+        <location filename="../src/mycanvas.cpp" line="194"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="193"/>
+        <location filename="../src/mycanvas.cpp" line="194"/>
         <source>Outdated version of the file, file can&apos;t be opened</source>
         <translation>Устаревшая версия файла сохранения, файл не может быть открыт</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="229"/>
-        <location filename="../src/mycanvas.cpp" line="248"/>
-        <source>Scene was been open from %1</source>
-        <translation></translation>
+        <location filename="../src/mycanvas.cpp" line="230"/>
+        <location filename="../src/mycanvas.cpp" line="249"/>
+        <source>Scene opened from %1</source>
+        <translation>Сцена открыта из файла %1</translation>
     </message>
     <message>
-        <location filename="../src/mycanvas.cpp" line="260"/>
-        <location filename="../src/mycanvas.cpp" line="291"/>
+        <location filename="../src/mycanvas.cpp" line="284"/>
+        <location filename="../src/mycanvas.cpp" line="300"/>
+        <source>Scene saved in %1</source>
+        <translation>Сцена сохранена в файл %1</translation>
+    </message>
+    <message>
+        <location filename="../src/mycanvas.cpp" line="261"/>
+        <location filename="../src/mycanvas.cpp" line="292"/>
         <source>Opening file for writing is impossible %1</source>
         <translation>Невозможно открыть файл для записи %1</translation>
-    </message>
-    <message>
-        <location filename="../src/mycanvas.cpp" line="283"/>
-        <location filename="../src/mycanvas.cpp" line="299"/>
-        <source>Scene was been saved in %1</source>
-        <translation></translation>
     </message>
     <message>
         <source>Opening file for writing is impossible</source>
@@ -1796,13 +1816,17 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>programmDialog</name>
     <message>
-        <location filename="../src/forms/programmdialog.ui" line="20"/>
         <source>Programms</source>
-        <translation>Программы</translation>
+        <translation type="obsolete">Программы</translation>
     </message>
     <message>
         <source>Installed programms</source>
         <translation type="obsolete">Установленные программы</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/programmdialog.ui" line="20"/>
+        <source>Programs</source>
+        <translation>Программы</translation>
     </message>
     <message>
         <location filename="../src/forms/programmdialog.ui" line="30"/>
@@ -1846,8 +1870,12 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>ripProperty</name>
     <message>
-        <location filename="../src/forms/ripproperty.ui" line="14"/>
         <source>Rip programm property</source>
+        <translation type="obsolete">Настройки RIP</translation>
+    </message>
+    <message>
+        <location filename="../src/forms/ripproperty.ui" line="14"/>
+        <source>Rip program property</source>
         <translation>Настройки RIP</translation>
     </message>
     <message>
@@ -2335,7 +2363,7 @@ Lisandro Damián Nicanor Pérez Meyer - Español</source>
 <context>
     <name>smartDevice</name>
     <message>
-        <location filename="../src/devices/smartdevice.cpp" line="482"/>
+        <location filename="../src/devices/smartdevice.cpp" line="497"/>
         <source>eth%1</source>
         <translation></translation>
     </message>
