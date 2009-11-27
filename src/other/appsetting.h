@@ -21,6 +21,7 @@
 #define APPSETTING_H
 
 #include <QString>
+#include <QtDebug>
 class QTranslator;
 
 static const int LANGUAGE_COUNT = 4;
@@ -47,7 +48,8 @@ public:
     static void setShowLabel(bool b) { _showLabel = b; }
     static bool defaultSwitchManual() { return _defaultSwitchManual; }
     static void setScriptPath(const QString path) { _scriptPath = path; }
-    static QString scriptPath() { return _scriptPath; }
+    static QString scriptPath() { if ( !_scriptPath.endsWith("/") ) _scriptPath.append("/");
+                                        qDebug() << _scriptPath; return _scriptPath; }
     static void setTtlArp(int n) { _ttlArp = n; }
     static int ttlArp() { return _ttlArp; }
     static void setArpResponceTime(int n) { _arpResponceTime = n; }

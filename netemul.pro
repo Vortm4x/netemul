@@ -125,10 +125,10 @@ unix {
     DOC_PATH = $${PREFIX}/share/netemul/doc/
     
     # Scripts
-    SCRIPT_PATH = $${PREFIX}/share/netemul/
-    scripts.path = $${SCRIPT_PATH}
+    scripts.path = $${PREFIX}/share/netemul/
     scripts.files = ../scripts
     INSTALLS += scripts
+    SCRIPT_PATH = $${PREFIX}/share/netemul/scripts/
 }
 
 # Let the variable be available for compiling
