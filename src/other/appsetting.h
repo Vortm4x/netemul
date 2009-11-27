@@ -49,7 +49,7 @@ public:
     static bool defaultSwitchManual() { return _defaultSwitchManual; }
     static void setScriptPath(const QString path) { _scriptPath = path; }
     static QString scriptPath() { if ( !_scriptPath.endsWith("/") ) _scriptPath.append("/");
-                                        qDebug() << _scriptPath; return _scriptPath; }
+                                         return _scriptPath; }
     static void setTtlArp(int n) { _ttlArp = n; }
     static int ttlArp() { return _ttlArp; }
     static void setArpResponceTime(int n) { _arpResponceTime = n; }
