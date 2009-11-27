@@ -97,7 +97,7 @@ void smartDevice::routePacket(ipPacket &p)
     ipAddress gw;
     if ( t->out != t->gateway ) gw = t->gateway;
     interface *f = ipToAdapter( t->out );
-    if ( !f ) {
+    if ( !f || !f->isConnect() ) {
         QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
                                  QObject::tr("Can't route packet! See adapter settings!"),
                                  QMessageBox::Ok, QMessageBox::Ok);
