@@ -46,14 +46,14 @@ void dhcpServerProgramm::setDevice(smartDevice *s)
 {
     if ( s == 0 ) return;
     programmRep::setDevice(s);
-    receiver = new udpSocket(device, SERVER_SOCKET);    
-    foreach ( interface *i, device->interfaces() ) {
+    receiver = new udpSocket(myDevice, SERVER_SOCKET);    
+    foreach ( interface *i, myDevice->interfaces() ) {
         if ( i->isConnect() ) myInterface = i->name();
         break;
     }
     receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
-    connect( device, SIGNAL(interfaceConnected(QString)), SLOT(checkInterface(QString)) );
+    connect( myDevice, SIGNAL(interfaceConnected(QString)), SLOT(checkInterface(QString)) );
 }
 
 void dhcpServerProgramm::setInterfaceName(QString inter)
@@ -68,8 +68,9 @@ void dhcpServerProgramm::checkInterface(QString port)
 
 void dhcpServerProgramm::execute(QByteArray data)
 {
-    if ( device->adapter(myInterface)->ip().isEmpty() ) {
-        QMessageBox::warning(0,tr("Warning"),tr("Your DHCP server isn't configured."), QMessageBox::Ok, QMessageBox::Ok);
+    if ( myDevice->adapter(myInterface)->ip().isEmpty() ) {
+        QMessageBox::warning(0,tr("Warning"),tr("Your DHCP server isn't configured."), QMessageBox::Ok,
+                             QMessageBox::Ok);
         return;
     }
     dhcpPacket packet(data);
@@ -98,7 +99,7 @@ void dhcpServerProgramm::executeRequest(dhcpPacket packet)
 {
     clientState *client = findClient( packet.xid() );
     if ( !client ) return;
-    if ( packet.siaddr() != device->adapter(myInterface)->ip() ) {
+    if ( packet.siaddr() != myDevice->adapter(myInterface)->ip() ) {
         clients.removeOne(client);
         delete client;
         return;
@@ -163,7 +164,7 @@ dhcpPacket dhcpServerProgramm::createDhcpPacket( clientState *client, int state 
     p.setYiaddr( client->ip );
     p.setMask( client->mask );
     p.setGateway( client->gateway );
-    p.setSiaddr( device->adapter(myInterface)->ip() );
+    p.setSiaddr( myDevice->adapter(myInterface)->ip() );
     p.setTime( client->time );
     return p;
 }
@@ -175,10 +176,10 @@ void dhcpServerProgramm::sendDhcp(dhcpPacket packet) const
     udp.setSender( SERVER_SOCKET );
     udp.setReceiver( CLIENT_SOCKET );
     udp.pack( packet.toData() );
-    ipPacket p( device->adapter(myInterface)->ip(), ipAddress::full() );
+    ipPacket p( myDevice->adapter(myInterface)->ip(), ipAddress::full() );
     p.pack( udp.toData() );
     p.setUpProtocol( ipPacket::udp );
-    device->adapter(myInterface)->sendPacket(p);
+    myDevice->adapter(myInterface)->sendPacket(p);
 }
 
 void dhcpServerProgramm::makeAnswer(clientState *client, int type)
@@ -219,7 +220,7 @@ ipAddress dhcpServerProgramm::giveDynamicIp() const
     quint32 i = myBeginIp.toInt();
     while ( i <= myEndIp.toInt() ) {
         isContains = myDhcpModel->containRecord( ipAddress(i) ) || findClient(ipAddress(i))
-                     || device->adapter(myInterface)->ip().toInt() == i;
+                     || myDevice->adapter(myInterface)->ip().toInt() == i;
         if ( isContains ) {
             i++;
             isContains = false;
@@ -250,7 +251,7 @@ void dhcpServerProgramm::incTime()
 
 void dhcpServerProgramm::showProperty()
 {
-    dhcpServerProperty *d = new dhcpServerProperty(device);
+    dhcpServerProperty *d = new dhcpServerProperty(myDevice);
     d->setProgramm(this);
     d->exec();
 }

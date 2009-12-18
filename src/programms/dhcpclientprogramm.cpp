@@ -71,10 +71,10 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
 
 void dhcpClientProgramm::resetClient(interfaceState *session)
 {
-    device->adapter(session->name)->setIp(ipAddress("0.0.0.0"));
-    device->adapter(session->name)->setMask(ipAddress("0.0.0.0"));
-    device->connectedNet( device->adapter( session->name ) );
-    device->setGateway("0.0.0.0");
+    myDevice->adapter(session->name)->setIp(ipAddress("0.0.0.0"));
+    myDevice->adapter(session->name)->setMask(ipAddress("0.0.0.0"));
+    myDevice->connectedNet( myDevice->adapter( session->name ) );
+    myDevice->setGateway("0.0.0.0");
 }
 
 bool dhcpClientProgramm::isUnderDhcpControl(const QString name) const
@@ -102,7 +102,7 @@ void dhcpClientProgramm::sendRequest(const QString &name)
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPREQUEST );
     message.setXid( t->xid );
-    message.setChaddr( device->adapter(t->name)->mac() );
+    message.setChaddr( myDevice->adapter(t->name)->mac() );
     message.setSiaddr( t->serverAddress );
     sendDhcpMessage(message,t);
 }
@@ -121,7 +121,7 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
-    message.setChaddr( device->adapter(t->name)->mac() );
+    message.setChaddr( myDevice->adapter(t->name)->mac() );
     if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
     sendDhcpMessage(message,t);
 }
@@ -134,7 +134,7 @@ void dhcpClientProgramm::sendDecLine(const QString &name)
     message.setType( dhcpPacket::DHCPDECLINE );
     message.setXid( t->xid );
     if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
-    message.setChaddr( device->adapter( t->name )->mac() );
+    message.setChaddr( myDevice->adapter( t->name )->mac() );
     sendDhcpMessage( message , t );
 }
 /*!
@@ -184,13 +184,13 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
     foreach ( interfaceState *i , myStates )
         if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_RESPONSE ) {
             i->state = interfaceState::CS_ALL_RIGHT;
-            device->adapter(i->name)->setIp( packet.yiaddr() );
-            device->adapter(i->name)->setMask( packet.mask() );
-            device->connectedNet(device->adapter(i->name));
-            device->setGateway( packet.gateway().toString() );
+            myDevice->adapter(i->name)->setIp( packet.yiaddr() );
+            myDevice->adapter(i->name)->setMask( packet.mask() );
+            myDevice->connectedNet(myDevice->adapter(i->name));
+            myDevice->setGateway( packet.gateway().toString() );
             i->time = packet.time();
             i->lastIp = packet.yiaddr();
-            device->adapter(i->name)->sendArpRequest( packet.yiaddr() );
+            myDevice->adapter(i->name)->sendArpRequest( packet.yiaddr() );
             return;
         }
 }
@@ -202,15 +202,15 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
   */
 void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *state)
 {
-    if (!device->adapter(state->name)->isConnect() ) return;
+    if (!myDevice->adapter(state->name)->isConnect() ) return;
     udpPacket udp;
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
     udp.pack( message.toData() );
-    ipPacket packet( device->adapter(state->name)->ip() , ipAddress::full() );
+    ipPacket packet( myDevice->adapter(state->name)->ip() , ipAddress::full() );
     packet.pack( udp.toData() );
     packet.setUpProtocol( ipPacket::udp );
-    device->adapter(state->name)->sendPacket( packet);
+    myDevice->adapter(state->name)->sendPacket( packet);
 }
 //---------------------------------------------------------------
 /*!
@@ -237,7 +237,7 @@ interfaceState* dhcpClientProgramm::stateAt(const QString name)
 //--------------------------------------------------------------
 QStringList dhcpClientProgramm::interfacesList() const
 {
-    return device->sockets();
+    return myDevice->sockets();
 }
 /*!
   * Возвращаем иконку подключения, для указанного интерфейса.
@@ -246,7 +246,7 @@ QStringList dhcpClientProgramm::interfacesList() const
   */
 QIcon dhcpClientProgramm::isConnectSocketIcon(const QString &name) const
 {
-    return device->isConnectSocketIcon(name);
+    return myDevice->isConnectSocketIcon(name);
 }
 //-----------------------------------------------------------------------
 /*!
@@ -282,7 +282,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
     session->name = name;
     session->xid = qrand()%5000;
     session->time = 0;
-    connect( device->adapter(session->name) , SIGNAL(equalIpDetected()) , SLOT(onDetectEqualIp()) );
+    connect( myDevice->adapter(session->name) , SIGNAL(equalIpDetected()) , SLOT(onDetectEqualIp()) );
     myStates << session;
     sendDiscover(session->name);
 }
@@ -293,7 +293,7 @@ void dhcpClientProgramm::onDetectEqualIp()
     interface *t = qobject_cast<interface*>(sender());
     interfaceState *client = 0;
     foreach ( interfaceState *i , myStates )
-        if ( device->adapter(  i->name ) == t ) client = i;
+        if ( myDevice->adapter(  i->name ) == t ) client = i;
     if ( !client ) return;
     sendDecLine(client->name);
     client->xid = qrand()%5000;

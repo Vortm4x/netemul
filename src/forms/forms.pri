@@ -11,4 +11,6 @@ FORMS += src/forms/programmdialog.ui \
     src/forms/ripproperty.ui \
     src/forms/dhcpserverproperty.ui \
     src/forms/virtualnetworkdialog.ui \
-    src/forms/devicenotedialog.ui
+    src/forms/devicenotedialog.ui \
+    src/forms/spoofingproperty.ui
+

@@ -25,8 +25,9 @@
 
 struct arpRecord;
 
-class arpModel
+class arpModel : public QObject
 {
+    Q_OBJECT
 public:
     enum { staticMode = 100 , dinamicMode = 101 };
     arpModel();
@@ -39,6 +40,8 @@ public:
     arpRecord* recordAt(const ipAddress &a) const;
     arpRecord* recordAt(int u) const;
     int size();
+signals:
+    void tableChanged(arpRecord *record);
 private:
     QList<arpRecord*> myTable;
     mutable arpRecord *lastRecord;

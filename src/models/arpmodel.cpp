@@ -43,6 +43,7 @@ arpRecord* arpModel::addToTable(ipAddress ip , macAddress mac , int mode )
     t->time = 0;
     myTable << t;
     lastRecord = 0;
+    emit tableChanged(t);
     return t;
 }
 

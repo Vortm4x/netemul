@@ -36,6 +36,7 @@ public:
     macAddress& operator=(const macAddress &other);
     void setBroadcast();
     bool isBroadcast();
+    bool isEmpty() const;
     qulonglong toInt() const;
 private:
     quint8 myMac[6];

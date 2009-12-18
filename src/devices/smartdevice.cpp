@@ -374,7 +374,7 @@ void smartDevice::programmsDialog()
 #ifndef __TESTING__
     programmDialog *d = new programmDialog;
     d->setDevice(this);
-    d->exec();
+    d->show();
 #endif
 }
 

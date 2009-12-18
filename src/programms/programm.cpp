@@ -21,6 +21,7 @@
 #include "ripprogramm.h"
 #include "dhcpserverprogramm.h"
 #include "dhcpclientprogramm.h"
+#include "spoofingprogramm.h"
 
 static const int MAGIC_PROGRAMM_NUMBER = 50;
 
@@ -43,6 +44,7 @@ void programm::createImpl(int n)
         case RIP: rep = new ripProgramm; break;
         case DHCPClient : rep = new dhcpClientProgramm; break;
         case DHCPServer : rep = new dhcpServerProgramm; break;
+        case SPOOFING : rep = new spoofingProgramm; break;
         default: break;
     }
     rep->countRef = 1;

@@ -109,5 +109,11 @@ void macAddress::setMac(QString str)
         myMac[i] = s.at(i).toInt(0,16);
 }
 
+bool macAddress::isEmpty() const
+{
+    for ( int i = 0 ; i < 6 ; i++ )
+        if ( myMac[i] ) return false;
+    return true;
+}
 
 
