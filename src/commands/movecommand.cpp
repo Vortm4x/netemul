@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include "movecommand.h"
 
-moveCommand::moveCommand(myCanvas *s,mapWithCoords o,mapWithCoords r)
+moveCommand::moveCommand(MyCanvas *s,mapWithCoords o,mapWithCoords r)
 {
     scene = s;
     old = o;

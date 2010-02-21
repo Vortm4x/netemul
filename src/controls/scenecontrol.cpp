@@ -21,7 +21,7 @@
 #include "device.h"
 #include "mycanvas.h"
 
-sceneControl::sceneControl(QObject *parent , myCanvas *s ) : QObject(parent) , scene(s)
+sceneControl::sceneControl(QObject *parent , MyCanvas *s ) : QObject(parent) , scene(s)
 {
     connect( scene , SIGNAL(selectionChanged()) , SLOT(observeSelection()) );
 }

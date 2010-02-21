@@ -236,39 +236,39 @@ void MainWindow::createAction()
     connect( staticsAct , SIGNAL(triggered()) , SLOT(statistics()) );
 
     moveAct = createOneAction(QIcon(":/im/images/arrow.png"),true);
-    moveAct->setData( myCanvas::move*10 + myCanvas::noDev );
+    moveAct->setData( MyCanvas::move*10 + MyCanvas::noDev );
     moveAct->setChecked(true);
     moveAct->setShortcut(tr("Ctrl+1"));
 
     cableAct = createOneAction(QIcon(":/im/images/cable.png"),true);
-    cableAct->setData( myCanvas::cable*10 + myCanvas::noDev );
+    cableAct->setData( MyCanvas::cable*10 + MyCanvas::noDev );
     cableAct->setShortcut(tr("Ctrl+2"));
 
     textAct = createOneAction(QIcon(":/im/images/note.png"), true);
-    textAct->setData( myCanvas::text*10 + myCanvas::noDev );
+    textAct->setData( MyCanvas::text*10 + MyCanvas::noDev );
     textAct->setShortcut(tr("Ctrl+3"));
 
     shareBusAct = createOneAction(QIcon(":/im/images/sharebus.png"),true);
-    shareBusAct->setData( myCanvas::insert*10 + myCanvas::busDev);
+    shareBusAct->setData( MyCanvas::insert*10 + MyCanvas::busDev);
 
     computerAct = createOneAction(QIcon(":/im/images/computer.png"),true);
-    computerAct->setData( myCanvas::insert*10 + myCanvas::compDev);
+    computerAct->setData( MyCanvas::insert*10 + MyCanvas::compDev);
     computerAct->setShortcut(tr("Ctrl+4"));
 
     hubAct = createOneAction(QIcon(":/im/images/hub.png"),true);
-    hubAct->setData( myCanvas::insert*10 + myCanvas::hubDev );
+    hubAct->setData( MyCanvas::insert*10 + MyCanvas::hubDev );
     hubAct->setShortcut(tr("Ctrl+5"));
 
     switchAct = createOneAction(QIcon(":/im/images/switch.png"),true);
-    switchAct->setData( myCanvas::insert*10 + myCanvas::switchDev );
+    switchAct->setData( MyCanvas::insert*10 + MyCanvas::switchDev );
     switchAct->setShortcut(tr("Ctrl+6"));
 
     routerAct = createOneAction(QIcon(":/im/images/router.png") , true);
-    routerAct->setData( myCanvas::insert*10 + myCanvas::routerDev );
+    routerAct->setData( MyCanvas::insert*10 + MyCanvas::routerDev );
     routerAct->setShortcut(tr("Ctrl+7"));
 
     sendAct = createOneAction(QIcon(":/im/images/left_right.png"),true);
-    sendAct->setData( myCanvas::send* 10 + myCanvas::noDev);
+    sendAct->setData( MyCanvas::send* 10 + MyCanvas::noDev);
     sendAct->setShortcut(tr("Ctrl+8"));
 
     testAct = createOneAction();
@@ -416,7 +416,7 @@ void MainWindow::createTools()
 */
 void MainWindow::createScene()
 {
-    canva = new myCanvas(itemMenu,this); // Создаем сцену
+    canva = new MyCanvas(itemMenu,this); // Создаем сцену
     canva->setBackgroundBrush(QBrush(Qt::lightGray));
     canva->setSceneRect(0,0,10,10);
     connect( showGridAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowGrid(bool)));

@@ -26,12 +26,12 @@
 #include "textstate.h"
 #include "sendstate.h"
 
-abstractState::abstractState(myCanvas *s)
+abstractState::abstractState(MyCanvas *s)
 {
     scene = s;
 }
 
-abstractState* abstractState::initialize(myCanvas *s)
+abstractState* abstractState::initialize(MyCanvas *s)
 {
     return new emptyState(s);
 }

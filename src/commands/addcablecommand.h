@@ -22,18 +22,18 @@
 
 #include <QUndoCommand>
 
-class myCanvas;
+class MyCanvas;
 class cableDev;
 
 class addCableCommand : public QUndoCommand
 {
 public:
-    addCableCommand(myCanvas *s, cableDev *c);
+    addCableCommand(MyCanvas *s, cableDev *c);
     ~addCableCommand();
     void redo();
     void undo();
 private:
-    myCanvas *scene;
+    MyCanvas *scene;
     cableDev *cable;
     bool isOnScene;
 };

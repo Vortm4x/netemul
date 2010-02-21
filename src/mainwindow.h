@@ -25,7 +25,7 @@
 #include <QIcon>
 #endif
 
-class myCanvas;
+class MyCanvas;
 class settingDialog;
 class sceneControl;
 
@@ -86,7 +86,7 @@ private:
     int saveFileDialog();
     void setOpenglMode(bool mode);
     QString myFile; // Имя текущего файла
-    myCanvas *canva;
+    MyCanvas *canva;
     sceneControl *sceneControler;
     QGraphicsView *view; // Графическое представление нашей сцены
 

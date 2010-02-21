@@ -71,7 +71,8 @@ public:
     void setGateway(QString g) { myGateway.setIp(g); }
     void setTime(int t) { myTime = t; }
     void setWaitingTime(int t) { myWaitingTime = t; }
-    void setDynamic(bool b) { myDynamic = b; }
+    void setDynamic(bool b) { myDynamic = b; }   
+    void setServerName(QString n) { myServerName = n; }
     QString interfaceName() const { return myInterface; }
     QString beginIp() const { return myBeginIp.toString(); }
     QString endIp() const { return myEndIp.toString(); }
@@ -80,6 +81,7 @@ public:
     int time() const { return myTime; }
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
+    QString serverName() const { return myServerName; }
     dhcpServerModel* dhcpModel() { return myDhcpModel; }
     virtual QString featureName() const { return "DS"; }
 public:
@@ -114,6 +116,8 @@ private:
 
 // Переменные
 private:
+    static int myServerCount;
+    QString myServerName;
     QList<clientState*> clients;
     QString myInterface;
     udpSocket *receiver;

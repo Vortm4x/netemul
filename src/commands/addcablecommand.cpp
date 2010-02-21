@@ -21,7 +21,7 @@
 #include "mycanvas.h"
 #include "cabledev.h"
 
-addCableCommand::addCableCommand(myCanvas *s, cableDev *c)
+addCableCommand::addCableCommand(MyCanvas *s, cableDev *c)
 {
     scene = s;
     cable = c;

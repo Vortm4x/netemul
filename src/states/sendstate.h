@@ -28,7 +28,7 @@ class sendEllipse;
 class sendState : public abstractState
 {
 public:
-    sendState(myCanvas *s);
+    sendState(MyCanvas *s);
     ~sendState();
     enum { noSendItem = 0 , oneSendItem = 1 };
     void mouseMove(QGraphicsSceneMouseEvent *event);

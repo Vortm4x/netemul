@@ -2,7 +2,7 @@
 #include "mycanvas.h"
 #include "device.h"
 
-sceneXmlWriter::sceneXmlWriter(myCanvas *scene) : myScene(scene)
+sceneXmlWriter::sceneXmlWriter(MyCanvas *scene) : myScene(scene)
 {
     setAutoFormatting(true);
 }

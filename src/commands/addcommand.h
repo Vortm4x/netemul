@@ -22,19 +22,19 @@
 
 #include <QUndoCommand>
 #include <QPointF>
-class myCanvas;
+class MyCanvas;
 class device;
 
 class addCommand : public QUndoCommand
 {
 public:
-    addCommand(myCanvas *s , QPointF point , int type);
+    addCommand(MyCanvas *s , QPointF point , int type);
     ~addCommand();
     void undo();
     void redo();
 private:
     device *myDevice;
-    myCanvas *scene;
+    MyCanvas *scene;
     QPointF myPoint;
     int myType;
     bool isOnScene;

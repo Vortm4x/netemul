@@ -60,6 +60,7 @@ void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
     ie_gatew->setText(myProgramm->gateway());
     cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
     sb_waitingTime->setValue( myProgramm->waitingTime() );
+    le_name->setText(myProgramm->serverName());
 }
 
 void dhcpServerProperty::addRecord()
@@ -96,6 +97,7 @@ void dhcpServerProperty::apply()
     myProgramm->setTime(sb_time->value());
     myProgramm->setDynamic(cb_dynamic->isChecked());
     myProgramm->setWaitingTime(sb_waitingTime->value());
+    myProgramm->setServerName(le_name->text());
     accept();
 }
 

@@ -21,7 +21,7 @@
 #include "addcommand.h"
 #include "mycanvas.h"
 
-addCommand::addCommand(myCanvas *s, QPointF point , int type)
+addCommand::addCommand(MyCanvas *s, QPointF point , int type)
 {
     scene = s;
     myDevice = 0;

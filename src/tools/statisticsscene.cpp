@@ -21,7 +21,7 @@
 #include "mycanvas.h"
 #include "device.h"
 
-statisticsScene::statisticsScene(myCanvas *scene)
+statisticsScene::statisticsScene(MyCanvas *scene)
 {
     myScene = scene;
     comps = 0 ; routers = 0;

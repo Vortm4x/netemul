@@ -25,7 +25,7 @@
 class textState : public abstractState
 {
 public:
-    textState(myCanvas *s) : abstractState(s) { }
+    textState(MyCanvas *s) : abstractState(s) { }
     void mouseMove(QGraphicsSceneMouseEvent*) { }
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*) { }

@@ -44,7 +44,7 @@
   @param context - Контекстное menu устройств.
   @param parent - Объект родитель.
 */
-myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
+MyCanvas::MyCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 {
     myItemMenu = context; // меню из аргумента
     myTimer = 0;       
@@ -57,7 +57,7 @@ myCanvas::myCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
 /*!
  * Деструктор пока не выполняет ни каких действий.
 */ 
-myCanvas::~myCanvas()
+MyCanvas::~MyCanvas()
 {
     clear();
     myDevices.clear();
@@ -69,7 +69,7 @@ myCanvas::~myCanvas()
  * Событие перемещения мыши.
  * @param event - переменная события
 */ 
-void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void MyCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     myState->mouseMove(event);
 }
@@ -78,13 +78,13 @@ void myCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
   Событие нажатия мыши.
   @param event - переменная события.
 */
-void myCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void MyCanvas::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->button() != Qt::LeftButton ) return;
     myState->mousePress(event);
 }
 //-----------------------------------------------------------------------
-void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void MyCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->button() != Qt::LeftButton ) return;
     myState->mouseRelease(event);
@@ -97,7 +97,7 @@ void myCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
   @param ep - Имя порта второго устройства.
   @return указатель на кабель соединяющий устройства.
 */
-cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString ep)
+cableDev* MyCanvas::createConnection(device *s , device *e , QString sp,QString ep)
 {
     if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
     cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
@@ -109,7 +109,7 @@ cableDev* myCanvas::createConnection(device *s , device *e , QString sp,QString 
 }
 //-------------------------------------------------------------------------
 
-device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
+device* MyCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 {
     if ( myType == -1 ) myType = nowType;
     device *t = new device(myType);
@@ -122,7 +122,7 @@ device* myCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 /*!
   Функция удаляет со сцены выделенные устройства и провода.
 */
-void myCanvas::removeDevice()
+void MyCanvas::removeDevice()
 {
     myModified = true;
     QList<QGraphicsItem*> list = selectedItems(); // Получаем список выделенных элементов.
@@ -133,12 +133,12 @@ void myCanvas::removeDevice()
 /*!
   Открывает новый файл, проводит подготовку внешнего вида сцены.
 */
-void myCanvas::newFile()
+void MyCanvas::newFile()
 {
     if ( myOpen ) return;
     lastId = 0;
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
-    setSceneRect(0,0,myCanvas::width,myCanvas::height);
+    setSceneRect(0,0,MyCanvas::width,MyCanvas::height);
     myState->goMove();
     myOpen = true;
     play();
@@ -147,7 +147,7 @@ void myCanvas::newFile()
 /*!
   Закрывает файл, очищает сцену, делает фон серым, удаляет все соединения.
 */
-void myCanvas::closeFile()
+void MyCanvas::closeFile()
 {   
     myState->goEmpty();
     commandStack.clear();
@@ -162,14 +162,14 @@ void myCanvas::closeFile()
     myModified = false;
 }
 //---------------------------------------------------
-void myCanvas::setMode(int modScene,int curDev)
+void MyCanvas::setMode(int modScene,int curDev)
 {
     myState->goTo(modScene);
     nowType = curDev;    
     setSelectionArea( QPainterPath() );
 }
 
-void myCanvas::hideState()
+void MyCanvas::hideState()
 {
     myState->hideState();
 }
@@ -177,7 +177,7 @@ void myCanvas::hideState()
   Загружает сцену из файла.
   @param fileName - имя файла из которого осуществляется загрузка.
 */
-void myCanvas::openScene(QString fileName)
+void MyCanvas::openScene(QString fileName)
 {
     newFile();
     QFile file(fileName);
@@ -232,7 +232,7 @@ void myCanvas::openScene(QString fileName)
 }
 //-----------------------------------------------------------------------
 
-void myCanvas::openSceneXml(QString fileName)
+void MyCanvas::openSceneXml(QString fileName)
 {
     newFile();
     QFile file(fileName);
@@ -254,7 +254,7 @@ void myCanvas::openSceneXml(QString fileName)
   Сохраняет сцену в файл.
   @param fileName - имя файла в который осуществляется сохранение.
 */
-void myCanvas::saveScene(QString fileName)
+void MyCanvas::saveScene(QString fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
@@ -285,7 +285,7 @@ void myCanvas::saveScene(QString fileName)
     myModified = false;
 }
 
-void myCanvas::saveSceneXml(QString fileName)
+void MyCanvas::saveSceneXml(QString fileName)
 {
     QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly)) {
@@ -306,12 +306,12 @@ void myCanvas::saveSceneXml(QString fileName)
   разнести из по разным потокам, но не сейчас. Происходят следующие действия:
   обновление arp,mac, rip таблиц и сдвиг пакетов на кабелях.
 */
-void myCanvas::timerEvent(QTimerEvent*)
+void MyCanvas::timerEvent(QTimerEvent*)
 {
     ticTime();
 }
 //--------------------------------------------------------------
-void myCanvas::ticTime()
+void MyCanvas::ticTime()
 {
     static int n = 9;
     foreach ( cableDev *t , myConnections)
@@ -327,12 +327,12 @@ void myCanvas::ticTime()
     }
 }
 
-void myCanvas::emulateTime()
+void MyCanvas::emulateTime()
 {
    while ( !isEnd() ) ticTime();
 }
 
-bool myCanvas::isEnd() const
+bool MyCanvas::isEnd() const
 {
     foreach ( cableDev *t , myConnections ) {
         if ( t->isBusy() ) return false;
@@ -344,28 +344,28 @@ bool myCanvas::isEnd() const
     return true;
 }
 
-device* myCanvas::oneSelectedDevice()
+device* MyCanvas::oneSelectedDevice()
 {
     if ( selectedItems().count() == 1 && isDevice( selectedItems().first() ) )
         return qgraphicsitem_cast<device*>(selectedItems().first());
     return NULL;
 }
 
-device* myCanvas::deviceInPoint(QPointF p)
+device* MyCanvas::deviceInPoint(QPointF p)
 {
     foreach ( QGraphicsItem *i , items(p) )
         if ( isDevice(i) ) return qgraphicsitem_cast<device*>(i);
     return 0;
 }
 
-void myCanvas::setShowLabels(bool b)
+void MyCanvas::setShowLabels(bool b)
 {
     foreach ( cableDev *i , myConnections )
         i->setShowLabel(b);
     appSetting::setShowLabel(b);
 }
 
-void myCanvas::setShowGrid(bool b)
+void MyCanvas::setShowGrid(bool b)
 {
     if (b) setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     else setBackgroundBrush(QBrush(Qt::white));
@@ -375,7 +375,7 @@ void myCanvas::setShowGrid(bool b)
   @param с - точка подлещашая выравниванию.
   @return - выровненая точка.
 */
-QPointF myCanvas::calibrate(QPointF c)
+QPointF MyCanvas::calibrate(QPointF c)
 {
     c.setX( (qRound(c.x()) / 50)*50+25 );
     c.setY( (qRound(c.y()) / 50)*50+25 );
@@ -387,7 +387,7 @@ QPointF myCanvas::calibrate(QPointF c)
   в случае если она пуста.
   @param t - указатель на надпись.
 */
-void myCanvas::editorLostFocus(textItem *t)
+void MyCanvas::editorLostFocus(textItem *t)
 {
      QTextCursor cursor = t->textCursor();
      cursor.clearSelection();
@@ -404,7 +404,7 @@ void myCanvas::editorLostFocus(textItem *t)
   Создает на сцене новый комментарий.
   @return указатель на созданный комментарий.
 */
-textItem* myCanvas::createTextItem(QPointF p , const QString &str /*=tr("Комментарий")*/)
+textItem* MyCanvas::createTextItem(QPointF p , const QString &str /*=tr("Комментарий")*/)
 {
     textItem *t = new textItem(p);
     t->setPlainText(str);
@@ -419,61 +419,61 @@ textItem* myCanvas::createTextItem(QPointF p , const QString &str /*=tr("Ком�
   Проверяет устройство ли данный объект или нет.
   @return true если устройство, false в противном случае.
 */
-bool myCanvas::isDevice(QGraphicsItem *t) const
+bool MyCanvas::isDevice(QGraphicsItem *t) const
 {
     if ( t->type() == device::Type ) return true;
     return false;
 }
 //------------------------------------------------------------------------
 
-deviceImpl* myCanvas::addComputer(int x,int y)
+deviceImpl* MyCanvas::addComputer(int x,int y)
 {
     device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , compDev);
     return t->contentDevice();
 }
-deviceImpl* myCanvas::addRouter(int x,int y)
+deviceImpl* MyCanvas::addRouter(int x,int y)
 {
     device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , routerDev);
     return t->contentDevice();
 }
-deviceImpl* myCanvas::addHub(int x,int y)
+deviceImpl* MyCanvas::addHub(int x,int y)
 {
     device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , hubDev);
     return t->contentDevice();
 }
 
-deviceImpl* myCanvas::addSwitch(int x,int y)
+deviceImpl* MyCanvas::addSwitch(int x,int y)
 {
     device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , switchDev);
     return t->contentDevice();
 }
 
-textItem* myCanvas::addNote(int x, int y)
+textItem* MyCanvas::addNote(int x, int y)
 {
     QPointF p( x*50 , y*50 );
     return createTextItem(p);
 }
 
-void myCanvas::addConnection(deviceImpl *s,deviceImpl *e, const QString &sp,const QString &se)
+void MyCanvas::addConnection(deviceImpl *s,deviceImpl *e, const QString &sp,const QString &se)
 {
     device *st = deviceWithImpl(s);
     device *et = deviceWithImpl(e);
     createConnection(st,et,sp,se);
 }
 
-device* myCanvas::deviceWithImpl(deviceImpl *d)
+device* MyCanvas::deviceWithImpl(deviceImpl *d)
 {
     foreach ( device *i , myDevices )
         if ( i->contentDevice() == d ) return i;
     return 0;
 }
 
-int myCanvas::animateSpeed() const
+int MyCanvas::animateSpeed() const
 {
     return appSetting::animateSpeed();
 }
 
-void myCanvas::setAnimateSpeed(int n)
+void MyCanvas::setAnimateSpeed(int n)
 {
     if (!myTimer ) return;
     killTimer(myTimer);
@@ -481,12 +481,12 @@ void myCanvas::setAnimateSpeed(int n)
     myTimer = startTimer(appSetting::realAnimateSpeed());
 }
 
-void myCanvas::play()
+void MyCanvas::play()
 {
     myTimer = startTimer( appSetting::realAnimateSpeed() );
 }
 
-QObjectList myCanvas::computerList()
+QObjectList MyCanvas::computerList()
 {
     QObjectList temp;
     foreach ( device *i , myDevices )
@@ -494,23 +494,23 @@ QObjectList myCanvas::computerList()
     return temp;
 }
 
-void myCanvas::closeScene()
+void MyCanvas::closeScene()
 {
     emit fileClosed();
 }
 
-void myCanvas::newScene()
+void MyCanvas::newScene()
 {
     emit fileOpened();
 }
 
-void myCanvas::turnToMove()
+void MyCanvas::turnToMove()
 {
     myState->goMove();
     emit uncheck();
 }
 
-void myCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
+void MyCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
 {
     QMapIterator<QGraphicsItem*,QPointF> i(map);
     i.toFront();
@@ -530,43 +530,43 @@ void myCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
     myModified = true;
 }
 
-void myCanvas::calibrateAll(QList<QGraphicsItem*> list)
+void MyCanvas::calibrateAll(QList<QGraphicsItem*> list)
 {
     foreach ( QGraphicsItem *i , list )
         if ( i->type() != textItem::Type ) i->setPos( calibrate( i->pos() ) );
 }
 
-void myCanvas::registerDevice(device *dev)
+void MyCanvas::registerDevice(device *dev)
 {
     addItem(dev);
     myDevices << dev;
 }
 
-void myCanvas::unregisterDevice(device *dev)
+void MyCanvas::unregisterDevice(device *dev)
 {
     removeItem(dev);
     myDevices.removeOne(dev);
 }
 
-void myCanvas::registerCable(cableDev *cable)
+void MyCanvas::registerCable(cableDev *cable)
 {
     addItem(cable); // И добавляем его на сцену =)
     myConnections << cable;
 }
 
-void myCanvas::unregisterCable(cableDev *cable)
+void MyCanvas::unregisterCable(cableDev *cable)
 {
     removeItem(cable);
     myConnections.removeOne(cable);
 }
 
-void myCanvas::registerText(textItem *t)
+void MyCanvas::registerText(textItem *t)
 {
     addItem(t);
     myTextItems << t;
 }
 
-void myCanvas::unregisterText(textItem *t)
+void MyCanvas::unregisterText(textItem *t)
 {
     removeItem(t);
     myTextItems.removeOne(t);

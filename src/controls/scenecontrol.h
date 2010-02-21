@@ -23,14 +23,14 @@
 #include <QtCore/QObject>
 #include <QtGui/QIcon>
 
-class myCanvas;
+class MyCanvas;
 class logDialog;
 
 class sceneControl : public QObject
 {
     Q_OBJECT
 public:
-    sceneControl(QObject *parent,myCanvas *s);
+    sceneControl(QObject *parent,MyCanvas *s);
     bool isSelect() const;
     QString tableName() const;
     QString note() const;
@@ -38,7 +38,7 @@ public:
     QIcon tableIcon() const;
     QString deviceName() const;
 private:
-    myCanvas *scene;
+    MyCanvas *scene;
 public slots:
     void observeSelection();
     void propertyDialog() const;

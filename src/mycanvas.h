@@ -45,7 +45,7 @@ static const int UNDO_LIMIT = 7;
     по наследству все самое необходимое, для того что бы мы могли свободно писать логику используя
     уже хорошо зарекомендовавший себя каркас.
 */
-class myCanvas : public QGraphicsScene
+class MyCanvas : public QGraphicsScene
 {
     Q_OBJECT
     Q_PROPERTY(bool open READ isOpen WRITE setOpen)
@@ -56,8 +56,8 @@ public:
     enum { width = 2000 , height = 2000 };    
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
-    myCanvas(QMenu *context,QObject *parent = 0); // Конструктор
-    ~myCanvas();
+    MyCanvas(QMenu *context,QObject *parent = 0); // Конструктор
+    ~MyCanvas();
     device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену    
     void hideState();
     cableDev* createConnection(device *s,device *e,QString sp,QString ep);

@@ -22,7 +22,7 @@
 
 #include "ui_staticsdialog.h"
 
-class myCanvas;
+class MyCanvas;
 class statisticsScene;
 
 class staticsDialog : public QDialog, private Ui::staticsDialog {

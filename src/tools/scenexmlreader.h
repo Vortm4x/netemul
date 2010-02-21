@@ -3,16 +3,16 @@
 
 #include <QXmlStreamReader>
 
-class myCanvas;
+class MyCanvas;
 
 class sceneXmlReader : public QXmlStreamReader
 {
 public:
-    sceneXmlReader(myCanvas *scene);
+    sceneXmlReader(MyCanvas *scene);
     void readScene(QIODevice *dev);
     void readUnknownElement();
 private:
-    myCanvas *myScene;
+    MyCanvas *myScene;
     void readNetemul();
 };
 

@@ -46,6 +46,29 @@
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Give server's name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_name"/>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -98,7 +121,7 @@
         <string>Add</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
        </property>
       </widget>
@@ -109,7 +132,7 @@
         <string>Delete</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
        </property>
       </widget>
@@ -293,7 +316,7 @@
         <string>Ok</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
       </widget>
@@ -304,7 +327,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset resource="../../netemul.qrc">
+        <iconset>
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -320,9 +343,7 @@
    <header>ipedit.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../../netemul.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>btn_cancel</sender>

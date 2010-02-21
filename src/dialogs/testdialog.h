@@ -29,13 +29,13 @@
 #include <QScriptEngineDebugger>
 #endif
 
-class myCanvas;
+class MyCanvas;
 
 class testDialog : public QDialog , private Ui::testDialog {
     Q_OBJECT
     Q_DISABLE_COPY(testDialog)
 public:
-    explicit testDialog(myCanvas *c,QWidget *parent = 0);
+    explicit testDialog(MyCanvas *c,QWidget *parent = 0);
     virtual ~testDialog();
 protected:
     virtual void changeEvent(QEvent *e);
@@ -51,7 +51,7 @@ private:
     QScriptEngineDebugger debugger;
 #endif
     bool test(QString s);
-    myCanvas *canva;
+    MyCanvas *canva;
 };
 
 #endif // TESTDIALOG_H

@@ -3,15 +3,15 @@
 
 #include <QXmlStreamWriter>
 
-class myCanvas;
+class MyCanvas;
 
 class sceneXmlWriter : public QXmlStreamWriter
 {
 public:
-    sceneXmlWriter(myCanvas *scene);
+    sceneXmlWriter(MyCanvas *scene);
     void writeScene(QIODevice *dev);
 private:
-    myCanvas *myScene;
+    MyCanvas *myScene;
 };
 
 #endif // SCENEXMLWRITER_H

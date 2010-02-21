@@ -23,7 +23,7 @@
 #include "device.h"
 #include "textitem.h"
 
-deleteCommand::deleteCommand(myCanvas *s, QList<QGraphicsItem*> list)
+deleteCommand::deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
 {
     scene = s;
     foreach ( QGraphicsItem *i, list) {

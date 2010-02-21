@@ -28,11 +28,11 @@ typedef QMap<QGraphicsItem*,QPointF> mapWithCoords;
 class moveCommand : public QUndoCommand
 {
 public:
-    moveCommand(myCanvas *s,mapWithCoords o, mapWithCoords r);
+    moveCommand(MyCanvas *s,mapWithCoords o, mapWithCoords r);
     void undo();
     void redo();
 private:
-    myCanvas *scene;
+    MyCanvas *scene;
     mapWithCoords old;
     mapWithCoords recent;
 };

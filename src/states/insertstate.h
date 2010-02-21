@@ -27,7 +27,7 @@ class insertRect;
 class insertState : public abstractState
 {
 public:
-    insertState(myCanvas *s);
+    insertState(MyCanvas *s);
     ~insertState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);

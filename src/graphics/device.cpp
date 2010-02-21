@@ -129,7 +129,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
 void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     //if ( scene()->selectedItems().count() ) return;
-    myCanvas *canva = qobject_cast<myCanvas*>(scene());
+    MyCanvas *canva = qobject_cast<MyCanvas*>(scene());
     canva->turnToMove();
     scene()->clearSelection(); // Снять все выделения на сцене
     setSelected(true); // Выделить текущуе устройство
@@ -140,7 +140,7 @@ void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
-    myCanvas *canva = qobject_cast<myCanvas*>(scene());
+    MyCanvas *canva = qobject_cast<MyCanvas*>(scene());
     canva->turnToMove();
     dialog();
     scene()->clearSelection();
@@ -195,6 +195,7 @@ bool device::isConnectDevices(device *s , device *e)
 void device::onImplChange()
 {
     myFeatures = impl->featuresList();
+    update();
 }
 
 

@@ -46,7 +46,7 @@ void ObjectFromScriptItem(const QScriptValue &object, textItem* &out)
 }
 
 
-testDialog::testDialog(myCanvas *c,QWidget *parent) : QDialog(parent)
+testDialog::testDialog(MyCanvas *c,QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
     canva = c;   

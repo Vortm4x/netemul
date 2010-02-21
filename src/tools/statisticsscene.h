@@ -24,17 +24,17 @@
 #include <QtCore/QObject>
 #include "statistics.h"
 
-class myCanvas;
+class MyCanvas;
 
 class statisticsScene : public QObject
 {
     Q_OBJECT
 public:
-    statisticsScene(myCanvas *scene);
+    statisticsScene(MyCanvas *scene);
     QString devicesString();
     QString trafficString();
 private:
-    myCanvas *myScene;
+    MyCanvas *myScene;
     statistics Statistics;
     int comps,hubs,switchs,routers;
 };

@@ -31,7 +31,7 @@ typedef QList<QGraphicsItem*> itemList;
 class moveState : public abstractState
 {
 public:
-    moveState(myCanvas *s);
+    moveState(MyCanvas *s);
     ~moveState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);

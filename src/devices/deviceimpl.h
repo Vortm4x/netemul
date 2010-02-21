@@ -103,6 +103,7 @@ public:
     virtual bool isCanSend() const { return false; }
 
     void setVisualizator( visualizable *view ) { myView = view; }
+    void updateView() const { myView->onImplChange(); }
 public:
     virtual deviceImpl* prototype() const = 0;
 

@@ -25,7 +25,7 @@
 class emptyState : public abstractState
 {
 public:
-    emptyState(myCanvas *s) : abstractState(s) { }
+    emptyState(MyCanvas *s) : abstractState(s) { }
     void mouseMove(QGraphicsSceneMouseEvent*) { }
     void mousePress(QGraphicsSceneMouseEvent*) { }
     void mouseRelease(QGraphicsSceneMouseEvent*) { }

@@ -23,18 +23,18 @@
 #include <QUndoCommand>
 #include <QPointF>
 
-class myCanvas;
+class MyCanvas;
 class textItem;
 
 class addTextCommand : public QUndoCommand
 {
 public:
-    addTextCommand(myCanvas *s, QPointF p);
+    addTextCommand(MyCanvas *s, QPointF p);
     ~addTextCommand();
     void undo();
     void redo();
 private:
-    myCanvas *scene;
+    MyCanvas *scene;
     QPointF point;
     bool isFirst;
     bool isOnScene;

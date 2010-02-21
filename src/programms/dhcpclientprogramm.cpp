@@ -39,7 +39,7 @@ void dhcpClientProgramm::incTime()
 {
     foreach ( interfaceState *i , myStates ) {
         --i->time;
-        if ( i->time == 0 ) {
+        if ( i->time <= 0 ) {
             switch ( i->state ) {
                 case interfaceState::CS_ALL_RIGHT: restartSession(i); break;
                 case interfaceState::CS_WAIT_VARIANT: sendDiscover( i->name ); break;
@@ -188,6 +188,7 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
             myDevice->adapter(i->name)->setMask( packet.mask() );
             myDevice->connectedNet(myDevice->adapter(i->name));
             myDevice->setGateway( packet.gateway().toString() );
+            myDevice->updateView();
             i->time = packet.time();
             i->lastIp = packet.yiaddr();
             myDevice->adapter(i->name)->sendArpRequest( packet.yiaddr() );
@@ -332,7 +333,8 @@ void dhcpClientProgramm::read(QDataStream &stream)
     stream >> n;
     for ( int i = 0 ; i < n ; i++ ) {
         interfaceState *temp = new interfaceState;
-        temp->read(stream);
+        temp->read(stream);        
+        temp->time = 0;
         temp->state = interfaceState::CS_WAIT_VARIANT;
         myStates << temp;
     }

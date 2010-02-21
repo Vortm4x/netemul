@@ -4,7 +4,7 @@
 
 #include <QtDebug>
 
-sceneXmlReader::sceneXmlReader(myCanvas *scene) : myScene(scene)
+sceneXmlReader::sceneXmlReader(MyCanvas *scene) : myScene(scene)
 {
 
 }

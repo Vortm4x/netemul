@@ -20,7 +20,7 @@
 #include "addtextcommand.h"
 #include "mycanvas.h"
 
-addTextCommand::addTextCommand(myCanvas *s, QPointF p)
+addTextCommand::addTextCommand(MyCanvas *s, QPointF p)
 {
     scene = s;
     point = p;

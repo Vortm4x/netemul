@@ -25,7 +25,7 @@
 #include "sendellipse.h"
 #include "device.h"
 
-sendState::sendState(myCanvas *s) : abstractState(s)
+sendState::sendState(MyCanvas *s) : abstractState(s)
 {
     mySendState = noSendItem;
     SendEllipse = new sendEllipse;

@@ -24,7 +24,7 @@
 #include <QSet>
 
 class QGraphicsItem;
-class myCanvas;
+class MyCanvas;
 class cableDev;
 class device;
 class textItem;
@@ -32,14 +32,14 @@ class textItem;
 class deleteCommand : public QUndoCommand
 {
 public:
-    deleteCommand(myCanvas *s, QList<QGraphicsItem*> list);
+    deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list);
     ~deleteCommand();
     void undo();
     void redo();
     void deleteConnection(cableDev *cable);
     void createConnection(cableDev *cable);
 private:
-    myCanvas *scene;
+    MyCanvas *scene;
     QSet<cableDev*> extractCables;
     QList<device*> extractDevices;
     QList<textItem*> extractText;

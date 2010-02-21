@@ -23,7 +23,7 @@
 #include "insertrect.h"
 #include "addcommand.h"
 
-insertState::insertState(myCanvas *s) : abstractState(s)
+insertState::insertState(MyCanvas *s) : abstractState(s)
 {
     InsertRect = new insertRect;
     scene->addItem(InsertRect);
