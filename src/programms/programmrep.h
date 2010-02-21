@@ -35,7 +35,7 @@ public:
     friend class programm;
     programmRep();
     virtual ~programmRep();
-    void setEnable(bool b) { if ( b != myEnable ) myEnable = b; }
+    void setEnable(bool b);
     bool isEnable() const  { return myEnable; }
     QString name() const { return myName; }
     virtual void setDevice(smartDevice *s) { myDevice = s; }

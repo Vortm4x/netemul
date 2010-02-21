@@ -118,6 +118,18 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     }
     painter->drawEllipse(-17,-17,6,6);
 
+    int pixmapY = 0;
+    foreach ( QString name , myFeatures.keys() ) {
+        QString color;
+        if ( myFeatures.value(name) ) {
+            color = "green";
+        } else {
+            color = "red";
+        }
+        painter->drawPixmap(0,-25+pixmapY*15,25,15,QPixmap(":/im/images/label_"+name+"_"+color+".png"));
+        pixmapY++;
+    }
+
     int traffic = impl->trafficDigit();
     if ( !traffic ) return;
     traffic = traffic/5+1;
@@ -194,7 +206,7 @@ bool device::isConnectDevices(device *s , device *e)
 
 void device::onImplChange()
 {
-    myFeatures = impl->featuresList();
+    myFeatures = impl->featuresList();    
     update();
 }
 

@@ -387,11 +387,11 @@ void smartDevice::arpDialog()
 #endif
 }
 
-QStringList smartDevice::featuresList() const
+featuresMap smartDevice::featuresList() const
 {
-    QStringList t;
+    featuresMap t;
     foreach ( programm i , myProgramms )
-        t << i->featureName();
+        t.insert(i->featureName(),i->isEnable());
     return t;
 }
 

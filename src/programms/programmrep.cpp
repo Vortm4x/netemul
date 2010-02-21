@@ -20,6 +20,7 @@
 #include "programmrep.h"
 #include <QtDebug>
 #include <QMetaProperty>
+#include "smartdevice.h"
 
 programmRep::programmRep()
 {
@@ -28,6 +29,14 @@ programmRep::programmRep()
 programmRep::~programmRep()
 {
 
+}
+
+void programmRep::setEnable(bool b)
+{
+    if ( b != myEnable ) {
+        myEnable = b;
+        myDevice->updateView();
+    }
 }
 
 /*!

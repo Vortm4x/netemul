@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/im" >
+    <qresource prefix="/im">
         <file>images/arrow.png</file>
         <file>images/cable.png</file>
         <file>images/sharebus.png</file>
@@ -36,5 +36,11 @@
         <file>images/print.png</file>
         <file>images/print_preview.png</file>
         <file>images/description.png</file>
+        <file>images/label_dc_green.png</file>
+        <file>images/label_dc_red.png</file>
+        <file>images/label_ds_green.png</file>
+        <file>images/label_ds_red.png</file>
+        <file>images/label_r_green.png</file>
+        <file>images/label_r_red.png</file>
     </qresource>
 </RCC>

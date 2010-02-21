@@ -83,7 +83,7 @@ public:
     bool dynamic() const { return myDynamic; }
     QString serverName() const { return myServerName; }
     dhcpServerModel* dhcpModel() { return myDhcpModel; }
-    virtual QString featureName() const { return "DS"; }
+    virtual QString featureName() const { return "ds"; }
 public:
     void showProperty();        
     ipAddress giveDynamicIp() const;

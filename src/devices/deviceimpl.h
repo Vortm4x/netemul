@@ -44,6 +44,8 @@
 class cableDev;
 class logDialog;
 
+typedef QMap<QString,bool> featuresMap;
+
 class deviceImpl : public QObject
 {
     Q_OBJECT
@@ -57,7 +59,7 @@ public:
     virtual int type() const = 0;
 
     virtual QStringList sockets() const = 0;
-    virtual QStringList featuresList() const { return QStringList(); }
+    virtual featuresMap featuresList() const { return featuresMap(); }
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
     virtual QString socketName(const cableDev *c) const = 0;

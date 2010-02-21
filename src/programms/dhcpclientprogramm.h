@@ -70,7 +70,7 @@ public:
     QStringList interfacesList() const;
     QIcon isConnectSocketIcon(const QString &name) const;
     Qt::CheckState checkedState(const QString &name) const;
-    virtual QString featureName() const { return "DC"; }
+    virtual QString featureName() const { return "dc"; }
 public slots:
     void deleteInterface(const QString name);
 private slots:

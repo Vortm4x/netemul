@@ -97,7 +97,7 @@ private:
     void createImpl(int n);
     deviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
-    QStringList myFeatures;
+    featuresMap myFeatures;
 protected:
     QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
     friend QDataStream& operator<<(QDataStream &stream,const device &dev);

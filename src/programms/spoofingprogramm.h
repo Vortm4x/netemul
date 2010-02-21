@@ -19,7 +19,7 @@ public:
     void incTime();
     void showProperty();
     void setDevice(smartDevice *s);
-    QString featureName() const { return "S"; }
+    QString featureName() const { return "s"; }
     int id() const { return SPOOFING; }
     void setServerIp(ipAddress server) { myServerIp = server; }
     ipAddress serverIp() const { return myServerIp; }
