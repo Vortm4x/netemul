@@ -35,6 +35,7 @@ void spoofingProgramm::incTime()
 void spoofingProgramm::setDevice(smartDevice *s)
 {
     programmRep::setDevice(s);
+    if ( !s ) return;
     foreach ( interface *i , myDevice->interfaces() ) {
         connect( i->arpTable() , SIGNAL(tableChanged(arpRecord*)) , this , SLOT(execute(arpRecord*)) );
         arpRecord *t = i->arpTable()->recordAt(myClientIp);

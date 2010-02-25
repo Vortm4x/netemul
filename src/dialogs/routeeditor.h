@@ -62,6 +62,8 @@ private slots:
     void addRecord();
     void deleteRecord();
     void checkSelection(QModelIndex curr);
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 //--------------------------------------------------
 

@@ -29,6 +29,7 @@
 #include <QComboBox>
 #include <QSettings>
 #include <QHeaderView>
+#include <QKeyEvent>
 
 routeEditor::routeEditor(smartDevice *s)
 {
@@ -42,6 +43,7 @@ routeEditor::routeEditor(smartDevice *s)
     table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
+    table->installEventFilter(this);
     all->addWidget(table);
     ip_dest = new ipEdit(this,tr("Destination: "));
     all->addWidget(ip_dest);
@@ -164,6 +166,22 @@ void routeEditor::writeSetting() const
 void routeEditor::selectAdapter(int number)
 {
     dev->setCheckedSocket( suffixList.at( number ) );
+}
+
+bool routeEditor::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if ( keyEvent->key() == Qt::Key_Delete ) {
+            deleteRecord();
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        // standard event processing
+        return QDialog::eventFilter(obj, event);
+    }
 }
 
 QStringList routeEditor::filterConnectedSocket(QStringList list)
