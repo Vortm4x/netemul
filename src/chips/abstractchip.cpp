@@ -22,7 +22,7 @@
 /*!
   Задает устройству случайный Mac-адрес, пустой ip и маску подсети.
 */
-abstractChip::abstractChip()
+AbstractChip::AbstractChip(QObject *parent) : QObject(parent)
 {
 #ifndef __TESTING__
     myMac.setRandom();
@@ -33,12 +33,12 @@ abstractChip::abstractChip()
 /*!
   Сбрасывает всю статистику, накопленную этим устройством.
 */
-void abstractChip::resetStatics()
+void AbstractChip::resetStatics()
 {
     myStatistics.clear();
 }
 //------------------------------------------------
-void abstractChip::write(QDataStream &stream) const
+void AbstractChip::write(QDataStream &stream) const
 {
     stream << myMac;
     stream << myIp;
@@ -46,16 +46,7 @@ void abstractChip::write(QDataStream &stream) const
     stream << myStatistics;
 }
 
-void abstractChip::writeXml(sceneXmlWriter &stream) const
-{
-    stream.writeStartElement("abstractchip");
-    stream.writeTextElement("mac", myMac.toString() );
-    stream.writeTextElement("ip", myIp.toString() );
-    stream.writeTextElement("mask", myMask.toString() );
-    stream.writeEndElement();
-}
-
-void abstractChip::read(QDataStream &stream)
+void AbstractChip::read(QDataStream &stream)
 {
     stream >> myMac;
     stream >> myIp;
@@ -63,24 +54,13 @@ void abstractChip::read(QDataStream &stream)
     stream >> myStatistics;
 }
 
-void abstractChip::readXml(sceneXmlReader &stream)
-{
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "mac" ) myMac.setMac( stream.readElementText() );
-        else if ( stream.name() == "ip" ) myIp.setIp( stream.readElementText() );
-        else if ( stream.name() == "mask" ) myMask.setIp( stream.readElementText() );
-    }
-}
-
-void abstractChip::checkReceive(frame &f)
+void AbstractChip::checkReceive(frame &f)
 {
     myStatistics.incReceiveFrames();
     if ( f.type() == frame::ip ) myStatistics.incReceivePackets();
 }
 
-void abstractChip::checkSend(frame &f)
+void AbstractChip::checkSend(frame &f)
 {
     myStatistics.incSendFrames();
     if ( f.type() == frame::ip ) myStatistics.incSendPackets();

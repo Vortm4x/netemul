@@ -28,7 +28,7 @@ sceneControl::sceneControl(QObject *parent , MyCanvas *s ) : QObject(parent) , s
 
 void sceneControl::observeSelection()
 {
-    if ( device *t = scene->oneSelectedDevice() ) {
+    if ( Device *t = scene->oneSelectedDevice() ) {
         emit selectTableDevice( t->hasTable() );
         emit selectOneDevice(true);
         emit selectSmartDevice( t->isSmart() );
@@ -51,49 +51,49 @@ QString sceneControl::tableName() const
 
 void sceneControl::propertyDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->dialog();
 }
 
 void sceneControl::tableDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->tableDialog();
 }
 
 void sceneControl::adapterDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->adapterDialog();
 }
 
 void sceneControl::programmsDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->programmsDialog();
 }
 
 void sceneControl::arpDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->arpDialog();
 }
 
 void sceneControl::showLogDialog(logDialog *log) const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->showLogDialog(log);
 }
 
 void sceneControl::showDesignerDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->showDesignerDialog();
 }
 
 void sceneControl::showDeviceNoteDialog() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     t->showDeviceNoteDialog();
 }
 
@@ -110,13 +110,13 @@ bool sceneControl::isSelect() const
 
 QString sceneControl::note() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     return t->toolTip();
 }
 
 QIcon sceneControl::tableIcon() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     if ( !t->hasTable() ) return QIcon();
     if ( t->isSmart() ) return QIcon(":/im/images/table_route.png");
     else return QIcon(":/im/images/table_arp.png");
@@ -124,12 +124,12 @@ QIcon sceneControl::tableIcon() const
 
 QString sceneControl::deviceName() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     return t->deviceName();
 }
 
 QStringList sceneControl::sockets() const
 {
-    device *t = scene->oneSelectedDevice();
+    Device *t = scene->oneSelectedDevice();
     return t->sockets();
 }

@@ -30,16 +30,15 @@ class switchChip;
 
 // Пока такое коротенькое объявление для свитча
 // Все его комментарии действительны для других устройств
-class switchDevice : public boxDevice
+class SwitchDevice : public BoxDevice
 {
     Q_OBJECT
-    DECLARE_PROTOTYPE(switchDevice)
 public:
     friend class switchTableSetting;
     enum { switchDev = 5 };
     int type() const { return switchDev; }
-    switchDevice(int c = 0); //Пока конструктор и прорисовка
-    ~switchDevice();
+    SwitchDevice(QObject *parent = 0); //Пока конструктор и прорисовка
+    ~SwitchDevice();
     void updateMac(int u);
     void dialog();
     void tableDialog();
@@ -59,20 +58,20 @@ protected:
 
 class switchTableSetting {
 public:
-    switchTableSetting(switchDevice *s) : sw(s) { }
+    switchTableSetting(SwitchDevice *s) : sw(s) { }
     switchModel* switchTable();
     int socketsCount() const { return sw->chip->socketsCount(); }
     void removeFromTable(int row);
     devicePort* socket(const QString &s) { return sw->chip->socket(s); }
 private:
-    switchDevice *sw;
+    SwitchDevice *sw;
 };
 
 class virtualNetworkSetting {
 public:
-    virtualNetworkSetting( switchDevice *device ) : myDevice(device) { }
+    virtualNetworkSetting( SwitchDevice *device ) : myDevice(device) { }
 private:
-    switchDevice *myDevice;
+    SwitchDevice *myDevice;
 };
 
 #endif // SWITCHDEVICE_H

@@ -25,14 +25,14 @@
 #include "deviceimpl.h"
 #include "appsetting.h"
 
-QScriptValue ObjectToScript(QScriptEngine *engine, deviceImpl* const &in)
+QScriptValue ObjectToScript(QScriptEngine *engine, DeviceImpl* const &in)
 {
     return engine->newQObject(in);
 }
 
-void ObjectFromScript(const QScriptValue &object, deviceImpl* &out)
+void ObjectFromScript(const QScriptValue &object, DeviceImpl* &out)
 {
-    out = qobject_cast<deviceImpl*>(object.toQObject());
+    out = qobject_cast<DeviceImpl*>(object.toQObject());
 }
 
 QScriptValue ObjectToScriptItem(QScriptEngine *engine, textItem* const &in)

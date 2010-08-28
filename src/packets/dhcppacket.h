@@ -36,10 +36,10 @@ private:
     int xid;
     int type;
     int time;
-    ipAddress mask;
-    ipAddress gateway;
-    ipAddress yiaddr;
-    ipAddress siaddr;
+    IpAddress mask;
+    IpAddress gateway;
+    IpAddress yiaddr;
+    IpAddress siaddr;
     macAddress chaddr;
 };
 
@@ -52,10 +52,10 @@ public:
     ~dhcpPacket() { }
     QByteArray toData() const;
     enum { DHCPDISCOVER , DHCPOFFER , DHCPREQUEST , DHCPACK , DHCPDECLINE };
-    void setYiaddr(ipAddress a) { d->yiaddr = a; }
-    void setSiaddr(ipAddress a) { d->siaddr = a; }
-    void setMask(ipAddress a) { d->mask = a; }
-    void setGateway(ipAddress a) { d->gateway = a; }
+    void setYiaddr(IpAddress a) { d->yiaddr = a; }
+    void setSiaddr(IpAddress a) { d->siaddr = a; }
+    void setMask(IpAddress a) { d->mask = a; }
+    void setGateway(IpAddress a) { d->gateway = a; }
     void setChaddr(macAddress a) { d->chaddr = a; }    
     void setXid(int x) { d->xid = x; }
     void setType(int t) { d->type = t; }
@@ -63,10 +63,10 @@ public:
     int type() const { return d->type; }
     int xid() const { return d->xid; }
     int time() const { return d->time; }
-    ipAddress yiaddr() const { return d->yiaddr; }
-    ipAddress siaddr() const { return d->siaddr; }
-    ipAddress mask() const { return d->mask; }
-    ipAddress gateway() const { return d->gateway; }
+    IpAddress yiaddr() const { return d->yiaddr; }
+    IpAddress siaddr() const { return d->siaddr; }
+    IpAddress mask() const { return d->mask; }
+    IpAddress gateway() const { return d->gateway; }
     macAddress chaddr() const { return d->chaddr; }
     QString typeString() const;
 private:

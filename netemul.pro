@@ -13,6 +13,7 @@ include(src/states/states.pri)
 include(src/commands/commands.pri)
 include(src/delegats/delegats.pri)
 include(src/interfaces/interfaces.pri)
+include(src/factories/factories.pri)
 TEMPLATE = app
 TARGET = netemul
 DEPENDPATH += . \
@@ -34,10 +35,13 @@ INCLUDEPATH += . \
     src/states \
     src/commands \
     src/delegats \
-    src/interfaces
-QT += script
+    src/interfaces \
+    src/factories
+QT += script xml
 
-QMAKE_POST_LINK += cd ipedit && qmake && make && cd ..
+unix {
+    QMAKE_POST_LINK += cd ipedit && qmake && make && cd ..
+}
 
 # Default translations path
 TRANSLATIONS_PATH = "translation"
@@ -133,5 +137,5 @@ unix {
 
 # Let the variable be available for compiling
 DEFINES += DOC_PATH=\\\"$${DOC_PATH}\\\"
-DEFINES += SCRIPT_PATH=\\\"$${SCRIPT_PATH}\\\"
 DEFINES += TRANSLATIONS_PATH=\\\"$${TRANSLATIONS_PATH}\\\"
+DEFINES += SCRIPT_PATH=\\\"$${SCRIPT_PATH}\\\"

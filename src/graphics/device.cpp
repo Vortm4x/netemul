@@ -30,13 +30,17 @@
 #include "switchdevice.h"
 #include "cabledev.h"
 
-device::device(int t)
+Device::Device(QObject *parent) : QGraphicsObject(0) , impl(0)
 {
-    createImpl(t);
-    setToolTip( impl->note() );
+    createImplHelper();
 }
 
-device::device(QDataStream &stream)
+Device::Device(int t) : QGraphicsObject(0)
+{
+    createImpl(t);    
+}
+
+Device::Device(QDataStream &stream) : QGraphicsObject(0)
 {
     QPointF p;
     int tp;
@@ -44,55 +48,52 @@ device::device(QDataStream &stream)
     setPos(p);
     stream >> tp;
     createImpl(tp);
-    impl->read(stream);
-    setToolTip( impl->note() );
+    impl->read(stream);    
 }
 
-device::device(sceneXmlReader &stream)
-{
-    QPointF p;
-    int tp = stream.attributes().value("type").toString().toInt();
-    createImpl(tp);
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "x" ) p.setX( stream.readElementText().toDouble() );
-        else if ( stream.name() == "y" ) p.setY( stream.readElementText().toDouble() );
-        else if ( stream.name() ==  "impl" ) impl->readXml(stream);
-    }
-    setPos(p);
-    setToolTip( impl->note() );
-}
-
-void device::createImpl(int n)
-{
-    devRect = QRect(device::rectDevX,device::rectDevY,device::rectDevWidth,device::rectDevHeight);
-    pixmapRect = devRect.adjusted(3,3,-3,-3);
-    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
-    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
+void Device::createImpl(int n)
+{    
     switch (n) {
-        case compDev : impl = new computer; break;
-        case hubDev : impl = new hubDevice; break;
-        case switchDev : impl = new switchDevice; break;
-        case routerDev : impl = new routerDevice; break;
+        case compDev : impl = new Computer(this); break;
+        case hubDev : impl = new HubDevice(this); break;
+        case switchDev : impl = new SwitchDevice(this); break;
+        case routerDev : impl = new RouterDevice(this); break;
         default: break;
     }
     impl->setVisualizator(this);
+    setToolTip( impl->note() );
+    createImplHelper();
 }
 
-device::~device()
+void Device::createImplHelper()
 {
-    delete impl;
+    devRect = QRect(Device::rectDevX,Device::rectDevY,Device::rectDevWidth,Device::rectDevHeight);
+    pixmapRect = devRect.adjusted(3,3,-3,-3);
+    setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
+    setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
 }
 
-void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
+void Device::setDeviceImpl(DeviceImpl *im)
+{
+    impl = im;
+    impl->setParent(this);
+    impl->setVisualizator(this);
+    setToolTip( impl->note() );
+    update();
+}
+
+Device::~Device()
+{    
+}
+
+void Device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
 {
     Q_UNUSED(option); // Пока не используем
     Q_UNUSED(widget); // Эти параметры
     QList<QGraphicsItem*> collides = collidingItems();
     foreach ( QGraphicsItem* item , collides)
-        if ( item->type() != device::Type ) collides.removeOne(item);
-    QLinearGradient tempGrad(device::rectDevX , device::rectDevY ,-device::rectDevX,-device::rectDevY);
+        if ( item->type() != Device::Type ) collides.removeOne(item);
+    QLinearGradient tempGrad(Device::rectDevX , Device::rectDevY ,-Device::rectDevX,-Device::rectDevY);
     tempGrad.setColorAt(0,Qt::white);
     if (isSelected()) {
         if (!collides.isEmpty())
@@ -107,6 +108,9 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     }
     painter->setBrush(QBrush(tempGrad));
     painter->drawRoundedRect(devRect,5,5);
+    if ( !impl ) {
+        return;
+    }
     painter->drawPixmap(pixmapRect,QPixmap(impl->pixmapName()));
      // Потом картинку
     if ( isConnect() ) {
@@ -138,7 +142,7 @@ void device::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWid
     painter->drawLine(-20, 19, -20+traffic, 19);
 }
 
-void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void Device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     //if ( scene()->selectedItems().count() ) return;
     MyCanvas *canva = qobject_cast<MyCanvas*>(scene());
@@ -149,7 +153,7 @@ void device::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
         scene()->clearSelection(); // Запустить контекстное меню в текущей позиции
 }
 
-void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void  Device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event);
     MyCanvas *canva = qobject_cast<MyCanvas*>(scene());
@@ -159,44 +163,26 @@ void  device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 }
 //----------------------------------------------------------------
 
-void device::writeXml(sceneXmlWriter &stream) const
-{
-    stream.writeStartElement("device");
-    stream.writeAttribute("type" , QString::number(impl->type()) );
-    stream.writeStartElement("x");
-    stream.writeCharacters( QString::number( pos().x() ) );
-    stream.writeEndElement();
-    stream.writeStartElement("y");
-    stream.writeCharacters( QString::number( pos().y() ) );
-    stream.writeEndElement();
-
-    stream.writeStartElement("impl");
-    impl->writeXml(stream);
-    stream.writeEndElement();
-
-    stream.writeEndElement();
-}
-
-void device::addConnection(const QString &port, cableDev *c)
+void Device::addConnection(const QString &port, cableDev *c)
 {
     myCableList << c;
     impl->addConnection(port,c);
 }
 
-void device::deleteConnection(cableDev *c)
+void Device::deleteConnection(cableDev *c)
 {
     myCableList.removeOne(c);
     impl->deleteConnection(c);
     update();
 }
 
-void device::updateCables()
+void Device::updateCables()
 {
     foreach ( cableDev *i , myCableList )
         i->updatePosition();
 }
 
-bool device::isConnectDevices(device *s , device *e)
+bool Device::isConnectDevices(Device *s , Device *e)
 {
     foreach( cableDev *i , s->myCableList )
         foreach ( cableDev *j , e->myCableList )
@@ -204,7 +190,7 @@ bool device::isConnectDevices(device *s , device *e)
     return false;
 }
 
-void device::onImplChange()
+void Device::onImplChange()
 {
     myFeatures = impl->featuresList();    
     update();

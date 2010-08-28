@@ -21,21 +21,17 @@
 #define DHCPSERVERMODEL_H
 
 #include <QAbstractTableModel>
-#include "scenexmlwriter.h"
-#include "scenexmlreader.h"
 #include "macaddress.h"
 #include "ipaddress.h"
 
 struct staticDhcpRecord {
     macAddress chaddr;
-    ipAddress yiaddr;
-    ipAddress mask;
-    ipAddress gateway;
+    IpAddress yiaddr;
+    IpAddress mask;
+    IpAddress gateway;
     int time;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
-    void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
 };
 
 static const int COLUMN_COUNT = 5;
@@ -55,13 +51,11 @@ public:
     bool setData(const QModelIndex &index,const QVariant &value, int role = Qt::EditRole);
 
     bool containRecord( staticDhcpRecord *rec) const;
-    bool containRecord(ipAddress ip) const;
+    bool containRecord(IpAddress ip) const;
     staticDhcpRecord* recordWithMac(macAddress cha) const;
     void addStaticRecord(staticDhcpRecord *rec);
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
-    void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
 private:
     QList<staticDhcpRecord*> table;
 };

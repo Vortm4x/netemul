@@ -82,7 +82,7 @@ tableArp::tableArp()
     setAttribute(Qt::WA_DeleteOnClose);
 }
 //------------------------------------------------------------------
-void tableArp::setDevice(smartDevice *dev)
+void tableArp::setDevice(SmartDevice *dev)
 {
     device = dev;
     s = device->sockets();    

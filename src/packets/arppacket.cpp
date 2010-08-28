@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include "arppacket.h"
 
-arpPacket::arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , quint8 t)
+arpPacket::arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si , quint8 t)
 {
     d = new arpPacketData;
     d->receiverMac = rm;

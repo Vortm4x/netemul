@@ -52,7 +52,7 @@ void sendState::mousePress(QGraphicsSceneMouseEvent*)
 {
     if ( !SendEllipse->hasUnderDevice() ) return;
     QGraphicsItem *tempItem = SendEllipse->underDevice();
-    device *t = qgraphicsitem_cast<device*>(tempItem);
+    Device *t = qgraphicsitem_cast<Device*>(tempItem);
     if ( !t ) return;
     if ( !t->isCanSend() ) {
         QMessageBox::warning(0,QObject::tr("Error"),QObject::tr("The device can't transmit data!"), QMessageBox::Ok , QMessageBox::Ok);

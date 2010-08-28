@@ -23,7 +23,7 @@
 #include "appsetting.h"
 #include "cabletextitem.h"
 
-cableDev::cableDev(device *start,device *end,QString sp, QString ep,int s)
+cableDev::cableDev(Device *start,Device *end,QString sp, QString ep,int s)
 {
     mySpeed = s; // Скорость кабеля.
     myStartPort = 0;

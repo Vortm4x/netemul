@@ -18,23 +18,23 @@ public:
     bool interrupt(int) { return false; }
     void incTime();
     void showProperty();
-    void setDevice(smartDevice *s);
+    void setDevice(SmartDevice *s);
     QString featureName() const { return "s"; }
     int id() const { return SPOOFING; }
-    void setServerIp(ipAddress server) { myServerIp = server; }
-    ipAddress serverIp() const { return myServerIp; }
-    void setClientIp(ipAddress server) { myClientIp = server; }
-    ipAddress clientIp() const { return myClientIp; }
+    void setServerIp(IpAddress server) { myServerIp = server; }
+    IpAddress serverIp() const { return myServerIp; }
+    void setClientIp(IpAddress server) { myClientIp = server; }
+    IpAddress clientIp() const { return myClientIp; }
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 public slots:
     void execute(arpRecord *record);
 private:
-    void sendOneAnswer( ipAddress sender , ipAddress receiver , macAddress receiverMac );
+    void sendOneAnswer( IpAddress sender , IpAddress receiver , macAddress receiverMac );
     void sendAnswers();
 
-    ipAddress myServerIp;
-    ipAddress myClientIp;
+    IpAddress myServerIp;
+    IpAddress myClientIp;
     bool isReady;
     bool hasAttack;
     macAddress myServerMac;

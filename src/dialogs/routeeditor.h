@@ -28,7 +28,7 @@ class QSpinBox;
 class QComboBox;
 
 class ipEdit;
-class smartDevice;
+class SmartDevice;
 class routeModel;
 
 /*!
@@ -38,7 +38,7 @@ class routeEditor : public QDialog
 {
     Q_OBJECT
 public:
-    routeEditor(smartDevice *s);
+    routeEditor(SmartDevice *s);
     ~routeEditor();
 private:
     void readSetting();
@@ -56,7 +56,7 @@ private:
     QPushButton *btn_close;
     QTableView *table;
     routeModel *model;
-    smartDevice *dev;
+    SmartDevice *dev;
 private slots:
     void selectAdapter(int number);
     void addRecord();

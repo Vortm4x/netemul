@@ -33,7 +33,7 @@
 #include "tcppacket.h"
 #include "udppacket.h"
 
-designerDialog::designerDialog(computer *comp)
+designerDialog::designerDialog(Computer *comp)
 {
     myComputer = comp;
     QVBoxLayout *lay = new QVBoxLayout;
@@ -68,7 +68,7 @@ QWidget* designerDialog::createMainTab()
     lb_interface = new QLabel( tr("Choose interface: ") );
     combo_interface = new QComboBox;
     QStringList l;
-    foreach ( interface *i, myComputer->interfaces() )
+    foreach ( Interface *i, myComputer->interfaces() )
         l << i->name();
     combo_interface->addItems( l );
     QList<QWidget*> list;

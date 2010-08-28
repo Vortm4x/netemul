@@ -26,13 +26,13 @@ statisticsScene::statisticsScene(MyCanvas *scene)
     myScene = scene;
     comps = 0 ; routers = 0;
     hubs = 0 ; switchs = 0;
-    foreach ( device *i , myScene->myDevices ) {
+    foreach ( Device *i , myScene->myDevices ) {
         Statistics += i->deviceStatistics();
         switch ( i->deviceType() ) {
-            case device::compDev : comps++; break;
-            case device::hubDev : hubs++; break;
-            case device::switchDev : switchs++; break;
-            case device::routerDev : routers++; break;
+            case Device::compDev : comps++; break;
+            case Device::hubDev : hubs++; break;
+            case Device::switchDev : switchs++; break;
+            case Device::routerDev : routers++; break;
             default : qFatal("Fear!!!");
         }
     }

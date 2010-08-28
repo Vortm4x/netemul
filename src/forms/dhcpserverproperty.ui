@@ -84,7 +84,17 @@
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="cb_turnOn">
+     <property name="text">
+      <string>Turn on/off dhcp-server on this interface.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Static:</string>
      </property>
@@ -92,6 +102,9 @@
    </item>
    <item>
     <widget class="QTableView" name="tv_static">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
@@ -117,22 +130,28 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_add">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Add</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/edit_add.png</normaloff>:/im/images/edit_add.png</iconset>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_del">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Delete</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/edit_remove.png</normaloff>:/im/images/edit_remove.png</iconset>
        </property>
       </widget>
@@ -141,6 +160,9 @@
    </item>
    <item>
     <widget class="QCheckBox" name="cb_dynamic">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Dynamic:</string>
      </property>
@@ -261,6 +283,9 @@
    </item>
    <item>
     <widget class="QLabel" name="label_2">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Wating time for request from dhcp-client:</string>
      </property>
@@ -268,6 +293,9 @@
    </item>
    <item>
     <widget class="QSpinBox" name="sb_waitingTime">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="maximumSize">
       <size>
        <width>70</width>
@@ -316,7 +344,7 @@
         <string>Ok</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/ok.png</normaloff>:/im/images/ok.png</iconset>
        </property>
       </widget>
@@ -327,7 +355,7 @@
         <string>Cancel</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../../netemul.qrc">
          <normaloff>:/im/images/not.png</normaloff>:/im/images/not.png</iconset>
        </property>
       </widget>
@@ -343,7 +371,9 @@
    <header>ipedit.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../netemul.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>btn_cancel</sender>

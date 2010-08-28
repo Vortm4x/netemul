@@ -26,25 +26,22 @@
 #include "designerdialog.h"
 #endif
 
-DECLARE_STATIC_PROTOTYPE(computer)
-DEFINETION_PROTOTYPE_FUNCTION(computer)
-
-computer::computer(int c /* = 0 */)
+Computer::Computer(QObject *parent) : SmartDevice(parent)
 {
-    if ( !c ) c = appSetting::defaultComputerCount();
+    int c = appSetting::defaultComputerCount();
     for ( int i = 0 ; i < c ; i++)
         addInterface(tr("eth%1").arg(i));
     myRouteTable->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,routeModel::connectMode);
     setNote(tr("<b>Computer</b><!--You can use HTML.-->"));
 }
 
-void computer::showDesignerDialog()
+void Computer::showDesignerDialog()
 {
     designerDialog *d = new designerDialog(this);
     d->show();
 }
 
-void computer::dialog()
+void Computer::dialog()
 {
 #ifndef __TESTING__
     computerProperty *d = new computerProperty;
@@ -53,7 +50,7 @@ void computer::dialog()
 #endif
 }
 
-void computer::sendConstructedFrame(QString Interface, frame Frame, int count)
+void Computer::sendConstructedFrame(QString Interface, frame Frame, int count)
 {
     for ( int i = 0 ; i < count ; i++ )
         adapter(Interface)->pushToSocket(Frame);

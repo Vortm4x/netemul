@@ -25,12 +25,12 @@
 #include "macaddressdelegate.h"
 #include "ipaddressdelegate.h"
 
-dhcpServerProperty::dhcpServerProperty(smartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
+dhcpServerProperty::dhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
 {
     setupUi(this);
     device = dev;
     setAttribute(Qt::WA_DeleteOnClose);
-    foreach ( interface *i, device->interfaces() )
+    foreach ( Interface *i, device->interfaces() )
         if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
     macDelegate = new macAddressDelegate(this);
     ipDelegate = new ipAddressDelegate(this);
@@ -47,20 +47,20 @@ dhcpServerProperty::~dhcpServerProperty()
 
 void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
 {
-    myProgramm = prog;
-    myModel = myProgramm->dhcpModel();
-    tv_static->setModel( myModel );
-    QHeaderView *h = tv_static->horizontalHeader();
-    h->setResizeMode( QHeaderView::Stretch );
-    cb_dynamic->setChecked(myProgramm->dynamic());
-    sb_time->setValue(myProgramm->time());
-    ie_begin->setText(myProgramm->beginIp());
-    ie_end->setText(myProgramm->endIp());
-    ie_mask->setText(myProgramm->mask());
-    ie_gatew->setText(myProgramm->gateway());
-    cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
-    sb_waitingTime->setValue( myProgramm->waitingTime() );
-    le_name->setText(myProgramm->serverName());
+//    myProgramm = prog;
+//    myModel = myProgramm->dhcpModel();
+//    tv_static->setModel( myModel );
+//    QHeaderView *h = tv_static->horizontalHeader();
+//    h->setResizeMode( QHeaderView::Stretch );
+//    cb_dynamic->setChecked(myProgramm->dynamic());
+//    sb_time->setValue(myProgramm->time());
+//    ie_begin->setText(myProgramm->beginIp());
+//    ie_end->setText(myProgramm->endIp());
+//    ie_mask->setText(myProgramm->mask());
+//    ie_gatew->setText(myProgramm->gateway());
+//    cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
+//    sb_waitingTime->setValue( myProgramm->waitingTime() );
+//    le_name->setText(myProgramm->serverName());
 }
 
 void dhcpServerProperty::addRecord()
@@ -89,15 +89,15 @@ void dhcpServerProperty::apply()
         QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong IP range."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    myProgramm->setInterfaceName(cb_interface->currentText());
-    myProgramm->setBeginIp(ie_begin->ipText().toString());
-    myProgramm->setEndIp(ie_end->ipText().toString());
-    myProgramm->setMask(ie_mask->ipText().toString());
-    myProgramm->setGateway(ie_gatew->ipText().toString());
-    myProgramm->setTime(sb_time->value());
-    myProgramm->setDynamic(cb_dynamic->isChecked());
-    myProgramm->setWaitingTime(sb_waitingTime->value());
-    myProgramm->setServerName(le_name->text());
+//    myProgramm->setInterfaceName(cb_interface->currentText());
+//    myProgramm->setBeginIp(ie_begin->ipText().toString());
+//    myProgramm->setEndIp(ie_end->ipText().toString());
+//    myProgramm->setMask(ie_mask->ipText().toString());
+//    myProgramm->setGateway(ie_gatew->ipText().toString());
+//    myProgramm->setTime(sb_time->value());
+//    myProgramm->setDynamic(cb_dynamic->isChecked());
+//    myProgramm->setWaitingTime(sb_waitingTime->value());
+//    myProgramm->setServerName(le_name->text());
     accept();
 }
 

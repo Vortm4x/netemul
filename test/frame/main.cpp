@@ -19,9 +19,9 @@ void TestFrame::saveLoadArp()
 {
     arpPacket p;
     p.setType(arpPacket::response);
-    p.setReceiverIp(ipAddress("1.2.3.4"));
+    p.setReceiverIp(IpAddress("1.2.3.4"));
     p.setReceiverMac(macAddress("10:01:10:01:10:01"));
-    p.setSenderIp(ipAddress("4.3.2.1"));
+    p.setSenderIp(IpAddress("4.3.2.1"));
     p.setSenderMac(macAddress("00:11:22:33:44:55"));
     arpFrame.pack(p.toData());
     arpPacket a(arpFrame.unpack() );
@@ -35,8 +35,8 @@ void TestFrame::saveLoadArp()
 void TestFrame::saveLoadIp()
 {
     ipPacket p;
-    p.setSender(ipAddress("1.2.3.4"));
-    p.setReceiver(ipAddress("4.3.2.1"));
+    p.setSender(IpAddress("1.2.3.4"));
+    p.setReceiver(IpAddress("4.3.2.1"));
     p.setUpProtocol(ipPacket::tcp);
     ipFrame.pack( p.toData() );
     ipPacket a( ipFrame.unpack() );

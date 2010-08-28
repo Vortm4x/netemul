@@ -20,49 +20,27 @@
 #include "deviceimpl.h"
 #include "devicenotedialog.h"
 
-deviceImpl::deviceImpl()
+DeviceImpl::DeviceImpl(QObject *parent) : QObject(parent)
 {
-
 }
 //----------------------------------------------------------
 
-void deviceImpl::showDeviceNoteDialog()
+void DeviceImpl::showDeviceNoteDialog()
 {
     deviceNoteDialog *d = new deviceNoteDialog;
     d->setDevice( new deviceSetting(this) );
     d->exec();
 }
 
-void deviceImpl::write(QDataStream &stream) const
+void DeviceImpl::write(QDataStream &stream) const
 {
     stream << myNote;
 }
 
-void deviceImpl::writeXml(sceneXmlWriter &stream) const
-{
-    const QMetaObject *meta = metaObject();
-    for ( int i = 1 ; i < meta->propertyCount() ; i++ ) {
-        QMetaProperty temp = meta->property(i);
-        if ( temp.read(this).toString() != prototype()->property( temp.name()  ) )
-            stream.writeTextElement( temp.name() , temp.read(this).toString() );
-    }
-}
-
-void deviceImpl::read(QDataStream &stream)
+void DeviceImpl::read(QDataStream &stream)
 {
     stream >> myNote;
 }
 
-void deviceImpl::readXml(sceneXmlReader &stream)
-{
-    Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
-            setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
-        }
-    }
-}
 
 

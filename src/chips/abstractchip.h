@@ -20,8 +20,6 @@
 #ifndef ABSTRACTCHIP_H
 #define ABSTRACTCHIP_H
 
-#include "scenexmlwriter.h"
-#include "scenexmlreader.h"
 #include "statistics.h"
 
 #include "macaddress.h"
@@ -36,29 +34,34 @@ class ipPacket;
   Являеться предком для interface и boxDevice этот класс уже дает возможность вести статистику
   входящих кадров и пакетов, поддерживает обработку и передачу кадров на уровень выше.
 */
-class abstractChip : public QObject
+class AbstractChip : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY( QString ip READ ipString WRITE setIp )
+    Q_PROPERTY( QString mac READ macString WRITE setMac )
+    Q_PROPERTY( QString mask READ maskString WRITE setMask )
 public:
-    abstractChip();
-    virtual ~abstractChip() { }
+    AbstractChip(QObject *parent = 0);
+    virtual ~AbstractChip() { }
     virtual void receiveEvent(frame &fr,devicePort *sender) = 0;
     virtual int trafficDigit() const = 0;
     QString staticsString() const { return myStatistics.toString(); }
     void checkReceive(frame &f);
     void checkSend(frame &f);
     macAddress mac() const { return myMac; }
-    ipAddress ip() const { return myIp; }
-    ipAddress mask() const { return myMask; }
+    IpAddress ip() const { return myIp; }
+    IpAddress mask() const { return myMask; }
+    QString ipString() const { return myIp.toString(); }
+    QString macString() const { return myMac.toString(); }
+    QString maskString() const { return myMask.toString(); }
+    void setMac(const QString &m) { myMac.setMac(m); }
     void setMac(const macAddress &m) { myMac = m; }
     void setIp(const QString &str) { if ( !str.isEmpty() ) myIp.setIp(str); }
     void setMask(const QString &str) { if ( !str.isEmpty() ) myMask.setIp(str); }
-    void setIp(const ipAddress address) { myIp = address; }
-    void setMask(const ipAddress address) { myMask = address; }
+    void setIp(const IpAddress address) { myIp = address; }
+    void setMask(const IpAddress address) { myMask = address; }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXml(sceneXmlWriter &stream) const;
-    virtual void readXml(sceneXmlReader &stream);
     statistics chipStatistics() { return myStatistics; }
     quint64 countRecFrame() { return myStatistics.receiveFrames(); }
     quint64 countRecPacket() { return myStatistics.receivePackets(); }
@@ -70,8 +73,8 @@ signals:
     void receiveData(frame,QString);
 protected:
     statistics myStatistics;
-    ipAddress myIp;
-    ipAddress myMask;
+    IpAddress myIp;
+    IpAddress myMask;
     macAddress myMac;
 };
 

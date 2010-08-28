@@ -52,7 +52,7 @@ void dhcpClientProgramm::incTime()
   * Переопределяем функцию установки устройства чтобы соединиться со слотом.
   * @param s - указатель на устройство на которое установлена программа.
   */
-void dhcpClientProgramm::setDevice(smartDevice *s)
+void dhcpClientProgramm::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) {
         foreach ( interfaceState *i , myStates ) resetClient(i);
@@ -71,8 +71,8 @@ void dhcpClientProgramm::setDevice(smartDevice *s)
 
 void dhcpClientProgramm::resetClient(interfaceState *session)
 {
-    myDevice->adapter(session->name)->setIp(ipAddress("0.0.0.0"));
-    myDevice->adapter(session->name)->setMask(ipAddress("0.0.0.0"));
+    myDevice->adapter(session->name)->setIp(IpAddress("0.0.0.0"));
+    myDevice->adapter(session->name)->setMask(IpAddress("0.0.0.0"));
     myDevice->connectedNet( myDevice->adapter( session->name ) );
     myDevice->setGateway("0.0.0.0");
 }
@@ -208,7 +208,7 @@ void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *sta
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
     udp.pack( message.toData() );
-    ipPacket packet( myDevice->adapter(state->name)->ip() , ipAddress::full() );
+    ipPacket packet( myDevice->adapter(state->name)->ip() , IpAddress::full() );
     packet.pack( udp.toData() );
     packet.setUpProtocol( ipPacket::udp );
     myDevice->adapter(state->name)->sendPacket( packet);
@@ -291,7 +291,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
 
 void dhcpClientProgramm::onDetectEqualIp()
 {
-    interface *t = qobject_cast<interface*>(sender());
+    Interface *t = qobject_cast<Interface*>(sender());
     interfaceState *client = 0;
     foreach ( interfaceState *i , myStates )
         if ( myDevice->adapter(  i->name ) == t ) client = i;
@@ -340,51 +340,10 @@ void dhcpClientProgramm::read(QDataStream &stream)
     }
 }
 
-void dhcpClientProgramm::writeXml(sceneXmlWriter &stream) const
-{
-    const QMetaObject *meta = metaObject();
-    for ( int i = 1 ; i < meta->propertyCount() ; i++ ) {
-        QMetaProperty temp = meta->property(i);
-        stream.writeTextElement( temp.name() , temp.read(this).toString() );
-    }
-    foreach ( interfaceState *i , myStates ) {
-        stream.writeStartElement("interface");
-        i->writeXml(stream);
-        stream.writeEndElement();
-    }
-}
-
-void dhcpClientProgramm::readXml(sceneXmlReader &stream)
-{
-    Q_ASSERT( stream.isStartElement() && stream.name() == "programm" );
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( property( qPrintable(stream.name().toString()) ).isValid() ) {
-            setProperty( qPrintable(stream.name().toString() ) , stream.readElementText() );
-        } else if ( stream.name() == "interface" ) {
-            interfaceState *temp = new interfaceState;
-            temp->readXml(stream);
-            temp->state = interfaceState::CS_WAIT_VARIANT;
-            myStates << temp;
-        }
-    }
-}
-
-//---------------------------------------------------
 //---------------------------------------------------
 void interfaceState::write(QDataStream &stream) const
 {
     stream << xid << time << serverAddress << lastIp << name;
-}
-
-void interfaceState::writeXml(sceneXmlWriter &stream) const
-{
-    stream.writeTextElement("xid", QString::number(xid) );
-    stream.writeTextElement("time", QString::number(time) );
-    stream.writeTextElement("server", serverAddress.toString() );
-    stream.writeTextElement("lastip", lastIp.toString() );
-    stream.writeTextElement("name", name);
 }
 
 void interfaceState::read(QDataStream &stream)
@@ -392,18 +351,5 @@ void interfaceState::read(QDataStream &stream)
     stream >> xid >> time >> serverAddress >> lastIp >> name;
 }
 
-void interfaceState::readXml(sceneXmlReader &stream)
-{
-    Q_ASSERT( stream.isStartElement() && stream.name() == "interface" );
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "xid" ) xid = stream.readElementText().toInt();
-        else if ( stream.name() == "time" ) time = stream.readElementText().toInt();
-        else if ( stream.name() == "server" ) serverAddress.setIp( stream.readElementText() );
-        else if ( stream.name() == "lastip" ) lastIp.setIp( stream.readElementText() );
-        else if ( stream.name() == "name" ) name = stream.readElementText();
-    }
-}
 
 

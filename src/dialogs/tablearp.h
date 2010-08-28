@@ -27,7 +27,7 @@ class QPushButton;
 class QLineEdit;
 class QComboBox;
 class QStringList;
-class smartDevice;
+class SmartDevice;
 class ipEdit;
 class macAddress;
 class arpModel;
@@ -38,11 +38,11 @@ class tableArp : public QDialog
     Q_DISABLE_COPY(tableArp)
 public:
     tableArp();
-    void setDevice(smartDevice *dev);
+    void setDevice(SmartDevice *dev);
     void updateTable();
     void addItem(int r, int c, QString s);
 private:
-    smartDevice *device;
+    SmartDevice *device;
     QTableWidget *table;
     QPushButton *btn_add;
     QPushButton *btn_del;

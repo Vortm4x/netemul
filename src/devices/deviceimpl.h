@@ -27,34 +27,20 @@
 #include "statistics.h"
 #include "visualizable.h"
 
-#define DECLARE_PROTOTYPE(CLASS) public: \
-                                    deviceImpl* prototype() const; \
-                                 private: \
-                                    static CLASS *myPrototype;
-#define DECLARE_STATIC_PROTOTYPE(CLASS) CLASS *CLASS::myPrototype = 0;
-#define DEFINETION_PROTOTYPE_FUNCTION(CLASS) deviceImpl* CLASS::prototype() const \
-                                              { \
-                                                if ( !myPrototype ) { \
-                                                      myPrototype = new CLASS; \
-                                                      Q_ASSERT( myPrototype != 0 ); \
-                                                } \
-                                                return myPrototype; \
-                                              }
-
 class cableDev;
 class logDialog;
 
 typedef QMap<QString,bool> featuresMap;
 
-class deviceImpl : public QObject
+class DeviceImpl : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString note READ note WRITE setNote)
     Q_PROPERTY(bool router READ isRouter WRITE setRouter)
 public:
-    deviceImpl();
+    DeviceImpl(QObject *parent = 0);
     void showDeviceNoteDialog();
-    virtual ~deviceImpl() { }
+    virtual ~DeviceImpl() { }
 
     virtual int type() const = 0;
 
@@ -88,10 +74,6 @@ public:
 // Writing and reading
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
-    virtual void writeXmlImpl(sceneXmlWriter &stream) const = 0;
-    virtual void readXmlImpl(sceneXmlReader &stream) = 0;
 
     virtual QString deviceName() const = 0;
     virtual QString deviceCommandName() const = 0;
@@ -106,8 +88,7 @@ public:
 
     void setVisualizator( visualizable *view ) { myView = view; }
     void updateView() const { myView->onImplChange(); }
-public:
-    virtual deviceImpl* prototype() const = 0;
+public:    
 
     virtual statistics deviceStatistics() const = 0;
     virtual int trafficDigit() const = 0;
@@ -135,13 +116,13 @@ private:
 
 class deviceSetting {
 public:
-    deviceSetting(deviceImpl *d) : dev(d) { }
+    deviceSetting(DeviceImpl *d) : dev(d) { }
     QString note() const { return dev->note(); }
     void setNote(const QString &str) { dev->setNote(str); }
 private:
-    deviceImpl *dev;
+    DeviceImpl *dev;
 };
 
-Q_DECLARE_METATYPE(deviceImpl*)
+Q_DECLARE_METATYPE(DeviceImpl*)
 
 #endif // DEVICEIMPL_H

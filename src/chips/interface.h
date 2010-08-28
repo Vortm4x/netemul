@@ -26,30 +26,33 @@
 
 class cableDev;
 class arpModel;
+class Interface;
+
+typedef QVector<Interface*> InterfaceVector;
 
 static const quint8 COUNT_AGAINST_SEND = 5;
 
 struct waitPacket
 {
-    ipAddress dest;
+    IpAddress dest;
     int time;
     quint8 count;
     QList<ipPacket> packets;
     void insert(ipPacket p) { packets << p; }
-    static waitPacket* create(ipAddress a,ipPacket p);
+    static waitPacket* create(IpAddress a,ipPacket p);
 };
 
-class interface : public abstractChip
+class Interface : public AbstractChip
 {
     Q_OBJECT
-public:
-    interface(const QString &name);
-    interface() { }
-    ~interface();
+    Q_PROPERTY(QString name READ name WRITE setName )
+public:    
+    Interface(QObject *parent = 0);
+    ~Interface();
     void receiveEvent(frame &fr,devicePort*);
     void receiveIp(ipPacket &ip);
     void receiveArp(arpPacket &arp);
-    void sendPacket(ipPacket &p,ipAddress gw = ipAddress("0.0.0.0"));
+    void sendPacket(ipPacket &p,IpAddress gw = IpAddress("0.0.0.0"));
     void sendBroadcast(ipPacket &p);
     const devicePort* socket() const { return mySocket; }
     bool isConnect() const;
@@ -57,8 +60,8 @@ public:
     bool isCableConnect(const cableDev *c) const;
     void deciSecondEvent();
     void secondEvent();
-    void sendArpRequest(ipAddress a);
-    void sendArpResponse(macAddress m, ipAddress a);
+    void sendArpRequest(IpAddress a);
+    void sendArpResponse(macAddress m, IpAddress a);
     int trafficDigit() const;
     bool isBusy() const;
 
@@ -70,8 +73,6 @@ public:
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXml(sceneXmlWriter &stream) const;
-    virtual void readXml(sceneXmlReader &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
 signals:

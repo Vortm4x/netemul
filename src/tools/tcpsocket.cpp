@@ -24,7 +24,7 @@
 #include "routemodel.h"
 #include "appsetting.h"
 
-tcpSocket::tcpSocket(smartDevice *d,quint16 port) : abstractSocket(d)
+tcpSocket::tcpSocket(SmartDevice *d,quint16 port) : abstractSocket(d)
 {
     myBindPort = port;
     isn = qrand()%Sequence;
@@ -40,7 +40,7 @@ tcpSocket::~tcpSocket()
 {
 }
 
-void tcpSocket::write(ipAddress a, quint16 p, QByteArray data)
+void tcpSocket::write(IpAddress a, quint16 p, QByteArray data)
 {
     myBind = a;
     myReceiverPort = p;    
@@ -61,13 +61,13 @@ void tcpSocket::sendMessage(tcpPacket t) const
 {
     ipPacket p;
     p.pack(t.toData());
-    ipAddress gw;
+    IpAddress gw;
     routeRecord *r = dev->myRouteTable->recordAt(myBind);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     p.setSender(r->out);
     p.setReceiver(myBind);
-    p.setUpProtocol(smartDevice::TCP);
+    p.setUpProtocol(SmartDevice::TCP);
     dev->ipToAdapter(r->out)->sendPacket(p,gw);
 }
 

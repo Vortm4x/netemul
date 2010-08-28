@@ -24,27 +24,27 @@
 #include "appsetting.h"
 #include "arpmodel.h"
 
-interface::interface(const QString &name) : myName(name)
+Interface::Interface(QObject *parent) : AbstractChip(parent)
 {
     mySocket = new devicePort;
     myArpTable = new arpModel;
 }
 
-interface::~interface()
+Interface::~Interface()
 {
     delete mySocket;
     delete myArpTable;
     qDeleteAll(myWaits);
 }
 
-void interface::pushToSocket(frame &f)
+void Interface::pushToSocket(frame &f)
 {
     checkSend(f);
     emit sendData(f,myName);
     mySocket->pushToSend(f);
 }
 
-void interface::receiveEvent(frame &fr,devicePort*)
+void Interface::receiveEvent(frame &fr,devicePort*)
 {
     checkReceive(fr);
     emit receiveData(fr,myName);
@@ -58,20 +58,20 @@ void interface::receiveEvent(frame &fr,devicePort*)
     }
 }
 
-void interface::sendBroadcast(ipPacket &p)
+void Interface::sendBroadcast(ipPacket &p)
 {
     frame f = createFrame( macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
     f.pack( p.toData() );
     pushToSocket(f);
 }
 
-void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */ )
+void Interface::sendPacket(ipPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */ )
 {
     if ( p.isBroadcast( myMask ) ) {
         sendBroadcast(p);
         return;
     }
-    ipAddress t;    
+    IpAddress t;
     if ( gw.isEmpty() ) t = p.receiver();
     else t = gw;
     arpRecord *a = myArpTable->recordAt(t);
@@ -91,7 +91,7 @@ void interface::sendPacket(ipPacket &p,ipAddress gw /* = ipAddress("0.0.0.0") */
     myWaits << waitPacket::create(t,p);
 }
 
-frame interface::createFrame( macAddress receiverMac, int t)
+frame Interface::createFrame( macAddress receiverMac, int t)
 {
     frame f;
     f.setSender(myMac);
@@ -100,7 +100,7 @@ frame interface::createFrame( macAddress receiverMac, int t)
     return f;
 }
 
-void interface::receiveArp(arpPacket &arp)
+void Interface::receiveArp(arpPacket &arp)
 {
     if ( arp.type() == arpPacket::response ) {
         if ( arp.senderIp() == myIp ) {
@@ -125,27 +125,27 @@ void interface::receiveArp(arpPacket &arp)
     }
 }
 
-bool interface::isConnect() const
+bool Interface::isConnect() const
 {
     return mySocket->isConnect();
 }
 
-void interface::setConnect(bool b,cableDev *c)
+void Interface::setConnect(bool b,cableDev *c)
 {
     mySocket->setConnect(b,c);
 }
 
-bool interface::isCableConnect(const cableDev *c) const
+bool Interface::isCableConnect(const cableDev *c) const
 {
     return mySocket->isCableConnect(c);
 }
 
-void interface::setChecked(bool b)
+void Interface::setChecked(bool b)
 {
     mySocket->setChecked(b);
 }
 
-void interface::deciSecondEvent()
+void Interface::deciSecondEvent()
 {
     mySocket->queueEvent();
     if ( mySocket->hasReceive() ) {
@@ -154,7 +154,7 @@ void interface::deciSecondEvent()
     }
 }
 
-void interface::secondEvent()
+void Interface::secondEvent()
 {
     myArpTable->update();
     foreach ( waitPacket *i , myWaits ) {
@@ -170,7 +170,7 @@ void interface::secondEvent()
     }
 }
 
-void interface::sendArpRequest(ipAddress a)
+void Interface::sendArpRequest(IpAddress a)
 {
     if ( a.isEmpty() ) return;
     arpPacket p(  macAddress() , myMac , a , myIp , arpPacket::request );
@@ -181,7 +181,7 @@ void interface::sendArpRequest(ipAddress a)
     pushToSocket(f);
 }
 
-void interface::sendArpResponse(macAddress m, ipAddress a)
+void Interface::sendArpResponse(macAddress m, IpAddress a)
 {
     arpPacket p(m, myMac, a, myIp, arpPacket::response);
     frame f = createFrame(m, frame::arp);
@@ -189,49 +189,24 @@ void interface::sendArpResponse(macAddress m, ipAddress a)
     pushToSocket(f);
 }
 
-void interface::write(QDataStream &stream) const
+void Interface::write(QDataStream &stream) const
 {
-    abstractChip::write(stream);
+    AbstractChip::write(stream);
     stream << myName;
 }
 
-void interface::writeXml(sceneXmlWriter &stream) const
+void Interface::read(QDataStream &stream)
 {
-    abstractChip::writeXml(stream);
-    stream.writeStartElement("interface");
-    stream.writeTextElement("name",myName);
-    stream.writeEndElement();
-}
-
-void interface::read(QDataStream &stream)
-{
-    abstractChip::read(stream);
+    AbstractChip::read(stream);
     stream >> myName;
 }
 
-void interface::readXml(sceneXmlReader &stream)
-{
-    Q_ASSERT( stream.isStartElement() && stream.name() == "chipimpl" );
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "abstractchip") abstractChip::readXml(stream);
-        else if ( stream.name() == "interface" ) {
-            while ( !stream.atEnd() ) {
-                stream.readNext();
-                if ( stream.isEndElement() ) break;
-                if ( stream.name() == "name" ) myName = stream.readElementText();
-            }
-        }
-    }
-}
-
-bool interface::isBusy() const
+bool Interface::isBusy() const
 {
     return mySocket->isBusy();
 }
 
-int interface::trafficDigit() const
+int Interface::trafficDigit() const
 {
     int sum = 0;
     foreach ( waitPacket *i , myWaits ) sum += i->packets.size();
@@ -240,7 +215,7 @@ int interface::trafficDigit() const
 //-------------------------------------------------------
 //-------------------------------------------------------
 
-waitPacket* waitPacket::create(ipAddress a,ipPacket p)
+waitPacket* waitPacket::create(IpAddress a,ipPacket p)
 {
     waitPacket *t = new waitPacket;
     t->dest = a;

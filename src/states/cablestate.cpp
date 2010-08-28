@@ -56,13 +56,13 @@ void cableState::mouseRelease(QGraphicsSceneMouseEvent*)
 {
     if ( !line ) return;
     QString start,end;
-    device *startItem = scene->deviceInPoint(line->line().p1()) ;
-    device *endItem = scene->deviceInPoint(line->line().p2()) ;
+    Device *startItem = scene->deviceInPoint(line->line().p1()) ;
+    Device *endItem = scene->deviceInPoint(line->line().p2()) ;
     scene->removeItem(line);
     delete line;
     line = 0; // Линию временную делаем указателем на нуль
     if ( !startItem || !endItem ) return;
-    if ( device::isConnectDevices(startItem, endItem) ) return;
+    if ( Device::isConnectDevices(startItem, endItem) ) return;
     if ( startItem == endItem ) return;
     connectDialog *conDialog = new connectDialog(startItem,endItem);
     if ( !conDialog->exec() ) {

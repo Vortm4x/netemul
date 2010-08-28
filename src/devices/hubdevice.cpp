@@ -22,44 +22,42 @@
 #include "appsetting.h"
 #include "hubchip.h"
 
-DECLARE_STATIC_PROTOTYPE(hubDevice)
-DEFINETION_PROTOTYPE_FUNCTION(hubDevice)
 
-hubDevice::hubDevice(int c /* = 0 */ )
+HubDevice::HubDevice(QObject *parent) : BoxDevice(parent)
 {
-    if (!c) c = appSetting::defaultHubCount();
+    int c = appSetting::defaultHubCount();
     myManual = appSetting::defaultHubManual();
     chip = new hubChip(c);
     setNote(tr( "<b>Hub</b><!--You can use HTML.-->" ) );
     collision = 0;
 }
 
-hubDevice::~hubDevice()
+HubDevice::~HubDevice()
 {
     delete chip;
 }
 
 
-void hubDevice::detectCollision()
+void HubDevice::detectCollision()
 {
     collision++;
     chip->detectCollision();
 }
 
-void hubDevice::read(QDataStream &stream)
+void HubDevice::read(QDataStream &stream)
 {
-    boxDevice::read(stream);
+    BoxDevice::read(stream);
     stream >> collision;
 }
 
-void hubDevice::write(QDataStream &stream) const
+void HubDevice::write(QDataStream &stream) const
 {
     stream << hubDev;
-    boxDevice::write(stream);
+    BoxDevice::write(stream);
     stream << collision;
 }
 
-void hubDevice::dialog()
+void HubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
     hubSetting *set = new hubSetting(this);

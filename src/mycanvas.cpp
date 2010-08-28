@@ -29,6 +29,8 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtGui/QApplication>
+#include <QtXml/QXmlSimpleReader>
+
 #include "mycanvas.h"
 #include "device.h"
 #include "cabledev.h"
@@ -97,7 +99,7 @@ void MyCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
   @param ep - Имя порта второго устройства.
   @return указатель на кабель соединяющий устройства.
 */
-cableDev* MyCanvas::createConnection(device *s , device *e , QString sp,QString ep)
+cableDev* MyCanvas::createConnection(Device *s , Device *e , QString sp,QString ep)
 {
     if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
     cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
@@ -109,16 +111,24 @@ cableDev* MyCanvas::createConnection(device *s , device *e , QString sp,QString 
 }
 //-------------------------------------------------------------------------
 
-device* MyCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
+Device* MyCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 {
     if ( myType == -1 ) myType = nowType;
-    device *t = new device(myType);
+    Device *t = new Device(myType);
     t->setPos( calibrate(coor) );
     t->setMenu(myItemMenu);
     addItem(t);
     myDevices << t;
     return t;
 }
+
+void MyCanvas::addDevice(Device *device)
+{
+    device->setMenu(myItemMenu);
+    addItem( device );
+    myDevices << device;
+}
+
 /*!
   Функция удаляет со сцены выделенные устройства и провода.
 */
@@ -197,11 +207,11 @@ void MyCanvas::openScene(QString fileName)
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
-    device *item;
+    Device *item;
     int n,i;
     s >> n;
     for ( i = 0 ; i < n ; i++ ) {
-        item = new device(s);
+        item = new Device(s);
         item->setMenu(myItemMenu);
         addItem(item);
         myDevices << item;
@@ -209,9 +219,9 @@ void MyCanvas::openScene(QString fileName)
     s >> n;
     for ( i = 0 ; i < n ; i++ ) {
         s >> p;
-        device *start = deviceInPoint(p);
+        Device *start = deviceInPoint(p);
         s >> p;
-        device *end = deviceInPoint(p);
+        Device *end = deviceInPoint(p);
         s >> str;
         QString startP = str;
         s >> str;
@@ -241,12 +251,21 @@ void MyCanvas::openSceneXml(QString fileName)
         return;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
-    sceneXmlReader s(this);
-    s.readScene(&file);
+
+    SceneXmlReader handler(this);
+    QXmlSimpleReader reader;
+    reader.setContentHandler(&handler);
+    QXmlInputSource source(&file);
+
+    if ( reader.parse(&source) ) {
+        emit fileOpened();
+        qDebug() << tr("Scene opened from %1").arg(fileName) ;
+    } else {
+        qDebug("CДелай Ну ХОТЬ ЧТО_НИБУДЬ!!!!!!!!!");
+    }
+
     file.close();
     QApplication::restoreOverrideCursor();
-    emit fileOpened();
-    qDebug() << tr("Scene opened from %1").arg(fileName) ;
     myModified = false;
 }
 
@@ -266,7 +285,7 @@ void MyCanvas::saveScene(QString fileName)
     s.setVersion(QDataStream::Qt_4_3);
     s << QCoreApplication::applicationVersion();
     s << myDevices.size();
-    foreach(device *i, myDevices)
+    foreach(Device *i, myDevices)
         s << *i;
     s << myConnections.count();
     foreach (cableDev *i, myConnections) {
@@ -317,7 +336,7 @@ void MyCanvas::ticTime()
     foreach ( cableDev *t , myConnections)
         if ( t->isBusy() ) t->motion();
     n--;
-    foreach ( device *i, myDevices ) {
+    foreach ( Device *i, myDevices ) {
         i->deciSecondTimerEvent();
         if ( !n ) i->secondTimerEvent();
     }
@@ -337,24 +356,24 @@ bool MyCanvas::isEnd() const
     foreach ( cableDev *t , myConnections ) {
         if ( t->isBusy() ) return false;
     }
-    foreach ( device *i , myDevices )
+    foreach ( Device *i , myDevices )
         if ( i->isBusy() ) {
             return false;
         }
     return true;
 }
 
-device* MyCanvas::oneSelectedDevice()
+Device* MyCanvas::oneSelectedDevice()
 {
     if ( selectedItems().count() == 1 && isDevice( selectedItems().first() ) )
-        return qgraphicsitem_cast<device*>(selectedItems().first());
-    return NULL;
+        return qgraphicsitem_cast<Device*>(selectedItems().first());
+    return 0;
 }
 
-device* MyCanvas::deviceInPoint(QPointF p)
+Device* MyCanvas::deviceInPoint(QPointF p)
 {
     foreach ( QGraphicsItem *i , items(p) )
-        if ( isDevice(i) ) return qgraphicsitem_cast<device*>(i);
+        if ( isDevice(i) ) return qgraphicsitem_cast<Device*>(i);
     return 0;
 }
 
@@ -421,30 +440,30 @@ textItem* MyCanvas::createTextItem(QPointF p , const QString &str /*=tr("Ком�
 */
 bool MyCanvas::isDevice(QGraphicsItem *t) const
 {
-    if ( t->type() == device::Type ) return true;
+    if ( t->type() == Device::Type ) return true;
     return false;
 }
 //------------------------------------------------------------------------
 
-deviceImpl* MyCanvas::addComputer(int x,int y)
+DeviceImpl* MyCanvas::addComputer(int x,int y)
 {
-    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , compDev);
+    Device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , compDev);
     return t->contentDevice();
 }
-deviceImpl* MyCanvas::addRouter(int x,int y)
+DeviceImpl* MyCanvas::addRouter(int x,int y)
 {
-    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , routerDev);
+    Device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , routerDev);
     return t->contentDevice();
 }
-deviceImpl* MyCanvas::addHub(int x,int y)
+DeviceImpl* MyCanvas::addHub(int x,int y)
 {
-    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , hubDev);
+    Device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , hubDev);
     return t->contentDevice();
 }
 
-deviceImpl* MyCanvas::addSwitch(int x,int y)
+DeviceImpl* MyCanvas::addSwitch(int x,int y)
 {
-    device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , switchDev);
+    Device *t = addDeviceOnScene(QPointF(x*50+25,y*50+25) , switchDev);
     return t->contentDevice();
 }
 
@@ -454,16 +473,16 @@ textItem* MyCanvas::addNote(int x, int y)
     return createTextItem(p);
 }
 
-void MyCanvas::addConnection(deviceImpl *s,deviceImpl *e, const QString &sp,const QString &se)
+void MyCanvas::addConnection(DeviceImpl *s,DeviceImpl *e, const QString &sp,const QString &se)
 {
-    device *st = deviceWithImpl(s);
-    device *et = deviceWithImpl(e);
+    Device *st = deviceWithImpl(s);
+    Device *et = deviceWithImpl(e);
     createConnection(st,et,sp,se);
 }
 
-device* MyCanvas::deviceWithImpl(deviceImpl *d)
+Device* MyCanvas::deviceWithImpl(DeviceImpl *d)
 {
-    foreach ( device *i , myDevices )
+    foreach ( Device *i , myDevices )
         if ( i->contentDevice() == d ) return i;
     return 0;
 }
@@ -489,7 +508,7 @@ void MyCanvas::play()
 QObjectList MyCanvas::computerList()
 {
     QObjectList temp;
-    foreach ( device *i , myDevices )
+    foreach ( Device *i , myDevices )
         if ( i->isCanSend() ) temp << i->contentDevice();
     return temp;
 }
@@ -522,7 +541,7 @@ void MyCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
         curDevice->setPos( curPoint );
 
         if ( isDevice( curDevice ) ) {
-            device *d = qgraphicsitem_cast<device*>(curDevice);
+            Device *d = qgraphicsitem_cast<Device*>(curDevice);
             d->updateCables();
         }
     }
@@ -536,13 +555,13 @@ void MyCanvas::calibrateAll(QList<QGraphicsItem*> list)
         if ( i->type() != textItem::Type ) i->setPos( calibrate( i->pos() ) );
 }
 
-void MyCanvas::registerDevice(device *dev)
+void MyCanvas::registerDevice(Device *dev)
 {
     addItem(dev);
     myDevices << dev;
 }
 
-void MyCanvas::unregisterDevice(device *dev)
+void MyCanvas::unregisterDevice(Device *dev)
 {
     removeItem(dev);
     myDevices.removeOne(dev);

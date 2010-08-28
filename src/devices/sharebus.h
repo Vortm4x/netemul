@@ -28,7 +28,7 @@ class devicePort;
 // который унаследован от device , так как у общей шины будет отличаться
 // реализация и отображение от остальных устройств
 //
-class shareBus : public deviceImpl
+class shareBus : public DeviceImpl
 {
 public:
     enum { defaultWidth = 200 };

@@ -22,7 +22,7 @@
 
 #include "programmrep.h"
 
-class smartDevice;
+class SmartDevice;
 class routeModel;
 class routeRecord;
 class udpSocket;
@@ -43,7 +43,7 @@ public:
     int id() const { return RIP; }
     ripProgramm();
     ~ripProgramm();
-    void setDevice(smartDevice *s);
+    void setDevice(SmartDevice *s);
     bool interrupt(int u);
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

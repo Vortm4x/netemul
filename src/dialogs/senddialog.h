@@ -33,10 +33,10 @@ class QSpinBox;
 class QCheckBox;
 class QRadioButton;
 class QVBoxLayout;
-class deviceImpl;
-class device;
+class DeviceImpl;
+class Device;
 class devicePort;
-class interface;
+class Interface;
 
 class sendDialog : public QDialog
 {
@@ -44,7 +44,7 @@ class sendDialog : public QDialog
 public:
     enum aim { sender = 0 , receiver = 1 };
     enum { UDP = 0 ,TCP = 1 };
-    sendDialog(aim cur,device *t);
+    sendDialog(aim cur,Device *t);
     void prepare();
     QString dest() const { return myDest; }
     bool broadcast() const { return myBroadcast; }
@@ -56,7 +56,7 @@ public slots:
     void checkAccept();
 private:
     aim myState;
-    deviceImpl *myDevice;
+    DeviceImpl *myDevice;
     QString myDest;
     int mySize;
     int myProtocol;

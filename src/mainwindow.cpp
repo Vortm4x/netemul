@@ -49,7 +49,7 @@
 #endif
 
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
-#define FILES_CURRENT_TYPES FILES_TYPES_NO
+#define FILES_CURRENT_TYPES FILES_TYPES_XML
 
 #define FILES_TYPES_XML "XML files(*.xml);;Networks(*.net)"
 #define FILES_TYPES_NET "Networks(*.net);;XML files(*.xml)"

@@ -20,7 +20,7 @@
 #ifndef CONNECTDIALOG_H
 #define CONNECTDIALOG_H
 
-class device;
+class Device;
 
 #include "ui_connectdialog.h"
 
@@ -29,14 +29,14 @@ class connectDialog : public QDialog , private Ui::connectDilog
     Q_OBJECT
     Q_DISABLE_COPY(connectDialog)
 public:           
-    explicit connectDialog(device *start,device *end);
+    explicit connectDialog(Device *start,Device *end);
 public slots:
     void changeSelect();
     QString getStart() { return startList->currentItem()->text(); }
     QString getEnd() { return endList->currentItem()->text(); }
 private:
-    device *start;
-    device *end;
+    Device *start;
+    Device *end;
 protected:
     virtual void changeEvent(QEvent *e);
 };

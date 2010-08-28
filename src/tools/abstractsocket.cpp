@@ -20,7 +20,7 @@
 #include "abstractsocket.h"
 #include "smartdevice.h"
 
-abstractSocket::abstractSocket(smartDevice *d)
+abstractSocket::abstractSocket(SmartDevice *d)
 {
     dev = d;
     dev->mySockets << this;
@@ -32,7 +32,7 @@ abstractSocket::~abstractSocket()
 }
 
 
-bool abstractSocket::isOurData(ipAddress address, quint16 port)
+bool abstractSocket::isOurData(IpAddress address, quint16 port)
 {
     if ( myBind.isEmpty() || myBind == address ) {
         if ( port == myBindPort ) return true;

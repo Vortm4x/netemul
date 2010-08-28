@@ -28,7 +28,7 @@
 static const int MINUTE = 60;
 static const int REPEAT_COUNT = 3;
 
-class interface;
+class Interface;
 class udpSocket;
 
 struct interfaceState {
@@ -37,13 +37,11 @@ struct interfaceState {
     int xid;
     int time;
     qint8 count;
-    ipAddress serverAddress;
-    ipAddress lastIp;
+    IpAddress serverAddress;
+    IpAddress lastIp;
     QString name;
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
-    void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
 };
 
 typedef QList<interfaceState*> sessionList;
@@ -58,13 +56,11 @@ public:
     ~dhcpClientProgramm();
     int id() const { return DHCPClient; }
     bool interrupt(int) { return false; }
-    void setDevice(smartDevice *s);
+    void setDevice(SmartDevice *s);
     void showProperty();
     void incTime();
     bool isUnderDhcpControl(const QString name) const;
     void write(QDataStream &stream) const;
-    void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
     void read(QDataStream &stream);
     void observeInterface(const QString &name, bool b);
     QStringList interfacesList() const;

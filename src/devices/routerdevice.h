@@ -22,14 +22,13 @@
 
 #include "smartdevice.h"
 
-class routerDevice : public smartDevice
+class RouterDevice : public SmartDevice
 {
     Q_OBJECT
-    DECLARE_PROTOTYPE(routerDevice)
 public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
-    routerDevice(int c = 0);
+    RouterDevice(QObject *parent = 0);
     QString deviceName() const { return "router"; }
     QString deviceCommandName() const { return tr("Router"); }
     QString pixmapName() const { return ":/im/images/router.png"; }
@@ -45,10 +44,10 @@ public slots:
 class routerSetting : public smartSetting
 {
 public:
-    routerSetting(routerDevice *r) : smartSetting(r) , rd(r) { }
+    routerSetting(RouterDevice *r) : smartSetting(r) , rd(r) { }
     void setSocketsCount(int n) { rd->setSocketsCount(n); }
 private:
-    routerDevice *rd;
+    RouterDevice *rd;
 };
 
 

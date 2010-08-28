@@ -28,15 +28,14 @@ class devicePort;
 /*!
   Реализует компьютер.
 */
-class computer : public smartDevice
+class Computer : public SmartDevice
 {
-    Q_OBJECT
-    DECLARE_PROTOTYPE(computer)
+    Q_OBJECT    
 public:
     enum { compDev = 3 };
     int type() const { return compDev; }
-    computer(int c = 0);
-    ~computer() {  }
+    Computer(QObject *parent = 0);
+    ~Computer() {  }
 
     void dialog();
     void showDesignerDialog();
@@ -48,17 +47,17 @@ public:
     bool isCanSend() const { return true; }
     void sendConstructedFrame(QString Interface,frame Frame, int count);
 protected:
-    void write(QDataStream &stream) const { stream << compDev; smartDevice::write(stream);}
-    void read(QDataStream &stream) { smartDevice::read(stream); }
+    void write(QDataStream &stream) const { stream << compDev; SmartDevice::write(stream);}
+    void read(QDataStream &stream) { SmartDevice::read(stream); }
 };
 //---------------------------------------------
 
 class computerSetting : public smartSetting {
 public:
-    computerSetting( computer *c ) : smartSetting(c) , cp(c) { }
+    computerSetting( Computer *c ) : smartSetting(c) , cp(c) { }
     QString gateway() const { return cp->gateway().toString(); }
     void setGateway(const QString &str) { cp->setGateway(str); }
 private:
-    computer *cp;
+    Computer *cp;
 };
 #endif // COMPUTER_H

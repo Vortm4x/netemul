@@ -14,9 +14,9 @@ private slots:
 
 void TestIpAddress::saveAndLoad()
 {
-    ipAddress ip;
+    IpAddress ip;
     ip.setIp("192.168.1.1");
-    ipAddress t = ip;
+    IpAddress t = ip;
     QFile f("test4");
     if ( f.open(QIODevice::WriteOnly) ) {
         QDataStream s(&f);
@@ -36,26 +36,26 @@ void TestIpAddress::saveAndLoad()
 
 void TestIpAddress::operators()
 {
-    ipAddress ipA;
+    IpAddress ipA;
     ipA.setIp("255.255.255.255");
-    QCOMPARE( ~ipA == ipAddress("0.0.0.0") , true );
+    QCOMPARE( ~ipA == IpAddress("0.0.0.0") , true );
     ipA.setIp("128.0.0.5");
-    QCOMPARE( ~ipA == ipAddress("127.255.255.250") , true );
+    QCOMPARE( ~ipA == IpAddress("127.255.255.250") , true );
     ipA.setIp("192.168.1.1");
-    ipAddress ipB("255.255.255.192");
-    ipAddress ipC("192..168.1.65");
+    IpAddress ipB("255.255.255.192");
+    IpAddress ipC("192..168.1.65");
     QCOMPARE( (ipA & ipB) != (ipB & ipC), true);
     ipC.setIp("192.168.1.2");
     QCOMPARE( (ipA & ipB) == (ipB & ipC), true);
-    ipA = ipAddress::full();
-    QCOMPARE( ipA == ipAddress("255.255.255.255"),true);
+    ipA = IpAddress::full();
+    QCOMPARE( ipA == IpAddress("255.255.255.255"),true);
 }
 
 void TestIpAddress::toInt()
 {
-    ipAddress ipA("255.255.255.255");
-    ipAddress ipB("192.168.1.2");
-    ipAddress ipC("0.0.0.0");
+    IpAddress ipA("255.255.255.255");
+    IpAddress ipB("192.168.1.2");
+    IpAddress ipC("0.0.0.0");
     quint32 v1 = ipA.toInt();
     quint32 v2 = ipB.toInt();
     quint32 v3 = ipC.toInt();
@@ -66,7 +66,7 @@ void TestIpAddress::toInt()
 
 void TestIpAddress::isEmpty()
 {
-    ipAddress a("1.0.0.0");
+    IpAddress a("1.0.0.0");
     QCOMPARE( a.isEmpty() , false );
     a.setIp("0.0.0.0");
     QCOMPARE( a.isEmpty() , true );
@@ -74,15 +74,15 @@ void TestIpAddress::isEmpty()
 
 void TestIpAddress::toIp()
 {
-    ipAddress address("192.168.1.1");
+    IpAddress address("192.168.1.1");
     quint32 intIp = address.toInt();
-    QCOMPARE( ipAddress(intIp) , address );
+    QCOMPARE( IpAddress(intIp) , address );
     address.setIp("0.0.0.0");
     intIp = address.toInt();
-    QCOMPARE( ipAddress(intIp) , address );
+    QCOMPARE( IpAddress(intIp) , address );
     address.setIp("255.255.255.255");
     intIp = address.toInt();
-    QCOMPARE( ipAddress(intIp) , address );
+    QCOMPARE( IpAddress(intIp) , address );
 }
 
 QTEST_MAIN(TestIpAddress)

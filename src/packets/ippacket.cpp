@@ -26,7 +26,7 @@ ipPacket::ipPacket(const QByteArray &b)
     s >> d->sender >> d->receiver >> d->upProtocol >> d->data >> d->ttl;
 }
 
-ipPacket::ipPacket(ipAddress s,ipAddress r)
+ipPacket::ipPacket(IpAddress s,IpAddress r)
 {
     d = new ipPacketData;
     d->sender = s ;
@@ -38,9 +38,9 @@ ipPacket::ipPacket(ipAddress s,ipAddress r)
   @param mask - маска сети, по которой идет проверка.
   @return - true - широковещательный, false - в противном случае.
 */
-bool ipPacket::isBroadcast(const ipAddress mask) const
+bool ipPacket::isBroadcast(const IpAddress mask) const
 {
-    ipAddress a = ~mask;
+    IpAddress a = ~mask;
     if ( ( d->receiver & a ) == a) return true;
     return false;
 }

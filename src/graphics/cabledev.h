@@ -24,7 +24,7 @@
 #include <QPainter>
 #include <QQueue>
 
-class device;
+class Device;
 class devicePort;
 class cableTextItem;
 
@@ -51,7 +51,7 @@ public:
         return QRectF(line().p1(),line().p2()).normalized(); //.adjusted(-5,-5,5,5);
     }
     bool isCollisionCable() const { return isCollision; }
-    cableDev(device *start,device *end,QString sp, QString ep,int s = 5);
+    cableDev(Device *start,Device *end,QString sp, QString ep,int s = 5);
     ~cableDev();
     void updatePosition(); // Обновление прорисовки
     void motion();
@@ -63,7 +63,7 @@ public:
     void setChecked(bool c) { myChecked = c; update(); }
     bool isChecked() const { return myChecked; }
     void setShowLabel(bool b);
-    void setFastInfo(bool b, device *dev, QString info);
+    void setFastInfo(bool b, Device *dev, QString info);
 
     void deleteConnect();
     QPointF startLabelPoint() const { return line().pointAt(0.3); }
@@ -73,8 +73,8 @@ public:
     void unregisterCable();
 
 public:
-    device* start() { return myStartDev; }
-    device* end() { return myEndDev; }
+    Device* start() { return myStartDev; }
+    Device* end() { return myEndDev; }
     devicePort* startPort() { return myStartPort; }
     devicePort* endPort() { return myEndPort; }
     QString startSocketName() const;
@@ -82,8 +82,8 @@ public:
 private:
     QString myStartName;
     QString myEndName;
-    device *myStartDev; //!< Указатель на устройтсво начала.
-    device *myEndDev; //!< Указатель на устройство конца.
+    Device *myStartDev; //!< Указатель на устройтсво начала.
+    Device *myEndDev; //!< Указатель на устройство конца.
     devicePort *myStartPort;
     devicePort *myEndPort;
 

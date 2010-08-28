@@ -22,18 +22,18 @@
 #include "routemodel.h"
 #include "udppacket.h"
 
-udpSocket::udpSocket(smartDevice *d, quint16 port) : abstractSocket(d)
+udpSocket::udpSocket(SmartDevice *d, quint16 port) : abstractSocket(d)
 {
     myBindPort = port;
 }
 
-void udpSocket::write(ipAddress address, quint16 port, QByteArray data)
+void udpSocket::write(IpAddress address, quint16 port, QByteArray data)
 {
     if ( address.isFull() ) {
         writeBroadcast(port,data);
         return;
     }
-    ipAddress gw;
+    IpAddress gw;
     routeRecord *r = dev->myRouteTable->recordAt(address);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
@@ -63,9 +63,9 @@ void udpSocket::treatPacket(ipPacket p)
 void udpSocket::writeBroadcast(quint16 port, QByteArray data)
 {
     Q_ASSERT( data.size() <= PACKET_SIZE ); // Нельзя рассылать широковешательно много данных
-    foreach ( interface *i , dev->myInterfaces ) {
+    foreach ( Interface *i , dev->myInterfaces ) {
         if ( !i->isConnect() ) continue;
-        ipPacket p( i->ip() , ipAddress::full() );
+        ipPacket p( i->ip() , IpAddress::full() );
         p.setUpProtocol(ipPacket::udp);
         udpPacket udp;
         udp.setReceiver(port);

@@ -22,27 +22,27 @@
 
 #include "ippacket.h"
 
-class smartDevice;
+class SmartDevice;
 
 class abstractSocket : public QObject
 {
     Q_OBJECT
 public:
     abstractSocket() { dev = 0; }
-    abstractSocket(smartDevice *d);
+    abstractSocket(SmartDevice *d);
     virtual ~abstractSocket();
-    bool isOurData(ipAddress address, quint16 port);
+    bool isOurData(IpAddress address, quint16 port);
     virtual bool isBusy() const { return false; }
-    void setBind(ipAddress address) { myBind = address; }
+    void setBind(IpAddress address) { myBind = address; }
     virtual void treatPacket(ipPacket) { }
     virtual void secondEvent() { }
-    virtual void write(ipAddress, quint16, QByteArray) { }
+    virtual void write(IpAddress, quint16, QByteArray) { }
 signals:
     void readyRead(QByteArray);
 protected:
     quint16 myBindPort;
-    ipAddress myBind;
-    smartDevice *dev;
+    IpAddress myBind;
+    SmartDevice *dev;
 };
 
 #endif // ABSTRACTSOCKET_H

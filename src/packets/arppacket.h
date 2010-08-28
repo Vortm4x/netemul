@@ -37,14 +37,14 @@ private:
     quint8 type;
     macAddress senderMac;
     macAddress receiverMac;
-    ipAddress senderIp;
-    ipAddress receiverIp;
+    IpAddress senderIp;
+    IpAddress receiverIp;
 };
 
 class arpPacket
 {
 public:
-    arpPacket(macAddress rm , macAddress sm , ipAddress ri , ipAddress si , quint8 t);
+    arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si , quint8 t);
     arpPacket(const arpPacket &other) : d(other.d) { }
     arpPacket() { d = new arpPacketData; }
     arpPacket(const QByteArray &b);
@@ -53,13 +53,13 @@ public:
     void setType(int i) { d->type = i; }
     int type() const { return d->type; }
     void setSenderMac(macAddress m) { d->senderMac = m; }
-    void setSenderIp(ipAddress a) { d->senderIp = a; }
+    void setSenderIp(IpAddress a) { d->senderIp = a; }
     void setReceiverMac(macAddress m) { d->receiverMac = m; }
-    void setReceiverIp(ipAddress a) { d->receiverIp = a; }
+    void setReceiverIp(IpAddress a) { d->receiverIp = a; }
     macAddress senderMac() const { return d->senderMac; }
-    ipAddress senderIp() const { return d->senderIp; }
+    IpAddress senderIp() const { return d->senderIp; }
     macAddress receiverMac() const  { return d->receiverMac; }
-    ipAddress receiverIp() const { return d->receiverIp; }
+    IpAddress receiverIp() const { return d->receiverIp; }
 private:
     QSharedDataPointer<arpPacketData> d;
 protected:

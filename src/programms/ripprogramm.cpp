@@ -52,7 +52,7 @@ void ripProgramm::clearTemp()
     tempList.clear();
 }
 
-void ripProgramm::setDevice(smartDevice *s)
+void ripProgramm::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) return;
     myDevice = s;
@@ -85,7 +85,7 @@ void ripProgramm::incTime()
 void ripProgramm::execute(QByteArray data)
 {
     if ( !myEnable ) return;
-    ipAddress sender;
+    IpAddress sender;
     quint16 size;
     QDataStream d(data);
     d >> size;
@@ -112,7 +112,7 @@ void ripProgramm::execute(QByteArray data)
 void ripProgramm::sendUpdate(bool isAll)
 {
     if ( isAll ) model->update();
-    foreach ( interface *i , myDevice->interfaces() ) {
+    foreach ( Interface *i , myDevice->interfaces() ) {
         if ( !i->isConnect() ) continue;
         QByteArray b;
         QDataStream d(&b, QIODevice::WriteOnly );
@@ -142,7 +142,7 @@ void ripProgramm::sendUpdate(bool isAll)
         }
         d.device()->seek(0);
         d << quint16(b.size()-2);
-        ipAddress temp = i->ip() | ~i->mask();
+        IpAddress temp = i->ip() | ~i->mask();
         udpSocket sock(myDevice, mySocket);
         sock.write(temp,mySocket,b);        
     }
@@ -194,10 +194,10 @@ bool ripProgramm::interrupt(int u)
     if ( !myEnable || mySplitMode == SPLIT_NONE ) return false;
     routeRecord *t = 0;
     switch (u) {
-        case smartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
+        case SmartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
             addToTemp( model->changedRecord() );
             return true;
-        case smartDevice::delNet : // И когда удаляется тоже.
+        case SmartDevice::delNet : // И когда удаляется тоже.
             t = model->changedRecord();
             t->metric = 16;
             addToTemp(t);

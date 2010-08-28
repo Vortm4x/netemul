@@ -11,5 +11,5 @@ SUBDIRS = mac \
 	ipaddress \
 	frame \
 	boxchip \
-	routemodel 
+	scenexmlreader
 # Input

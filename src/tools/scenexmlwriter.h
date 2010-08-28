@@ -10,7 +10,11 @@ class sceneXmlWriter : public QXmlStreamWriter
 public:
     sceneXmlWriter(MyCanvas *scene);
     void writeScene(QIODevice *dev);
+
 private:
+    void writeEntity(const QObject *entity);
+
+private:    
     MyCanvas *myScene;
 };
 

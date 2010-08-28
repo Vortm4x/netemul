@@ -57,7 +57,7 @@ void programmDialog::stateChanged(QListWidgetItem *item)
     s->programmAt( item->data( Qt::UserRole).toInt() )->setEnable( item->checkState() == Qt::Checked );
 }
 
-void programmDialog::setDevice( smartDevice *d )
+void programmDialog::setDevice( SmartDevice *d )
 {
     s = d;
     updateList();

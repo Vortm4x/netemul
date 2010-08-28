@@ -20,25 +20,25 @@
 #include "ipaddress.h"
 #include <QStringList>
 
-ipAddress::ipAddress()
+IpAddress::IpAddress()
 {
     for ( int i = 0 ; i < 4 ; i++ ) myIp[i] = 0;
 }
 
-ipAddress::ipAddress(const quint8 *cur)
+IpAddress::IpAddress(const quint8 *cur)
 {
     for ( int i = 0; i < 4 ; i++)
         myIp[i] = cur[i];
 }
 
-ipAddress::ipAddress(const QString str)
+IpAddress::IpAddress(const QString str)
 {
     QStringList s = str.split(".");
     for (int i = 0 ; i < 4 ; i++)
         myIp[i] = s.at(i).toInt();
 }
 
-ipAddress::ipAddress(const char *str)
+IpAddress::IpAddress(const char *str)
 {
     QString t(str);
     QStringList l = t.split(".");
@@ -46,13 +46,13 @@ ipAddress::ipAddress(const char *str)
         myIp[i] = l.at(i).toInt();
 }
 
-ipAddress::ipAddress(const ipAddress &other)
+IpAddress::IpAddress(const IpAddress &other)
 {
     for ( int i = 0; i < 4 ; i++)
         myIp[i] = other.myIp[i];
 }
 
-ipAddress::ipAddress(const quint32 intIp)
+IpAddress::IpAddress(const quint32 intIp)
 {
     myIp[0] = intIp >> 24;
     myIp[1] = intIp >> 16;
@@ -60,69 +60,69 @@ ipAddress::ipAddress(const quint32 intIp)
     myIp[3] = intIp;
 }
 
-QString ipAddress::toString() const
-{
+QString IpAddress::toString() const
+{    
     QString temp = QString().setNum(myIp[0]);
     for ( int i = 1 ; i <= 3 ; i++ )
         temp += QChar('.') + QString().setNum(myIp[i]);
     return temp;
 }
 
-void ipAddress::setIp(const quint8 *cur)
+void IpAddress::setIp(const quint8 *cur)
 {
     for ( int i = 0; i < 4 ; i++)
         myIp[i] = cur[i];
 }
 
-ipAddress& ipAddress::operator=(const ipAddress &other)
+IpAddress& IpAddress::operator=(const IpAddress &other)
 {
     for ( int i = 0; i < 4 ; i++)
         myIp[i] = other.myIp[i];
     return (*this);
 }
 
-void ipAddress::setIp(const QString str)
+void IpAddress::setIp(const QString str)
 {
     QStringList s = str.split(".");
     for (int i = 0 ; i < 4 ; i++)
         myIp[i] = s.at(i).toInt();
 }
 
-ipAddress ipAddress::operator&(const ipAddress &e1) const
+IpAddress IpAddress::operator&(const IpAddress &e1) const
 {
     int i;
-    ipAddress e3;
+    IpAddress e3;
     for (i=0; i < 4; i++)
         e3.myIp[i] = this->myIp[i] & e1.myIp[i];
     return e3;
 }
 
-ipAddress ipAddress::operator |(const ipAddress &e1) const
+IpAddress IpAddress::operator |(const IpAddress &e1) const
 {
     int i;
-    ipAddress e3;
+    IpAddress e3;
     for (i=0; i < 4; i++)
         e3.myIp[i] = this->myIp[i] | e1.myIp[i];
     return e3;
 }
 
-bool ipAddress::isEmpty() const
+bool IpAddress::isEmpty() const
 {
     int d = 0;
     for ( int i = 0 ; i < 4 ; i++ ) d += myIp[i];
     return !d;
 }
 
-bool ipAddress::isFull() const
+bool IpAddress::isFull() const
 {
     for ( int i = 0 ; i < 4 ; i++ )
         if ( myIp[i] != 255 ) return false;
     return true;
 }
 
-ipAddress ipAddress::operator ~() const
+IpAddress IpAddress::operator ~() const
 {
-    ipAddress ip;
+    IpAddress ip;
     for ( int i = 0; i < 4 ; i++)
         ip.myIp[i] = ~myIp[i];
     return ip;

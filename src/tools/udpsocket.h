@@ -30,10 +30,10 @@ class udpSocket : public abstractSocket
 public:
     enum { PACKET_SIZE = 1024 };
     udpSocket() { }
-    udpSocket(smartDevice *d, quint16 port);
+    udpSocket(SmartDevice *d, quint16 port);
     ~udpSocket() { }
     void treatPacket(ipPacket p);
-    void write(ipAddress address, quint16 port, QByteArray data);
+    void write(IpAddress address, quint16 port, QByteArray data);
 private:
     void writeBroadcast(quint16 port, QByteArray data);
 };

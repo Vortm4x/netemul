@@ -33,7 +33,7 @@
 #include "dhcpclientprogramm.h"
 
 
-smartDevice::smartDevice() : myRouter(false)
+SmartDevice::SmartDevice(QObject *parent) : DeviceImpl(parent) , myRouter(false)
 {
     myReady = false;
     isDirty = true;
@@ -42,46 +42,54 @@ smartDevice::smartDevice() : myRouter(false)
     connect( myRouteTable , SIGNAL(recordDeleting(routeRecord*,int)) , SLOT(tableChanged(routeRecord*,int)));
 }
 
-smartDevice::~smartDevice()
+SmartDevice::~SmartDevice()
 {
     myProgramms.clear();
     qDeleteAll(mySockets);
     qDeleteAll(myInterfaces);
 }
 
-const interface* smartDevice::adapter(const QString &s) const
+const Interface* SmartDevice::adapter(const QString &s) const
 {
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         if ( myInterfaces.at(i)->name() == s ) return myInterfaces.at(i);
     return 0;
 }
 
-interface* smartDevice::adapter(const QString &name)
+Interface* SmartDevice::adapter(const QString &name)
 {
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         if ( myInterfaces.at(i)->name() == name ) return myInterfaces[i];
     return 0;
 }
 
-interface* smartDevice::addInterface(const QString &name)
+Interface* SmartDevice::addInterface(const QString &name)
 {
-    interface *t = new interface(name);
+    Interface *t = new Interface(this);
+    t->setName(name);
     myInterfaces << t;
     connect( t, SIGNAL(receivedPacket(ipPacket)) , SLOT(receivePacket(ipPacket)) );
     return t;
 }
 
-interface* smartDevice::ipToAdapter(const ipAddress a)
+Interface* SmartDevice::ipToAdapter(const IpAddress a)
 {
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         if ( myInterfaces.at(i)->ip() == a ) return myInterfaces[i];
     return NULL;
 }
 
-void smartDevice::receivePacket(ipPacket p)
+bool SmartDevice::hasConnentSockets() const {
+    foreach ( Interface *i, myInterfaces ) {
+        if ( i->isConnect() ) return true;
+    }
+    return false;
+}
+
+void SmartDevice::receivePacket(ipPacket p)
 {
     if ( p.decTtl() == 0 ) return;
-    interface *f = qobject_cast<interface*>(sender());
+    Interface *f = qobject_cast<Interface*>(sender());
     if ( p.receiver() == f->ip() || p.isBroadcast(f->mask()) ) treatPacket(p);
     else routePacket(p);
 }
@@ -89,14 +97,14 @@ void smartDevice::receivePacket(ipPacket p)
   Маршрутизирует пакет.
   @param p - указатель на пакет.
 */
-void smartDevice::routePacket(ipPacket &p)
+void SmartDevice::routePacket(ipPacket &p)
 {
     if ( !myRouter ) return; // Выходим если нет маршрутизации.
     routeRecord *t = myRouteTable->recordAt(p.receiver());
     if ( !t ) return;
-    ipAddress gw;
+    IpAddress gw;
     if ( t->out != t->gateway ) gw = t->gateway;
-    interface *f = ipToAdapter( t->out );
+    Interface *f = ipToAdapter( t->out );
     if ( f && f->isConnect() ) {
         f->sendPacket(p,gw);
     } else {
@@ -111,26 +119,26 @@ void smartDevice::routePacket(ipPacket &p)
   при смене ip-адреса или маски подсети.
   @param p - порт на котором произошло событие;
 */
-void smartDevice::connectedNet(interface *p)
+void SmartDevice::connectedNet(Interface *p)
 {
     checkReady();    
-    ipAddress ip = p->ip();
-    ipAddress mask = p->mask();
+    IpAddress ip = p->ip();
+    IpAddress mask = p->mask();
     if ( ip.isEmpty() || mask.isEmpty() ) return;
     myRouteTable->checkConnectedNet(ip, mask, p->isConnect());
 }
 //------------------------------------------------------------
 
-void smartDevice::addConnection(const QString &port,cableDev *c)
+void SmartDevice::addConnection(const QString &port,cableDev *c)
 {
     adapter(port)->setConnect(true,c);
     connectedNet(adapter(port));
     emit interfaceConnected(port);
 }
 
-void smartDevice::deleteConnection(cableDev *c)
+void SmartDevice::deleteConnection(cableDev *c)
 {
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         if ( i->isCableConnect(c) ) {
             i->setConnect(false,0);
             connectedNet(i);
@@ -142,9 +150,9 @@ void smartDevice::deleteConnection(cableDev *c)
   Записывает устройство в поток данных.
   @param stream - ссылка на поток.
 */
-void smartDevice::write(QDataStream &stream) const
+void SmartDevice::write(QDataStream &stream) const
 {
-    deviceImpl::write(stream);
+    DeviceImpl::write(stream);
     stream << myInterfaces.size(); // Количество сокетов
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
         myInterfaces[i]->write(stream);
@@ -156,7 +164,7 @@ void smartDevice::write(QDataStream &stream) const
 }
 //-------------------------------------------------
 
-void smartDevice::writeXmlImpl(sceneXmlWriter &stream) const
+void SmartDevice::writeXmlImpl(sceneXmlWriter &stream) const
 {
     Q_UNUSED(stream)
 //    deviceImpl::writeXml(stream);
@@ -179,15 +187,15 @@ void smartDevice::writeXmlImpl(sceneXmlWriter &stream) const
 //    stream.writeEndElement();
 }
 
-void smartDevice::read(QDataStream &stream)
+void SmartDevice::read(QDataStream &stream)
 {
-    deviceImpl::read(stream);
+    DeviceImpl::read(stream);
     int n,i;
     stream >> n;
     qDeleteAll(myInterfaces);
     myInterfaces.clear();
     for (i = 0; i < n ; i++) {
-        interface *p = addInterface(QString());
+        Interface *p = addInterface(QString());
         p->read(stream);
     }
     stream >> myRouter;
@@ -199,7 +207,7 @@ void smartDevice::read(QDataStream &stream)
     }
 }
 
-void smartDevice::readXmlImpl(sceneXmlReader &stream)
+void SmartDevice::readXmlImpl(SceneXmlReader &stream)
 {
     Q_UNUSED(stream);
 //    Q_ASSERT( stream.isStartElement() && stream.name() == "impl" );
@@ -236,28 +244,28 @@ void smartDevice::readXmlImpl(sceneXmlReader &stream)
   Задает устройству шлюз по умолчанию.
   @param str - строка с адресом.
 */
-void smartDevice::setGateway(const QString &str)
+void SmartDevice::setGateway(const QString &str)
 {
-    ipAddress t(str);
+    IpAddress t(str);
     routeRecord *i = myRouteTable->recordAt("0.0.0.0"); // Ищем старый шлюз
     if ( i ) myRouteTable->deleteFromTable(i); // Удаляем его
     if ( t.isEmpty() ) return;
-    ipAddress a = findInterfaceIp(t);
+    IpAddress a = findInterfaceIp(t);
     if ( a.isEmpty() ) {
         QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
                                  QObject::tr("Can't set this gateway! See adapter settings!"),
                                  QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-    myRouteTable->addToTable(ipAddress(),ipAddress(),t,a,0,routeModel::staticMode);
+    myRouteTable->addToTable(IpAddress(),IpAddress(),t,a,0,routeModel::staticMode);
 }
 //--------------------------------------------------------------
 
-ipAddress smartDevice::gateway() const
+IpAddress SmartDevice::gateway() const
 {
     routeRecord *i = myRouteTable->recordAt("0.0.0.0");
     if ( i ) return i->gateway;
-    return ipAddress();
+    return IpAddress();
 }
 /*!
   Отправляет сообщение посланное из интерфейса программы.
@@ -265,7 +273,7 @@ ipAddress smartDevice::gateway() const
   @param size - Размер сообщения в кб(на деле сколько пакетов).
   @param type - Протокол с помощью которого происходит отправка.
 */
-void smartDevice::sendMessage( const QString &a , int size ,int type)
+void SmartDevice::sendMessage( const QString &a , int size ,int type)
 {
     if ( type == TCP )  {
         tcpSocket *tcp = new tcpSocket(this,User);
@@ -283,7 +291,7 @@ void smartDevice::sendMessage( const QString &a , int size ,int type)
   Обрабатывает входящий пакет.
   @param p - указатель на пакет.
 */
-void smartDevice::treatPacket(ipPacket &p)
+void SmartDevice::treatPacket(ipPacket &p)
 {
     quint16 port = p.receiverSocket();
     foreach ( abstractSocket *i, mySockets )
@@ -302,18 +310,18 @@ void smartDevice::treatPacket(ipPacket &p)
   @param a - Адрес для поиска.
   @return ip-адрес интерфейса.
 */
-ipAddress smartDevice::findInterfaceIp(ipAddress a)
+IpAddress SmartDevice::findInterfaceIp(IpAddress a)
 {
-    foreach ( interface *i , myInterfaces ) {
+    foreach ( Interface *i , myInterfaces ) {
         if ( !i->isConnect() ) continue;
         if ( (i->mask() & a ) == ( i->ip() & i->mask() ) ) return i->ip();
     }
-    return ipAddress();
+    return IpAddress();
 }
 //------------------------------------------------------
 /*!
   */
-programm smartDevice::programmAt(const quint16 p) const
+programm SmartDevice::programmAt(const quint16 p) const
 {
     foreach ( programm i , myProgramms )
         if ( i->id() == p ) return i;
@@ -324,7 +332,7 @@ programm smartDevice::programmAt(const quint16 p) const
   Удаляет программу.
   @param p - указатель на программу.
 */
-void smartDevice::removeProgramm(programm p)
+void SmartDevice::removeProgramm(programm p)
 {
     p->setDevice(NULL);
     myProgramms.removeOne(p);
@@ -334,7 +342,7 @@ void smartDevice::removeProgramm(programm p)
   Посылает всем программам установленым на компьютере прерывание.
   @param u - номер прерывания.
 */
-bool smartDevice::sendInterrupt(int u)
+bool SmartDevice::sendInterrupt(int u)
 {
     bool b = false;
     foreach ( programm i ,myProgramms )
@@ -342,7 +350,7 @@ bool smartDevice::sendInterrupt(int u)
     return b;
 }
 //-------------------------------------------------------
-void smartDevice::tableDialog()
+void SmartDevice::tableDialog()
 {
 #ifndef __TESTING__
     routeEditor *d = new routeEditor(this);
@@ -350,18 +358,18 @@ void smartDevice::tableDialog()
 #endif
 }
 
-void smartDevice::showLogDialog(logDialog *log) const
+void SmartDevice::showLogDialog(logDialog *log) const
 {
 #ifndef __TESTING__
     connect( log ,SIGNAL(changeInterface(QString)) , this ,SLOT(setCheckedSocket(QString)) );
-    foreach ( interface *i , myInterfaces ) {
+    foreach ( Interface *i , myInterfaces ) {
         connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
         connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
     }
 #endif
 }
 
-void smartDevice::adapterDialog()
+void SmartDevice::adapterDialog()
 {
 #ifndef __TESTING__
     adapterProperty *d = new adapterProperty( new adapterSetting(this) );
@@ -369,7 +377,7 @@ void smartDevice::adapterDialog()
 #endif
 }
 
-void smartDevice::programmsDialog()
+void SmartDevice::programmsDialog()
 {
 #ifndef __TESTING__
     programmDialog *d = new programmDialog;
@@ -378,7 +386,7 @@ void smartDevice::programmsDialog()
 #endif
 }
 
-void smartDevice::arpDialog()
+void SmartDevice::arpDialog()
 {
 #ifndef __TESTING__
     tableArp *d = new tableArp;
@@ -387,7 +395,7 @@ void smartDevice::arpDialog()
 #endif
 }
 
-featuresMap smartDevice::featuresList() const
+featuresMap SmartDevice::featuresList() const
 {
     featuresMap t;
     foreach ( programm i , myProgramms )
@@ -395,7 +403,7 @@ featuresMap smartDevice::featuresList() const
     return t;
 }
 
-QStringList smartDevice::sockets() const
+QStringList SmartDevice::sockets() const
 {
     QStringList t;
     for ( int i = 0 ; i < myInterfaces.size() ; i++ )
@@ -403,13 +411,13 @@ QStringList smartDevice::sockets() const
     return t;
 }
 
-void smartDevice::setCheckedSocket(const QString &str)
+void SmartDevice::setCheckedSocket(const QString &str)
 {
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         i->setChecked( i->name() == str );
 }
 
-QStringList smartDevice::interfacesIp() const
+QStringList SmartDevice::interfacesIp() const
 {
     QStringList t;
     for ( int  i = 0 ; i < myInterfaces.size() ; i++ )
@@ -417,22 +425,22 @@ QStringList smartDevice::interfacesIp() const
     return t;
 }
 
-QString smartDevice::socketName(const cableDev *c) const
+QString SmartDevice::socketName(const cableDev *c) const
 {
     for ( int i = 0 ; i < myInterfaces.size(); i++ )
         if ( myInterfaces.at(i)->isCableConnect(c) ) return myInterfaces.at(i)->name();
     return QString();
 }
 
-void smartDevice::deciSecondTimerEvent()
+void SmartDevice::deciSecondTimerEvent()
 {
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         i->deciSecondEvent();
 }
 
-void smartDevice::secondTimerEvent()
+void SmartDevice::secondTimerEvent()
 {
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         i->secondEvent();
     foreach ( abstractSocket *i, mySockets )
         i->secondEvent();
@@ -440,36 +448,36 @@ void smartDevice::secondTimerEvent()
         i->incTime();
 }
 
-void smartDevice::setIp(const QString &a, const QString &ip)
+void SmartDevice::setIp(const QString &a, const QString &ip)
 {
     isDirty = true;
     adapter(a)->setIp(ip);
     connectedNet(adapter(a));
 }
 
-QString smartDevice::ipaddress(const QString &name) const
+QString SmartDevice::ipaddress(const QString &name) const
 {
     return adapter(name)->ip().toString();
 }
 
-void smartDevice::setMask(const QString &a, const QString &ip)
+void SmartDevice::setMask(const QString &a, const QString &ip)
 {
     isDirty = true;
     adapter(a)->setMask(ip);
     connectedNet(adapter(a));
 }
 
-void smartDevice::checkReady() const
+void SmartDevice::checkReady() const
 {
     myReady = true;
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         if ( i->isConnect() && i->ip().isEmpty() ) {
             myReady = false;
             break;
         }
 }
 
-bool smartDevice::isReady() const
+bool SmartDevice::isReady() const
 {
     if ( isDirty ) {
         checkReady();
@@ -478,41 +486,41 @@ bool smartDevice::isReady() const
     return myReady;
 }
 
-bool smartDevice::isBusy() const
+bool SmartDevice::isBusy() const
 {
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         if ( i->isBusy() ) return true;
     foreach ( abstractSocket *i , mySockets )
         if ( i->isBusy() ) return true;
     return false;
 }
 
-void smartDevice::addInterface()
+void SmartDevice::addInterface()
 {
     int max = 0;
-    foreach ( interface *i , myInterfaces ) {
+    foreach ( Interface *i , myInterfaces ) {
         int t = i->name().mid(3).toInt();
         if ( t > max ) max = t;
     }
     addInterface( tr("eth%1").arg(++max) );
 }
 
-void smartDevice::deleteInterface(const QString &name)
+void SmartDevice::deleteInterface(const QString &name)
 {
-    interface *t = adapter(name);
+    Interface *t = adapter(name);
     myInterfaces.remove( myInterfaces.indexOf(t) );
     emit interfaceDeleted(name);
 }
 
-QList<arpModel*> smartDevice::arpModels()
+QList<arpModel*> SmartDevice::arpModels()
 {
     QList<arpModel*> list;
-    foreach ( interface *i, myInterfaces )
+    foreach ( Interface *i, myInterfaces )
         list += i->arpTable();
     return list;
 }
 
-void smartDevice::tableChanged(routeRecord *r,int n)
+void SmartDevice::tableChanged(routeRecord *r,int n)
 {
     r->change = routeModel::changed;
     sendInterrupt( n );
@@ -523,7 +531,7 @@ void smartDevice::tableChanged(routeRecord *r,int n)
   * Устанавливает программу на устройство.
   * @param p - программа для установки.
   */
-void smartDevice::installProgramm(programm p)
+void SmartDevice::installProgramm(programm p)
 {
     p->setDevice(this);
     myProgramms << p;
@@ -531,30 +539,30 @@ void smartDevice::installProgramm(programm p)
 }
 //-----------------------------------------------------------
 
-statistics smartDevice::deviceStatistics() const
+statistics SmartDevice::deviceStatistics() const
 {
     statistics s;
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         s += i->chipStatistics();
     return s;
 }
 
-bool smartDevice::hasProgramm(int id)
+bool SmartDevice::hasProgramm(int id)
 {
     foreach ( programm i , myProgramms )
         if ( i->id() == id ) return true;
     return false;
 }
 
-int smartDevice::trafficDigit() const
+int SmartDevice::trafficDigit() const
 {
     int sum = 0;
-    foreach ( interface *i , myInterfaces )
+    foreach ( Interface *i , myInterfaces )
         sum += i->trafficDigit();
     return sum;
 }
 
-QIcon smartDevice::isConnectSocketIcon(const QString &socket) const
+QIcon SmartDevice::isConnectSocketIcon(const QString &socket) const
 {
     if ( isConnectSocket(socket) ) return QIcon(":/im/images/ok.png");
     return QIcon(":/im/images/not.png");

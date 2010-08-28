@@ -21,16 +21,17 @@
 #define IPADDRESS_H
 
 #include <QDataStream>
+#include <QVariant>
 
-class ipAddress
+class IpAddress
 {
 public:
-    ipAddress();
-    ipAddress(const quint8  *cur);
-    ipAddress(const QString str);
-    ipAddress(const char *str);
-    ipAddress(const ipAddress &other);
-    ipAddress(const quint32 intIp);
+    IpAddress();
+    IpAddress(const quint8  *cur);
+    IpAddress(const QString str);
+    IpAddress(const char *str);
+    IpAddress(const IpAddress &other);
+    IpAddress(const quint32 intIp);
     void setIp(const quint8 *cur);
     void setIp(const QString str);
     QString toString() const;
@@ -39,35 +40,36 @@ public:
     bool isFull() const;
     quint32 toInt() const;
     quint8 at(int i) const { return myIp[i]; }
-    ipAddress& operator=(const ipAddress &other);
-    ipAddress operator&(const ipAddress &e1) const;
-    ipAddress operator~() const;
-    ipAddress operator|(const ipAddress &e1) const;
-    static ipAddress full() { return ipAddress("255.255.255.255"); }
+    IpAddress& operator=(const IpAddress &other);
+    IpAddress operator&(const IpAddress &e1) const;
+    IpAddress operator~() const;
+    IpAddress operator|(const IpAddress &e1) const;
+    static IpAddress full() { return IpAddress("255.255.255.255"); }
     void writeXml() const { }
 private:
     quint8 myIp[4];
 protected:
-    friend QDataStream& operator>>(QDataStream &stream, ipAddress &address);
-    friend QDataStream& operator<<(QDataStream &stream, const ipAddress &address);
+    friend QDataStream& operator>>(QDataStream &stream, IpAddress &address);
+    friend QDataStream& operator<<(QDataStream &stream, const IpAddress &address);
 };
-inline quint32 ipAddress::toInt() const
+
+inline quint32 IpAddress::toInt() const
 {
     return ( (myIp[0] << 24) + (myIp[1] << 16) + (myIp[2] << 8) +myIp[3]);
 }
 
-inline bool operator<(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() < e2.toInt(); }
-inline bool operator>(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() > e2.toInt(); }
-inline bool operator<=(const ipAddress &e1 , const ipAddress &e2) { return !(e1.toInt() > e2.toInt()); }
-inline bool operator>=(const ipAddress &e1 , const ipAddress &e2) { return !(e1.toInt() < e2.toInt()); }
-inline bool operator==(const ipAddress &e1 , const ipAddress &e2) { return e1.toInt() == e2.toInt(); }
-inline bool operator!=(const ipAddress &e1, const ipAddress &e2) { return !(e1 == e2) ; }
-inline QDataStream& operator<<(QDataStream &stream, const ipAddress &address)
+inline bool operator<(const IpAddress &e1 , const IpAddress &e2) { return e1.toInt() < e2.toInt(); }
+inline bool operator>(const IpAddress &e1 , const IpAddress &e2) { return e1.toInt() > e2.toInt(); }
+inline bool operator<=(const IpAddress &e1 , const IpAddress &e2) { return !(e1.toInt() > e2.toInt()); }
+inline bool operator>=(const IpAddress &e1 , const IpAddress &e2) { return !(e1.toInt() < e2.toInt()); }
+inline bool operator==(const IpAddress &e1 , const IpAddress &e2) { return e1.toInt() == e2.toInt(); }
+inline bool operator!=(const IpAddress &e1, const IpAddress &e2) { return !(e1 == e2) ; }
+inline QDataStream& operator<<(QDataStream &stream, const IpAddress &address)
 {
     for (int i = 0 ; i < 4 ; i++ ) stream << address.myIp[i];
     return stream;
 }
-inline QDataStream& operator>>(QDataStream &stream, ipAddress &address)
+inline QDataStream& operator>>(QDataStream &stream, IpAddress &address)
 {
     for (int i = 0 ; i < 4 ; i++ ) stream >> address.myIp[i];
     return stream;

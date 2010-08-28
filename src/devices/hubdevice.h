@@ -24,15 +24,14 @@
 
 class frame;
 
-class hubDevice : public boxDevice
+class HubDevice : public BoxDevice
 {
     Q_OBJECT
-    DECLARE_PROTOTYPE(hubDevice)
 public:
     int type() const { return hubDev; }
     enum { hubDev = 4 };
-    Q_INVOKABLE hubDevice(int c = 0);
-    ~hubDevice();
+    Q_INVOKABLE HubDevice(QObject *parent = 0);
+    ~HubDevice();
     void dialog();
     void detectCollision();
     bool isShared() const { return true; }
@@ -50,11 +49,11 @@ private:
 class hubSetting : public boxSetting
 {
 public:
-    hubSetting(hubDevice *d) : boxSetting(d) , hd(d) { }
+    hubSetting(HubDevice *d) : boxSetting(d) , hd(d) { }
     quint32 collisions() const { return hd->collision; }
     void reset() { boxSetting::reset(); hd->collision = 0; }
 private:
-    hubDevice *hd;
+    HubDevice *hd;
 };
 
 

@@ -28,10 +28,10 @@
 
 struct routeRecord {
 public:
-    ipAddress dest;
-    ipAddress mask;
-    ipAddress gateway;
-    ipAddress out;
+    IpAddress dest;
+    IpAddress mask;
+    IpAddress gateway;
+    IpAddress out;
     int time;
     qint8 metric;
     int mode;
@@ -40,7 +40,7 @@ public:
     friend QDataStream& operator<<(QDataStream &stream, const routeRecord &rec);
     friend QDataStream& operator>>(QDataStream &stream, routeRecord &rec);
     void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
+    void readXml(SceneXmlReader &stream);
 };
 
 typedef QList<routeRecord*> routeTable;
@@ -63,24 +63,24 @@ public:
     void update();
     void deleteOldRecord(int time);
     routeRecord* changedRecord();
-    routeRecord* addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode);
+    routeRecord* addToTable(IpAddress d,IpAddress m,IpAddress g,IpAddress o,qint8 metr,int mode);
     routeRecord* addToTable(routeRecord *r);
     void deleteFromTable(int n);
     void deleteFromTable(routeRecord *r);
-    routeRecord* recordAt(const ipAddress &a) const;
+    routeRecord* recordAt(const IpAddress &a) const;
     routeRecord* recordAt(int i) const { return table.at(i); }
-    void checkConnectedNet(ipAddress ip, ipAddress mask, bool add);
+    void checkConnectedNet(IpAddress ip, IpAddress mask, bool add);
     bool isConnectedMode(QModelIndex curr);
     void write(QDataStream &stream) const;
     void writeXml(sceneXmlWriter &stream) const;
-    void readXml(sceneXmlReader &stream);
+    void readXml(SceneXmlReader &stream);
     void read(QDataStream &stream);
 signals:
     void recordAdding(routeRecord*,int);
     void recordDeleting(routeRecord*,int);
 private:
     mutable routeRecord *lastRecord;
-    mutable ipAddress lastIpAddress;
+    mutable IpAddress lastIpAddress;
     routeTable table;
 };
 

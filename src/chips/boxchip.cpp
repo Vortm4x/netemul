@@ -139,13 +139,13 @@ void boxChip::setCheckedSocket(const QString &port)
 
 void boxChip::write(QDataStream &stream) const
 {
-    abstractChip::write(stream);
+    AbstractChip::write(stream);
     stream << mySockets.size();
 }
 
 void boxChip::read(QDataStream &stream)
 {
-    abstractChip::read(stream);
+    AbstractChip::read(stream);
     int n;
     stream >> n;
     setSocketsCount(n);

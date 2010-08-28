@@ -22,7 +22,7 @@
 
 #include "abstractstate.h"
 
-class device;
+class Device;
 class sendEllipse;
 
 class sendState : public abstractState
@@ -41,7 +41,7 @@ private:
     int mySendState;
     bool broadcast;
     QString receiverIp;
-    device *senderDevice;
+    Device *senderDevice;
     int protocol;
     sendEllipse *SendEllipse; // Кружочек для выделения отправителя и получателя
 };

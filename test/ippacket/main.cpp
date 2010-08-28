@@ -25,12 +25,12 @@ private:
 void TestIpPacket::setBroadcast()
 {
     ipPacket p;
-    p.setReceiver(ipAddress("192.168.1.13"));
+    p.setReceiver(IpAddress("192.168.1.13"));
     QCOMPARE(p.isBroadcast("255.255.0.0") , false );
-    p.setSender(ipAddress("192.168.1.2"));
+    p.setSender(IpAddress("192.168.1.2"));
     p.setBroadcast("255.255.255.224");
     QCOMPARE( p.isBroadcast("255.255.255.224") , true );
-    p.setSender(ipAddress("192.168.1.255"));
+    p.setSender(IpAddress("192.168.1.255"));
     p.setBroadcast("255.255.255.0");
     QCOMPARE( p.isBroadcast("255.255.255.0") , true);
     ipPacket a = p;

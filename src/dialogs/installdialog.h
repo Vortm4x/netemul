@@ -22,7 +22,7 @@
 
 #include "ui_installdialog.h"
 
-class smartDevice;
+class SmartDevice;
 
 static const int MAGIC_START_PROGRAMM_NUMBER = 50;
 
@@ -33,11 +33,11 @@ class installDialog : public QDialog, private Ui::installDialog {
     Q_OBJECT
 public:
     installDialog(QWidget *parent = 0);
-    void setDevice(smartDevice *d);
+    void setDevice(SmartDevice *d);
 protected:
     void changeEvent(QEvent *e);
 private:
-    smartDevice *smart; //!< Указатель на устройство
+    SmartDevice *smart; //!< Указатель на устройство
 public slots:
     void install();
 };

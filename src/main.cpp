@@ -24,7 +24,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Q_INIT_RESOURCE(netemul);
+    Q_INIT_RESOURCE(netemul);    
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 //    a.setStyleSheet("QMenuBar { background-color : black ; color : white }"
 //                    "QMenuBar::item { background-color : black ; color : white }"

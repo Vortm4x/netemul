@@ -28,7 +28,7 @@ deleteCommand::deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
     scene = s;
     foreach ( QGraphicsItem *i, list) {
         if ( scene->isDevice(i) ) {
-            device *dev = qgraphicsitem_cast<device*>(i);
+            Device *dev = qgraphicsitem_cast<Device*>(i);
             extractDevices << dev;
             foreach ( cableDev *j, dev->cables() ) extractCables << j;
         }
@@ -48,7 +48,7 @@ deleteCommand::~deleteCommand()
 
 void deleteCommand::undo()
 {
-    foreach ( device *i, extractDevices ) scene->registerDevice(i);
+    foreach ( Device *i, extractDevices ) scene->registerDevice(i);
     foreach ( cableDev *i, extractCables ) createConnection(i);
     foreach ( textItem *i , extractText ) scene->registerText(i);
     isOnScene = true;
@@ -56,7 +56,7 @@ void deleteCommand::undo()
 
 void deleteCommand::redo()
 {
-    foreach ( device *i, extractDevices ) scene->unregisterDevice(i);
+    foreach ( Device *i, extractDevices ) scene->unregisterDevice(i);
     foreach ( cableDev *i, extractCables ) deleteConnection(i);
     foreach ( textItem *i, extractText ) scene->unregisterText(i);
     isOnScene = false;

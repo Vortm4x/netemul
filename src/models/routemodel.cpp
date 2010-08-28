@@ -92,7 +92,7 @@ QVariant routeModel::data(const QModelIndex &r, int role /* = Qt::DisplayRole */
   @param mode - источник записи.
   @return указатель на новую запись
 */
-routeRecord* routeModel::addToTable(ipAddress d,ipAddress m,ipAddress g,ipAddress o,qint8 metr,int mode)
+routeRecord* routeModel::addToTable(IpAddress d,IpAddress m,IpAddress g,IpAddress o,qint8 metr,int mode)
 {
     routeRecord *r = new routeRecord;
     r->dest = d;
@@ -150,7 +150,7 @@ void routeModel::deleteFromTable(routeRecord *r)
   @param a - адрес назначения.
   @return указатель на запись, если такой записи нет то NULL.
 */
-routeRecord* routeModel::recordAt(const ipAddress &a) const
+routeRecord* routeModel::recordAt(const IpAddress &a) const
 {
 // Оптимизация работы, запоминаем полседний адрес и если при новом поиске
 // он совпадает отправляем по той записи которая была последней =)
@@ -167,9 +167,9 @@ routeRecord* routeModel::recordAt(const ipAddress &a) const
 }
 //---------------------------------------------
 
-void routeModel::checkConnectedNet(ipAddress ip, ipAddress mask, bool add)
+void routeModel::checkConnectedNet(IpAddress ip, IpAddress mask, bool add)
 {
-    ipAddress dest = mask & ip;
+    IpAddress dest = mask & ip;
     foreach ( routeRecord *i , table )
         if ( i->dest == dest && i->mask == mask ) {
             if ( i->gateway == ip && add) return;
@@ -238,16 +238,6 @@ void routeModel::write(QDataStream &stream) const
         stream << *i;
 }
 
-void routeModel::writeXml(sceneXmlWriter &stream) const
-{
-    foreach ( routeRecord *i , table )
-        if ( i->mode == staticMode ) {
-            stream.writeStartElement("routerecord");
-            i->writeXml(stream);
-            stream.writeEndElement();
-        }
-}
-
 void routeModel::read(QDataStream &stream)
 {
     table.clear();
@@ -261,44 +251,10 @@ void routeModel::read(QDataStream &stream)
     }
 }
 
-void routeModel::readXml(sceneXmlReader &stream)
-{
-    Q_ASSERT( stream.isStartElement() && stream.name() == "routetable" );
-    table.clear();
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "routerecord" ) {
-            routeRecord *t = new routeRecord;
-            t->mode = staticMode;
-            t->readXml(stream);
-            addToTable(t);
-        }
-    }
-}
 
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-void routeRecord::writeXml(sceneXmlWriter &stream) const
-{
-    stream.writeTextElement("destination",dest.toString() );
-    stream.writeTextElement("mask",mask.toString() );
-    stream.writeTextElement("gateway",gateway.toString() );
-    stream.writeTextElement("metric",QString::number(metric) );
-    stream.writeTextElement("out", out.toString() );
-}
 
-void routeRecord::readXml(sceneXmlReader &stream)
-{
-    while ( !stream.atEnd() ) {
-        stream.readNext();
-        if ( stream.isEndElement() ) break;
-        if ( stream.name() == "destination" ) dest.setIp( stream.readElementText() );
-        else if ( stream.name() == "mask" ) mask.setIp( stream.readElementText() );
-        else if ( stream.name() == "gateway" ) gateway.setIp( stream.readElementText() );
-        else if ( stream.name() == "metric" ) metric = stream.readElementText().toInt() ;
-        else if ( stream.name() == "out" ) out.setIp( stream.readElementText() );
-    }
-}
+
 

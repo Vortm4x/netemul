@@ -32,12 +32,12 @@ public:
     enum { staticMode = 100 , dinamicMode = 101 };
     arpModel();
     ~arpModel() { clear(); }
-    arpRecord* addToTable( ipAddress ip , macAddress mac , int mode );
+    arpRecord* addToTable( IpAddress ip , macAddress mac , int mode );
     void deleteFromTable(const QString &ip);
     void deleteFromTable(arpRecord *r);
     void update();
     void clear();
-    arpRecord* recordAt(const ipAddress &a) const;
+    arpRecord* recordAt(const IpAddress &a) const;
     arpRecord* recordAt(int u) const;
     int size();
 signals:
@@ -45,12 +45,12 @@ signals:
 private:
     QList<arpRecord*> myTable;
     mutable arpRecord *lastRecord;
-    mutable ipAddress lastAddress;
+    mutable IpAddress lastAddress;
 };
 
 struct arpRecord {
     macAddress mac;
-    ipAddress ip;
+    IpAddress ip;
     int time;
     int mode;
     QString modeString() const {

@@ -34,8 +34,8 @@ public:
     ~ipPacketData() {  }
     friend class ipPacket;
 private:
-    ipAddress sender; //!< Адрес отправителя.
-    ipAddress receiver; //!< Адрес получателя.
+    IpAddress sender; //!< Адрес отправителя.
+    IpAddress receiver; //!< Адрес получателя.
     qint8 upProtocol; //!< Протокол верхнего уровня
     quint8 ttl;
     QByteArray data; //!< Данные протокола более высокого уровня.
@@ -55,22 +55,22 @@ public:
     enum { udp = 0 , tcp = 1 };
     ipPacket() { d = new ipPacketData; d->ttl = 64; }
     ipPacket(const QByteArray &b);
-    ipPacket(ipAddress s,ipAddress r);
+    ipPacket(IpAddress s,IpAddress r);
     ~ipPacket() { }
     ipPacket(const ipPacket &other) : d(other.d) { }
     QByteArray toData() const;
     QString toString() const;
 
-    ipAddress sender() const { return d->sender; }
-    ipAddress receiver() const { return d->receiver; }
+    IpAddress sender() const { return d->sender; }
+    IpAddress receiver() const { return d->receiver; }
     quint8 ttl() const { return d->ttl; }
-    void setSender(ipAddress a) { d->sender = a; }
-    void setReceiver(ipAddress a) { d->receiver = a; }
+    void setSender(IpAddress a) { d->sender = a; }
+    void setReceiver(IpAddress a) { d->receiver = a; }
     void setTtl(quint8 ttl) { d->ttl = ttl; }
-    bool isBroadcast(const ipAddress mask) const;
+    bool isBroadcast(const IpAddress mask) const;
     quint16 receiverSocket() const;
     quint8 decTtl();
-    void setBroadcast(const ipAddress mask);
+    void setBroadcast(const IpAddress mask);
     void setUpProtocol(qint8 u) { d->upProtocol = u; }
     qint8 upProtocol() const { return d->upProtocol; }
     void pack(const QByteArray &b) { d->data = b; }
@@ -99,7 +99,7 @@ inline QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
   Назначает пакету широковещательный адрес исходя из маски.
   @param mask - Маска.
 */
-inline void ipPacket::setBroadcast(const ipAddress mask)
+inline void ipPacket::setBroadcast(const IpAddress mask)
 {
     d->receiver = d->sender | ~mask;
 }

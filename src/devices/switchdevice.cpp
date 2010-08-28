@@ -24,41 +24,38 @@
 #include "appsetting.h"
 #include "virtualnetworkdialog.h"
 
-DECLARE_STATIC_PROTOTYPE(switchDevice)
-DEFINETION_PROTOTYPE_FUNCTION(switchDevice)
-
-switchDevice::switchDevice(int c /* =0 */)
+SwitchDevice::SwitchDevice(QObject *parent) : BoxDevice(parent)
 {
-    if (!c) c = appSetting::defaultSwitchCount();
+    int c = appSetting::defaultSwitchCount();
     myManual = appSetting::defaultSwitchManual();
     chip = new switchChip(c);
     setNote(tr("<b>Switch</b><!--You can use HTML.-->"));
 }
 
-switchDevice::~switchDevice()
+SwitchDevice::~SwitchDevice()
 {
     delete chip;
 }
 
-void switchDevice::write(QDataStream &stream) const
+void SwitchDevice::write(QDataStream &stream) const
 {
     stream << switchDev;
-    boxDevice::write(stream);
+    BoxDevice::write(stream);
 }
 
-void switchDevice::read(QDataStream &stream)
+void SwitchDevice::read(QDataStream &stream)
 {
-    boxDevice::read(stream);
+    BoxDevice::read(stream);
 }
 
-void switchDevice::dialog()
+void SwitchDevice::dialog()
 {
     switchProperty *d = new switchProperty;
     d->setSwitch( new boxSetting(this) );
     d->show();
 }
 
-void switchDevice::tableDialog()
+void SwitchDevice::tableDialog()
 {
     switchTableSetting *set = new switchTableSetting(this);
     tableSwitch *t = new tableSwitch(set);
@@ -67,19 +64,19 @@ void switchDevice::tableDialog()
     delete set;
 }
 
-void switchDevice::showVirtualNetworkDialog()
+void SwitchDevice::showVirtualNetworkDialog()
 {
     virtualNetworkDialog *d = new virtualNetworkDialog;
     d->setDevice( new virtualNetworkSetting(this) );
     d->show();
 }
 
-switchChip* switchDevice::concreteChip()
+switchChip* SwitchDevice::concreteChip()
 {
     return static_cast<switchChip*>(chip);
 }
 
-void switchDevice::secondTimerEvent()
+void SwitchDevice::secondTimerEvent()
 {
     chip->secondTimerEvent();
 }

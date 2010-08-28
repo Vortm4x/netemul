@@ -24,12 +24,12 @@
 #include "boxchip.h"
 #include "abstractchip.h"
 
-class boxDevice : public deviceImpl
+class BoxDevice : public DeviceImpl
 {
 public:
     friend class boxSetting;
-    boxDevice();
-    virtual ~boxDevice();
+    BoxDevice(QObject *parent = 0);
+    virtual ~BoxDevice();
     bool isConnectSocket(const QString &socket) const { return chip->isConnectSocket(socket); }
     QIcon isConnectSocketIcon(const QString &socket) const;
     QStringList sockets() const { return chip->sockets(); }
@@ -53,12 +53,12 @@ protected:
     virtual void writeXmlImpl(sceneXmlWriter &stream) const;
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void readXmlImpl(sceneXmlReader &stream);
+    virtual void readXmlImpl(SceneXmlReader &stream);
 };
 
 class boxSetting : public deviceSetting {
 public:
-    boxSetting(boxDevice *h) : deviceSetting(h) , box(h) {  }
+    boxSetting(BoxDevice *h) : deviceSetting(h) , box(h) {  }
     int socketsCount() const { return box->chip->socketsCount(); }
     QString snmpMac() const { return box->chip->mac().toString(); }
     QString snmpIp() const { return box->chip->ip().toString(); }
@@ -72,7 +72,7 @@ public:
     void reset() { box->chip->resetStatics(); }
     bool setSocketsCount(int n) { return box->chip->setSocketsCount(n); }
 private:
-    boxDevice *box;
+    BoxDevice *box;
 };
 
 #endif // BOXDEVICE_H

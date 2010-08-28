@@ -30,13 +30,13 @@ public:
     enum { Sequence = 5000, PACKET_SIZE = 1024 };
     enum { NONE = 0, WAIT_RESPONSE = 1, WAIT_ACK = 2, R_WAIT = 3, RECEIVE = 4 };
     tcpSocket() { }
-    tcpSocket(smartDevice *d,quint16 port);
+    tcpSocket(SmartDevice *d,quint16 port);
     ~tcpSocket();
     void setConnection();
     void treatPacket(ipPacket p);
     void confirmConnection(ipPacket p);
     void secondEvent();
-    void write(ipAddress a, quint16 p, QByteArray data);
+    void write(IpAddress a, quint16 p, QByteArray data);
     bool isBusy() const { return !buffer.isEmpty(); }
 signals:
     void writeEnd();

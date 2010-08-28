@@ -35,8 +35,9 @@ class logDialog;
   хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
   Класс содержит несколько виртуальных функций, только переопределив которые, мы сможем его унаследовать.
 */
-class device : public QGraphicsItem , public visualizable
+class Device : public QGraphicsObject , public visualizable
 {
+    Q_OBJECT
 public:
     enum sizeDevices { rectDevX = -23 , rectDevY = -23 , rectDevWidth = 46 , rectDevHeight = 46 };
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
@@ -45,10 +46,10 @@ public:
     int deviceType() const { return impl->type(); }
     QRect devRect;
     QRect pixmapRect;
-    device(int t);
-    device(QDataStream &stream);
-    device(sceneXmlReader &stream);
-    ~device();
+    Device( QObject *parent = 0);
+    Device(int t);
+    Device(QDataStream &stream);    
+    ~Device();
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
     QRectF boundingRect() const {
         return devRect;
@@ -79,28 +80,29 @@ public:
     QStringList sockets() const { return impl->sockets(); }
     void secondTimerEvent() { impl->secondTimerEvent(); }
     void deciSecondTimerEvent() { impl->deciSecondTimerEvent(); }
-    deviceImpl* contentDevice() { return impl; }
+    DeviceImpl* contentDevice() { return impl; }
     void addConnection(const QString &port, cableDev *c);
     void deleteConnection(cableDev *c);
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
     statistics deviceStatistics() const { return impl->deviceStatistics(); }
 
-    void detectCollision() { impl->detectCollision(); }
-    static bool isConnectDevices(device *s, device *e);
-    QList<cableDev*> cables() const { return myCableList; }
-    bool hasTable() const { return impl->hasTable(); }
+    Q_INVOKABLE void setDeviceImpl(DeviceImpl *im);
 
-    void writeXml(sceneXmlWriter &stream) const;
+    void detectCollision() { impl->detectCollision(); }
+    static bool isConnectDevices(Device *s, Device *e);
+    QList<cableDev*> cables() const { return myCableList; }
+    bool hasTable() const { return impl->hasTable(); }    
 
     void onImplChange();
 private:
     void createImpl(int n);
-    deviceImpl *impl;
+    void createImplHelper();
+    DeviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     featuresMap myFeatures;
 protected:
     QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
-    friend QDataStream& operator<<(QDataStream &stream,const device &dev);
+    friend QDataStream& operator<<(QDataStream &stream,const Device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 };
@@ -108,7 +110,7 @@ protected:
 /*!
   Записывает устройство в поток.
 */
-inline QDataStream& operator<<(QDataStream &stream,const device &dev)
+inline QDataStream& operator<<(QDataStream &stream,const Device &dev)
 {
     stream << dev.pos();
     dev.impl->write(stream);

@@ -31,7 +31,7 @@ class QHBoxLayout;
 class QSpinBox;
 class QComboBox;
 class ipEdit;
-class computer;
+class Computer;
 
 static const int MAX_PORT = 65535;
 static const int MAX_TCP_NUMBER = 2147483647;
@@ -44,7 +44,7 @@ class designerDialog : public QDialog
 {
     Q_OBJECT
 public:
-    designerDialog(computer *com);
+    designerDialog(Computer *com);
     ~designerDialog() {}
     QWidget* createMainTab();
     QWidget* createFrameTab();
@@ -97,7 +97,7 @@ private:
     ipEdit *receiverIp;
     ipEdit *arpSenderIp;
     ipEdit *arpReceiverIp;
-    computer *myComputer;
+    Computer *myComputer;
 };
 
 #endif // DESIGNERDIALOG_H

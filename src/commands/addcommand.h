@@ -23,7 +23,7 @@
 #include <QUndoCommand>
 #include <QPointF>
 class MyCanvas;
-class device;
+class Device;
 
 class addCommand : public QUndoCommand
 {
@@ -33,7 +33,7 @@ public:
     void undo();
     void redo();
 private:
-    device *myDevice;
+    Device *myDevice;
     MyCanvas *scene;
     QPointF myPoint;
     int myType;

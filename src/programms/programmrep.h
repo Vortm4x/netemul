@@ -21,11 +21,9 @@
 #define PROGRAMMREP_H
 
 #include <QDataStream>
-#include "scenexmlwriter.h"
-#include "scenexmlreader.h"
 
-class device;
-class smartDevice;
+class Device;
+class SmartDevice;
 
 class programmRep : public QObject
 {
@@ -38,19 +36,17 @@ public:
     void setEnable(bool b);
     bool isEnable() const  { return myEnable; }
     QString name() const { return myName; }
-    virtual void setDevice(smartDevice *s) { myDevice = s; }
-    smartDevice* device() const { return myDevice; }
+    virtual void setDevice(SmartDevice *s) { myDevice = s; }
+    SmartDevice* device() const { return myDevice; }
     virtual bool interrupt(int u) = 0;
     virtual void showProperty() = 0;
     virtual QString featureName() const = 0;
     virtual void incTime() { }
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXml(sceneXmlWriter &stream) const;
-    virtual void readXml(sceneXmlReader &stream);
     virtual int id() const = 0;
 protected:
-    smartDevice *myDevice;
+    SmartDevice *myDevice;
     bool myEnable;
     QString myName; //!< Имя программы.
 private:

@@ -25,7 +25,7 @@
 
 class dhcpServerProgramm;
 class dhcpServerModel;
-class smartDevice;
+class SmartDevice;
 class macAddressDelegate;
 class ipAddressDelegate;
 
@@ -33,7 +33,7 @@ class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 {
     Q_OBJECT
 public:
-    dhcpServerProperty(smartDevice *dev,QWidget *parent = 0);
+    dhcpServerProperty(SmartDevice *dev,QWidget *parent = 0);
     ~dhcpServerProperty();
     void setProgramm( dhcpServerProgramm *prog );
 public slots:
@@ -48,7 +48,7 @@ private:
     ipAddressDelegate *ipDelegate;
     dhcpServerProgramm *myProgramm;
     dhcpServerModel *myModel;
-    smartDevice *device;
+    SmartDevice *device;
 };
 
 #endif // DHCPSERVERPROPERTY_H

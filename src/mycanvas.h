@@ -29,11 +29,11 @@ class QAction;
 class cableDev;
 class connectDialog;
 class devicePort;
-class device;
-class deviceImpl;
+class Device;
+class DeviceImpl;
 class abstractState;
 
-typedef QList<device*> deviceList;
+typedef QList<Device*> deviceList;
 typedef QList<textItem*> textItemList;
 typedef QList<cableDev*> cableList;
 
@@ -58,9 +58,12 @@ public:
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
     MyCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     ~MyCanvas();
-    device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену    
+
+    Device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену
+    Q_INVOKABLE void addDevice(Device *device);
+
     void hideState();
-    cableDev* createConnection(device *s,device *e,QString sp,QString ep);
+    cableDev* createConnection(Device *s,Device *e,QString sp,QString ep);
     textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
@@ -72,15 +75,15 @@ public:
     bool isModified() const { return myModified; }
     int animateSpeed() const;
     void setAnimateSpeed(int n);
-    device* oneSelectedDevice();
-    device* deviceInPoint(QPointF p);
+    Device* oneSelectedDevice();
+    Device* deviceInPoint(QPointF p);
     QPointF calibrate(QPointF c);
     int devicesCount() const { return myDevices.size(); }
     int cablesCount() const { return myConnections.size(); }
     QAction* undoAction(QObject *obj) { return commandStack.createUndoAction(obj); }
     QAction* redoAction(QObject *obj) { return commandStack.createRedoAction(obj); }
-    void registerDevice(device *dev);    
-    void unregisterDevice(device *dev);
+    void registerDevice(Device *dev);    
+    void unregisterDevice(Device *dev);
     void registerCable(cableDev *cable);
     void unregisterCable(cableDev *cable);
     void registerText(textItem *t);
@@ -109,13 +112,13 @@ public slots:
     void openScene(QString fileName);
     void saveSceneXml(QString fileName);
     void openSceneXml(QString fileName);
-    deviceImpl* addComputer(int x,int y);
-    deviceImpl* addSwitch(int x,int y);
-    deviceImpl* addHub(int x,int y);
-    deviceImpl* addRouter(int x,int y);
+    DeviceImpl* addComputer(int x,int y);
+    DeviceImpl* addSwitch(int x,int y);
+    DeviceImpl* addHub(int x,int y);
+    DeviceImpl* addRouter(int x,int y);
     textItem* addNote(int x, int y);
     QObjectList computerList();
-    void addConnection(deviceImpl *s,deviceImpl *e,const QString &sp,const QString &se);
+    void addConnection(DeviceImpl *s,DeviceImpl *e,const QString &sp,const QString &se);
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
     void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
@@ -123,7 +126,7 @@ protected:
     void timerEvent(QTimerEvent*);
 private:
     QUndoStack commandStack;    
-    device* deviceWithImpl(deviceImpl *d);
+    Device* deviceWithImpl(DeviceImpl *d);
     bool myOpen;
     bool myModified;
     int lastId;

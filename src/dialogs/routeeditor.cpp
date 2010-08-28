@@ -31,7 +31,7 @@
 #include <QHeaderView>
 #include <QKeyEvent>
 
-routeEditor::routeEditor(smartDevice *s)
+routeEditor::routeEditor(SmartDevice *s)
 {
     setWindowTitle(tr("Routing table"));
     dev = s;    

@@ -1,19 +1,30 @@
 #ifndef SCENEXMLREADER_H
 #define SCENEXMLREADER_H
 
-#include <QXmlStreamReader>
+#include <QXmlDefaultHandler>
+#include <QStack>
 
 class MyCanvas;
 
-class sceneXmlReader : public QXmlStreamReader
+class SceneXmlReader : public QXmlDefaultHandler
 {
 public:
-    sceneXmlReader(MyCanvas *scene);
-    void readScene(QIODevice *dev);
-    void readUnknownElement();
+    SceneXmlReader(MyCanvas *scene);
+
+public:
+    bool startElement(const QString&, const QString&, const QString &qName, const QXmlAttributes &atts);
+    bool endElement(const QString&, const QString&, const QString &qName);
+    bool characters(const QString &ch);
+    bool fatalError(const QXmlParseException &exception);
+    QString errorString() {
+        return errString;
+    }
 private:
     MyCanvas *myScene;
-    void readNetemul();
+    QString errString;
+    QObject *parentObject;
+    bool isCorrect;
+    QStack<QString> currentElements;
 };
 
 #endif // SCENEXMLREADER_H

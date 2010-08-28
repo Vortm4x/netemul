@@ -32,7 +32,7 @@
 #include "device.h"
 
 
-sendDialog::sendDialog(aim cur,device* t)
+sendDialog::sendDialog(aim cur,Device* t)
 {
     myState = cur;
     myDevice = t->contentDevice();

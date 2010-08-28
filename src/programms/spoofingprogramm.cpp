@@ -19,10 +19,10 @@ void spoofingProgramm::incTime()
     static int n = 0;
     if ( !isReady && ++n%10 == 0 ) {
         if ( myServerIp.isEmpty() || myClientIp.isEmpty() ) return;
-        udpSocket socket( this->device() , smartDevice::User );
+        udpSocket socket( this->device() , SmartDevice::User );
         QByteArray temp(1,'j');
-        socket.write( myClientIp , smartDevice::User , temp );
-        socket.write( myServerIp , smartDevice::User , temp );
+        socket.write( myClientIp , SmartDevice::User , temp );
+        socket.write( myServerIp , SmartDevice::User , temp );
         n = 0;
     }
 
@@ -32,11 +32,11 @@ void spoofingProgramm::incTime()
     }
 }
 
-void spoofingProgramm::setDevice(smartDevice *s)
+void spoofingProgramm::setDevice(SmartDevice *s)
 {
     programmRep::setDevice(s);
     if ( !s ) return;
-    foreach ( interface *i , myDevice->interfaces() ) {
+    foreach ( Interface *i , myDevice->interfaces() ) {
         connect( i->arpTable() , SIGNAL(tableChanged(arpRecord*)) , this , SLOT(execute(arpRecord*)) );
         arpRecord *t = i->arpTable()->recordAt(myClientIp);
         if ( t ) {
@@ -71,10 +71,10 @@ void spoofingProgramm::sendAnswers()
     sendOneAnswer( myClientIp , myServerIp , myServerMac );
 }
 
-void spoofingProgramm::sendOneAnswer(ipAddress sender, ipAddress receiver, macAddress receiverMac)
+void spoofingProgramm::sendOneAnswer(IpAddress sender, IpAddress receiver, macAddress receiverMac)
 {
     arpPacket arp;
-    interface *t = myDevice->ipToAdapter( myDevice->findInterfaceIp( receiver ) );
+    Interface *t = myDevice->ipToAdapter( myDevice->findInterfaceIp( receiver ) );
     Q_ASSERT( t != 0 );
     arp.setReceiverIp( receiver );
     arp.setReceiverMac( receiverMac );

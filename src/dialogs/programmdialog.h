@@ -22,7 +22,7 @@
 
 #include "ui_programmdialog.h"
 
-class smartDevice;
+class SmartDevice;
 
 /*!
   Реализует диалог установленных пограмм устройства.
@@ -32,12 +32,12 @@ class programmDialog : public QDialog, private Ui::programmDialog {
     Q_DISABLE_COPY(programmDialog)
 public:
     programmDialog(QWidget *parent = 0);
-    void setDevice( smartDevice *d );
+    void setDevice( SmartDevice *d );
 protected:
     void updateList();
     void changeEvent(QEvent *e);
 private:
-    smartDevice *s; //!< Указатель на устройство.
+    SmartDevice *s; //!< Указатель на устройство.
 public slots:
     void apply();
 private slots:

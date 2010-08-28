@@ -21,7 +21,7 @@
 #include "device.h"
 #include "interface.h"
 
-connectDialog::connectDialog(device *s, device *e)
+connectDialog::connectDialog(Device *s, Device *e)
 {
     setupUi(this);
     start = s;

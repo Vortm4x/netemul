@@ -23,18 +23,16 @@
 #include "appsetting.h"
 #include <QMessageBox>
 
-DECLARE_STATIC_PROTOTYPE(routerDevice)
-DEFINETION_PROTOTYPE_FUNCTION(routerDevice)
 
-routerDevice::routerDevice(int c /* = 0 */)
+RouterDevice::RouterDevice(QObject *parent) : SmartDevice(parent)
 {
-    if ( !c ) c = appSetting::defaultRouterCount();
+    int c = appSetting::defaultRouterCount();
     for ( int i = 0 ; i <  c ; i++ )
         addInterface(tr("LAN%1").arg(i+1));
     setNote(tr("<b>Router</b><!--You can use HTML.-->"));
 }
 
-void routerDevice::dialog()
+void RouterDevice::dialog()
 {
     routerProperty *d = new routerProperty;
     routerSetting *set = new routerSetting(this);
@@ -44,18 +42,18 @@ void routerDevice::dialog()
     delete set;
 }
 
-void routerDevice::write(QDataStream &stream) const
+void RouterDevice::write(QDataStream &stream) const
 {
     stream << routerDev;
-    smartDevice::write(stream);
+    SmartDevice::write(stream);
 }
 
-void routerDevice::read(QDataStream &stream)
+void RouterDevice::read(QDataStream &stream)
 {
-   smartDevice::read(stream);
+   SmartDevice::read(stream);
 }
 
-void routerDevice::setSocketsCount(int n)
+void RouterDevice::setSocketsCount(int n)
 { 
     int t = myInterfaces.size();
     if ( t <= n ) {
@@ -63,7 +61,7 @@ void routerDevice::setSocketsCount(int n)
             addInterface( tr("LAN%1").arg(i+1) );
     }
     else {
-        foreach ( interface *i , myInterfaces )
+        foreach ( Interface *i , myInterfaces )
             if ( i->isConnect() ) {
                 QMessageBox::warning(0,tr("Error"), tr("To change the number of ports, disconnect all cables!"),
                                      QMessageBox::Ok , QMessageBox::Ok);

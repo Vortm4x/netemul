@@ -26,7 +26,7 @@
 class cableDev;
 class devicePort;
 
-class boxChip : public abstractChip
+class boxChip : public AbstractChip
 {
     Q_OBJECT
 public:
