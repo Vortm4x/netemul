@@ -4,7 +4,7 @@
 #include "ipaddress.h"
 #include "macaddress.h"
 
-class udpSocket;
+class UdpSocket;
 class dhcpPacket;
 class Interface;
 class staticDhcpRecord;

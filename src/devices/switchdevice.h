@@ -24,9 +24,9 @@
 #include "macaddress.h"
 
 class frame;
-class switchModel;
+class SwitchModel;
 class switchTableSetting;
-class switchChip;
+class SwitchChip;
 
 // Пока такое коротенькое объявление для свитча
 // Все его комментарии действительны для других устройств
@@ -38,6 +38,7 @@ public:
     enum { switchDev = 5 };
     int type() const { return switchDev; }
     SwitchDevice(QObject *parent = 0); //Пока конструктор и прорисовка
+    static SwitchDevice* create(QObject *parent);
     ~SwitchDevice();
     void updateMac(int u);
     void dialog();
@@ -45,7 +46,7 @@ public:
     bool hasTable() const { return true; }
     bool isManagedVirtualNetwork() const { return ( myManual ) ? true : false; }
     void showVirtualNetworkDialog();
-    switchChip* concreteChip();
+    SwitchChip* concreteChip();
     void secondTimerEvent();
     QString deviceName() const { return "switch"; }
     QString deviceCommandName() const { return tr("Switch"); }
@@ -59,10 +60,10 @@ protected:
 class switchTableSetting {
 public:
     switchTableSetting(SwitchDevice *s) : sw(s) { }
-    switchModel* switchTable();
-    int socketsCount() const { return sw->chip->socketsCount(); }
+    SwitchModel* switchTable();
+    int socketsCount() const { return sw->myChip->socketsCount(); }
     void removeFromTable(int row);
-    devicePort* socket(const QString &s) { return sw->chip->socket(s); }
+    DevicePort* socket(const QString &s) { return sw->myChip->socket(s); }
 private:
     SwitchDevice *sw;
 };

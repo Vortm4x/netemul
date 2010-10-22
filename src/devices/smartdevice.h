@@ -24,12 +24,12 @@
 #include <QtGui/QIcon>
 #include "deviceimpl.h"
 #include "interface.h"
-#include "programm.h"
+#include "programmrep.h"
 
-class routeModel;
-class arpModel;
-class routeRecord;
-class abstractSocket;
+class RouteModel;
+class ArpModel;
+class RouteRecord;
+class AbstractSocket;
 
 /*!
   Интелектуальное устройство, абстрактный класс объединяющий в себе
@@ -42,7 +42,7 @@ public:
     /*! Источники записи таблицы маршрутизации. */    
     enum { addNet = 100 , delNet = 101 };
     enum { UDP = 0 ,TCP = 1 };
-    enum { User = 7777 };
+    enum { USER_PORT = 7777 };
     /*! Значения для флага записи из таблицы маршрутизации. */    
     SmartDevice(QObject *parent);
     virtual ~SmartDevice();
@@ -55,25 +55,33 @@ public:
 
     virtual bool canManageInterface() const = 0;
 
-    virtual statistics deviceStatistics() const;
+    virtual Statistics deviceStatistics() const;
     bool isSmart() const { return true; }
     bool isReady() const;
     void checkReady() const;
     void checkTable();
     bool isBusy() const;
+    bool isConnect() const;
+
     QStringList sockets() const;
     QStringList interfacesIp() const;
+    QList<Cable*> cableList() const;
+    DevicePort* findPortByName(const QString &name) const;
     featuresMap featuresList() const;
     void addInterface();
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
     bool hasConnentSockets() const;
     QIcon isConnectSocketIcon(const QString &socket) const;
-    QString socketName(const cableDev *c) const;
+    QString socketName(const Cable *c) const;
     QString nameToIp(const QString &name) const { return adapter(name)->ip().toString(); }
     const Interface* adapter(const QString &s) const;
-    Interface* ipToAdapter(const IpAddress a);
-    void addConnection(const QString &port, cableDev *c);
-    void deleteConnection(cableDev *c);
+
+    Q_INVOKABLE void addInterface(Interface *in);
+
+    Interface* ipToAdapter(const IpAddress &a);
+
+    Interface* adapter(const QString &name);
+
     void sendMessage(const QString &a, int size ,int type);
     void treatPacket(ipPacket &p);
     void routePacket(ipPacket &p);
@@ -82,12 +90,12 @@ public:
     void secondTimerEvent();
     int trafficDigit() const;
     IpAddress findInterfaceIp(IpAddress a);
-    programm programmAt(const quint16 p) const;
-    void removeProgramm(programm p);
-    void installProgramm( programm p);
+    Program* programAt(const quint16 p) const;
+    void removeProgram(Program *p);
+    Q_INVOKABLE void addProgram( Program *p);
     bool sendInterrupt(int u);
     int socketsCount() const { return myInterfaces.count(); }
-    QList<programm> programms() { return myProgramms; }
+    ProgramList programs() { return myPrograms; }
     InterfaceVector interfaces() { return myInterfaces; }
 //    void setInterfaces(const InterfaceVector &vector) { myInterfaces = vector; }
     void setRouter(bool n) { myRouter = n; }
@@ -95,12 +103,17 @@ public:
     bool hasTable() const { return true; }
     bool hasProgramm(int id);
     IpAddress gateway() const;
-    routeModel* routeTable() { return myRouteTable; }
-    QList<arpModel*> arpModels();
+    QString gatewayString() const { return gateway().toString(); }
+    AbstractSocket* openSocket(quint16 port , int type);
+    RouteModel* routeModel() { return myRouteTable; }
+    Q_INVOKABLE virtual void setRouteModel(RouteModel *model);
+    QList<ArpModel*> arpModels();
 public slots:
+    void disposeSocket(AbstractSocket *socket);
+    void addConnection(Cable*);
     void receivePacket(ipPacket p);
     void setCheckedSocket(const QString &str);
-    void tableChanged(routeRecord*,int n);
+    void tableChanged(RouteRecord*,int n);
     void setIp(const QString &a, const QString &ip);
     QString ipaddress(const QString &name) const;
     void setMask(const QString &a, const QString &ip);
@@ -112,30 +125,21 @@ public slots:
 signals:
     void interfaceDeleted(QString);
     void interfaceConnected(QString);
-protected:
-    Interface* adapter(const QString &name);
+protected:    
     Interface* addInterface(const QString &name);
     void deleteInterface(const QString &name);
     bool myRouter;
     mutable bool myReady;
     mutable bool isDirty;
     InterfaceVector myInterfaces;
-    QList<programm> myProgramms; //!< Программы установленные на устройстве.
-    QList<abstractSocket*> mySockets; //!< Список установленных соединений.
-    routeModel *myRouteTable; //!< Таблица маршрутизации.
+    ProgramList myPrograms; //!< Программы установленные на устройстве.
+    QList<AbstractSocket*> mySockets; //!< Список установленных соединений.
+    RouteModel *myRouteTable; //!< Таблица маршрутизации.
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
-    virtual void writeXmlImpl(sceneXmlWriter &stream) const;
-    virtual void readXmlImpl(SceneXmlReader &stream);
 // FRIENDS:
 public:
-    friend class tcpSocket;
-    friend class udpSocket;
-    friend class abstractSocket;
-    friend class ripProgramm;
     friend class adapterSetting;
-    friend class dhcpClientProgramm;
-    friend class dhcpServerProgramm;
 };
 //-------------------------------------------------------------------
 /*!
@@ -159,9 +163,9 @@ public:
     void setIp(const QString &str) { sd->myInterfaces.at(cur)->setIp(str); }
     void setMask(const QString &str) { sd->myInterfaces.at(cur)->setMask(str); }
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
-    QString statics() const { return sd->myInterfaces.at(cur)->staticsString(); }
+    QString statics() const { return sd->myInterfaces.at(cur)->statisticsString(); }
     void sendArpRequest(IpAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
-    bool hasDhcpClient() const { return sd->hasProgramm( programm::DHCPClient ); }
+    bool hasDhcpClient() const { return sd->hasProgramm( Program::DHCPClient ); }
     bool isUnderDhcpControl() const;
     void setUnderDhcpControl(bool isUnder);
     bool canManageInterface() const { return sd->canManageInterface(); }

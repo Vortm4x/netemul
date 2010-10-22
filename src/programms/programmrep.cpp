@@ -18,32 +18,60 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "programmrep.h"
-#include <QtDebug>
-#include <QMetaProperty>
 #include "smartdevice.h"
+#include "ripprogramm.h"
+#include "dhcpserverprogramm.h"
+#include "dhcpclientprogramm.h"
+#include "spoofingprogramm.h"
 
-programmRep::programmRep()
+static const int MAGIC_PROGRAMM_NUMBER = 50;
+
+Program::Program(QObject *parent) : QObject(parent)
 {
 }
 
-programmRep::~programmRep()
-{
-
+Program::~Program()
+{    
 }
 
-void programmRep::setEnable(bool b)
+void Program::setEnable(bool b)
 {
     if ( b != myEnable ) {
-        myEnable = b;
-        myDevice->updateView();
+        myEnable = b;        
     }
+}
+
+void Program::updateView()
+{
+    myDevice->updateView();
+}
+
+Program* Program::createFromStream(QObject *parent, QDataStream &stream)
+{
+    int n;
+    stream >> n;
+    Program *p = createImpl(parent,n);
+    p->read(stream);
+    return p;
+}
+
+Program* Program::createImpl(QObject *parent, int n)
+{
+    switch (n%MAGIC_PROGRAMM_NUMBER) {
+        case RIP: return new RipProgram(parent);
+        case DHCPClient : return new DhcpClientProgram(parent);
+        case DHCPServer : return new DhcpServerProgram(parent);
+        case SPOOFING : return new SpoofingProgram(parent);
+        default: break;
+    }
+    return 0;
 }
 
 /*!
   Записывает программу в поток.
   @param stream - поток для записи.
 */
-void programmRep::write(QDataStream &stream) const
+void Program::write(QDataStream &stream) const
 {
     stream << myEnable;
 }
@@ -52,7 +80,7 @@ void programmRep::write(QDataStream &stream) const
   Считывает программу из потока.
   @param stream - поток для чтения.
 */
-void programmRep::read(QDataStream &stream)
+void Program::read(QDataStream &stream)
 {
     stream >> myEnable;
 }

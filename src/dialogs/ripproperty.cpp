@@ -26,7 +26,7 @@ ripProperty::ripProperty(QWidget *parent) : QDialog(parent)
     setAttribute( Qt::WA_DeleteOnClose );
 }
 
-void ripProperty::setProgramm( ripProgramm *prog)
+void ripProperty::setProgramm( RipProgram *prog)
 {
     myProgramm = prog;
     cb_split->setCurrentIndex( myProgramm->splitMode() );

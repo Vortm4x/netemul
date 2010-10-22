@@ -25,11 +25,16 @@
 
 
 RouterDevice::RouterDevice(QObject *parent) : SmartDevice(parent)
+{        
+}
+
+RouterDevice* RouterDevice::create(QObject *parent)
 {
-    int c = appSetting::defaultRouterCount();
-    for ( int i = 0 ; i <  c ; i++ )
-        addInterface(tr("LAN%1").arg(i+1));
-    setNote(tr("<b>Router</b><!--You can use HTML.-->"));
+    RouterDevice *r = new RouterDevice(parent);
+    r->setSocketsCount( appSetting::defaultRouterCount() );
+    r->setRouteModel( new RouteModel() );
+    r->setNote(tr("<b>Router</b><!--You can use HTML.-->"));
+    return r;
 }
 
 void RouterDevice::dialog()

@@ -21,7 +21,7 @@
 #include "switchdevice.h"
 #include "switchmodel.h"
 
-tableSwitch::tableSwitch(switchTableSetting *s)
+TableSwitch::TableSwitch(switchTableSetting *s)
 {
     sw = s;
     t_sw = s->switchTable();
@@ -38,14 +38,13 @@ tableSwitch::tableSwitch(switchTableSetting *s)
     connect( t_sw , SIGNAL(modelReset()) , SLOT(resetSelection()));
 }
 
-void tableSwitch::addRecord()
-{
-    devicePort *t = sw->socket( cb_port->currentText() );
-    t_sw->addToTable( macAddress( le_macAddress->text() ) , t  , switchModel::staticMode);
+void TableSwitch::addRecord()
+{    
+    t_sw->addToTable( macAddress( le_macAddress->text() ) , cb_port->currentText()  , SwitchModel::staticMode);
     le_macAddress->setText("00:00:00:00:00:00");
 }
 
-void tableSwitch::deleteRecord()
+void TableSwitch::deleteRecord()
 {
     QItemSelectionModel *m = table->selectionModel();
     QModelIndexList l = m->selectedIndexes();
@@ -56,17 +55,17 @@ void tableSwitch::deleteRecord()
         }
 }
 
-void tableSwitch::resetSelection()
+void TableSwitch::resetSelection()
 {
     btn_del->setEnabled(false);
 }
 
-void tableSwitch::selectionChanged()
+void TableSwitch::selectionChanged()
 {
     btn_del->setEnabled(true);
 }
 
-void tableSwitch::changeEvent(QEvent *e)
+void TableSwitch::changeEvent(QEvent *e)
 {
     switch (e->type()) {
     case QEvent::LanguageChange:

@@ -27,7 +27,7 @@ statisticsScene::statisticsScene(MyCanvas *scene)
     comps = 0 ; routers = 0;
     hubs = 0 ; switchs = 0;
     foreach ( Device *i , myScene->myDevices ) {
-        Statistics += i->deviceStatistics();
+        statistics += i->deviceStatistics();
         switch ( i->deviceType() ) {
             case Device::compDev : comps++; break;
             case Device::hubDev : hubs++; break;
@@ -52,7 +52,7 @@ QString statisticsScene::devicesString()
 
 QString statisticsScene::trafficString()
 {
-    return Statistics.toString();
+    return statistics.toString();
 }
 
 

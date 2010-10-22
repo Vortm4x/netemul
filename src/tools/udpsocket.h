@@ -24,18 +24,20 @@
 #include <QQueue>
 #include <QByteArray>
 
-class udpSocket : public abstractSocket
+class UdpSocket : public AbstractSocket
 {
     Q_OBJECT
+private:
+    UdpSocket() { }
+    UdpSocket(SmartDevice *d, quint16 port);
 public:
     enum { PACKET_SIZE = 1024 };
-    udpSocket() { }
-    udpSocket(SmartDevice *d, quint16 port);
-    ~udpSocket() { }
+    ~UdpSocket() { }
     void treatPacket(ipPacket p);
     void write(IpAddress address, quint16 port, QByteArray data);
 private:
     void writeBroadcast(quint16 port, QByteArray data);
+    friend class SocketFactory;
 };
 
 #endif // UDPSOCKET_H

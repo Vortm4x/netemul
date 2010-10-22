@@ -99,10 +99,24 @@ void MyCanvas::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
   @param ep - Имя порта второго устройства.
   @return указатель на кабель соединяющий устройства.
 */
-cableDev* MyCanvas::createConnection(Device *s , Device *e , QString sp,QString ep)
+Cable* MyCanvas::createConnection(Device *s , Device *e , QString sp,QString ep)
 {
-    if ( !s || !e ) return 0; // Если хотя бы одного устройства нет, то выходим.
-    cableDev *cable = new cableDev(s, e, sp , ep ); // Создаем между ними кабель
+    if ( !s || !e ) {
+        qDebug("Panika Panika!");
+        return 0; // Если хотя бы одного устройства нет, то выходим.
+    }
+    Cable *cable = new Cable(); // Создаем между ними кабель
+    DevicePort *p1 = s->findPortByName(sp);
+    DevicePort *p2 = e->findPortByName(ep);
+    if ( !p1 || !p2 ) {
+//        qDebug("Device s : %d - %s , e : %d - %s , DevicePort: p1 : %d , p2 : %d",s,qPrintable(sp),e,
+//               qPrintable(ep),p1,p2);
+        return 0; // Если хотя бы одного устройства нет, то выходим.
+    }
+    cable->setStartPort( p1 );
+    cable->setEndPort( p2 );
+    cable->setStartItem(s);
+    cable->setEndItem(e);
     addCableCommand *com = new addCableCommand(this, cable);
     commandStack.push(com);
     myModified = true;
@@ -111,22 +125,24 @@ cableDev* MyCanvas::createConnection(Device *s , Device *e , QString sp,QString 
 }
 //-------------------------------------------------------------------------
 
+void MyCanvas::addCableDev(Cable *cable)
+{
+    registerCable(cable);
+}
+
 Device* MyCanvas::addDeviceOnScene(QPointF coor, int myType /* = -1 */)
 {
     if ( myType == -1 ) myType = nowType;
     Device *t = new Device(myType);
-    t->setPos( calibrate(coor) );
-    t->setMenu(myItemMenu);
-    addItem(t);
-    myDevices << t;
+    t->setPos( calibrate(coor) );    
+    addDevice(t);
     return t;
 }
 
 void MyCanvas::addDevice(Device *device)
 {
     device->setMenu(myItemMenu);
-    addItem( device );
-    myDevices << device;
+    registerDevice(device);
 }
 
 /*!
@@ -145,8 +161,7 @@ void MyCanvas::removeDevice()
 */
 void MyCanvas::newFile()
 {
-    if ( myOpen ) return;
-    lastId = 0;
+    if ( myOpen ) return;    
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     setSceneRect(0,0,MyCanvas::width,MyCanvas::height);
     myState->goMove();
@@ -245,6 +260,7 @@ void MyCanvas::openScene(QString fileName)
 void MyCanvas::openSceneXml(QString fileName)
 {
     newFile();
+    stop();
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << tr("Opening file for reading is impossible");
@@ -265,6 +281,7 @@ void MyCanvas::openSceneXml(QString fileName)
     }
 
     file.close();
+    play();
     QApplication::restoreOverrideCursor();
     myModified = false;
 }
@@ -288,12 +305,16 @@ void MyCanvas::saveScene(QString fileName)
     foreach(Device *i, myDevices)
         s << *i;
     s << myConnections.count();
-    foreach (cableDev *i, myConnections) {
-        s << i->line().p1() << i->line().p2();
-        s << i->startSocketName() << i->endSocketName() ;
+    foreach (Cable *i, myConnections) {
+        QPointF p1 = i->startPos();
+        QPointF p2 = i->endPos();
+        Device *d1 = deviceInPoint(p1);
+        Device *d2 = deviceInPoint(p2);
+        s << p1 << p2;
+        s << d1->socketName(i) << d2->socketName(i);
     }
     s << myTextItems.count();
-    foreach ( textItem *i, myTextItems ) {
+    foreach ( TextItem *i, myTextItems ) {
         s << i->pos();
         s << i->toPlainText();
     }
@@ -333,7 +354,7 @@ void MyCanvas::timerEvent(QTimerEvent*)
 void MyCanvas::ticTime()
 {
     static int n = 9;
-    foreach ( cableDev *t , myConnections)
+    foreach ( Cable *t , myConnections)
         if ( t->isBusy() ) t->motion();
     n--;
     foreach ( Device *i, myDevices ) {
@@ -353,7 +374,7 @@ void MyCanvas::emulateTime()
 
 bool MyCanvas::isEnd() const
 {
-    foreach ( cableDev *t , myConnections ) {
+    foreach ( Cable *t , myConnections ) {
         if ( t->isBusy() ) return false;
     }
     foreach ( Device *i , myDevices )
@@ -375,13 +396,6 @@ Device* MyCanvas::deviceInPoint(QPointF p)
     foreach ( QGraphicsItem *i , items(p) )
         if ( isDevice(i) ) return qgraphicsitem_cast<Device*>(i);
     return 0;
-}
-
-void MyCanvas::setShowLabels(bool b)
-{
-    foreach ( cableDev *i , myConnections )
-        i->setShowLabel(b);
-    appSetting::setShowLabel(b);
 }
 
 void MyCanvas::setShowGrid(bool b)
@@ -406,7 +420,7 @@ QPointF MyCanvas::calibrate(QPointF c)
   в случае если она пуста.
   @param t - указатель на надпись.
 */
-void MyCanvas::editorLostFocus(textItem *t)
+void MyCanvas::editorLostFocus(TextItem *t)
 {
      QTextCursor cursor = t->textCursor();
      cursor.clearSelection();
@@ -423,12 +437,12 @@ void MyCanvas::editorLostFocus(textItem *t)
   Создает на сцене новый комментарий.
   @return указатель на созданный комментарий.
 */
-textItem* MyCanvas::createTextItem(QPointF p , const QString &str /*=tr("Комментарий")*/)
+TextItem* MyCanvas::createTextItem(QPointF p , const QString &str /*=tr("Комментарий")*/)
 {
-    textItem *t = new textItem(p);
+    TextItem *t = new TextItem(p);
     t->setPlainText(str);
     t->adjustSize();
-    connect(t,SIGNAL(lostFocus(textItem*)),SLOT(editorLostFocus(textItem*)));
+    connect(t,SIGNAL(lostFocus(TextItem*)),SLOT(editorLostFocus(TextItem*)));
     addItem(t);
     myTextItems << t;
     return t;
@@ -467,10 +481,18 @@ DeviceImpl* MyCanvas::addSwitch(int x,int y)
     return t->contentDevice();
 }
 
-textItem* MyCanvas::addNote(int x, int y)
+TextItem* MyCanvas::addNote(int x, int y)
 {
     QPointF p( x*50 , y*50 );
     return createTextItem(p);
+}
+
+void MyCanvas::addTextItem(TextItem *item)
+{
+    item->adjustSize();
+    connect(item,SIGNAL(lostFocus(TextItem*)),SLOT(editorLostFocus(TextItem*)));
+    addItem(item);
+    myTextItems << item;
 }
 
 void MyCanvas::addConnection(DeviceImpl *s,DeviceImpl *e, const QString &sp,const QString &se)
@@ -552,7 +574,7 @@ void MyCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
 void MyCanvas::calibrateAll(QList<QGraphicsItem*> list)
 {
     foreach ( QGraphicsItem *i , list )
-        if ( i->type() != textItem::Type ) i->setPos( calibrate( i->pos() ) );
+        if ( i->type() != TextItem::Type ) i->setPos( calibrate( i->pos() ) );
 }
 
 void MyCanvas::registerDevice(Device *dev)
@@ -567,25 +589,25 @@ void MyCanvas::unregisterDevice(Device *dev)
     myDevices.removeOne(dev);
 }
 
-void MyCanvas::registerCable(cableDev *cable)
+void MyCanvas::registerCable(Cable *cable)
 {
     addItem(cable); // И добавляем его на сцену =)
     myConnections << cable;
 }
 
-void MyCanvas::unregisterCable(cableDev *cable)
+void MyCanvas::unregisterCable(Cable *cable)
 {
     removeItem(cable);
     myConnections.removeOne(cable);
 }
 
-void MyCanvas::registerText(textItem *t)
+void MyCanvas::registerText(TextItem *t)
 {
     addItem(t);
     myTextItems << t;
 }
 
-void MyCanvas::unregisterText(textItem *t)
+void MyCanvas::unregisterText(TextItem *t)
 {
     removeItem(t);
     myTextItems.removeOne(t);

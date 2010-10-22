@@ -35,7 +35,7 @@ public:
     QString trafficString();
 private:
     MyCanvas *myScene;
-    statistics Statistics;
+    Statistics statistics;
     int comps,hubs,switchs,routers;
 };
 

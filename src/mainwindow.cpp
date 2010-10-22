@@ -51,7 +51,7 @@
 #define UPDATEACTION(A,TEXT,TIP) A->setText(TEXT); A->setToolTip(TIP); A->setStatusTip(TIP);
 #define FILES_CURRENT_TYPES FILES_TYPES_XML
 
-#define FILES_TYPES_XML "XML files(*.xml);;Networks(*.net)"
+#define FILES_TYPES_XML "Networks(*.net *xml)"
 #define FILES_TYPES_NET "Networks(*.net);;XML files(*.xml)"
 #define FILES_TYPES_NO "Networks(*.net)"
 
@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     //view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
-    view->setViewportUpdateMode( QGraphicsView::SmartViewportUpdate );
+    view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
     timeLabel = new QLabel;
@@ -77,9 +77,7 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     readSetting();
     setCentralWidget(view);
     retranslate();
-    setOpenglMode( appSetting::hasOpengl() );
-    cableLabelAct->setChecked( appSetting::isShowLabel() );
-    canva->setShowLabels( appSetting::isShowLabel() );
+    setOpenglMode( appSetting::hasOpengl() );        
     autosaveTimer = new QTimer(this);
     autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
     connect( autosaveTimer , SIGNAL(timeout()) , SLOT(autosave()) );
@@ -175,8 +173,7 @@ void MainWindow::retranslate()
     UPDATEACTION( printAct , tr("Print...") , tr("Print user's network") )
     UPDATEACTION( printPreviewAct , tr("Preview...") , tr("Preview network berfore printing") );
     UPDATEACTION( virtualNetworkAct , tr("Configure VLAN...") , tr("Configure VLAN") );
-    UPDATEACTION( noteAct , tr("Set description...") , tr("Set description of device") );
-    UPDATEACTION( cableLabelAct , tr("Show labels") , tr("Show labels on cables") );
+    UPDATEACTION( noteAct , tr("Set description...") , tr("Set description of device") );    
     fileMenu->setTitle(tr("File"));
     editMenu->setTitle(tr("Edit"));
     viewMenu->setTitle(tr("View"));
@@ -321,9 +318,6 @@ void MainWindow::createAction()
 
     noteAct = createOneAction(QIcon(":/im/images/description.png") );
 
-    cableLabelAct = createOneAction();
-    cableLabelAct->setCheckable(true);
-    cableLabelAct->setChecked(true);
 }
 
 //Создаем меню
@@ -347,8 +341,7 @@ void MainWindow::createMenu()
     viewMenu = menuBar()->addMenu(QString());
     viewMenu->addAction( deviceBar->toggleViewAction() );
     viewMenu->addAction( controlBar->toggleViewAction() );
-    viewMenu->addAction(showGridAct);
-    viewMenu->addAction( cableLabelAct );
+    viewMenu->addAction(showGridAct);    
 
     itemMenu = menuBar()->addMenu(QString());
     itemMenu->addAction(propertyAct);
@@ -419,8 +412,7 @@ void MainWindow::createScene()
     canva = new MyCanvas(itemMenu,this); // Создаем сцену
     canva->setBackgroundBrush(QBrush(Qt::lightGray));
     canva->setSceneRect(0,0,10,10);
-    connect( showGridAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowGrid(bool)));
-    connect( cableLabelAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowLabels(bool)) );
+    connect( showGridAct , SIGNAL(toggled(bool)) , canva , SLOT(setShowGrid(bool)));    
     connect( canva , SIGNAL(uncheck()) , SLOT(uncheck()));
     connect( deleteAct , SIGNAL(triggered()) , canva , SLOT(removeDevice()));
     connect( canva , SIGNAL(selectionChanged()) , SLOT(selectionChange()));
@@ -506,8 +498,7 @@ void MainWindow::setEnabledFileItems(bool cur)
     saveAsAct->setEnabled(cur);
     showGridAct->setEnabled(cur);
     printAct->setEnabled(cur);
-    printPreviewAct->setEnabled(cur);
-    cableLabelAct->setEnabled(cur);
+    printPreviewAct->setEnabled(cur);    
 }
 /*!
     Слот вызываемый при изменении выделения на сцене.
@@ -529,8 +520,6 @@ void MainWindow::setting()
     canva->setAnimateSpeed( appSetting::animateSpeed() );
     setOpenglMode( appSetting::hasOpengl() );
     autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
-    cableLabelAct->setChecked( appSetting::isShowLabel() );
-    canva->setShowLabels( appSetting::isShowLabel() );
 }
 
 void MainWindow::setOpenglMode(bool mode)

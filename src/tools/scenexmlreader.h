@@ -14,8 +14,8 @@ public:
 public:
     bool startElement(const QString&, const QString&, const QString &qName, const QXmlAttributes &atts);
     bool endElement(const QString&, const QString&, const QString &qName);
-    bool characters(const QString &ch);
-    bool fatalError(const QXmlParseException &exception);
+    bool characters(const QString&);
+    bool fatalError(const QXmlParseException&);
     QString errorString() {
         return errString;
     }

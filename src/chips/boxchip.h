@@ -23,39 +23,48 @@
 #include "abstractchip.h"
 #include <QVector>
 
-class cableDev;
-class devicePort;
+class Cable;
+class DevicePort;
 
-class boxChip : public AbstractChip
+class BoxChip : public AbstractChip
 {
     Q_OBJECT
+    Q_PROPERTY( int socketsCount READ socketsCount WRITE setSocketsCount )
 public:
-    boxChip(int n = 4);
-    virtual ~boxChip();
+    BoxChip(QObject *parent = 0);
+    virtual ~BoxChip();
     QStringList sockets() const;
     bool setSocketsCount(int n);
     int socketsCount() const { return mySockets.size(); }
     bool isConnectSocket(const QString &str) const;
-    void addConnection(const QString &port, cableDev *c);
-    void deleteConnection(cableDev *c);
+    void addConnection(const QString &port, Cable *c);
+    void deleteConnection(Cable *c);
     int trafficDigit() const;
-    QString socketName(const cableDev *c) const;
+    QString socketName(const Cable *c) const;
     virtual void deciSecondTimerEvent();
     virtual void secondTimerEvent() { }
-    devicePort* socket(const QString &name);
+    DevicePort* socket(const QString &name);
     bool isBusy() const;
+    bool isConnect() const;
+    QList<Cable*> cableList() const;
+    DevicePort* findPortByName(const QString &name) const;
     virtual void addSocket(int n);
-    virtual bool isSharedBusy(cableDev*) const { return false; }
+    virtual bool isSharedBusy(Cable*) const { return false; }
     virtual void detectCollision() { }
-#ifndef __TESTING__
     void setCheckedSocket(const QString &port);
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);    
-#endif  
+
+    QString portToString(DevicePort *port) const;
+
 signals:
     void socketsCountChanged();
+
+public slots:
+    void onCableConnected(Cable *cable);
+
 protected:
-    QVector<devicePort*> mySockets;
+    QVector<DevicePort*> mySockets;
 };
 
 #endif // BOXCHIP_H

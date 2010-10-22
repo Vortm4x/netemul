@@ -27,13 +27,19 @@ class frame;
 class HubDevice : public BoxDevice
 {
     Q_OBJECT
+    Q_PROPERTY( quint32 collision READ collision WRITE setCollision )
 public:
     int type() const { return hubDev; }
     enum { hubDev = 4 };
-    Q_INVOKABLE HubDevice(QObject *parent = 0);
+    HubDevice(QObject *parent = 0);
+    static HubDevice* create(QObject *parent);
     ~HubDevice();
     void dialog();
     void detectCollision();
+
+    void setCollision(quint32 c) { m_collision = c; }
+    quint32 collision() const { return m_collision; }
+
     bool isShared() const { return true; }
     QString deviceName() const { return "hub"; }
     QString deviceCommandName() const { return tr("Hub"); }
@@ -43,15 +49,15 @@ protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
-    quint32 collision;
+    quint32 m_collision;
 };
 
 class hubSetting : public boxSetting
 {
 public:
     hubSetting(HubDevice *d) : boxSetting(d) , hd(d) { }
-    quint32 collisions() const { return hd->collision; }
-    void reset() { boxSetting::reset(); hd->collision = 0; }
+    quint32 collisions() const { return hd->m_collision; }
+    void reset() { boxSetting::reset(); hd->m_collision = 0; }
 private:
     HubDevice *hd;
 };

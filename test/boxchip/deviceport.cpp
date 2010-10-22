@@ -1,5 +1,5 @@
 #include "deviceport.h"
 
-devicePort::devicePort()
+DevicePort::DevicePort()
 {
 }

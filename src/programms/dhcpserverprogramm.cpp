@@ -26,9 +26,9 @@
 
 #include "dhcpservermodel.h"
 
-int dhcpServerProgramm::myServerCount = 0;
+int DhcpServerProgram::myServerCount = 0;
 
-dhcpServerProgramm::dhcpServerProgramm()
+DhcpServerProgram::DhcpServerProgram(QObject *parent) : Program(parent)
 {
     myName = tr("DHCP server");       
     myServerCount++;
@@ -36,15 +36,15 @@ dhcpServerProgramm::dhcpServerProgramm()
     myDemons.clear();
 }
 
-dhcpServerProgramm::~dhcpServerProgramm()
+DhcpServerProgram::~DhcpServerProgram()
 {
     myDemons.clear();
 }
 
-void dhcpServerProgramm::setDevice(SmartDevice *s)
+void DhcpServerProgram::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) return;
-    programmRep::setDevice(s);
+    Program::setDevice(s);
     //receiver = new udpSocket(myDevice, SERVER_SOCKET);
     foreach ( Interface *i, myDevice->interfaces() ) {
         if ( i->isConnect() ) {
@@ -62,7 +62,7 @@ void dhcpServerProgramm::setDevice(SmartDevice *s)
 //    if ( myInterface.isEmpty() ) setInterfaceName(port);
 //}
 
-void dhcpServerProgramm::execute(QByteArray data)
+void DhcpServerProgram::execute(QByteArray data)
 {
 //    if ( myDevice->adapter(myInterface)->ip().isEmpty() ) {
 //        QMessageBox::warning(0,tr("Warning"),tr("Your DHCP server <i>%1</i> isn't configured.").arg(myServerName),
@@ -83,14 +83,14 @@ void dhcpServerProgramm::execute(QByteArray data)
 
 
 
-void dhcpServerProgramm::incTime()
+void DhcpServerProgram::incTime()
 {
     foreach ( dhcpDemon *demon, myDemons ) {
         demon->incTime();
     }
 }
 
-void dhcpServerProgramm::showProperty()
+void DhcpServerProgram::showProperty()
 {
     dhcpServerProperty *d = new dhcpServerProperty(myDevice);
     d->setProgramm(this);
@@ -101,10 +101,10 @@ void dhcpServerProgramm::showProperty()
   Записывает отличительные черты в поток.
   @param stream - поток для записи.
 */
-void dhcpServerProgramm::write(QDataStream &stream) const
+void DhcpServerProgram::write(QDataStream &stream) const
 {
     stream << DHCPServer;
-    programmRep::write(stream);
+    Program::write(stream);
     dhcpDemon *d = myDemons.at(0);
     d->dhcpModel()->write(stream);
     stream << d->interfaceName();
@@ -122,9 +122,9 @@ void dhcpServerProgramm::write(QDataStream &stream) const
   Считывает отличительные черты из потока.
   @param stream - поток для чтения.
 */
-void dhcpServerProgramm::read(QDataStream &stream)
+void DhcpServerProgram::read(QDataStream &stream)
 {
-    programmRep::read(stream);
+    Program::read(stream);
     dhcpDemon *d = new dhcpDemon(device()->interfaces().at(0));
     d->dhcpModel()->read(stream);
     d->read(stream);

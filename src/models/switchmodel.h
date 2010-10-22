@@ -23,11 +23,11 @@
 #include <QAbstractTableModel>
 #include "macaddress.h"
 
-class devicePort;
+class DevicePort;
 
-struct macRecord {
+struct MacRecord {
     macAddress mac;
-    devicePort *port;
+    QString port;
     int time;
     int mode;
     QString modeString() const {
@@ -36,28 +36,62 @@ struct macRecord {
     }
 };
 
-class switchModel : public QAbstractTableModel
+class MacRecordObject : public QObject {
+    Q_OBJECT
+    Q_PROPERTY( QString mac READ mac WRITE setMac )
+    Q_PROPERTY( QString port READ port WRITE setPort )
+    Q_PROPERTY( int time READ time WRITE setTime )
+public:
+    MacRecordObject(MacRecord *record) {
+        r = record;
+    }
+
+    MacRecordObject(QObject *parent = 0) : QObject(parent) {
+        r = new MacRecord();
+        r->mode = 0;
+    }
+
+    MacRecord* record() const { return r; }
+
+    QString mac() const { return r->mac.toString(); }
+    void setMac(const QString &str) { r->mac.setMac(str); }
+    QString port() const { return r->port; }
+    void setPort(const QString &str) { r->port = str; }
+    int time() const { return r->time; }
+    void setTime(int t) { r->time = t; }
+
+private:
+    MacRecord *r;
+};
+
+typedef QList<MacRecord*> MacRecordList;
+
+class SwitchModel : public QAbstractTableModel
 {
     Q_OBJECT
+    Q_PROPERTY( QVariantList recordList READ recordList )
 public:
     enum { staticMode = 0 , dinamicMode = 1 };
-    switchModel(QObject *parent = 0);
+    SwitchModel(QObject *parent = 0);
     int rowCount(const QModelIndex &p) const;
     int columnCount(const QModelIndex &p) const;
     Qt::ItemFlags flags(const QModelIndex &m) const;
     QVariant headerData(int s , Qt::Orientation o , int role) const;
     QVariant data(const QModelIndex &m, int role) const;
 
+    QVariantList recordList() const;
+
     void updateMac();
     void deleteFromTable(const macAddress &mac);
-    void deleteFromTable(macRecord *r);
-    macRecord* addToTable(const macAddress &mac ,devicePort *p , int mode);
-    void contains(const macAddress &m , devicePort *s);
-    devicePort* portWithMac(const macAddress &m);
+    void deleteFromTable(MacRecord *r);
+    MacRecord* addToTable(const macAddress &mac ,const QString &port, int mode);
+    void addToTable(MacRecord *rec);
+    void contains(const macAddress &m , const QString &port);
+    QString portWithMac(const macAddress &m);
 private:   
-    devicePort *lastPort;
+    QString lastPort;
     macAddress lastMac;
-    QList<macRecord*> table;
+    MacRecordList table;
 };
 
 #endif // SWITCHMODEL_H

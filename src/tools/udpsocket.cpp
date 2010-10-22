@@ -22,19 +22,19 @@
 #include "routemodel.h"
 #include "udppacket.h"
 
-udpSocket::udpSocket(SmartDevice *d, quint16 port) : abstractSocket(d)
+UdpSocket::UdpSocket(SmartDevice *d, quint16 port) : AbstractSocket(d)
 {
     myBindPort = port;
 }
 
-void udpSocket::write(IpAddress address, quint16 port, QByteArray data)
+void UdpSocket::write(IpAddress address, quint16 port, QByteArray data)
 {
     if ( address.isFull() ) {
         writeBroadcast(port,data);
         return;
     }
     IpAddress gw;
-    routeRecord *r = dev->myRouteTable->recordAt(address);
+    RouteRecord *r = dev->routeModel()->recordAt(address);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     if ( !dev->ipToAdapter(r->out) || !dev->ipToAdapter(r->out)->isConnect() ) return;
@@ -52,18 +52,21 @@ void udpSocket::write(IpAddress address, quint16 port, QByteArray data)
         p.pack(udp.toData());
         dev->ipToAdapter(r->out)->sendPacket(p,gw);
     }
+    if ( m_isAutoDelete ) {
+        emit imFinished(this);
+    }
 }
 
-void udpSocket::treatPacket(ipPacket p)
+void UdpSocket::treatPacket(ipPacket p)
 {
     udpPacket udp(p.unpack());
     emit readyRead( udp.unpack() );
 }
 
-void udpSocket::writeBroadcast(quint16 port, QByteArray data)
+void UdpSocket::writeBroadcast(quint16 port, QByteArray data)
 {
     Q_ASSERT( data.size() <= PACKET_SIZE ); // Нельзя рассылать широковешательно много данных
-    foreach ( Interface *i , dev->myInterfaces ) {
+    foreach ( Interface *i , dev->interfaces() ) {
         if ( !i->isConnect() ) continue;
         ipPacket p( i->ip() , IpAddress::full() );
         p.setUpProtocol(ipPacket::udp);

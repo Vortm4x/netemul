@@ -25,20 +25,9 @@
 
 class programm
 {
-public:
-    enum { RIP = 0 , DHCPClient = 1 , DHCPServer = 2, SPOOFING = 3 };
-    programm() { qFatal("Error programm constructor!"); }
-    programm(int n);
-    programm(QDataStream &stream);
-    programm(const programm &other);
-    ~programm();
-    programm& operator=(const programm &other);
-    bool operator==(const programm &other) { return rep == other.rep; }
-    programmRep* operator->() const { return rep; }
-    programmRep* impl() { return rep; }    
-private:
-    void createImpl(int n);
-    programmRep *rep;
+public:    
+private:    
+    Program *rep;
 protected:
     friend QDataStream& operator<<(QDataStream &stream,const programm &p);
 };

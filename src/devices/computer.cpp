@@ -26,13 +26,20 @@
 #include "designerdialog.h"
 #endif
 
+#include <QMessageBox>
+
 Computer::Computer(QObject *parent) : SmartDevice(parent)
+{    
+}
+
+Computer* Computer::create(QObject *parent)
 {
-    int c = appSetting::defaultComputerCount();
-    for ( int i = 0 ; i < c ; i++)
-        addInterface(tr("eth%1").arg(i));
-    myRouteTable->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,routeModel::connectMode);
-    setNote(tr("<b>Computer</b><!--You can use HTML.-->"));
+    Computer *c = new Computer(parent);
+    c->setSocketsCount(appSetting::defaultComputerCount());
+    c->setRouteModel( new RouteModel(c) );
+    c->routeModel()->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,RouteModel::connectMode);
+    c->setNote(tr("<b>Computer</b><!--You can use HTML.-->"));
+    return c;
 }
 
 void Computer::showDesignerDialog()
@@ -50,10 +57,37 @@ void Computer::dialog()
 #endif
 }
 
-void Computer::sendConstructedFrame(QString Interface, frame Frame, int count)
+void Computer::setSocketsCount(int n)
+{
+    int t = myInterfaces.size();
+    if ( t <= n ) {
+        for ( int i = t; i < n ; i++ )
+            addInterface( tr("eth%1").arg(i) );
+    }
+    else {
+        foreach ( Interface *i , myInterfaces )
+            if ( i->isConnect() ) {
+                QMessageBox::warning(0,tr("Error"), tr("To change the number of ports, disconnect all cables!"),
+                                     QMessageBox::Ok , QMessageBox::Ok);
+                return;
+            }
+        for ( int i = t-1 ; i >= n ; i-- ) {
+            delete myInterfaces[i];
+            myInterfaces.pop_back();
+        }
+    }
+}
+
+void Computer::sendConstructedFrame(const QString &interface, frame fr, int count)
 {
     for ( int i = 0 ; i < count ; i++ )
-        adapter(Interface)->pushToSocket(Frame);
+        adapter(interface)->pushToSocket(fr);
+}
+
+void Computer::setRouteModel(RouteModel *model)
+{
+    SmartDevice::setRouteModel(model);
+    model->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,RouteModel::connectMode);
 }
 
 

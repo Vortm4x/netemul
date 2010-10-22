@@ -19,7 +19,6 @@
 ****************************************************************************************/
 #include "programmdialog.h"
 #include "smartdevice.h"
-#include "programm.h"
 #include "installdialog.h"
 #include <QCheckBox>
 
@@ -35,7 +34,7 @@ programmDialog::programmDialog(QWidget *parent) : QDialog(parent)
 void programmDialog::updateList()
 {
     list->clear();
-    foreach ( programm i, s->programms() ){
+    foreach ( Program *i, s->programs() ){
         QListWidgetItem *item = new QListWidgetItem(i->name());
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsSelectable);
         item->setData( Qt::UserRole , i->id() );
@@ -54,7 +53,9 @@ void programmDialog::programmChanged()
 void programmDialog::stateChanged(QListWidgetItem *item)
 {
     if ( !item ) return;
-    s->programmAt( item->data( Qt::UserRole).toInt() )->setEnable( item->checkState() == Qt::Checked );
+    Program *p = s->programAt( item->data( Qt::UserRole).toInt() );
+    p->setEnable( item->checkState() == Qt::Checked );
+    p->updateView();
 }
 
 void programmDialog::setDevice( SmartDevice *d )
@@ -70,8 +71,8 @@ void programmDialog::apply()
 {
     for ( int i = 0; i < list->count(); i++) {
         QListWidgetItem *n = list->item(i);
-        if (n->checkState() == Qt::Checked ) s->programmAt( n->data(Qt::UserRole).toInt() )->setEnable(true);
-        else s->programmAt( n->data(Qt::UserRole).toInt() )->setEnable(false);
+        if (n->checkState() == Qt::Checked ) s->programAt( n->data(Qt::UserRole).toInt() )->setEnable(true);
+        else s->programAt( n->data(Qt::UserRole).toInt() )->setEnable(false);
     }
     accept();
 }
@@ -95,13 +96,13 @@ void programmDialog::add()
 void programmDialog::remove()
 {
     QListWidgetItem *w = list->currentItem();
-    s->removeProgramm( s->programmAt(w->data(Qt::UserRole).toInt() ) );
+    s->removeProgram( s->programAt(w->data(Qt::UserRole).toInt() ) );
     updateList();
 }
 
 void programmDialog::settings()
 {
-    s->programmAt( list->currentItem()->data(Qt::UserRole).toInt() )->showProperty();
+    s->programAt( list->currentItem()->data(Qt::UserRole).toInt() )->showProperty();
 }
 
 //-----------------------------------------------------

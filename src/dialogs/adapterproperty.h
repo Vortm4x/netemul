@@ -28,7 +28,7 @@ class QCheckBox;
 class QLabel;
 class QPushButton;
 
-class devicePort;
+class DevicePort;
 class ipEdit;
 class adapterSetting;
 

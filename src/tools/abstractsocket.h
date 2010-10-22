@@ -24,25 +24,30 @@
 
 class SmartDevice;
 
-class abstractSocket : public QObject
+class AbstractSocket : public QObject
 {
     Q_OBJECT
 public:
-    abstractSocket() { dev = 0; }
-    abstractSocket(SmartDevice *d);
-    virtual ~abstractSocket();
+    AbstractSocket() { dev = 0; }
+    AbstractSocket(SmartDevice *d);
+    virtual ~AbstractSocket();
     bool isOurData(IpAddress address, quint16 port);
     virtual bool isBusy() const { return false; }
     void setBind(IpAddress address) { myBind = address; }
     virtual void treatPacket(ipPacket) { }
     virtual void secondEvent() { }
     virtual void write(IpAddress, quint16, QByteArray) { }
+
+    void setAutoDelete(bool f) { m_isAutoDelete = f; }
+    bool autoDelete() const { return m_isAutoDelete; }
 signals:
     void readyRead(QByteArray);
-protected:
+    void imFinished(AbstractSocket*);
+protected:    
     quint16 myBindPort;
     IpAddress myBind;
     SmartDevice *dev;
+    bool m_isAutoDelete;
 };
 
 #endif // ABSTRACTSOCKET_H

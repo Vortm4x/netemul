@@ -30,7 +30,7 @@ class QStringList;
 class SmartDevice;
 class ipEdit;
 class macAddress;
-class arpModel;
+class ArpModel;
 
 class tableArp : public QDialog
 {
@@ -50,7 +50,7 @@ private:
     QLineEdit *le_mac;
     QComboBox *cb_port;
     QStringList s;
-    QList<arpModel*> list;
+    QList<ArpModel*> list;
     ipEdit *ip;
 public slots:
     void addRecord();

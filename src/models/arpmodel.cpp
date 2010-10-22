@@ -20,14 +20,14 @@
 #include "arpmodel.h"
 #include "appsetting.h"
 
-arpModel::arpModel()
+ArpModel::ArpModel(QObject *parent) : QObject(parent)
 {
     lastRecord = 0;
 }
 
-arpRecord* arpModel::addToTable(IpAddress ip , macAddress mac , int mode )
+ArpRecord* ArpModel::addToTable(IpAddress ip , macAddress mac , int mode )
 {
-    foreach ( arpRecord *i , myTable ) {
+    foreach ( ArpRecord *i , myTable ) {
         if ( i->ip == ip && i->mac == mac ) return i;
         if ( i->mode != staticMode && (i->ip == ip || i->mac == mac ) ) {
             i->ip = ip;
@@ -36,51 +36,56 @@ arpRecord* arpModel::addToTable(IpAddress ip , macAddress mac , int mode )
             return i;
         }
     }
-    arpRecord *t = new arpRecord;
+    ArpRecord *t = new ArpRecord;
     t->ip = ip;
     t->mac = mac;
     t->mode = mode;
     t->time = 0;
-    myTable << t;
-    lastRecord = 0;
+    addToTable(t);
     emit tableChanged(t);
     return t;
 }
 
-void arpModel::deleteFromTable(const QString &ip)
+void ArpModel::addToTable(ArpRecord *rec)
+{
+    lastRecord = 0;
+    myTable << rec;
+}
+
+void ArpModel::deleteFromTable(const QString &ip)
 {
     IpAddress a(ip);
-    foreach ( arpRecord *i, myTable )
+    foreach ( ArpRecord *i, myTable )
         if ( i->ip == a ) {
             deleteFromTable(i);
             return;
         }
 }
 
-void arpModel::deleteFromTable(arpRecord *r)
+void ArpModel::deleteFromTable(ArpRecord *r)
 {
     myTable.removeOne(r);
     lastRecord = 0;
     delete r;
 }
 
-void arpModel::update()
+void ArpModel::update()
 {
     int n = appSetting::ttlArp();
-    foreach ( arpRecord *i , myTable )
+    foreach ( ArpRecord *i , myTable )
         if ( ++i->time >= n ) deleteFromTable(i);
 }
 
-void arpModel::clear()
+void ArpModel::clear()
 {
     qDeleteAll(myTable);
     myTable.clear();
 }
 
-arpRecord* arpModel::recordAt(const IpAddress &a) const
+ArpRecord* ArpModel::recordAt(const IpAddress &a) const
 {
     if ( lastRecord && lastAddress == a ) return lastRecord;
-    foreach ( arpRecord *i, myTable ) {
+    foreach ( ArpRecord *i, myTable ) {
         if ( i->ip == a) {
             lastRecord = i;
             lastAddress = a;
@@ -90,13 +95,31 @@ arpRecord* arpModel::recordAt(const IpAddress &a) const
     return 0;
 }
 
-arpRecord* arpModel::recordAt(int u) const
+ArpRecord* ArpModel::recordAt(int u) const
 {
     return myTable.at(u);
     return NULL;
 }
 
-int arpModel::size()
+int ArpModel::size()
 {
     return myTable.size();
+}
+
+QVariantList ArpModel::arpRecordObjectsList() const
+{
+    QVariantList list;
+    foreach ( ArpRecord *i , myTable ) {
+        if ( i->mode == ArpModel::staticMode ) {
+            QObject *o = new ArpRecordObject(i);
+            list << qVariantFromValue(o);
+        }
+    }
+    return list;
+}
+
+void ArpModel::addArpRecordObject(ArpRecordObject *r)
+{
+    addToTable( r->record() );
+    r->deleteLater();
 }

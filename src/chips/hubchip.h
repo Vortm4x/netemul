@@ -24,16 +24,16 @@
 #include <QVector>
 
 
-class hubChip : public boxChip
+class HubChip : public BoxChip
 {
     Q_OBJECT
 public:
     void addSocket(int n);
-    void receiveEvent(frame &fr,devicePort *sender);
+    void receiveEvent(frame &fr,DevicePort *sender);
 #ifndef __TESTING__
     void detectCollision();
 #endif
-    hubChip(int n = 4);
+    HubChip(QObject *parent);
 };
 
 #endif // HUBCHIP_H

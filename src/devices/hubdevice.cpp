@@ -22,39 +22,45 @@
 #include "appsetting.h"
 #include "hubchip.h"
 
-
 HubDevice::HubDevice(QObject *parent) : BoxDevice(parent)
+{    
+    myChip = 0;
+    m_collision = 0;
+}
+
+HubDevice* HubDevice::create(QObject *parent)
 {
-    int c = appSetting::defaultHubCount();
-    myManual = appSetting::defaultHubManual();
-    chip = new hubChip(c);
-    setNote(tr( "<b>Hub</b><!--You can use HTML.-->" ) );
-    collision = 0;
+    HubDevice *h = new HubDevice(parent);
+    h->setBoxChip(new HubChip(h));
+    h->setSocketsCount( appSetting::defaultHubCount() );
+    h->setManual( appSetting::defaultHubManual() );
+    h->setNote(tr( "<b>Hub</b><!--You can use HTML.-->" ) );
+    return h;
 }
 
 HubDevice::~HubDevice()
 {
-    delete chip;
+    delete myChip;
 }
 
 
 void HubDevice::detectCollision()
 {
-    collision++;
-    chip->detectCollision();
+    m_collision++;
+    myChip->detectCollision();
 }
 
 void HubDevice::read(QDataStream &stream)
 {
     BoxDevice::read(stream);
-    stream >> collision;
+    stream >> m_collision;
 }
 
 void HubDevice::write(QDataStream &stream) const
 {
     stream << hubDev;
     BoxDevice::write(stream);
-    stream << collision;
+    stream << m_collision;
 }
 
 void HubDevice::dialog()

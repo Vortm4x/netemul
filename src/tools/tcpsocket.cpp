@@ -24,7 +24,7 @@
 #include "routemodel.h"
 #include "appsetting.h"
 
-tcpSocket::tcpSocket(SmartDevice *d,quint16 port) : abstractSocket(d)
+TcpSocket::TcpSocket(SmartDevice *d,quint16 port) : AbstractSocket(d)
 {
     myBindPort = port;
     isn = qrand()%Sequence;
@@ -36,11 +36,11 @@ tcpSocket::tcpSocket(SmartDevice *d,quint16 port) : abstractSocket(d)
     sendingNum = 0;     
 }
 
-tcpSocket::~tcpSocket()
+TcpSocket::~TcpSocket()
 {
 }
 
-void tcpSocket::write(IpAddress a, quint16 p, QByteArray data)
+void TcpSocket::write(IpAddress a, quint16 p, QByteArray data)
 {
     myBind = a;
     myReceiverPort = p;    
@@ -48,7 +48,7 @@ void tcpSocket::write(IpAddress a, quint16 p, QByteArray data)
     setConnection();
 }
 
-void tcpSocket::setConnection()
+void TcpSocket::setConnection()
 {
     waitingTime = 0;
     timeout = 0;   
@@ -57,12 +57,12 @@ void tcpSocket::setConnection()
     state = WAIT_RESPONSE;
 }
 
-void tcpSocket::sendMessage(tcpPacket t) const
+void TcpSocket::sendMessage(tcpPacket t) const
 {
     ipPacket p;
     p.pack(t.toData());
     IpAddress gw;
-    routeRecord *r = dev->myRouteTable->recordAt(myBind);
+    RouteRecord *r = dev->routeModel()->recordAt(myBind);
     if ( !r ) return;
     if ( r->gateway != r->out ) gw = r->gateway;
     p.setSender(r->out);
@@ -71,10 +71,10 @@ void tcpSocket::sendMessage(tcpPacket t) const
     dev->ipToAdapter(r->out)->sendPacket(p,gw);
 }
 
-void tcpSocket::treatPacket(ipPacket p)
+void TcpSocket::treatPacket(ipPacket p)
 {
     tcpPacket tcp(p.unpack());
-    if ( state == NONE && tcp.flag() != tcpPacket::SYN ) { deleteLater(); return; }
+    if ( state == NONE && tcp.flag() != tcpPacket::SYN ) { emit imFinished(this); return; }
 
     if ( tcp.flag() == tcpPacket::ACK) { receiveAck(tcp); return; }
 
@@ -82,14 +82,21 @@ void tcpSocket::treatPacket(ipPacket p)
         if ( state == R_WAIT ) {
             tcpPacket a = createPacket(0,0,tcpPacket::RST);
             sendMessage(a);
-            deleteLater();
+            emit imFinished(this);
             return;
         }
         inputTime = 0;
         lastNum = tcp.sequence();
         return;
     }
-    if ( tcp.flag() == tcpPacket::FIN ) { lastNum = tcp.sequence(); sendAck(); emit receiveEnd(); }
+    if ( tcp.flag() == tcpPacket::FIN ) {
+        lastNum = tcp.sequence();
+        sendAck();
+        emit receiveEnd();
+        if ( m_isAutoDelete ) {
+            emit imFinished(this);
+        }
+    }
     if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK) ) { receiveSynAck(tcp); return; }
     if ( tcp.flag() == tcpPacket::SYN ) {
         confirmConnection(p);
@@ -101,7 +108,7 @@ void tcpSocket::treatPacket(ipPacket p)
     }
 }
 
-void tcpSocket::receiveSynAck(tcpPacket t)
+void TcpSocket::receiveSynAck(tcpPacket t)
 {
     if ( state != WAIT_RESPONSE ) return;
     timeout = 2*waitingTime;
@@ -112,7 +119,7 @@ void tcpSocket::receiveSynAck(tcpPacket t)
     sendWindow();
 }
 
-void tcpSocket::receiveAck(tcpPacket t)
+void TcpSocket::receiveAck(tcpPacket t)
 {
     if ( state == R_WAIT ) { state = RECEIVE; return; }
     if ( state != WAIT_ACK ) return;
@@ -124,12 +131,15 @@ void tcpSocket::receiveAck(tcpPacket t)
     if ( buffer.isEmpty() ) {
         timeout = 0;
         emit writeEnd();
+        if ( m_isAutoDelete ) {
+            emit imFinished(this);
+        }
         return;
     }
     sendWindow();
 }
 
-tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
+tcpPacket TcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
 {
     tcpPacket t;
     t.setSender(myBindPort);
@@ -141,7 +151,7 @@ tcpPacket tcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) co
     return t;
 }
 
-void tcpSocket::confirmConnection(ipPacket p)
+void TcpSocket::confirmConnection(ipPacket p)
 {    
     tcpPacket tcp(p.unpack());
     myReceiverPort = tcp.sender();
@@ -151,7 +161,7 @@ void tcpSocket::confirmConnection(ipPacket p)
     state = R_WAIT;
 }
 
-void tcpSocket::sendWindow()
+void TcpSocket::sendWindow()
 {
     if ( sendingNum++ > appSetting::sendingNum() ) { error(); return; }
     panicTime = 0;
@@ -174,7 +184,7 @@ void tcpSocket::sendWindow()
     state = WAIT_ACK;
 }
 
-void tcpSocket::sendAck()
+void TcpSocket::sendAck()
 {
      tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
      sendMessage(t);
@@ -182,13 +192,13 @@ void tcpSocket::sendAck()
      lastNum = 0;
 }
 
-void tcpSocket::error()
+void TcpSocket::error()
 {
     QMessageBox::critical(0,tr("Error"), tr("TCP: Data transmition error") );
-    deleteLater();
+    emit imFinished(this);
 }
 
-void tcpSocket::secondEvent()
+void TcpSocket::secondEvent()
 {
     waitingTime++;
     if ( waitingTime > appSetting::waitingTime() && state == WAIT_RESPONSE ) {

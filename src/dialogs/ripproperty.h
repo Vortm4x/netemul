@@ -22,19 +22,19 @@
 
 #include "ui_ripproperty.h"
 
-class ripProgramm;
+class RipProgram;
 
 class ripProperty : public QDialog, private Ui::ripProperty {
     Q_OBJECT
 public:
     ripProperty(QWidget *parent = 0);
-    void setProgramm( ripProgramm *prog);
+    void setProgramm( RipProgram *prog);
 protected:
     void changeEvent(QEvent *e);
 private slots:
     void apply();
 private:
-    ripProgramm *myProgramm;
+    RipProgram *myProgramm;
 };
 
 #endif // RIPPROPERTY_H

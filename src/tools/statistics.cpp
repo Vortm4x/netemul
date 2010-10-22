@@ -17,61 +17,61 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
+#include <QRegExp>
 #include "statistics.h"
 
-statistics::statistics()
+Statistics::Statistics()
 {
     clear();
 }
 
-void statistics::clear()
+void Statistics::clear()
 {
-    myReceiveFrames = 0 ;
-    myReceivePackets = 0 ;
-    mySendFrames = 0;
-    mySendPackets = 0;
+    receiveFrames = 0 ;
+    receivePackets = 0 ;
+    sendFrames = 0;
+    sendPackets = 0;
 }
 
-statistics::statistics(const statistics &other)
+Statistics::Statistics(const Statistics &other)
 {
-    myReceiveFrames = other.myReceiveFrames ;
-    myReceivePackets = other.myReceivePackets ;
-    mySendFrames = other.mySendFrames ;
-    mySendPackets = other.mySendPackets ;
+    receiveFrames = other.receiveFrames ;
+    receivePackets = other.receivePackets ;
+    sendFrames = other.sendFrames ;
+    sendPackets = other.sendPackets ;
 }
 
-statistics statistics::operator=(const statistics &other)
+Statistics Statistics::operator=(const Statistics &other)
 {
-    myReceiveFrames = other.myReceiveFrames ;
-    myReceivePackets = other.myReceivePackets ;
-    mySendFrames = other.mySendFrames ;
-    mySendPackets = other.mySendPackets ;
+    receiveFrames = other.receiveFrames ;
+    receivePackets = other.receivePackets ;
+    sendFrames = other.sendFrames ;
+    sendPackets = other.sendPackets ;
     return *this;
 }
 
-statistics statistics::operator+(const statistics &other)
+Statistics Statistics::operator+(const Statistics &other)
 {
-    statistics temp;
-    temp.myReceiveFrames = myReceiveFrames + other.myReceiveFrames ;
-    temp.myReceivePackets = myReceivePackets + other.myReceivePackets ;
-    temp.mySendFrames = mySendFrames + other.mySendFrames ;
-    temp.mySendPackets = mySendPackets + other.mySendPackets ;
+    Statistics temp;
+    temp.receiveFrames = receiveFrames + other.receiveFrames ;
+    temp.receivePackets = receivePackets + other.receivePackets ;
+    temp.sendFrames = sendFrames + other.sendFrames ;
+    temp.sendPackets = sendPackets + other.sendPackets ;
     return temp;
 }
 
-statistics statistics::operator+=(const statistics &other)
+Statistics Statistics::operator+=(const Statistics &other)
 {
     *this = *this + other;
     return *this;
 }
 
-QString statistics::toString() const
+QString Statistics::toString() const
 {
     QString t;
-    t += QObject::tr("Received frames: %1\n").arg( myReceiveFrames ) +
-    QObject::tr("Received packets: %1\n").arg( myReceivePackets ) +
-    QObject::tr("Sent frames: %1\n").arg( mySendFrames ) +
-    QObject::tr("Sent packets: %1\n").arg( mySendPackets ) ;
+    t += QObject::tr("Received frames: %1\n").arg( receiveFrames ) +
+    QObject::tr("Received packets: %1\n").arg( receivePackets ) +
+    QObject::tr("Sent frames: %1\n").arg( sendFrames ) +
+    QObject::tr("Sent packets: %1\n").arg( sendPackets ) ;
     return t;
 }
-

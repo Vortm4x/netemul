@@ -11,5 +11,6 @@ SUBDIRS = mac \
 	ipaddress \
 	frame \
 	boxchip \
-	scenexmlreader
+	scenexmlreader \
+	cable
 # Input

@@ -45,7 +45,7 @@ dhcpServerProperty::~dhcpServerProperty()
     delete macDelegate;
 }
 
-void dhcpServerProperty::setProgramm(dhcpServerProgramm *prog)
+void dhcpServerProperty::setProgramm(DhcpServerProgram *prog)
 {
 //    myProgramm = prog;
 //    myModel = myProgramm->dhcpModel();

@@ -22,7 +22,7 @@
 
 #include "device.h"
 class QPainter;
-class devicePort;
+class DevicePort;
 
 // Этот класс представляет собой общую шину, он тоже вынесен в отдельный класс
 // который унаследован от device , так как у общей шины будет отличаться
@@ -33,7 +33,7 @@ class shareBus : public DeviceImpl
 public:
     enum { defaultWidth = 200 };
     shareBus(int c);
-    devicePort* addInterface(QString str,int t);
+    DevicePort* addInterface(QString str,int t);
     void dialog() { }
     bool hasTable() const { return false; }
 private:

@@ -29,9 +29,9 @@ static const int MINUTE = 60;
 static const int REPEAT_COUNT = 3;
 
 class Interface;
-class udpSocket;
+class AbstractSocket;
 
-struct interfaceState {
+struct InterfaceState {
     enum { CS_NONE , CS_WAIT_VARIANT , CS_WAIT_RESPONSE , CS_ALL_RIGHT };
     int state;
     int xid;
@@ -43,17 +43,47 @@ struct interfaceState {
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 };
+typedef QList<InterfaceState*> InterfaceStateList;
 
-typedef QList<interfaceState*> sessionList;
+//xid << time << serverAddress << lastIp << name;
 
-class dhcpClientProgramm : public programmRep
+class InterfaceStateObject : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY( int xid READ xid WRITE setXid )
+    Q_PROPERTY( QString serverAddress READ serverAddress WRITE setServerAddress )
+    Q_PROPERTY( QString lastIp READ lastIp WRITE setLastIp )
+    Q_PROPERTY( QString name READ name WRITE setName )
+public:
+    InterfaceStateObject(InterfaceState *s) { st = s; }
+    InterfaceStateObject(QObject *parent = 0) : QObject(parent) { st = new InterfaceState(); }
+
+    InterfaceState* object() { return st; }
+
+    int xid() const { return st->xid; }
+    QString serverAddress() const { return st->serverAddress.toString(); }
+    QString lastIp() const { return st->lastIp.toString(); }
+    QString name() const { return st->name; }
+
+    void setXid( int x ) { st->xid = x; }
+    void setServerAddress( const QString &x ) { st->serverAddress.setIp(x); }
+    void setLastIp( const QString &x ) { st->lastIp.setIp(x); }
+    void setName( const QString &x ) { st->name = x; }
+
+private:
+    InterfaceState *st;
+};
+
+
+class DhcpClientProgram : public Program
 {
     Q_OBJECT
     Q_PROPERTY( int offerTime READ offerTime WRITE setOfferTime )
+    Q_PROPERTY( QVariantList states READ statesObjectList )
 public:
     enum { DHCPClient = 1 ,CLIENT_SOCKET = 67, SERVER_SOCKET = 68  };
-    dhcpClientProgramm();
-    ~dhcpClientProgramm();
+    DhcpClientProgram(QObject *parent = 0);
+    ~DhcpClientProgram();
     int id() const { return DHCPClient; }
     bool interrupt(int) { return false; }
     void setDevice(SmartDevice *s);
@@ -74,27 +104,27 @@ private slots:
     void onDetectEqualIp();
 //Property
 public:
+    Q_INVOKABLE void addInterfaceStateObject(InterfaceStateObject *obj);
     void setOfferTime(int time) { myOfferTime = time; }
     int offerTime() const { return myOfferTime; }
-private:
+    InterfaceStateList states() { return myStates; }
+    QVariantList statesObjectList() const;
+
+private:        
+    InterfaceStateList myStates;
     int myOfferTime;
 
-public:
-    sessionList states() { return myStates; }
 private:
-    sessionList myStates;
-
-private:
-    void sendDhcpMessage(dhcpPacket message, interfaceState *state);
+    void sendDhcpMessage(dhcpPacket message, InterfaceState *state);
     void sendRequest(const QString &name);
     void sendDiscover(const QString &name);
     void sendDecLine(const QString &name);
     void receiveOffer(dhcpPacket packet);
     void receiveAck(dhcpPacket packet);
-    void restartSession( interfaceState *session);
-    interfaceState* stateAt(const QString name);
-    void resetClient( interfaceState *session);
-    udpSocket *listener;
+    void restartSession( InterfaceState *session);
+    InterfaceState* stateAt(const QString name);
+    void resetClient( InterfaceState *session);
+    AbstractSocket *listener;
 };
 
 #endif // DHCPCLIENTPROGRAMM_H

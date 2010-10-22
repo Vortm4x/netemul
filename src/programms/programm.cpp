@@ -18,54 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "programm.h"
-#include "ripprogramm.h"
-#include "dhcpserverprogramm.h"
-#include "dhcpclientprogramm.h"
-#include "spoofingprogramm.h"
 
-static const int MAGIC_PROGRAMM_NUMBER = 50;
 
-programm::programm(int n)
-{
-    createImpl(n);
-}
 
-programm::programm(QDataStream &stream)
-{
-    int n;
-    stream >> n;
-    createImpl(n);
-    rep->read(stream);    
-}
-
-void programm::createImpl(int n)
-{
-    switch (n%MAGIC_PROGRAMM_NUMBER) {
-        case RIP: rep = new ripProgramm; break;
-        case DHCPClient : rep = new dhcpClientProgramm; break;
-        case DHCPServer : rep = new dhcpServerProgramm; break;
-        case SPOOFING : rep = new spoofingProgramm; break;
-        default: break;
-    }
-    rep->countRef = 1;
-}
-
-programm::programm(const programm &other)
-{
-    rep = other.rep;
-    rep->countRef++;
-}
-
-programm::~programm()
-{
-    if ( --rep->countRef <= 0 ) delete rep;
-}
-
-programm& programm::operator=(const programm &other)
-{
-    other.rep->countRef++;
-    if ( --rep->countRef <= 0 ) delete rep;
-    rep = other.rep;
-    return *this;
-}
 

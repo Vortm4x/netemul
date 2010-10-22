@@ -26,6 +26,15 @@ bool SceneXmlReader::startElement(const QString&, const QString&,
         return true;
     }
 
+    if ( qName == "Cable" ) {
+        Device *d1 = myScene->deviceInPoint( QPointF(atts.value("x1").toDouble() , atts.value("y1").toDouble()) );
+        Device *d2 = myScene->deviceInPoint( QPointF(atts.value("x2").toDouble() , atts.value("y2").toDouble()) );
+        QString port1 = atts.value("port1");
+        QString port2 = atts.value("port2");
+        myScene->createConnection( d1, d2 , port1 , port2 );
+        return true;
+    }
+
     QObject *instance = classFactory.createInstance(qName,parentObject);
     if ( instance ) {
         for ( int i = 0 ; i < atts.count() ; i++ ) {
@@ -34,23 +43,27 @@ bool SceneXmlReader::startElement(const QString&, const QString&,
 
         qDebug() << qName << " created";
 
-        bool isInvoked = false;
-        const QMetaObject *obj = parentObject->metaObject();
-        QString method = qPrintable(QString("add%1(%1*)").arg(qName));
-        int m = obj->indexOfMethod( qPrintable(method) );
-        if ( m != -1 ) {
-            qDebug() << "find method! " << method ;
-            QMetaMethod method = obj->method(m);
-            method.invoke( parentObject , Qt::DirectConnection , Q_ARG(QObject*,instance) );
-            isInvoked = true;
-        }
 
-        if ( !isInvoked ) {
-            const QMetaObject *p = instance->metaObject();
-            QString mStr = qName;
-            do {
+        const QMetaObject *obj = parentObject->metaObject();
+
+        const QMetaObject *p = instance->metaObject();
+        QString mStr = qName;
+        do {
+            bool isInvoked = false;
+            QString method = qPrintable(QString("add%1(%1*)").arg(mStr));
+            int m = obj->indexOfMethod( qPrintable(method) );
+//            qDebug() << "class: " << p->className() << method;
+            if ( m != -1 ) {
+                qDebug() << "find method! " << method ;
+                QMetaMethod method = obj->method(m);
+                method.invoke( parentObject , Qt::DirectConnection , Q_ARG(QObject*,instance) );
+                isInvoked = true;
+                break;
+            }
+
+            if ( !isInvoked ) {
                 method = qPrintable(QString("set%1(%1*)").arg(mStr));
-                //            qDebug() << "class: " << p->className() << method;
+                //                            qDebug() << "class: " << p->className() << method;
                 m = obj->indexOfMethod( QMetaObject::normalizedSignature(qPrintable(method)) );
                 if ( m != -1 ) {
                     qDebug() << "find method! " << method ;
@@ -58,10 +71,11 @@ bool SceneXmlReader::startElement(const QString&, const QString&,
                     method.invoke( parentObject , Qt::DirectConnection , Q_ARG(QObject*,instance) );
                     break;
                 }
-                p = p->superClass();
-                mStr = p->className();
-            } while ( p->superClass() );
-        }
+            }
+            p = p->superClass();
+            mStr = p->className();
+        } while ( p->superClass() );
+
         parentObject = instance;
         currentElements.push(qName);
         //        qDebug() << "qu " << qName << parentObject;
@@ -83,12 +97,12 @@ bool SceneXmlReader::endElement(const QString&, const QString&, const QString &q
     return true;
 }
 
-bool SceneXmlReader::characters(const QString &ch)
+bool SceneXmlReader::characters(const QString&)
 {
     return true;
 }
 
-bool SceneXmlReader::fatalError(const QXmlParseException &exception)
+bool SceneXmlReader::fatalError(const QXmlParseException&)
 {
     return true;
 }

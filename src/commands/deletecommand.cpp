@@ -30,10 +30,10 @@ deleteCommand::deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
         if ( scene->isDevice(i) ) {
             Device *dev = qgraphicsitem_cast<Device*>(i);
             extractDevices << dev;
-            foreach ( cableDev *j, dev->cables() ) extractCables << j;
+            foreach ( Cable *j, dev->cables() ) extractCables << j;
         }
-        else if ( i->type() == cableDev::Type ) extractCables << qgraphicsitem_cast<cableDev*>(i);
-        else if (i->type() == textItem::Type )  extractText << qgraphicsitem_cast<textItem*>(i);
+        else if ( i->type() == Cable::Type ) extractCables << qgraphicsitem_cast<Cable*>(i);
+        else if (i->type() == TextItem::Type )  extractText << qgraphicsitem_cast<TextItem*>(i);
     }
     setText(QObject::tr("Delete"));
 }
@@ -49,27 +49,27 @@ deleteCommand::~deleteCommand()
 void deleteCommand::undo()
 {
     foreach ( Device *i, extractDevices ) scene->registerDevice(i);
-    foreach ( cableDev *i, extractCables ) createConnection(i);
-    foreach ( textItem *i , extractText ) scene->registerText(i);
+    foreach ( Cable *i, extractCables ) createConnection(i);
+    foreach ( TextItem *i , extractText ) scene->registerText(i);
     isOnScene = true;
 }
 
 void deleteCommand::redo()
 {
     foreach ( Device *i, extractDevices ) scene->unregisterDevice(i);
-    foreach ( cableDev *i, extractCables ) deleteConnection(i);
-    foreach ( textItem *i, extractText ) scene->unregisterText(i);
+    foreach ( Cable *i, extractCables ) deleteConnection(i);
+    foreach ( TextItem *i, extractText ) scene->unregisterText(i);
     isOnScene = false;
 }
 
-void deleteCommand::deleteConnection(cableDev *cable)
+void deleteCommand::deleteConnection(Cable *cable)
 {
-    cable->unregisterCable();
+//    cable->unregisterCable();
     scene->unregisterCable(cable);
 }
 
-void deleteCommand::createConnection(cableDev *cable)
+void deleteCommand::createConnection(Cable *cable)
 {
-    cable->registerCable();
+//    cable->registerCable();
     scene->registerCable(cable);
 }

@@ -21,29 +21,29 @@
 #include "deviceport.h"
 #include "appsetting.h"
 
-switchModel::switchModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
+SwitchModel::SwitchModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {
-    lastPort = 0;
+    lastPort = "";
 }
 
-int switchModel::rowCount(const QModelIndex &/* p */) const
+int SwitchModel::rowCount(const QModelIndex &/* p */) const
 {
     if ( table.isEmpty() ) return 0;
     return table.count();
 }
 
-int switchModel::columnCount(const QModelIndex &/* p */) const
+int SwitchModel::columnCount(const QModelIndex &/* p */) const
 {
     if ( table.isEmpty() ) return 0;
     return 4;
 }
 
-Qt::ItemFlags switchModel::flags(const QModelIndex &m) const
+Qt::ItemFlags SwitchModel::flags(const QModelIndex &m) const
 {
     return QAbstractTableModel::flags(m);
 }
 
-QVariant switchModel::headerData(int s , Qt::Orientation o , int role) const
+QVariant SwitchModel::headerData(int s , Qt::Orientation o , int role) const
 {
     if ( role == Qt::TextAlignmentRole ) return Qt::AlignCenter;
     if ( role != Qt::DisplayRole ) return QVariant();
@@ -58,14 +58,14 @@ QVariant switchModel::headerData(int s , Qt::Orientation o , int role) const
     return s+1;
 }
 
-QVariant switchModel::data(const QModelIndex &m, int role) const
+QVariant SwitchModel::data(const QModelIndex &m, int role) const
 {
     if ( !m.isValid() || table.isEmpty() ) return QVariant();
     if ( role == Qt::DisplayRole ) {
-        macRecord *t = table.at( m.row() );
+        MacRecord *t = table.at( m.row() );
         switch ( m.column() ) {
             case 0: return t->mac.toString();
-            case 1: return tr("LAN%1").arg(t->port->num());
+            case 1: return t->port;
             case 2: return t->modeString();
             case 3: return t->time;
         }
@@ -73,53 +73,58 @@ QVariant switchModel::data(const QModelIndex &m, int role) const
     return QVariant();
 }
 
-macRecord* switchModel::addToTable(const macAddress &mac ,devicePort *p , int mode)
+MacRecord* SwitchModel::addToTable(const macAddress &mac, const QString &port, int mode)
 {
-    foreach ( macRecord *i , table )
+    foreach ( MacRecord *i , table )
         if ( i->mac == mac ) return NULL;
-    macRecord *t = new macRecord;
+    MacRecord *t = new MacRecord;
     t->time = 0;
     t->mode = mode;
-    t->port = p;
+    t->port = port;
     t->mac = mac;
-    table << t;
-    reset();
+    addToTable(t);
     return t;
 }
 
-void switchModel::deleteFromTable(const macAddress &mac)
+void SwitchModel::addToTable(MacRecord *rec)
 {
-    foreach ( macRecord *i , table )
+    table << rec;
+    reset();
+}
+
+void SwitchModel::deleteFromTable(const macAddress &mac)
+{
+    foreach ( MacRecord *i , table )
         if ( i->mac == mac ) {
             deleteFromTable(i);
             return;
         }
 }
 
-void switchModel::deleteFromTable(macRecord *r)
+void SwitchModel::deleteFromTable(MacRecord *r)
 {
     table.removeOne(r);
     delete r;
-    lastPort = 0;
+    lastPort = "";
     reset();
 }
 
-void switchModel::contains(const macAddress &m , devicePort *s)
+void SwitchModel::contains(const macAddress &m, const QString &port)
 {
     bool cont = false;
-    foreach ( macRecord *i , table )
+    foreach ( MacRecord *i , table )
         if ( i->mac == m ) {
-            if ( i->port != s && i->mode != staticMode ) i->port = s;
+            if ( i->port != port && i->mode != staticMode ) i->port = port;
             cont = true;
             break;
         }
-    if ( !cont ) addToTable( m , s , dinamicMode );
+    if ( !cont ) addToTable( m , port , dinamicMode );
 }
 
-devicePort* switchModel::portWithMac(const macAddress &m)
+QString SwitchModel::portWithMac(const macAddress &m)
 {
-    if ( lastPort && m == lastMac ) return lastPort;
-    foreach ( macRecord *i , table ) {
+    if ( !lastPort.isEmpty() && m == lastMac ) return lastPort;
+    foreach ( MacRecord *i , table ) {
         if ( i->mac == m ) {
             i->time = 0;
             lastMac = m;
@@ -127,12 +132,24 @@ devicePort* switchModel::portWithMac(const macAddress &m)
             return i->port;
         }
     }
-    return 0;
+    return "";
 }
 
-void switchModel::updateMac()
+void SwitchModel::updateMac()
 {
     int t = appSetting::ttlMac();
-    foreach ( macRecord *i , table )
+    foreach ( MacRecord *i , table )
         if ( ++i->time >= t ) deleteFromTable(i);
+}
+
+QVariantList SwitchModel::recordList() const
+{
+    QVariantList list;
+    foreach ( MacRecord *i , table ) {
+        if ( i->mode == staticMode ) {
+            QObject *o = new MacRecordObject(i);
+            list << qVariantFromValue(o);
+        }
+    }
+    return list;
 }

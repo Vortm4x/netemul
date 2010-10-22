@@ -27,13 +27,12 @@
 #include "statistics.h"
 #include "visualizable.h"
 
-class cableDev;
+class Cable;
 class logDialog;
+class DevicePort;
 
 /*!
   Устройство, это основная единица с которой мы имеем дело в программе,
-  хотя и являеться абстрактным классом оно уже подерживает не малую функциональность.
-  Класс содержит несколько виртуальных функций, только переопределив которые, мы сможем его унаследовать.
 */
 class Device : public QGraphicsObject , public visualizable
 {
@@ -46,7 +45,7 @@ public:
     int deviceType() const { return impl->type(); }
     QRect devRect;
     QRect pixmapRect;
-    Device( QObject *parent = 0);
+    Device( QObject* = 0);
     Device(int t);
     Device(QDataStream &stream);    
     ~Device();
@@ -58,11 +57,11 @@ public:
     void updateCables();
     void setMenu(QMenu *context) { popUpMenu = context; }
     QString tableName() { return impl->tableName(); }
-    QString socketName(const cableDev *c) const { return impl->socketName(c); }
+    QString socketName(const Cable *c) const { return impl->socketName(c); }
     QString deviceName() const { return impl->deviceName(); }
     QString deviceCommandName() const { return impl->deviceCommandName(); }
     bool isSmart() const { return impl->isSmart(); }
-    bool isConnect() const { return myCableList.count(); }
+    bool isConnect() const { return impl->isConnect(); }
     bool isManagedVirtualNetwork() const { return impl->isManagedVirtualNetwork(); }
     void dialog() { impl->dialog(); }
     void tableDialog() const { impl->tableDialog(); }
@@ -81,16 +80,16 @@ public:
     void secondTimerEvent() { impl->secondTimerEvent(); }
     void deciSecondTimerEvent() { impl->deciSecondTimerEvent(); }
     DeviceImpl* contentDevice() { return impl; }
-    void addConnection(const QString &port, cableDev *c);
-    void deleteConnection(cableDev *c);
+    DevicePort* findPortByName(const QString &name) const { return impl->findPortByName(name); }
+
     void sendMessage(const QString &a ,int size , int pr) { impl->sendMessage(a,size,pr); }
-    statistics deviceStatistics() const { return impl->deviceStatistics(); }
+    Statistics deviceStatistics() const { return impl->deviceStatistics(); }
 
     Q_INVOKABLE void setDeviceImpl(DeviceImpl *im);
 
     void detectCollision() { impl->detectCollision(); }
     static bool isConnectDevices(Device *s, Device *e);
-    QList<cableDev*> cables() const { return myCableList; }
+    QList<Cable*> cables() const { return impl->cableList(); }
     bool hasTable() const { return impl->hasTable(); }    
 
     void onImplChange();
@@ -100,8 +99,7 @@ private:
     DeviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
     featuresMap myFeatures;
-protected:
-    QList<cableDev*> myCableList; //!< Список всех подключеных проводов.
+protected:    
     friend QDataStream& operator<<(QDataStream &stream,const Device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);

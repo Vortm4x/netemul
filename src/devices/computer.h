@@ -24,17 +24,18 @@
 #include "deviceport.h"
 #include <QDataStream>
 
-class devicePort;
+class DevicePort;
 /*!
   Реализует компьютер.
 */
 class Computer : public SmartDevice
 {
-    Q_OBJECT    
+    Q_OBJECT        
 public:
     enum { compDev = 3 };
     int type() const { return compDev; }
     Computer(QObject *parent = 0);
+    static Computer* create(QObject *parent);
     ~Computer() {  }
 
     void dialog();
@@ -43,9 +44,11 @@ public:
     QString deviceName() const { return "comp"; }
     QString deviceCommandName() const { return tr("Computer"); }
     QString pixmapName() const { return ":/im/images/computer.png"; }
+    void setSocketsCount(int n);
     bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
-    void sendConstructedFrame(QString Interface,frame Frame, int count);
+    virtual void setRouteModel(RouteModel *model);
+    void sendConstructedFrame(const QString &interface,frame fr, int count);
 protected:
     void write(QDataStream &stream) const { stream << compDev; SmartDevice::write(stream);}
     void read(QDataStream &stream) { SmartDevice::read(stream); }

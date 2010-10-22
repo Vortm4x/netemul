@@ -44,8 +44,6 @@ public:
     static void setDefaultSwitchManual(bool b) { _defaultSwitchManual = b; }
     static bool hasOpengl() { return _hasOpengl; }
     static void setHasOpengl(bool b) { _hasOpengl = b; }
-    static bool isShowLabel() { return _showLabel; }
-    static void setShowLabel(bool b) { _showLabel = b; }
     static bool defaultSwitchManual() { return _defaultSwitchManual; }
     static void setScriptPath(const QString path) { _scriptPath = path; }
     static QString scriptPath() { if ( !_scriptPath.endsWith("/") ) _scriptPath.append("/");
@@ -91,7 +89,6 @@ private:
     static int _arpResponceTime;
     static QString _scriptPath;
     static bool _hasOpengl;
-    static bool _showLabel;
 protected:
     appSetting();
     ~appSetting();

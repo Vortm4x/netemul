@@ -24,8 +24,8 @@
 #include "ippacket.h"
 #include "arppacket.h"
 
-class cableDev;
-class arpModel;
+class Cable;
+class ArpModel;
 class Interface;
 
 typedef QVector<Interface*> InterfaceVector;
@@ -48,26 +48,32 @@ class Interface : public AbstractChip
     Q_PROPERTY(QString name READ name WRITE setName )
 public:    
     Interface(QObject *parent = 0);
+    static Interface* create(QObject *parent = 0);
     ~Interface();
-    void receiveEvent(frame &fr,devicePort*);
+    void receiveEvent(frame &fr,DevicePort*);
     void receiveIp(ipPacket &ip);
     void receiveArp(arpPacket &arp);
     void sendPacket(ipPacket &p,IpAddress gw = IpAddress("0.0.0.0"));
     void sendBroadcast(ipPacket &p);
-    const devicePort* socket() const { return mySocket; }
-    bool isConnect() const;
-    void setConnect(bool b,cableDev *c);
-    bool isCableConnect(const cableDev *c) const;
+    DevicePort* socket() const { return mySocket; }
+    Cable* socketCable() const;
+    bool isConnect() const;    
+    bool isCableConnect(const Cable *c) const;    
     void deciSecondEvent();
     void secondEvent();
     void sendArpRequest(IpAddress a);
     void sendArpResponse(macAddress m, IpAddress a);
     int trafficDigit() const;
-    bool isBusy() const;
+    bool isBusy() const;    
 
     frame createFrame( macAddress receiverMac , int t);
     void setChecked(bool b);
-    arpModel* arpTable() const { return myArpTable; }
+    ArpModel* arpTable() const { return myArpTable; }
+    Q_INVOKABLE void setArpModel(ArpModel *model) {
+        if ( model ) {
+            myArpTable = model;
+        }
+    }
 
     void pushToSocket(frame &f);
 
@@ -75,13 +81,18 @@ public:
     virtual void read(QDataStream &stream);
     void setName(const QString &str) { myName = str; }
     QString name() const { return myName; }
+
+public slots:
+    //void onCableConnect(Cable *c);
+
 signals:
+    void cableConnected(Cable*);
     void receivedPacket(ipPacket);
     void equalIpDetected();
 private:
     QString myName;
-    devicePort *mySocket;
-    arpModel *myArpTable;
+    DevicePort *mySocket;
+    ArpModel *myArpTable;
     QList<waitPacket*> myWaits;
 };
 

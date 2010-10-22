@@ -23,27 +23,29 @@
 #include "dhcpclientproperty.h"
 #include "udppacket.h"
 
-dhcpClientProgramm::dhcpClientProgramm()
+DhcpClientProgram::DhcpClientProgram(QObject *parent) : Program(parent)
 {
     myName = tr("DHCP client");
     myOfferTime = 60;
 }
 
-dhcpClientProgramm::~dhcpClientProgramm()
+DhcpClientProgram::~DhcpClientProgram()
 {
     qDeleteAll(myStates);
-    delete listener;
+    // Make it
+    //delete listener;
+    myDevice->disposeSocket(listener);
 }
 
-void dhcpClientProgramm::incTime()
+void DhcpClientProgram::incTime()
 {
-    foreach ( interfaceState *i , myStates ) {
+    foreach ( InterfaceState *i , myStates ) {
         --i->time;
         if ( i->time <= 0 ) {
             switch ( i->state ) {
-                case interfaceState::CS_ALL_RIGHT: restartSession(i); break;
-                case interfaceState::CS_WAIT_VARIANT: sendDiscover( i->name ); break;
-                case interfaceState::CS_WAIT_RESPONSE: sendRequest(i->name ); break;
+                case InterfaceState::CS_ALL_RIGHT: restartSession(i); break;
+                case InterfaceState::CS_WAIT_VARIANT: sendDiscover( i->name ); break;
+                case InterfaceState::CS_WAIT_RESPONSE: sendRequest(i->name ); break;
             }
         }
     }
@@ -52,24 +54,24 @@ void dhcpClientProgramm::incTime()
   * Переопределяем функцию установки устройства чтобы соединиться со слотом.
   * @param s - указатель на устройство на которое установлена программа.
   */
-void dhcpClientProgramm::setDevice(SmartDevice *s)
+void DhcpClientProgram::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) {
-        foreach ( interfaceState *i , myStates ) resetClient(i);
+        foreach ( InterfaceState *i , myStates ) resetClient(i);
         return;
     }
-    programmRep::setDevice(s);
-    listener = new udpSocket(s,CLIENT_SOCKET);
+    Program::setDevice(s);
+    listener = s->openSocket( CLIENT_SOCKET , SmartDevice::UDP );
     listener->setBind("0.0.0.0");
     connect( listener , SIGNAL(readyRead(QByteArray)) , SLOT(processData(QByteArray)) );
     connect( s , SIGNAL(interfaceDeleted(QString)), SLOT(deleteInterface(QString)) );
-    foreach ( interfaceState *i , myStates ) {
+    foreach ( InterfaceState *i , myStates ) {
         resetClient( i );
     }
 }
 //------------------------------------------------------
 
-void dhcpClientProgramm::resetClient(interfaceState *session)
+void DhcpClientProgram::resetClient(InterfaceState *session)
 {
     myDevice->adapter(session->name)->setIp(IpAddress("0.0.0.0"));
     myDevice->adapter(session->name)->setMask(IpAddress("0.0.0.0"));
@@ -77,9 +79,9 @@ void dhcpClientProgramm::resetClient(interfaceState *session)
     myDevice->setGateway("0.0.0.0");
 }
 
-bool dhcpClientProgramm::isUnderDhcpControl(const QString name) const
+bool DhcpClientProgram::isUnderDhcpControl(const QString name) const
 {
-    foreach ( interfaceState *i , myStates )
+    foreach ( InterfaceState *i , myStates )
         if ( i->name == name ) {
             return true;
         }
@@ -90,9 +92,9 @@ bool dhcpClientProgramm::isUnderDhcpControl(const QString name) const
   Посылает Request серверу
   @param name - имя интерфейса
   */
-void dhcpClientProgramm::sendRequest(const QString &name)
+void DhcpClientProgram::sendRequest(const QString &name)
 {
-    interfaceState *t = stateAt(name);
+    InterfaceState *t = stateAt(name);
     if ( !t ) return;
     if ( REPEAT_COUNT < ++t->count ) {
         restartSession(t);
@@ -111,11 +113,11 @@ void dhcpClientProgramm::sendRequest(const QString &name)
   * Посылает запрос на получение настроек.
   * @param name - имя интерфейса.
   */
-void dhcpClientProgramm::sendDiscover(const QString &name)
+void DhcpClientProgram::sendDiscover(const QString &name)
 { 
-    interfaceState *t = stateAt(name);
+    InterfaceState *t = stateAt(name);
     if ( !t ) return;
-    t->state = interfaceState::CS_WAIT_VARIANT;
+    t->state = InterfaceState::CS_WAIT_VARIANT;
     t->time = myOfferTime;
     t->count = 0;
     dhcpPacket message;
@@ -126,9 +128,9 @@ void dhcpClientProgramm::sendDiscover(const QString &name)
     sendDhcpMessage(message,t);
 }
 //--------------------------------------------------------------
-void dhcpClientProgramm::sendDecLine(const QString &name)
+void DhcpClientProgram::sendDecLine(const QString &name)
 {
-    interfaceState *t = stateAt(name);
+    InterfaceState *t = stateAt(name);
     if ( !t ) return;
     dhcpPacket message;
     message.setType( dhcpPacket::DHCPDECLINE );
@@ -141,7 +143,7 @@ void dhcpClientProgramm::sendDecLine(const QString &name)
   Обрабатывает входящие данные.
   @param data - пришедщие данные.
   */
-void dhcpClientProgramm::processData(QByteArray data)
+void DhcpClientProgram::processData(QByteArray data)
 {
     dhcpPacket packet(data);
     switch ( packet.type() ) {
@@ -154,7 +156,7 @@ void dhcpClientProgramm::processData(QByteArray data)
   Начинает заново сессию
   @param session - указатель на сессию
   */
-void dhcpClientProgramm::restartSession(interfaceState *session)
+void DhcpClientProgram::restartSession(InterfaceState *session)
 {
     resetClient(session);
     sendDiscover( session->name );
@@ -164,11 +166,11 @@ void dhcpClientProgramm::restartSession(interfaceState *session)
   Обрабатывает входящее предложение настроек.
   @param packet - пакет с настройками.
   */
-void dhcpClientProgramm::receiveOffer(dhcpPacket packet)
+void DhcpClientProgram::receiveOffer(dhcpPacket packet)
 {
-    foreach ( interfaceState *i , myStates )
-        if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_VARIANT ) {
-            i->state = interfaceState::CS_WAIT_RESPONSE;
+    foreach ( InterfaceState *i , myStates )
+        if ( i->xid == packet.xid() && i->state == InterfaceState::CS_WAIT_VARIANT ) {
+            i->state = InterfaceState::CS_WAIT_RESPONSE;
             i->serverAddress = packet.siaddr();
             sendRequest( i->name );
             return;
@@ -179,11 +181,11 @@ void dhcpClientProgramm::receiveOffer(dhcpPacket packet)
   Обрабатывает вхоодящий АСК.
   @param packet - ack пакет
   */
-void dhcpClientProgramm::receiveAck(dhcpPacket packet)
+void DhcpClientProgram::receiveAck(dhcpPacket packet)
 {
-    foreach ( interfaceState *i , myStates )
-        if ( i->xid == packet.xid() && i->state == interfaceState::CS_WAIT_RESPONSE ) {
-            i->state = interfaceState::CS_ALL_RIGHT;
+    foreach ( InterfaceState *i , myStates )
+        if ( i->xid == packet.xid() && i->state == InterfaceState::CS_WAIT_RESPONSE ) {
+            i->state = InterfaceState::CS_ALL_RIGHT;
             myDevice->adapter(i->name)->setIp( packet.yiaddr() );
             myDevice->adapter(i->name)->setMask( packet.mask() );
             myDevice->connectedNet(myDevice->adapter(i->name));
@@ -201,7 +203,7 @@ void dhcpClientProgramm::receiveAck(dhcpPacket packet)
   @param message - пакет.
   @param state - поток-отправитель.
   */
-void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *state)
+void DhcpClientProgram::sendDhcpMessage(dhcpPacket message, InterfaceState *state)
 {
     if (!myDevice->adapter(state->name)->isConnect() ) return;
     udpPacket udp;
@@ -217,7 +219,7 @@ void dhcpClientProgramm::sendDhcpMessage(dhcpPacket message, interfaceState *sta
 /*!
   * Показывает диалог программы.
   */
-void dhcpClientProgramm::showProperty()
+void DhcpClientProgram::showProperty()
 {
     dhcpClientProperty *d = new dhcpClientProperty;
     d->setProgramm(this);
@@ -229,14 +231,14 @@ void dhcpClientProgramm::showProperty()
   * @param name - имя интерфейса.
   * @return указатель на сеанс, если такого нет то 0
   */
-interfaceState* dhcpClientProgramm::stateAt(const QString name)
+InterfaceState* DhcpClientProgram::stateAt(const QString name)
 {
-    foreach ( interfaceState *i , myStates )
+    foreach ( InterfaceState *i , myStates )
         if ( i->name == name ) return i;
     return 0;
 }
 //--------------------------------------------------------------
-QStringList dhcpClientProgramm::interfacesList() const
+QStringList DhcpClientProgram::interfacesList() const
 {
     return myDevice->sockets();
 }
@@ -245,7 +247,7 @@ QStringList dhcpClientProgramm::interfacesList() const
   * @param имя интерефейса
   * @return иконка соединения
   */
-QIcon dhcpClientProgramm::isConnectSocketIcon(const QString &name) const
+QIcon DhcpClientProgram::isConnectSocketIcon(const QString &name) const
 {
     return myDevice->isConnectSocketIcon(name);
 }
@@ -254,9 +256,9 @@ QIcon dhcpClientProgramm::isConnectSocketIcon(const QString &name) const
   * Вызывается когда у устройства удаляется интерфейс, если мы за
   * ним следим, то мы прекращаем это делать и удаляем его из списка.
   */
-void dhcpClientProgramm::deleteInterface(const QString name)
+void DhcpClientProgram::deleteInterface(const QString name)
 {
-    interfaceState *t = stateAt(name);
+    InterfaceState *t = stateAt(name);
     if ( !t ) return;
     myStates.removeOne(t);
     delete t;
@@ -267,10 +269,10 @@ void dhcpClientProgramm::deleteInterface(const QString name)
   * @param name - имя интерфейса.
   * @param b - включить или выключить наблюдение.
   */
-void dhcpClientProgramm::observeInterface(const QString &name, bool b)
+void DhcpClientProgram::observeInterface(const QString &name, bool b)
 {
     if ( !myEnable ) return;
-    interfaceState *temp = stateAt(name);
+    InterfaceState *temp = stateAt(name);
     if ( temp ) {
         if ( b ) return;
         resetClient( temp );
@@ -279,7 +281,7 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
         return;
     }
     if ( !b ) return;
-    interfaceState *session = new interfaceState;
+    InterfaceState *session = new InterfaceState;
     session->name = name;
     session->xid = qrand()%5000;
     session->time = 0;
@@ -289,11 +291,11 @@ void dhcpClientProgramm::observeInterface(const QString &name, bool b)
 }
 //--------------------------------------------------------------------
 
-void dhcpClientProgramm::onDetectEqualIp()
+void DhcpClientProgram::onDetectEqualIp()
 {
     Interface *t = qobject_cast<Interface*>(sender());
-    interfaceState *client = 0;
-    foreach ( interfaceState *i , myStates )
+    InterfaceState *client = 0;
+    foreach ( InterfaceState *i , myStates )
         if ( myDevice->adapter(  i->name ) == t ) client = i;
     if ( !client ) return;
     sendDecLine(client->name);
@@ -302,9 +304,9 @@ void dhcpClientProgramm::onDetectEqualIp()
     restartSession( client);
 }
 
-Qt::CheckState dhcpClientProgramm::checkedState(const QString &name) const
+Qt::CheckState DhcpClientProgram::checkedState(const QString &name) const
 {
-    foreach ( interfaceState *i , myStates )
+    foreach ( InterfaceState *i , myStates )
         if ( i->name == name ) return Qt::Checked;
     return Qt::Unchecked;
 }
@@ -312,41 +314,60 @@ Qt::CheckState dhcpClientProgramm::checkedState(const QString &name) const
   Записывает отличительные черты в поток.
   @param stream - поток для записи.
 */
-void dhcpClientProgramm::write(QDataStream &stream) const
+void DhcpClientProgram::write(QDataStream &stream) const
 {
     stream << DHCPClient;
-    programmRep::write(stream);
+    Program::write(stream);
     stream << myOfferTime;
     stream << myStates.size();
-    foreach ( interfaceState *i , myStates ) i->write(stream);
+    foreach ( InterfaceState *i , myStates ) i->write(stream);
 }
 //---------------------------------------------------
 /*!
   Считывает отличительные черты из потока.
   @param stream - поток для чтения.
 */
-void dhcpClientProgramm::read(QDataStream &stream)
+void DhcpClientProgram::read(QDataStream &stream)
 {
-    programmRep::read(stream);
+    Program::read(stream);
     stream >> myOfferTime;
     int n;
     stream >> n;
     for ( int i = 0 ; i < n ; i++ ) {
-        interfaceState *temp = new interfaceState;
+        InterfaceState *temp = new InterfaceState;
         temp->read(stream);        
         temp->time = 0;
-        temp->state = interfaceState::CS_WAIT_VARIANT;
+        temp->state = InterfaceState::CS_WAIT_VARIANT;
         myStates << temp;
     }
 }
+//---------------------------------------------------
+QVariantList DhcpClientProgram::statesObjectList() const
+{
+    QVariantList list;
+    foreach ( InterfaceState *i , myStates ) {
+        QObject *o = new InterfaceStateObject(i);
+        list << qVariantFromValue(o);
+    }
+    return list;
+}
+
+void DhcpClientProgram::addInterfaceStateObject(InterfaceStateObject *obj)
+{
+    InterfaceState *s = obj->object();
+    s->state = InterfaceState::CS_WAIT_VARIANT;
+    myStates << s;
+    obj->deleteLater();
+}
 
 //---------------------------------------------------
-void interfaceState::write(QDataStream &stream) const
+//---------------------------------------------------
+void InterfaceState::write(QDataStream &stream) const
 {
     stream << xid << time << serverAddress << lastIp << name;
 }
 
-void interfaceState::read(QDataStream &stream)
+void InterfaceState::read(QDataStream &stream)
 {
     stream >> xid >> time >> serverAddress >> lastIp >> name;
 }

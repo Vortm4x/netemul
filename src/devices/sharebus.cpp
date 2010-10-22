@@ -25,7 +25,7 @@ shareBus::shareBus(int c)
     widthDev = defaultWidth;
 }
 
-devicePort* shareBus::addInterface(QString str, int t)
+DevicePort* shareBus::addInterface(QString str, int t)
 {
     Q_UNUSED(str);
     Q_UNUSED(t);

@@ -23,22 +23,33 @@
 /*!
   Передает параметры предку и делает надпись перемещаемой и выделяемой.
 */
-textItem::textItem(QPointF p, QGraphicsItem *parent /* = 0 */ , QGraphicsScene *scene /* = 0 */)
+TextItem::TextItem(QPointF p, QGraphicsItem *parent /* = 0 */ , QGraphicsScene *scene /* = 0 */)
         : QGraphicsTextItem(parent,scene)
 {
      setPos(p);
-     setTextInteractionFlags(Qt::TextEditorInteraction);
-     setZValue(1000.0);
-     setFlag(QGraphicsItem::ItemIsMovable);
-     setFlag(QGraphicsItem::ItemIsSelectable);
-     QFont s("Times", 12 , QFont::Bold);
-     setFont(s);
+     init();
 }
+
+TextItem::TextItem(QObject *parent)
+{
+    init();
+}
+
+void TextItem::init()
+{
+    setTextInteractionFlags(Qt::TextEditorInteraction);
+    setZValue(1000.0);
+    setFlag(QGraphicsItem::ItemIsMovable);
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    QFont s("Times", 12 , QFont::Bold);
+    setFont(s);
+}
+
 //-------------------------------------------------------------------------
 /*!
   Происходит при потере элементом фокуса.
 */
-void textItem::focusOutEvent(QFocusEvent *event)
+void TextItem::focusOutEvent(QFocusEvent *event)
 {
     setTextInteractionFlags(Qt::NoTextInteraction); // Запрещаем редактировать
     emit lostFocus(this); // Сообщаем сцене
@@ -48,7 +59,7 @@ void textItem::focusOutEvent(QFocusEvent *event)
 /*!
   Происходит при двойном щелчке по элементу.
 */
-void textItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void TextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     if (textInteractionFlags() == Qt::NoTextInteraction)
         setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -58,7 +69,7 @@ void textItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 /*!
 
 */
-void textItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget)
+void TextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,QWidget *widget)
 {
     painter->setBrush(Qt::yellow);
     painter->drawRoundedRect(boundingRect(), 5, 5);

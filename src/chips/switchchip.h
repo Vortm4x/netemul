@@ -22,55 +22,62 @@
 
 #include "boxchip.h"
 
-class switchModel;
-class virtualNetwork;
+class SwitchModel;
+class VirtualNetwork;
+class MacRecordObject;
 
-class switchChip : public boxChip
+class SwitchChip : public BoxChip
 {
     Q_OBJECT
 public:
-    switchChip(int c = 4);
-    ~switchChip();
-    void receiveEvent(frame &fr,devicePort *sender);
+    SwitchChip(QObject *parent);
+    static SwitchChip* create(QObject *parent);
+    ~SwitchChip();
+    void receiveEvent(frame &fr,DevicePort *sender);
     void dialog();
     void secondTimerEvent();
     void sendDataSignal(frame &fr, QString port);
-    switchModel* modelAt(virtualNetwork *vlan) const;
-    virtualNetwork* vlanAt(int n) const { return myVlans.at(n); }
+    SwitchModel* modelAt(VirtualNetwork *vlan) const;
+    VirtualNetwork* vlanAt(int n) const { return myVlans.at(n); }
+    Q_INVOKABLE void addVirtualNetwork(VirtualNetwork *vlan);
 public slots:
     void checkPorts();
 private:
-    QList<virtualNetwork*> myVlans;
+    QList<VirtualNetwork*> myVlans;
 };
 
 
 // VLAN
 
-class virtualNetwork : public QObject
+class VirtualNetwork : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY( QString name READ name WRITE setName )
+    Q_PROPERTY( QVariantList recordList READ recordList )
 // Инициализация
 public:
-    virtualNetwork(const QString name,switchChip *chip);
-    ~virtualNetwork();
+    VirtualNetwork(QObject *parent = 0);
+    ~VirtualNetwork();
 public:
-    void recieveEvent(frame&fr, devicePort *sender);
+    void recieveEvent(frame&fr, DevicePort *sender);
     void secondTimerEvent();
 // Работа со списком
 public:
-    bool containPort(devicePort *port) const;
-    void includeAllPorts(QStringList list);    
+    bool containPort(DevicePort *port) const;
+    void includeAllPorts(QStringList list);
+    Q_INVOKABLE void addMacRecordObject(MacRecordObject *obj);
 // Атрибуты
 public:
     void setName(QString n) { myName = n; }
     QString name() const { return myName; }
-    switchModel* table() const { return myTable; }
+    SwitchModel* table() const { return myTable; }
     QStringList devicePorts() const;
+    QVariantList recordList() const;
 private:
-    QList<devicePort*> myDevicePorts;
+    QList<DevicePort*> myDevicePorts;
     QString myName;
-    switchChip *mySwitchChip;
-    switchModel *myTable;
+    SwitchChip *mySwitchChip;
+    SwitchModel *myTable;
 };
 
 #endif // SWITCHCHIP_H

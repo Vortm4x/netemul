@@ -24,7 +24,7 @@
 #include <QPointF>
 
 class MyCanvas;
-class textItem;
+class TextItem;
 
 class addTextCommand : public QUndoCommand
 {
@@ -38,7 +38,7 @@ private:
     QPointF point;
     bool isFirst;
     bool isOnScene;
-    textItem *text;
+    TextItem *text;
 };
 
 #endif // ADDTEXTCOMMAND_H

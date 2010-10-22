@@ -18,36 +18,18 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "cabledev.h"
-#include "device.h"
 #include "deviceport.h"
-#include "appsetting.h"
-#include "cabletextitem.h"
 
-cableDev::cableDev(Device *start,Device *end,QString sp, QString ep,int s)
-{
-    mySpeed = s; // Скорость кабеля.
-    myStartPort = 0;
-    myEndPort = 0;
-    myChecked = false;
-    isCollision = false;
-    myStartDev = start;
-    myEndDev = end;
-    myStartName = sp;
-    myEndName = ep;
-    if ( myStartDev->isShared() || myEndDev->isShared() ) myShared = true;
+Cable::Cable(QGraphicsObject *parent) : QGraphicsObject(parent) , myStartPort(0) ,
+                                            myEndPort(0) ,
+                                        isCollision(false), myChecked(false) ,
+                                                        myShared(false) , mySpeed(5)
+{       
     setFlag(QGraphicsItem::ItemIsSelectable, true); // Делаем наш кабель способным к выделению
     setZValue(-1000.0); // Кидаем его на самый-самый задний план
-    textStart = new cableTextItem(this, this->scene() );
-    textStart->setStart(true);
-    textStart->setPlainText( myStartName.mid(3) );
-    textStart->setVisible( appSetting::isShowLabel() );
-    textEnd = new cableTextItem(this , this->scene() );
-    textEnd->setStart(false);
-    textEnd->setPlainText( myEndName.mid(3) );
-    textEnd->setVisible( appSetting::isShowLabel() );
 }
 
-cableDev::~cableDev()
+Cable::~Cable()
 {
     qDeleteAll(fromStartQueue);
     fromStartQueue.clear();
@@ -57,48 +39,44 @@ cableDev::~cableDev()
 /*!
   Отрисовывает кабель.
 */
-void cableDev::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
+void Cable::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->setPen(QPen(Qt::gray,5));
-    QLineF centerLine(myStartDev->pos(), myEndDev->pos());
-    setLine(centerLine); // И мы её и ставим
-    painter->drawLine(line()); // А потом рисуем заново
+    QLineF center( startItem->pos() , endItem->pos() );
+    painter->drawLine(center); // А потом рисуем заново
     if ( isSelected() ) painter->setPen(QPen(Qt::blue,1.7)); // Если выделен рисуем синим
     else if ( isCollision ) painter->setPen(QPen(Qt::red,1.7));
     else if ( myChecked ) painter->setPen(QPen(Qt::magenta,1.7));
     else painter->setPen(QPen(Qt::black,1.7)); // Иначе черным
-    painter->drawLine(line());
+    painter->drawLine(center);
     painter->setPen(QPen(Qt::black,1));
-
-    //painter->setBrush( Qt::NoBrush );
-    //painter->drawRect( boundingRect() );
 
     foreach ( bitStream *i , fromEndQueue ) {
         painter->setBrush(i->color);
-        painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
+        painter->drawEllipse( center.pointAt( i->pos ) ,i->size ,i->size);
     }
 
     foreach ( bitStream *i , fromStartQueue ) {
         painter->setBrush(i->color);
-        painter->drawEllipse( line().pointAt( i->pos ) ,i->size ,i->size);
+        painter->drawEllipse( center.pointAt( i->pos ) ,i->size ,i->size);
     }
 }
 //--------------------------------------------------------------------
-void cableDev::updatePosition()
+
+
+void Cable::updatePosition()
 {
-    setLine( QLineF(myStartDev->pos(), myEndDev->pos()) );
     update(boundingRect());
-    textStart->updatePosition();
-    textEnd->updatePosition();
 }
+
 /*!
   Принимает кадр от устройства отправителя и начинает его транспартировку.
   @param b - поток байт(уже в таком виде нам передается кадр).
   @param cur - устройство отправитель( для определения откуда начинаем рисовать ).
 */
-void cableDev::input(QByteArray b,devicePort *cur )
+void Cable::input(QByteArray b,DevicePort *cur )
 {
     bitStream *t = new bitStream;
     qint8 v = b.at(0);
@@ -121,7 +99,7 @@ void cableDev::input(QByteArray b,devicePort *cur )
 /*!
  * Перемещает все кадры на проводе на один шаг в нужном направлении.
 */
-void cableDev::motion()
+void Cable::motion()
 {
     static int n = 0;
     if ( isCollision && ++n >= TIME_BEFORE_DEAD ) {
@@ -129,12 +107,15 @@ void cableDev::motion()
         n = 0;
     }
 
-       qreal speed = mySpeed / line().length();
+       QLineF center( startItem->pos() , endItem->pos() );
+       qreal speed = mySpeed / center.length();
        speed += (qrand()%5)*(speed/10) - (qrand()%5)*(speed/10);
        foreach ( bitStream *i , fromStartQueue )
            if ( (i->pos += speed) > 1.0 ) {
                 bitStream *t = fromStartQueue.dequeue();
-                if (t->color != Qt::blue) endPort()->receiveFrame( t->data );
+                if (t->color != Qt::blue) {
+                    endPort()->receiveFrame( t->data );
+                }
                 delete t;
            }
        foreach ( bitStream *i , fromEndQueue )
@@ -151,8 +132,8 @@ void cableDev::motion()
                         fromStartQueue.head()->color = fromEndQueue.head()->color = Qt::blue;
                         fromStartQueue.head()->size = fromEndQueue.head()->size = COLLISION_SIZE;
                         startCollision();
-                        if ( endPort()->isShared() ) end()->detectCollision();
-                        if ( startPort()->isShared() ) start()->detectCollision();
+                        if ( endPort()->isShared() ) myEndPort->detectCollision();
+                        if ( startPort()->isShared() ) myStartPort->detectCollision();
                     }
            }
        }
@@ -160,42 +141,36 @@ void cableDev::motion()
 }
 //-----------------------------------------------------------
 
-QString cableDev::startSocketName() const
+void Cable::setStartPort(DevicePort *port)
 {
-    return myStartDev->socketName(this);
+    myStartPort = port;
+    if ( port ) {
+        myStartPort->setConnect(this);
+    }
 }
 
-QString cableDev::endSocketName() const
+void Cable::setEndPort(DevicePort *port)
 {
-    return myEndDev->socketName(this);
+    myEndPort = port;
+    if ( port ) {
+        myEndPort->setConnect(this);
+    }
 }
 
-void cableDev::deleteConnect()
-{
-    unregisterCable();
-}
-
-void cableDev::insertInPort(devicePort *p)
-{
-    if ( !myStartPort ) myStartPort = p;
-    else if ( !myEndPort ) myEndPort = p;
-    else qFatal("ERROR in cable!");
-}
-
-bool cableDev::isBusy(const devicePort *d)
+bool Cable::isBusy(const DevicePort *d)
 {
     if ( myStartPort == d ) return !fromEndQueue.isEmpty();
     else return !fromStartQueue.isEmpty();
 }
 
-void cableDev::killRandomPackets(QQueue<bitStream*> stream)
+void Cable::killRandomPackets(QQueue<bitStream*> stream)
 {
     if ( stream.size() <= MINIMUM_DEAD ) foreach ( bitStream *i , stream ) i->color = Qt::blue;
     else foreach ( bitStream *i , stream )
         if ( qrand()%100 >= 100-PERCENT_DEAD ) i->color = Qt::blue;
 }
 
-void cableDev::killCurrentPackets()
+void Cable::killCurrentPackets()
 {
     foreach ( bitStream *i , fromEndQueue )
         if ( i->color == Qt::blue ) {
@@ -209,37 +184,12 @@ void cableDev::killCurrentPackets()
         }
 }
 
-void cableDev::startCollision()
+void Cable::startCollision()
 {
     if ( fromEndQueue.isEmpty() && fromStartQueue.isEmpty() ) return;
     killRandomPackets(fromEndQueue);
     killRandomPackets(fromStartQueue);
     isCollision = true;
-}
-
-void cableDev::registerCable()
-{        
-    myStartDev->addConnection(myStartName,this);
-    myEndDev->addConnection(myEndName,this);
-    myStartDev->update();
-    myEndDev->update();
-    updatePosition(); // Обновляем его положение
-}
-
-void cableDev::unregisterCable()
-{    
-    myStartDev->deleteConnection(this);
-    myEndDev->deleteConnection(this);
-    myStartDev->update();
-    myEndDev->update();
-    myStartPort = 0;
-    myEndPort = 0;
-}
-
-void cableDev::setShowLabel(bool b)
-{
-    textStart->setVisible(b);
-    textEnd->setVisible(b);
 }
 
 

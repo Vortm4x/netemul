@@ -23,15 +23,16 @@
 #include "abstractsocket.h"
 #include "tcppacket.h"
 
-class tcpSocket : public abstractSocket
+class TcpSocket : public AbstractSocket
 {
     Q_OBJECT
+private:
+    TcpSocket() { }
+    TcpSocket(SmartDevice *d,quint16 port);
 public:
     enum { Sequence = 5000, PACKET_SIZE = 1024 };
     enum { NONE = 0, WAIT_RESPONSE = 1, WAIT_ACK = 2, R_WAIT = 3, RECEIVE = 4 };
-    tcpSocket() { }
-    tcpSocket(SmartDevice *d,quint16 port);
-    ~tcpSocket();
+    ~TcpSocket();
     void setConnection();
     void treatPacket(ipPacket p);
     void confirmConnection(ipPacket p);
@@ -61,6 +62,7 @@ private:
     int sendingNum; // Число повторных отправлений
     int waitingTime;
     QByteArray buffer;
+    friend class SocketFactory;
 };
 
 #endif // TCPSOCKET_H

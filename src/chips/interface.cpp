@@ -26,13 +26,19 @@
 
 Interface::Interface(QObject *parent) : AbstractChip(parent)
 {
-    mySocket = new devicePort;
-    myArpTable = new arpModel;
+    mySocket = new DevicePort(this);
+    connect( mySocket , SIGNAL(cableConnected(Cable*)) , SIGNAL(cableConnected(Cable*)) );    
+}
+
+Interface* Interface::create(QObject *parent)
+{
+    Interface *u = new Interface(parent);
+    u->setArpModel(new ArpModel(u) );
+    return u;
 }
 
 Interface::~Interface()
-{
-    delete mySocket;
+{    
     delete myArpTable;
     qDeleteAll(myWaits);
 }
@@ -44,7 +50,7 @@ void Interface::pushToSocket(frame &f)
     mySocket->pushToSend(f);
 }
 
-void Interface::receiveEvent(frame &fr,devicePort*)
+void Interface::receiveEvent(frame &fr,DevicePort*)
 {
     checkReceive(fr);
     emit receiveData(fr,myName);
@@ -74,7 +80,7 @@ void Interface::sendPacket(ipPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */
     IpAddress t;
     if ( gw.isEmpty() ) t = p.receiver();
     else t = gw;
-    arpRecord *a = myArpTable->recordAt(t);
+    ArpRecord *a = myArpTable->recordAt(t);
     if ( a ) {
         frame f = createFrame( a->mac , frame::ip );
         a->time = 0; // Стартуем заново время жизни arp записи
@@ -110,7 +116,7 @@ void Interface::receiveArp(arpPacket &arp)
                                  QMessageBox::Ok, QMessageBox::Ok);
             return;
         }
-        myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
+        myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , ArpModel::dinamicMode );
         foreach ( waitPacket *i , myWaits )
             if ( i->dest == arp.senderIp() ) {
                 foreach ( ipPacket p, i->packets ) sendPacket(p,arp.senderIp());
@@ -120,7 +126,7 @@ void Interface::receiveArp(arpPacket &arp)
             }
     }
     else {
-        arpRecord *t = myArpTable->addToTable(arp.senderIp() , arp.senderMac() , arpModel::dinamicMode );
+        ArpRecord *t = myArpTable->addToTable(arp.senderIp() , arp.senderMac() , ArpModel::dinamicMode );
         if ( arp.receiverIp() == myIp ) sendArpResponse(t->mac, t->ip);
     }
 }
@@ -130,12 +136,12 @@ bool Interface::isConnect() const
     return mySocket->isConnect();
 }
 
-void Interface::setConnect(bool b,cableDev *c)
+Cable* Interface::socketCable() const
 {
-    mySocket->setConnect(b,c);
+    return mySocket->cable();
 }
 
-bool Interface::isCableConnect(const cableDev *c) const
+bool Interface::isCableConnect(const Cable *c) const
 {
     return mySocket->isCableConnect(c);
 }

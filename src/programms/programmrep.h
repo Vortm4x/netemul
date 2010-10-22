@@ -24,19 +24,29 @@
 
 class Device;
 class SmartDevice;
+class Program;
 
-class programmRep : public QObject
+typedef QList<Program*> ProgramList;
+
+class Program : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( bool enable READ isEnable WRITE setEnable )
+public:    
+    Program(QObject *parent = 0);
+    virtual ~Program();
+
+    static Program* createFromStream(QObject *parent , QDataStream &stream);
+    static Program* createImpl(QObject *parent , int n);
+
 public:
-    friend class programm;
-    programmRep();
-    virtual ~programmRep();
+    enum { RIP = 0 , DHCPClient = 1 , DHCPServer = 2, SPOOFING = 3 };
+
     void setEnable(bool b);
     bool isEnable() const  { return myEnable; }
     QString name() const { return myName; }
     virtual void setDevice(SmartDevice *s) { myDevice = s; }
+    void updateView();
     SmartDevice* device() const { return myDevice; }
     virtual bool interrupt(int u) = 0;
     virtual void showProperty() = 0;
@@ -49,8 +59,6 @@ protected:
     SmartDevice *myDevice;
     bool myEnable;
     QString myName; //!< Имя программы.
-private:
-    quint8 countRef;
 };
 
 #endif // PROGRAMMREP_H

@@ -25,16 +25,23 @@
 #include "virtualnetworkdialog.h"
 
 SwitchDevice::SwitchDevice(QObject *parent) : BoxDevice(parent)
+{    
+    myChip = 0;
+}
+
+SwitchDevice* SwitchDevice::create(QObject *parent)
 {
-    int c = appSetting::defaultSwitchCount();
-    myManual = appSetting::defaultSwitchManual();
-    chip = new switchChip(c);
-    setNote(tr("<b>Switch</b><!--You can use HTML.-->"));
+    SwitchDevice *s = new SwitchDevice(parent);
+    s->setBoxChip( SwitchChip::create(s) );
+    s->setSocketsCount( appSetting::defaultSwitchCount() );
+    s->setManual( appSetting::defaultSwitchManual() );
+    s->setNote(tr("<b>Switch</b><!--You can use HTML.-->"));
+    return s;
 }
 
 SwitchDevice::~SwitchDevice()
 {
-    delete chip;
+    delete myChip;
 }
 
 void SwitchDevice::write(QDataStream &stream) const
@@ -58,7 +65,7 @@ void SwitchDevice::dialog()
 void SwitchDevice::tableDialog()
 {
     switchTableSetting *set = new switchTableSetting(this);
-    tableSwitch *t = new tableSwitch(set);
+    TableSwitch *t = new TableSwitch(set);
     t->exec();
     delete t;
     delete set;
@@ -71,19 +78,19 @@ void SwitchDevice::showVirtualNetworkDialog()
     d->show();
 }
 
-switchChip* SwitchDevice::concreteChip()
+SwitchChip* SwitchDevice::concreteChip()
 {
-    return static_cast<switchChip*>(chip);
+    return static_cast<SwitchChip*>(myChip);
 }
 
 void SwitchDevice::secondTimerEvent()
 {
-    chip->secondTimerEvent();
+    myChip->secondTimerEvent();
 }
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-switchModel* switchTableSetting::switchTable()
+SwitchModel* switchTableSetting::switchTable()
 {
     return sw->concreteChip()->modelAt( sw->concreteChip()->vlanAt(0) );
 }

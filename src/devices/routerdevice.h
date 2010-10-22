@@ -29,6 +29,7 @@ public:
     enum { routerDev = 7 };
     int type() const { return routerDev; }
     RouterDevice(QObject *parent = 0);
+    static RouterDevice* create(QObject *parent);
     QString deviceName() const { return "router"; }
     QString deviceCommandName() const { return tr("Router"); }
     QString pixmapName() const { return ":/im/images/router.png"; }

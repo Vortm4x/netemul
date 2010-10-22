@@ -27,8 +27,9 @@
 #include "statistics.h"
 #include "visualizable.h"
 
-class cableDev;
+class Cable;
 class logDialog;
+class DevicePort;
 
 typedef QMap<QString,bool> featuresMap;
 
@@ -48,10 +49,11 @@ public:
     virtual featuresMap featuresList() const { return featuresMap(); }
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
-    virtual QString socketName(const cableDev *c) const = 0;
+    virtual QString socketName(const Cable *c) const = 0;
     virtual QString pixmapName() const = 0;
 
     virtual bool isBusy() const = 0;
+    virtual bool isConnect() const = 0;
 
     const QString& note() const { return myNote; }
     void setNote(const QString &n) { myNote = n; }
@@ -79,18 +81,20 @@ public:
     virtual QString deviceCommandName() const = 0;
     virtual void secondTimerEvent() { }
     virtual void deciSecondTimerEvent() { }
-    virtual QString nameToIp(const QString &name) const { Q_UNUSED(name) return QString(); }
+    virtual QString nameToIp(const QString&) const { return QString(); }
 
     virtual bool isReady() const { return true; }
-    virtual void addConnection(const QString &port , cableDev *c) = 0;
-    virtual void deleteConnection(cableDev *c) = 0;
+
+    virtual QList<Cable*> cableList() const = 0;
+    virtual DevicePort* findPortByName(const QString&) const = 0;
+
     virtual bool isCanSend() const { return false; }
 
     void setVisualizator( visualizable *view ) { myView = view; }
     void updateView() const { myView->onImplChange(); }
 public:    
 
-    virtual statistics deviceStatistics() const = 0;
+    virtual Statistics deviceStatistics() const = 0;
     virtual int trafficDigit() const = 0;
 
     virtual bool isRouter() const { return false; }

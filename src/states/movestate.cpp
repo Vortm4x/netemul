@@ -42,7 +42,9 @@ moveState::~moveState()
 
 void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-    if ( coordMap.count() ) scene->QGraphicsScene::mouseMoveEvent(event);
+    if ( coordMap.count() ) {
+        scene->QGraphicsScene::mouseMoveEvent(event);
+    }
     else  if (SelectRect) // Если есть выделение обновляем его.
        SelectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
 }
@@ -54,7 +56,7 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
     if ( (scene->selectedItems().toSet() & scene->items( event->scenePos()).toSet()).size() ) {
     // То нужно сохранить все их координаты на случай если начнется перемещение.
         foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
-            if ( i->type() != cableDev::Type )
+            if ( i->type() != Cable::Type )
                 coordMap.insert( i , i->scenePos());
         }
     } // Иначе создаем прямоугольник выделения.
@@ -79,7 +81,7 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
             i.next();
             curDevice = i.key();
             curPoint = i.value();
-            if ( curDevice->type() == textItem::Type ) continue;
+            if ( curDevice->type() == TextItem::Type ) continue;
 
             itemList underItems = curDevice->collidingItems();
             if ( !scene->sceneRect().contains( curDevice->pos()) || filterDevices(underItems).count() ) {
@@ -93,7 +95,7 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
             scene->calibrateAll( coordMap.keys() );
             QMap<QGraphicsItem*, QPointF> rec;
             foreach ( QGraphicsItem* i ,scene->selectedItems() ) {
-                if ( i->type() != cableDev::Type )
+                if ( i->type() != Cable::Type )
                     rec.insert(i, i->scenePos() );
              }
             moveCommand *c = new moveCommand(scene,old, rec);

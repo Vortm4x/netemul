@@ -149,8 +149,7 @@ private:
     QAction *printAct;
     QAction *printPreviewAct;
     QAction *virtualNetworkAct;
-    QAction *noteAct;
-    QAction *cableLabelAct;
+    QAction *noteAct;    
 };
 
 #endif // MAINWINDOW_H

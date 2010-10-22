@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-class spoofingProgramm;
+class SpoofingProgram;
 
 namespace Ui {
     class spoofingProperty;
@@ -15,7 +15,7 @@ public:
     spoofingProperty(QWidget *parent = 0);
     ~spoofingProperty();
 
-    void setProgramm(spoofingProgramm *p);
+    void setProgramm(SpoofingProgram *p);
 
 protected:
     void changeEvent(QEvent *e);
@@ -23,7 +23,7 @@ private slots:
     void apply();
 private:
 
-    spoofingProgramm *pr;
+    SpoofingProgram *pr;
     Ui::spoofingProperty *ui;
 };
 

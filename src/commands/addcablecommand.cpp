@@ -21,7 +21,7 @@
 #include "mycanvas.h"
 #include "cabledev.h"
 
-addCableCommand::addCableCommand(MyCanvas *s, cableDev *c)
+addCableCommand::addCableCommand(MyCanvas *s, Cable *c)
 {
     scene = s;
     cable = c;
@@ -35,14 +35,14 @@ addCableCommand::~addCableCommand()
 
 void addCableCommand::undo()
 {
-    cable->unregisterCable();
+//    cable->unregisterCable();
     scene->unregisterCable(cable);
     isOnScene = false;
 }
 
 void addCableCommand::redo()
 {
-    cable->registerCable();
+//    cable->registerCable();
     scene->registerCable(cable);
     isOnScene = true;
 }

@@ -35,7 +35,7 @@ class QRadioButton;
 class QVBoxLayout;
 class DeviceImpl;
 class Device;
-class devicePort;
+class DevicePort;
 class Interface;
 
 class sendDialog : public QDialog

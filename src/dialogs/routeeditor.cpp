@@ -38,7 +38,7 @@ routeEditor::routeEditor(SmartDevice *s)
     QVBoxLayout *all = new QVBoxLayout;
     table = new QTableView;
     table->setAlternatingRowColors(true);
-    model = dev->routeTable();
+    model = dev->routeModel();
     table->setModel(model);
     table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -109,7 +109,7 @@ routeEditor::~routeEditor()
 void routeEditor::addRecord()
 {
     model->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , ipList.at( cb_out->currentIndex() )
-                       , sp_metr->value(), routeModel::staticMode );
+                       , sp_metr->value(), RouteModel::staticMode );
     ip_dest->clear();
     ip_mask->clear();
     ip_gateway->clear();

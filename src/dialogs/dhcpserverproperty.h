@@ -23,7 +23,7 @@
 #include <ui_dhcpserverproperty.h>
 #include "ipedit.h"
 
-class dhcpServerProgramm;
+class DhcpServerProgram;
 class dhcpServerModel;
 class SmartDevice;
 class macAddressDelegate;
@@ -35,7 +35,7 @@ class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 public:
     dhcpServerProperty(SmartDevice *dev,QWidget *parent = 0);
     ~dhcpServerProperty();
-    void setProgramm( dhcpServerProgramm *prog );
+    void setProgramm( DhcpServerProgram *prog );
 public slots:
     void addRecord();
     void deleteRecord();
@@ -46,7 +46,7 @@ protected:
 private:
     macAddressDelegate *macDelegate;
     ipAddressDelegate *ipDelegate;
-    dhcpServerProgramm *myProgramm;
+    DhcpServerProgram *myProgramm;
     dhcpServerModel *myModel;
     SmartDevice *device;
 };

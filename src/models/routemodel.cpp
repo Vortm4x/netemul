@@ -18,31 +18,34 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "routemodel.h"
+#include <QStringBuilder>
 
-routeModel::routeModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
+#include <QtDebug>
+
+RouteModel::RouteModel(QObject *parent /* = 0 */) : QAbstractTableModel(parent)
 {
     lastRecord = 0;
 }
 
-routeModel::~routeModel()
+RouteModel::~RouteModel()
 {
     qDeleteAll(table);
     table.clear();
 }
 
-int routeModel::rowCount(const QModelIndex &r) const
+int RouteModel::rowCount(const QModelIndex &r) const
 {
     if ( r.isValid() || table.isEmpty() ) return 0;
     return table.size();
 }
 
-int routeModel::columnCount( const QModelIndex&/* r = QModelIndex() */ ) const
+int RouteModel::columnCount( const QModelIndex&/* r = QModelIndex() */ ) const
 {
     if ( table.isEmpty() ) return 0;
     return 6;
 }
 
-QVariant routeModel::headerData( int s , Qt::Orientation o, int role ) const
+QVariant RouteModel::headerData( int s , Qt::Orientation o, int role ) const
 {
     if ( table.isEmpty() ) return QVariant();
     if ( o == Qt::Horizontal )
@@ -60,16 +63,16 @@ QVariant routeModel::headerData( int s , Qt::Orientation o, int role ) const
     return QAbstractTableModel::headerData(s, o, role);
 }
 
-Qt::ItemFlags routeModel::flags( const QModelIndex &r) const
+Qt::ItemFlags RouteModel::flags( const QModelIndex &r) const
 {
     if ( !r.isValid() || table.isEmpty() ) return 0;
     return QAbstractTableModel::flags(r);
 }
 
-QVariant routeModel::data(const QModelIndex &r, int role /* = Qt::DisplayRole */ ) const
+QVariant RouteModel::data(const QModelIndex &r, int role /* = Qt::DisplayRole */ ) const
 {
     if ( !r.isValid() || table.isEmpty() ) return QVariant();
-    routeRecord *rec = table.at(r.row());
+    RouteRecord *rec = table.at(r.row());
     if ( role == Qt::DisplayRole )
         switch ( r.column() ) {
             case 0: return rec->dest.toString();
@@ -92,9 +95,9 @@ QVariant routeModel::data(const QModelIndex &r, int role /* = Qt::DisplayRole */
   @param mode - источник записи.
   @return указатель на новую запись
 */
-routeRecord* routeModel::addToTable(IpAddress d,IpAddress m,IpAddress g,IpAddress o,qint8 metr,int mode)
+RouteRecord* RouteModel::addToTable(IpAddress d,IpAddress m,IpAddress g,IpAddress o,qint8 metr,int mode)
 {
-    routeRecord *r = new routeRecord;
+    RouteRecord *r = new RouteRecord;
     r->dest = d;
     r->mask = m;
     r->metric = metr;
@@ -112,7 +115,7 @@ routeRecord* routeModel::addToTable(IpAddress d,IpAddress m,IpAddress g,IpAddres
   @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
   @return указатель добавленную на запись.
 */
-routeRecord* routeModel::addToTable(routeRecord *r)
+RouteRecord* RouteModel::addToTable(RouteRecord *r)
 {
     table << r;
     qStableSort(table.begin(),table.end(),routeGreat);    
@@ -121,10 +124,13 @@ routeRecord* routeModel::addToTable(routeRecord *r)
     return r;    
 }
 //------------------------------------------------------------
-void routeModel::deleteFromTable(int n)
+
+
+
+void RouteModel::deleteFromTable(int n)
 {
     int v = 0;
-    foreach ( routeRecord *i , table )
+    foreach ( RouteRecord *i , table )
         if ( v++ == n ) {
             deleteFromTable(i);
             return;
@@ -135,7 +141,7 @@ void routeModel::deleteFromTable(int n)
   @param r - указатель на запись.
   @param tr - нужно ли вызывать прерывание(по умолчанию нужно).
 */
-void routeModel::deleteFromTable(routeRecord *r)
+void RouteModel::deleteFromTable(RouteRecord *r)
 {
     emit recordDeleting(r,delNet);
     lastRecord = 0;
@@ -150,12 +156,12 @@ void routeModel::deleteFromTable(routeRecord *r)
   @param a - адрес назначения.
   @return указатель на запись, если такой записи нет то NULL.
 */
-routeRecord* routeModel::recordAt(const IpAddress &a) const
+RouteRecord* RouteModel::recordAt(const IpAddress &a) const
 {
 // Оптимизация работы, запоминаем полседний адрес и если при новом поиске
 // он совпадает отправляем по той записи которая была последней =)
     if ( lastRecord && lastIpAddress == a ) return lastRecord;
-    foreach ( routeRecord *i , table ) {
+    foreach ( RouteRecord *i , table ) {
         if ( i->dest == ( a & i->mask ) ) {
             lastIpAddress = a;
             lastRecord = i;
@@ -167,10 +173,10 @@ routeRecord* routeModel::recordAt(const IpAddress &a) const
 }
 //---------------------------------------------
 
-void routeModel::checkConnectedNet(IpAddress ip, IpAddress mask, bool add)
+void RouteModel::checkConnectedNet(IpAddress ip, IpAddress mask, bool add)
 {
     IpAddress dest = mask & ip;
-    foreach ( routeRecord *i , table )
+    foreach ( RouteRecord *i , table )
         if ( i->dest == dest && i->mask == mask ) {
             if ( i->gateway == ip && add) return;
             deleteFromTable(i);
@@ -182,18 +188,18 @@ void routeModel::checkConnectedNet(IpAddress ip, IpAddress mask, bool add)
 /*!
   @return строчка описывающая источник записи.
 */
-QString routeRecord::modeString() const
+QString RouteRecord::modeString() const
 {
     switch ( mode ) {
-        case routeModel::staticMode : return QObject::tr("Static");
-        case routeModel::ripMode : return QObject::tr("RIP");
-        case routeModel::connectMode : return QObject::tr("Connected");
+        case RouteModel::staticMode : return QObject::tr("Static");
+        case RouteModel::ripMode : return QObject::tr("RIP");
+        case RouteModel::connectMode : return QObject::tr("Connected");
     }
     return QString();
 }
 //----------------------------------------------------------------
 
-bool routeModel::isConnectedMode(QModelIndex curr)
+bool RouteModel::isConnectedMode(QModelIndex curr)
 {
     return (table.at(curr.row())->modeString() != tr("Connected"));
 }
@@ -202,9 +208,9 @@ bool routeModel::isConnectedMode(QModelIndex curr)
   * Находит в таблице измененую запись.
   * @return указатель на измененую запись, 0 - если такой записи нет.
   */
-routeRecord* routeModel::changedRecord()
+RouteRecord* RouteModel::changedRecord()
 {
-    foreach ( routeRecord *i , table )
+    foreach ( RouteRecord *i , table )
         if ( i->change == changed ) return i;
     return 0;
 }
@@ -212,9 +218,9 @@ routeRecord* routeModel::changedRecord()
 /*!
   * Обновляет содержиое всех записей увеличивая время жизни.
   */
-void routeModel::update()
+void RouteModel::update()
 {
-    foreach ( routeRecord *i , table )
+    foreach ( RouteRecord *i , table )
         if ( i->mode != connectMode && i->mode != staticMode ) i->time++;
 }
 //-----------------------------------------------------------------------
@@ -222,29 +228,47 @@ void routeModel::update()
   * Удаляет из таблицы записи время жизни которых подошло к концу.
   * @param time - время жизни достигнув которого запись считается устаревшей.
   */
-void routeModel::deleteOldRecord(int time)
+void RouteModel::deleteOldRecord(int time)
 {
-    foreach ( routeRecord *i , table )
+    foreach ( RouteRecord *i , table )
         if ( i->time >= time && i->mode != connectMode  && i->mode != staticMode ) deleteFromTable(i);
 }
 
-void routeModel::write(QDataStream &stream) const
+QVariantList RouteModel::recordObjectList() const
 {
-    routeTable temp;
-    foreach (routeRecord *i , table )
-        if ( i->mode == routeModel::staticMode ) temp << i;
+    QVariantList list;
+    foreach ( RouteRecord *i , table ) {
+        if ( i->mode == RouteModel::staticMode ) {
+            QObject *o = new RouteRecordObject(i);
+            list << qVariantFromValue(o);
+        }
+    }
+    return list;
+}
+
+void RouteModel::addRouteRecordObject(RouteRecordObject *obj)
+{
+    addToTable( obj->record() );
+    obj->deleteLater();
+}
+
+void RouteModel::write(QDataStream &stream) const
+{
+    RouteTable temp;
+    foreach (RouteRecord *i , table )
+        if ( i->mode == RouteModel::staticMode ) temp << i;
     stream << temp.size();
-    foreach ( routeRecord *i , temp )
+    foreach ( RouteRecord *i , temp )
         stream << *i;
 }
 
-void routeModel::read(QDataStream &stream)
+void RouteModel::read(QDataStream &stream)
 {
     table.clear();
     int n;
     stream >> n;
     for ( int i = 0 ; i < n ; i++ ) {
-        routeRecord *t = new routeRecord;
+        RouteRecord *t = new RouteRecord;
         t->mode = staticMode;
         stream >> *t;
         addToTable(t);

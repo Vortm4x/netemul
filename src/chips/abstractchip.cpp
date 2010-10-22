@@ -54,16 +54,28 @@ void AbstractChip::read(QDataStream &stream)
     stream >> myStatistics;
 }
 
+QVariant AbstractChip::statisticsObject() const
+{
+    QObject *o = new StatisticsObject(myStatistics);
+    return qVariantFromValue( o );
+}
+
+void AbstractChip::setStatisticsObject(StatisticsObject *obj)
+{
+    myStatistics = obj->statistics();
+    obj->deleteLater();
+}
+
 void AbstractChip::checkReceive(frame &f)
 {
-    myStatistics.incReceiveFrames();
-    if ( f.type() == frame::ip ) myStatistics.incReceivePackets();
+    myStatistics.receiveFrames++;
+    if ( f.type() == frame::ip ) myStatistics.receivePackets++;
 }
 
 void AbstractChip::checkSend(frame &f)
 {
-    myStatistics.incSendFrames();
-    if ( f.type() == frame::ip ) myStatistics.incSendPackets();
+    myStatistics.sendFrames++;
+    if ( f.type() == frame::ip ) myStatistics.sendPackets++;
 }
 
 

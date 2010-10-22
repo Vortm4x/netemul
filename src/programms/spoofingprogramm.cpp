@@ -1,29 +1,29 @@
 #include "spoofingprogramm.h"
 #include "spoofingproperty.h"
-#include "udpsocket.h"
 #include "smartdevice.h"
 #include "arpmodel.h"
 #include "arppacket.h"
+#include "abstractsocket.h"
 
 #include <QtDebug>
 
-spoofingProgramm::spoofingProgramm()
-{
+SpoofingProgram::SpoofingProgram(QObject *parent) : Program(parent) ,
+                                                    isReady(false) , hasAttack(false)
+{    
     myName = tr("Spoofing");
-    isReady = false;
-    hasAttack = false;
 }
 
-void spoofingProgramm::incTime()
+void SpoofingProgram::incTime()
 {
     static int n = 0;
     if ( !isReady && ++n%10 == 0 ) {
         if ( myServerIp.isEmpty() || myClientIp.isEmpty() ) return;
-        udpSocket socket( this->device() , SmartDevice::User );
+        AbstractSocket *socket = myDevice->openSocket( SmartDevice::USER_PORT , SmartDevice::UDP );
         QByteArray temp(1,'j');
-        socket.write( myClientIp , SmartDevice::User , temp );
-        socket.write( myServerIp , SmartDevice::User , temp );
+        socket->write( myClientIp , SmartDevice::USER_PORT , temp );
+        socket->write( myServerIp , SmartDevice::USER_PORT , temp );
         n = 0;
+        myDevice->disposeSocket(socket);
     }
 
     if ( !hasAttack && isReady ) {
@@ -32,13 +32,13 @@ void spoofingProgramm::incTime()
     }
 }
 
-void spoofingProgramm::setDevice(SmartDevice *s)
+void SpoofingProgram::setDevice(SmartDevice *s)
 {
-    programmRep::setDevice(s);
+    Program::setDevice(s);
     if ( !s ) return;
     foreach ( Interface *i , myDevice->interfaces() ) {
-        connect( i->arpTable() , SIGNAL(tableChanged(arpRecord*)) , this , SLOT(execute(arpRecord*)) );
-        arpRecord *t = i->arpTable()->recordAt(myClientIp);
+        connect( i->arpTable() , SIGNAL(tableChanged(ArpRecord*)) , this , SLOT(execute(ArpRecord*)) );
+        ArpRecord *t = i->arpTable()->recordAt(myClientIp);
         if ( t ) {
             myClientMac = t->mac;
         }
@@ -53,7 +53,7 @@ void spoofingProgramm::setDevice(SmartDevice *s)
     }
 }
 
-void spoofingProgramm::execute(arpRecord *record)
+void SpoofingProgram::execute(ArpRecord *record)
 {
     if ( record->ip == myClientIp ) {
         myClientMac = record->mac;
@@ -65,13 +65,13 @@ void spoofingProgramm::execute(arpRecord *record)
     }
 }
 
-void spoofingProgramm::sendAnswers()
+void SpoofingProgram::sendAnswers()
 {
     sendOneAnswer( myServerIp , myClientIp , myClientMac );
     sendOneAnswer( myClientIp , myServerIp , myServerMac );
 }
 
-void spoofingProgramm::sendOneAnswer(IpAddress sender, IpAddress receiver, macAddress receiverMac)
+void SpoofingProgram::sendOneAnswer(IpAddress sender, IpAddress receiver, macAddress receiverMac)
 {
     arpPacket arp;
     Interface *t = myDevice->ipToAdapter( myDevice->findInterfaceIp( receiver ) );
@@ -90,18 +90,18 @@ void spoofingProgramm::sendOneAnswer(IpAddress sender, IpAddress receiver, macAd
     t->pushToSocket(f);
 }
 
-void spoofingProgramm::write(QDataStream &stream) const
+void SpoofingProgram::write(QDataStream &stream) const
 {
     stream << SPOOFING;
-    programmRep::write(stream);
+    Program::write(stream);
 }
 
-void spoofingProgramm::read(QDataStream &stream)
+void SpoofingProgram::read(QDataStream &stream)
 {
-    programmRep::read(stream);
+    Program::read(stream);
 }
 
-void spoofingProgramm::showProperty()
+void SpoofingProgram::showProperty()
 {
     spoofingProperty *d = new spoofingProperty;
     d->setProgramm(this);

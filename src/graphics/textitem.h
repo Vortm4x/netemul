@@ -26,24 +26,27 @@
 /*!
   Реализует текстовую надпись на сцене.
 */
-class textItem : public QGraphicsTextItem
+class TextItem : public QGraphicsTextItem
 {
     Q_OBJECT
-    Q_PROPERTY(QString note READ toPlainText() WRITE setNote)
+    Q_PROPERTY( QString note READ toPlainText WRITE setNote )
 public:
     enum { Type = UserType + 3 };
     int type() const { return Type; }
-    void setNote(const QString &str) { setPlainText(str); adjustSize(); }
-    textItem(QPointF p, QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
+    void setNote(const QString &str) { setPlainText(str); adjustSize(); }        
+    TextItem(QPointF p, QGraphicsItem *parent = 0 , QGraphicsScene *scene = 0);
+    TextItem(QObject *parent = 0 );
 signals:
-    void lostFocus(textItem*);
+    void lostFocus(TextItem*);
 protected:
     void focusOutEvent(QFocusEvent *event);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidget *widget);
+private:
+    void init();
 };
 //-------------------------------------------------------------
 
 
-Q_DECLARE_METATYPE(textItem*)
+Q_DECLARE_METATYPE(TextItem*)
 #endif // TEXTITEM_H

@@ -24,7 +24,7 @@
 #include "dhcpdemon.h"
 
 
-class dhcpServerProgramm : public programmRep
+class DhcpServerProgram : public Program
 {
     Q_OBJECT
 //    Q_PROPERTY( QString interfaceName READ interfaceName WRITE setInterfaceName )
@@ -37,8 +37,8 @@ class dhcpServerProgramm : public programmRep
 //    Q_PROPERTY( bool dynamic READ dynamic WRITE setDynamic )
 public:
     enum { DHCPServer = 2 };
-    dhcpServerProgramm();
-    ~dhcpServerProgramm();
+    DhcpServerProgram(QObject *parent = 0);
+    ~DhcpServerProgram();
 
 // Атрибуты
 public:
@@ -64,7 +64,7 @@ private:
     static int myServerCount;
     QString myServerName;
     QList<dhcpDemon*> myDemons;
-    udpSocket *receiver;
+    UdpSocket *receiver;
 };
 
 #endif // DHCPSERVERPROGRAMM_H

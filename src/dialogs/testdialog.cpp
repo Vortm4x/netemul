@@ -35,14 +35,14 @@ void ObjectFromScript(const QScriptValue &object, DeviceImpl* &out)
     out = qobject_cast<DeviceImpl*>(object.toQObject());
 }
 
-QScriptValue ObjectToScriptItem(QScriptEngine *engine, textItem* const &in)
+QScriptValue ObjectToScriptItem(QScriptEngine *engine, TextItem* const &in)
 {
     return engine->newQObject(in);
 }
 
-void ObjectFromScriptItem(const QScriptValue &object, textItem* &out)
+void ObjectFromScriptItem(const QScriptValue &object, TextItem* &out)
 {
-    out = qobject_cast<textItem*>(object.toQObject());
+    out = qobject_cast<TextItem*>(object.toQObject());
 }
 
 

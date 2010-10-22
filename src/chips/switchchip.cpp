@@ -24,79 +24,96 @@
 
 #include <iostream>
 
-switchChip::switchChip(int c /* = 4 */ ) : boxChip(c)
+SwitchChip::SwitchChip(QObject *parent) : BoxChip(parent)
 {
-    virtualNetwork *vlan = new virtualNetwork("VLAN1", this);
-    myVlans << vlan;
     connect( this, SIGNAL(socketsCountChanged()), SLOT(checkPorts()) );
 }
 
-switchChip::~switchChip()
+SwitchChip* SwitchChip::create(QObject *parent)
+{
+    SwitchChip *chip = new SwitchChip(parent);
+    VirtualNetwork *vlan = new VirtualNetwork(chip);
+    vlan->setName("VLAN1");
+    chip->addVirtualNetwork(vlan);
+    return chip;
+}
+
+SwitchChip::~SwitchChip()
 {
     myVlans.clear();
 }
 
-switchModel* switchChip::modelAt(virtualNetwork *vlan) const
+SwitchModel* SwitchChip::modelAt(VirtualNetwork *vlan) const
 {
     return vlan->table();
 }
 
-void switchChip::receiveEvent(frame &fr,devicePort *sender)
+void SwitchChip::receiveEvent(frame &fr,DevicePort *sender)
 {
     checkReceive(fr);
     emit receiveData(fr,tr("LAN%1").arg(sender->num()));
 
-    foreach ( virtualNetwork *i, myVlans )
+    foreach ( VirtualNetwork *i, myVlans )
         if ( i->containPort(sender) ) i->recieveEvent(fr, sender);
 }
 
-void switchChip::secondTimerEvent()
+void SwitchChip::secondTimerEvent()
 {
-    foreach ( virtualNetwork *i, myVlans )
+    foreach ( VirtualNetwork *i, myVlans )
         i->secondTimerEvent();
 }
 
-void switchChip::sendDataSignal(frame &fr, QString port)
+void SwitchChip::sendDataSignal(frame &fr, QString port)
 {
     emit sendData(fr, port);
 }
 
-void switchChip::checkPorts()
+void SwitchChip::checkPorts()
 {
-    if ( myVlans.count() > 1 ) return;
-    myVlans.at(0)->includeAllPorts(sockets());
+    if ( myVlans.count() == 1 ) {
+        myVlans.at(0)->includeAllPorts(sockets());
+    }
+}
+
+void SwitchChip::addVirtualNetwork(VirtualNetwork *vlan)
+{
+    myVlans << vlan;
+    if ( myVlans.count() == 1 ) {
+        myVlans.at(0)->includeAllPorts(sockets());
+    }
 }
 
 
 /****************************VLAN********************************/
 
-virtualNetwork::virtualNetwork(const QString name,switchChip *chip)
+VirtualNetwork::VirtualNetwork(QObject *parent) : QObject(parent)
 {
-    myTable = new switchModel;
-    myName = name;
-    mySwitchChip = chip;
+    myTable = new SwitchModel;
+    mySwitchChip = qobject_cast<SwitchChip*>(parent);
     includeAllPorts(mySwitchChip->sockets());
 }
 
-virtualNetwork::~virtualNetwork()
+VirtualNetwork::~VirtualNetwork()
 {
     myDevicePorts.clear();
-    delete myTable;
-    delete mySwitchChip;
+    delete myTable;    
 }
 
-void virtualNetwork::recieveEvent(frame &fr, devicePort *sender)
+void VirtualNetwork::recieveEvent(frame &fr, DevicePort *sender)
 {
-    myTable->contains( fr.sender() , sender );
+    myTable->contains( fr.sender() , mySwitchChip->portToString(sender) );
 
-    devicePort *t = myTable->portWithMac( fr.receiver() );
-    if ( t && t->isConnect() ) {
-        mySwitchChip->checkSend(fr);
-        mySwitchChip->sendDataSignal(fr, tr("LAN%1").arg(t->num()));
-        t->pushToSend(fr);
-        return;
+    QString str = myTable->portWithMac( fr.receiver() );
+    if ( !str.isEmpty() ) {
+        DevicePort *t = mySwitchChip->findPortByName(str);
+        if ( t && t->isConnect() ) {
+            mySwitchChip->checkSend(fr);
+            mySwitchChip->sendDataSignal(fr, tr("LAN%1").arg(t->num()));
+            t->pushToSend(fr);
+            return;
+        }
     }
-    foreach ( devicePort *i , myDevicePorts )
+    foreach ( DevicePort *i , myDevicePorts )
         if ( i != sender && i->isConnect() ) {
             mySwitchChip->checkSend(fr);
             mySwitchChip->sendDataSignal(fr, tr("LAN%1").arg(i->num()));
@@ -104,30 +121,41 @@ void virtualNetwork::recieveEvent(frame &fr, devicePort *sender)
         }
 }
 
-bool virtualNetwork::containPort(devicePort *port) const
+bool VirtualNetwork::containPort(DevicePort *port) const
 {
-    foreach ( devicePort *i, myDevicePorts )
+    foreach ( DevicePort *i, myDevicePorts )
         if ( i->num() == port->num() ) return true;
     return false;
 }
 
-void virtualNetwork::includeAllPorts(QStringList list)
+void VirtualNetwork::includeAllPorts(QStringList list)
 {
     for ( int i = 0; i < list.size(); i++ )        
         if ( !myDevicePorts.contains(mySwitchChip->socket(list.at(i))) )
             myDevicePorts << mySwitchChip->socket(list.at(i));
 }
 
-QStringList virtualNetwork::devicePorts() const
+QStringList VirtualNetwork::devicePorts() const
 {
     QStringList list;
-    foreach ( devicePort *i, myDevicePorts )
+    foreach ( DevicePort *i, myDevicePorts )
         list << tr("LAN%1").arg(i->num()) ;
     return list;
 }
 
-void virtualNetwork::secondTimerEvent()
+void VirtualNetwork::secondTimerEvent()
 {
     myTable->updateMac();
+}
+
+QVariantList VirtualNetwork::recordList() const
+{
+    return myTable->recordList();
+}
+
+void VirtualNetwork::addMacRecordObject(MacRecordObject *obj)
+{
+    myTable->addToTable( obj->record() );
+    obj->deleteLater();
 }
 

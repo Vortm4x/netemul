@@ -10,7 +10,8 @@ private slots:
 
 void TestHubChip::setSocketsCount()
 {
-    hubChip b(4);
+    HubChip b(0);
+    b.setSocketsCount(4);
     QCOMPARE(b.socketsCount() , 4);
     b.setSocketsCount(2);
     QCOMPARE(b.socketsCount() , 2);

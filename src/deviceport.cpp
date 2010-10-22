@@ -21,40 +21,37 @@
 #include "cabledev.h"
 #include "frame.h"
 
-devicePort::devicePort()
+DevicePort::DevicePort(QObject *parent)
 {
-    myConnect = false;
     myShared = false;
     myCable = 0;
 }
 
-devicePort::devicePort(int n) : myNum(n)
-{
-    myConnect = false;
+DevicePort::DevicePort(int n, QObject *parent) : QObject(parent) , myNum(n)
+{    
     myShared = false;
     myCable = 0;
 }
 
-devicePort::~devicePort()
+DevicePort::~DevicePort()
 {
 
 }
 
-bool devicePort::isCableConnect(const cableDev *c) const
+bool DevicePort::isCableConnect(const Cable *c ) const
 {
-    if ( myCable == c ) return true;
-    return false;
+    return ( myCable == c );
 }
 
-bool devicePort::isCableBusy() const
+bool DevicePort::isCableBusy() const
 {
-    return myConnect && myCable->isBusy(this);
+    return myCable && myCable->isBusy(this);
 }
 
 /*!
   Достает кадр из очереди и отправляет его.
 */
-void devicePort::queueEvent()
+void DevicePort::queueEvent()
 {
     if ( senderQueue.isEmpty() ) return;
     if ( !myShared && myCable->isShared() && myCable->isBusy(this) ) return;
@@ -70,32 +67,31 @@ void devicePort::queueEvent()
    @param cur - true если соединяем , false если отключаем.
    @param cable - указатель на подсоединяемый кабель.
 */
-void devicePort::setConnect(bool cur,cableDev *cable)
-{
-    myConnect = cur;
-    myCable = cable;
-    if (cable) cable->insertInPort(this);
-    if ( !cur && !cable) {
+void DevicePort::setConnect(Cable *cable)
+{    
+    myCable = cable;        
+    if ( !cable) {
         senderQueue.clear();
         receiveQueue.clear();
     }
+    emit cableConnected(cable);
 }
 //---------------------------------------------------
 
-void devicePort::setChecked(bool c)
+void DevicePort::setChecked(bool c)
 {
-    if ( myConnect ) myCable->setChecked(c);
+    if ( myCable ) myCable->setChecked(c);
 }
 
-void devicePort::receiveFrame(QByteArray &b)
+void DevicePort::receiveFrame(QByteArray &b)
 {
     frame f(b);
     receiveQueue.enqueue(f);
 }
 
-void devicePort::startCollision()
+void DevicePort::startCollision()
 {
-    if ( myConnect && !myCable->isCollisionCable() ) myCable->startCollision();
+    if ( myCable && !myCable->isCollisionCable() ) myCable->startCollision();
 }
 
 

@@ -2,18 +2,18 @@
 #define DEVICEPORT_H
 
 class frame;
-class cableDev;
+class Cable;
 
-class devicePort
+class DevicePort
 {
 public:
-    devicePort();
-    devicePort(int) { }
+    DevicePort();
+    DevicePort(int) { }
     void setNum(int) { }
     bool isBusy() const { return false; }
     bool isConnect() { return false; }
-    bool isCableConnect(const cableDev*) { return true; }
-    void setConnect(bool,cableDev*) { }
+    bool isCableConnect(const Cable*) { return true; }
+    void setConnect(bool,Cable*) { }
     void pushToSend(frame&) { }
     void queueEvent() { }
     bool hasReceive() { return false; }

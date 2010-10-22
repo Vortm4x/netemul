@@ -22,20 +22,20 @@
 
 #include "ui_dhcpclientproperty.h"
 
-class dhcpClientProgramm;
+class DhcpClientProgram;
 
 class dhcpClientProperty : public QDialog, private Ui::dhcpClientProperty
 {
     Q_OBJECT
 public:
     dhcpClientProperty(QWidget *parent = 0);
-    void setProgramm( dhcpClientProgramm *prog);
+    void setProgramm( DhcpClientProgram *prog);
 protected:
     void changeEvent(QEvent *e);
 private slots:
     void apply();
 private:
-    dhcpClientProgramm *myProgramm;
+    DhcpClientProgram *myProgramm;
 };
 
 #endif // DHCPCLIENTPROPERTY_H

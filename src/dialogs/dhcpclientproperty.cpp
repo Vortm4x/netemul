@@ -26,7 +26,7 @@ dhcpClientProperty::dhcpClientProperty(QWidget *parent) : QDialog(parent)
     setAttribute( Qt::WA_DeleteOnClose );
 }
 
-void dhcpClientProperty::setProgramm(dhcpClientProgramm *prog)
+void dhcpClientProperty::setProgramm(DhcpClientProgram *prog)
 {
     myProgramm = prog;
     foreach ( QString i , myProgramm->interfacesList() ) {

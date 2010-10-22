@@ -23,19 +23,17 @@
 #include "deviceport.h"
 
 
-boxChip::boxChip(int n /* = 4 */)
+BoxChip::BoxChip(QObject *parent) : AbstractChip(parent)
 {
-    for ( int i = 0 ; i < n ; i++ )
-        addSocket(i+1);
 }
 
-boxChip::~boxChip()
+BoxChip::~BoxChip()
 {
     qDeleteAll(mySockets);
     mySockets.clear();
 }
 
-QStringList boxChip::sockets() const
+QStringList BoxChip::sockets() const
 {
     QStringList t;
     for ( int  i = 0 ; i < mySockets.size() ; i++ )
@@ -43,7 +41,7 @@ QStringList boxChip::sockets() const
     return t;
 }
 
-bool boxChip::setSocketsCount(int n)
+bool BoxChip::setSocketsCount(int n)
 {
     int i,t = mySockets.size();
     if ( t <= n ) {
@@ -62,44 +60,44 @@ bool boxChip::setSocketsCount(int n)
     return true;
 }
 
-QString boxChip::socketName(const cableDev *c) const
+QString BoxChip::socketName(const Cable *c) const
 {
     for ( int i = 0 ; i < mySockets.size() ; i++ )
         if ( mySockets.at(i)->isCableConnect(c) ) return QObject::tr("LAN%1").arg(i+1);
     return QString();
 }
 
-void boxChip::addConnection(const QString &port , cableDev *c)
+void BoxChip::onCableConnected(Cable *cable)
 {
-    QString t = port;
+}
+
+DevicePort* BoxChip::findPortByName(const QString &name) const
+{
+    QString t = name;
     t.remove(0,3);
-    mySockets.at( t.toInt() - 1 )->setConnect(true,c);
+    int n = t.toInt() - 1;
+    if ( n >= 0 && n < mySockets.size()  ) {
+        return mySockets.at(n);
+    } else {
+        qDebug("WARNING! %s - %d",qPrintable(name),n);
+    }
+    return 0;
 }
 
-void boxChip::deleteConnection(cableDev *c)
-{
-    foreach ( devicePort *i , mySockets )
-        if ( i->isCableConnect(c) ) {
-            i->setConnect(false,0);
-            return;
-        }
-}
-
-
-bool boxChip::isConnectSocket(const QString &str) const
+bool BoxChip::isConnectSocket(const QString &str) const
 {
     return mySockets[ str.mid(3).toInt() - 1 ]->isConnect();
 }
 
-devicePort* boxChip::socket(const QString &name)
+DevicePort* BoxChip::socket(const QString &name)
 {
     return mySockets[ name.mid(3).toInt()-1 ];
 }
 
-void boxChip::deciSecondTimerEvent()
+void BoxChip::deciSecondTimerEvent()
 {
 #ifndef __TESTING__
-    foreach ( devicePort *i , mySockets ) {
+    foreach ( DevicePort *i , mySockets ) {
         i->queueEvent();
         if ( i->hasReceive() ) {
             frame t = i->popFromReceive();
@@ -109,41 +107,70 @@ void boxChip::deciSecondTimerEvent()
 #endif
 }
 
-void boxChip::addSocket(int n)
+void BoxChip::addSocket(int n)
 {
-    devicePort *t = new devicePort(n);
+    DevicePort *t = new DevicePort(n,this);
+    connect( t ,SIGNAL(cableConnected(Cable*)) , SLOT(onCableConnected(Cable*)) );
     mySockets.push_back(t);
 }
 
-bool boxChip::isBusy() const
+
+
+bool BoxChip::isBusy() const
 {
-    foreach ( devicePort *i , mySockets )
+    foreach ( DevicePort *i , mySockets )
         if ( i->isBusy() ) return true;
     return false;
 }
 
-int boxChip::trafficDigit() const
+bool BoxChip::isConnect() const
+{
+    foreach ( DevicePort *i , mySockets ) {
+        if ( i->isConnect() ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+QList<Cable*> BoxChip::cableList() const
+{
+    QList<Cable*> list;
+    foreach ( DevicePort *i , mySockets ) {
+        if ( i->isConnect() ) {
+            list << i->cable();
+        }
+    }
+    return list;
+}
+
+QString BoxChip::portToString(DevicePort *port) const
+{
+    return QObject::tr("LAN%1").arg(port->num());
+}
+
+int BoxChip::trafficDigit() const
 {
     int sum = 0;
-    foreach ( devicePort *i, mySockets )
+    foreach ( DevicePort *i, mySockets )
         sum += i->trafficDigit();
     return sum;
 }
 
 #ifndef __TESTING__
-void boxChip::setCheckedSocket(const QString &port)
+void BoxChip::setCheckedSocket(const QString &port)
 {
-    foreach ( devicePort *i, mySockets )
+    foreach ( DevicePort *i, mySockets )
         i->setChecked( tr("LAN%1").arg(i->num()) == port );
 }
 
-void boxChip::write(QDataStream &stream) const
+void BoxChip::write(QDataStream &stream) const
 {
     AbstractChip::write(stream);
     stream << mySockets.size();
 }
 
-void boxChip::read(QDataStream &stream)
+void BoxChip::read(QDataStream &stream)
 {
     AbstractChip::read(stream);
     int n;

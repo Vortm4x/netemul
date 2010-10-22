@@ -16,7 +16,7 @@ spoofingProperty::~spoofingProperty()
     delete ui;
 }
 
-void spoofingProperty::setProgramm(spoofingProgramm *p)
+void spoofingProperty::setProgramm(SpoofingProgram *p)
 {
     ui->clientEdit->setText( p->clientIp().toString() );
     ui->serverEdit->setText( p->serverIp().toString() );

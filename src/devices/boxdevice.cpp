@@ -25,48 +25,31 @@ BoxDevice::BoxDevice(QObject *parent) : DeviceImpl(parent)
 }
 
 BoxDevice::~BoxDevice()
-{
+{    
 }
 
 void BoxDevice::write(QDataStream &stream) const
 {
     DeviceImpl::write(stream);
-    chip->write(stream);
-}
-
-void BoxDevice::writeXmlImpl(sceneXmlWriter &stream) const
-{
-    Q_UNUSED(stream)
-//    deviceImpl::writeXml(stream);
+    myChip->write(stream);
 }
 
 void BoxDevice::read(QDataStream &stream)
 {
     DeviceImpl::read(stream);
-    chip->read(stream);
-}
-
-void BoxDevice::readXmlImpl(SceneXmlReader &stream)
-{
-    Q_UNUSED(stream)
-//    Q_ASSERT( stream.isStartElement() && stream.name() == "impl");
-//    while ( !stream.atEnd() ) {
-//        stream.readNext();
-//        if ( stream.isEndElement() ) break;
-//        if ( stream.name() == "deviceimpl" ) deviceImpl::readXml(stream);
-//    }
+    myChip->read(stream);
 }
 
 void BoxDevice::deciSecondTimerEvent()
 {
-    chip->deciSecondTimerEvent();
+    myChip->deciSecondTimerEvent();
 }
 
 void BoxDevice::showLogDialog(logDialog *log) const
 {
     connect( log , SIGNAL(changeInterface(QString)) , this , SLOT(setCheckedSocket(QString)) );
-    connect( chip , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
-    connect( chip , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
+    connect( myChip , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
+    connect( myChip , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
 }
 
 QIcon BoxDevice::isConnectSocketIcon(const QString &socket) const
@@ -77,7 +60,7 @@ QIcon BoxDevice::isConnectSocketIcon(const QString &socket) const
 
 void BoxDevice::setCheckedSocket(const QString &port)
 {
-    chip->setCheckedSocket(port);
+    myChip->setCheckedSocket(port);
 }
 
 

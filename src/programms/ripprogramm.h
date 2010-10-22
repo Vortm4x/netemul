@@ -23,16 +23,16 @@
 #include "programmrep.h"
 
 class SmartDevice;
-class routeModel;
-class routeRecord;
-class udpSocket;
+class RouteModel;
+class RouteRecord;
+class AbstractSocket;
 
 static const qint8 RIP_INFINITY = 16;
 
 /*!
   Реализует Rip-программу.
 */
-class ripProgramm : public programmRep
+class RipProgram : public Program
 {
     Q_OBJECT
     Q_PROPERTY( bool triggerUpdate READ hasTriggerUpdate WRITE setTriggerUpdate )
@@ -41,8 +41,8 @@ public:
     enum { defaultTtl = 30 , RIP = 0 , ttl = 6 };
     enum { SPLIT_NONE , SPLIT_HORIZONT , SPLIT_WIH_POISON };
     int id() const { return RIP; }
-    ripProgramm();
-    ~ripProgramm();
+    RipProgram(QObject *parent = 0);
+    ~RipProgram();
     void setDevice(SmartDevice *s);
     bool interrupt(int u);
     void write(QDataStream &stream) const;
@@ -57,18 +57,18 @@ public:
 private slots:
     void execute(QByteArray data);
 private:
-    void checkTable( routeRecord *r );
+    void checkTable( RouteRecord *r );
     void sendUpdate(bool isAll);
     int mySplitMode;
     bool myTriggerUpdate;
     quint16 mySocket;
-    udpSocket *receiver;
-    void addToTemp(routeRecord *r);
+    AbstractSocket *receiver;
+    void addToTemp(RouteRecord *r);
     void clearTemp();
-    QList<routeRecord*> tempList;
+    QList<RouteRecord*> tempList;
     int timer;
     int interval;
-    routeModel *model;
+    RouteModel *model;
 };
 //----------------------------------------------
 

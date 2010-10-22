@@ -29,7 +29,7 @@ class QComboBox;
 
 class ipEdit;
 class SmartDevice;
-class routeModel;
+class RouteModel;
 
 /*!
   Реализует отображение таблицы маршрутизации.
@@ -55,7 +55,7 @@ private:
     QPushButton *btn_remove;
     QPushButton *btn_close;
     QTableView *table;
-    routeModel *model;
+    RouteModel *model;
     SmartDevice *dev;
 private slots:
     void selectAdapter(int number);

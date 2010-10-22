@@ -29,7 +29,7 @@
   Инициализирует программу стандартными настройками.
   @param d - устройство на которое устанавливается программа.
 */
-ripProgramm::ripProgramm()
+RipProgram::RipProgram(QObject *parent) : Program(parent)
 {
     myName = tr("RIP");
     mySocket = 520;
@@ -40,24 +40,25 @@ ripProgramm::ripProgramm()
 }
 //--------------------------------------------------------------
 
-ripProgramm::~ripProgramm()
+RipProgram::~RipProgram()
 {
     clearTemp();
-    delete receiver;
+    myDevice->disposeSocket(receiver);
+    // MAKE REGISTER SOCKET SYSTEM!!!!!!!
 }
 
-void ripProgramm::clearTemp()
+void RipProgram::clearTemp()
 {
     qDeleteAll(tempList);
     tempList.clear();
 }
 
-void ripProgramm::setDevice(SmartDevice *s)
+void RipProgram::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) return;
     myDevice = s;
-    model = myDevice->routeTable();
-    receiver = new udpSocket(s,mySocket);
+    model = myDevice->routeModel();
+    receiver = s->openSocket(mySocket , SmartDevice::UDP);
     receiver->setBind("0.0.0.0");
     connect( receiver , SIGNAL(readyRead(QByteArray)) , SLOT(execute(QByteArray)) );
 }
@@ -65,7 +66,7 @@ void ripProgramm::setDevice(SmartDevice *s)
   Отсчитывает интервалы, по истечении которых
   происходит отправка rip-сообщений.
 */
-void ripProgramm::incTime()
+void RipProgram::incTime()
 {
     if ( !myEnable || !myDevice->isRouter() ) return;
     timer++;
@@ -82,7 +83,7 @@ void ripProgramm::incTime()
   маршрутизаторов
   @param b - Полученное сообщение.
 */
-void ripProgramm::execute(QByteArray data)
+void RipProgram::execute(QByteArray data)
 {
     if ( !myEnable ) return;
     IpAddress sender;
@@ -92,15 +93,15 @@ void ripProgramm::execute(QByteArray data)
     d >> sender;
     int count = (size-4)/9;
     for ( int i = 0; i < count ; i++ ) {
-        routeRecord *t = new routeRecord;
+        RouteRecord *t = new RouteRecord;
         d >> t->dest >> t->mask >> t->metric;
         Q_ASSERT( t->metric >= 0 && t->metric <= RIP_INFINITY);
         t->metric++;
         t->out = myDevice->findInterfaceIp( sender );
         t->gateway = sender;
         t->time = 0;
-        t->mode = routeModel::ripMode;
-        t->change = routeModel::noChanged;
+        t->mode = RouteModel::ripMode;
+        t->change = RouteModel::noChanged;
         checkTable(t);
     }
 }
@@ -109,7 +110,7 @@ void ripProgramm::execute(QByteArray data)
     Посылает rip-сообщение.
     @param isAll - если true, рассылается вся таблица при регулярном update, если false то только изменившиеся записи.
 */
-void ripProgramm::sendUpdate(bool isAll)
+void RipProgram::sendUpdate(bool isAll)
 {
     if ( isAll ) model->update();
     foreach ( Interface *i , myDevice->interfaces() ) {
@@ -120,7 +121,7 @@ void ripProgramm::sendUpdate(bool isAll)
         d << i->ip();
         if ( isAll ) {
             for ( int j = 0 ; j < model->rowCount() ; j++ ) {
-                routeRecord *t = model->recordAt(j);
+                RouteRecord *t = model->recordAt(j);
                 if ( t->dest.isLoopBack() ) continue;
                 qint8 metric = ( t->time == ttl ) ? RIP_INFINITY : t->metric;
                 if ( ( t->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
@@ -131,7 +132,7 @@ void ripProgramm::sendUpdate(bool isAll)
             }
         }
         else {
-            foreach ( routeRecord *j , tempList ) {
+            foreach ( RouteRecord *j , tempList ) {
                 qint8 metric = ( j->time == ttl ) ? RIP_INFINITY : j->metric;
                 if ( ( j->gateway & i->mask() ) == ( i->ip() & i->mask() ) ) {
                     if ( mySplitMode == SPLIT_HORIZONT ) continue;
@@ -143,8 +144,10 @@ void ripProgramm::sendUpdate(bool isAll)
         d.device()->seek(0);
         d << quint16(b.size()-2);
         IpAddress temp = i->ip() | ~i->mask();
-        udpSocket sock(myDevice, mySocket);
-        sock.write(temp,mySocket,b);        
+        AbstractSocket *sock = myDevice->openSocket(mySocket,SmartDevice::UDP);
+        //UdpSocket sock(myDevice, mySocket);
+        sock->write(temp,mySocket,b);
+        myDevice->disposeSocket(sock);
     }
     if (tempList.size()) clearTemp();
     model->deleteOldRecord(ttl);
@@ -154,9 +157,9 @@ void ripProgramm::sendUpdate(bool isAll)
   Проверяет таблицу на наличие одинаковых записей.
   @param r - Указатель на новую запись.
 */
-void ripProgramm::checkTable(routeRecord *r)
+void RipProgram::checkTable(RouteRecord *r)
 {
-    routeRecord *i = model->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
+    RouteRecord *i = model->recordAt( r->dest ); // Ищем запись с таким же адресом назначения
     if ( !i && r->metric < 16 ) { // Если её нет, добавляем эту и выходим.
         model->addToTable(r);
         return;
@@ -165,7 +168,7 @@ void ripProgramm::checkTable(routeRecord *r)
         delete r;
         return;
     }
-    if ( r->metric >= 16 && r->mode != routeModel::connectMode ) {
+    if ( r->metric >= 16 && r->mode != RouteModel::connectMode ) {
         model->deleteFromTable(i); // Если метрика >=16 значит этой сети больше нет, удаляем.
         delete r;
         return;
@@ -189,10 +192,10 @@ void ripProgramm::checkTable(routeRecord *r)
   Обработчик программных прерываний от устройства.
   @param u - номер прерывания.
 */
-bool ripProgramm::interrupt(int u)
+bool RipProgram::interrupt(int u)
 {
     if ( !myEnable || mySplitMode == SPLIT_NONE ) return false;
-    routeRecord *t = 0;
+    RouteRecord *t = 0;
     switch (u) {
         case SmartDevice::addNet : // Если добавляется сеть рассылаем всем новую таблицу.
             addToTemp( model->changedRecord() );
@@ -208,7 +211,7 @@ bool ripProgramm::interrupt(int u)
     return false;
 }
 //---------------------------------------------------
-void ripProgramm::showProperty()
+void RipProgram::showProperty()
 {
 #ifndef __TESTING__
     ripProperty *d = new ripProperty;
@@ -217,9 +220,9 @@ void ripProgramm::showProperty()
 #endif
 }
 
-void ripProgramm::addToTemp(routeRecord *r)
+void RipProgram::addToTemp(RouteRecord *r)
 {
-    routeRecord *t = new routeRecord;
+    RouteRecord *t = new RouteRecord;
     *t = *r;
     tempList << t;
 }
@@ -227,10 +230,10 @@ void ripProgramm::addToTemp(routeRecord *r)
   Записывает отличительные черты RIP в поток.
   @param stream - поток для записи.
 */
-void ripProgramm::write(QDataStream &stream) const
+void RipProgram::write(QDataStream &stream) const
 {
     stream << RIP;
-    programmRep::write(stream);
+    Program::write(stream);
     stream << mySplitMode << myTriggerUpdate;
 }
 //---------------------------------------------------
@@ -238,9 +241,9 @@ void ripProgramm::write(QDataStream &stream) const
   Считывает отличительные черты RIP из потока.
   @param stream - поток для чтения.
 */
-void ripProgramm::read(QDataStream &stream)
+void RipProgram::read(QDataStream &stream)
 {
-    programmRep::read(stream);
+    Program::read(stream);
     stream >> mySplitMode >> myTriggerUpdate;
 }
 //---------------------------------------------------

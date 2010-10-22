@@ -20,19 +20,20 @@
 #ifndef CABLEDEV_H
 #define CABLEDEV_H
 
-#include <QGraphicsLineItem>
+#include <QGraphicsObject>
 #include <QPainter>
 #include <QQueue>
 
-class Device;
-class devicePort;
-class cableTextItem;
+class DevicePort;
 
 static const qreal NORMAL_SIZE = 2.5;
 static const qreal COLLISION_SIZE = 5.0;
 static const int MINIMUM_DEAD = 3;
 static const int TIME_BEFORE_DEAD = 17;
 static const int PERCENT_DEAD = 25;
+
+class Cable;
+typedef QList<Cable*> CableList;
 
 struct bitStream {
     QByteArray data;
@@ -41,51 +42,48 @@ struct bitStream {
     qreal size;
 };
 
-class cableDev : public QGraphicsLineItem
+class Cable : public QGraphicsObject
 {
+    Q_OBJECT
 public:
     enum { Type = UserType + 1 };
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
-        return QRectF(line().p1(),line().p2()).normalized(); //.adjusted(-5,-5,5,5);
+        return QRectF(startItem->pos(),endItem->pos()).normalized(); //.adjusted(-5,-5,5,5);
     }
-    bool isCollisionCable() const { return isCollision; }
-    cableDev(Device *start,Device *end,QString sp, QString ep,int s = 5);
-    ~cableDev();
+    bool isCollisionCable() const { return isCollision; }    
+    Cable(QGraphicsObject *parent = 0);
+    ~Cable();
     void updatePosition(); // Обновление прорисовки
     void motion();
     bool isBusy() const { return fromStartQueue.count() || fromEndQueue.count(); }
-    bool isBusy(const devicePort *d);
-    void insertInPort(devicePort *p);
+    bool isBusy(const DevicePort *d);    
     int isShared() const { return myShared; }
-    void input(QByteArray b,devicePort *cur);;
+    void input(QByteArray b,DevicePort *cur);
     void setChecked(bool c) { myChecked = c; update(); }
-    bool isChecked() const { return myChecked; }
-    void setShowLabel(bool b);
-    void setFastInfo(bool b, Device *dev, QString info);
+    bool isChecked() const { return myChecked; }            
 
-    void deleteConnect();
-    QPointF startLabelPoint() const { return line().pointAt(0.3); }
-    QPointF endLabelPoint() const { return line().pointAt(0.7); }
     void startCollision();
-    void registerCable();
-    void unregisterCable();
 
 public:
-    Device* start() { return myStartDev; }
-    Device* end() { return myEndDev; }
-    devicePort* startPort() { return myStartPort; }
-    devicePort* endPort() { return myEndPort; }
-    QString startSocketName() const;
-    QString endSocketName() const;
-private:
-    QString myStartName;
-    QString myEndName;
-    Device *myStartDev; //!< Указатель на устройтсво начала.
-    Device *myEndDev; //!< Указатель на устройство конца.
-    devicePort *myStartPort;
-    devicePort *myEndPort;
+
+    void setStartItem(QGraphicsItem *item) { startItem = item; }
+    void setEndItem(QGraphicsItem *item) { endItem = item; }
+
+    void setStartPort( DevicePort *port);
+    void setEndPort( DevicePort *port );
+    DevicePort* startPort() { return myStartPort; }
+    DevicePort* endPort() { return myEndPort; }
+
+    QPointF startPos() const { return startItem->pos(); }
+    QPointF endPos() const { return endItem->pos(); }
+
+private:    
+    QGraphicsItem *startItem;
+    QGraphicsItem *endItem;
+    DevicePort *myStartPort;
+    DevicePort *myEndPort;    
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -98,8 +96,6 @@ private:
     bool myShared;
     QQueue<bitStream*> fromStartQueue;
     QQueue<bitStream*> fromEndQueue;
-    cableTextItem *textStart;
-    cableTextItem *textEnd;
     int mySpeed;
 };
 

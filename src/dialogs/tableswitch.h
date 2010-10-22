@@ -23,17 +23,16 @@
 #include "ui_tableswitch.h"
 
 class switchTableSetting;
-class switchModel;
+class SwitchModel;
 
-class tableSwitch : public QDialog , private Ui::tableSwitch
+class TableSwitch : public QDialog , private Ui::tableSwitch
 {
-    Q_OBJECT
-    Q_DISABLE_COPY(tableSwitch)
+    Q_OBJECT    
 public:
-    explicit tableSwitch(switchTableSetting *s);
+    explicit TableSwitch(switchTableSetting *s);
 private:
     switchTableSetting *sw;
-    switchModel *t_sw;
+    SwitchModel *t_sw;
 private slots:
     void addRecord();
     void deleteRecord();

@@ -30,7 +30,7 @@
 #include "switchdevice.h"
 #include "cabledev.h"
 
-Device::Device(QObject *parent) : QGraphicsObject(0) , impl(0)
+Device::Device(QObject*) : QGraphicsObject(0) , impl(0)
 {
     createImplHelper();
 }
@@ -54,11 +54,11 @@ Device::Device(QDataStream &stream) : QGraphicsObject(0)
 void Device::createImpl(int n)
 {    
     switch (n) {
-        case compDev : impl = new Computer(this); break;
-        case hubDev : impl = new HubDevice(this); break;
-        case switchDev : impl = new SwitchDevice(this); break;
-        case routerDev : impl = new RouterDevice(this); break;
-        default: break;
+    case compDev : impl = Computer::create(this); break;
+    case hubDev : impl = HubDevice::create(this); break;
+    case switchDev : impl = SwitchDevice::create(this); break;
+    case routerDev : impl = RouterDevice::create(this); break;
+    default: break;
     }
     impl->setVisualizator(this);
     setToolTip( impl->note() );
@@ -163,29 +163,17 @@ void  Device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 }
 //----------------------------------------------------------------
 
-void Device::addConnection(const QString &port, cableDev *c)
-{
-    myCableList << c;
-    impl->addConnection(port,c);
-}
-
-void Device::deleteConnection(cableDev *c)
-{
-    myCableList.removeOne(c);
-    impl->deleteConnection(c);
-    update();
-}
 
 void Device::updateCables()
 {
-    foreach ( cableDev *i , myCableList )
+    foreach ( Cable *i , cables() )
         i->updatePosition();
 }
 
 bool Device::isConnectDevices(Device *s , Device *e)
 {
-    foreach( cableDev *i , s->myCableList )
-        foreach ( cableDev *j , e->myCableList )
+    foreach( Cable *i , s->cables() )
+        foreach ( Cable *j , e->cables() )
             if ( i == j ) return true;
     return false;
 }

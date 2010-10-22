@@ -20,17 +20,16 @@
 #include "hubchip.h"
 #include "deviceport.h"
 
-hubChip::hubChip(int n /* = 4 */) : boxChip(n)
+HubChip::HubChip(QObject *parent) : BoxChip(parent)
 {
-    foreach ( devicePort *i , mySockets )
-        i->setShared(true);
 }
-void hubChip::receiveEvent(frame &fr,devicePort *sender)
+
+void HubChip::receiveEvent(frame &fr,DevicePort *sender)
 {
 #ifndef __TESTING__
     checkReceive(fr);
     emit receiveData(fr,tr("LAN%1").arg(sender->num()));
-    foreach ( devicePort *i , mySockets )
+    foreach ( DevicePort *i , mySockets )
         if ( i != sender && i->isConnect() ) {
             checkSend(fr);
             emit sendData(fr, tr("LAN%1").arg(i->num()) );
@@ -38,15 +37,17 @@ void hubChip::receiveEvent(frame &fr,devicePort *sender)
         }
 #endif
 }
+
 #ifndef __TESTING__
-void hubChip::detectCollision()
+void HubChip::detectCollision()
 {
-    foreach ( devicePort *i , mySockets ) i->startCollision();
+    foreach ( DevicePort *i , mySockets ) i->startCollision();
 }
 #endif
-void hubChip::addSocket(int n)
+
+void HubChip::addSocket(int n)
 {
-    boxChip::addSocket(n);
+    BoxChip::addSocket(n);
     mySockets[n-1]->setShared(true);
 }
 

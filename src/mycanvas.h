@@ -23,19 +23,19 @@
 #include <QtGui/QGraphicsScene>
 #include <QtGui/QUndoStack>
 #include "textitem.h"
+#include "cabledev.h"
 
 class QMenu;
 class QAction;
-class cableDev;
+class Cable;
 class connectDialog;
-class devicePort;
+class DevicePort;
 class Device;
 class DeviceImpl;
 class abstractState;
 
-typedef QList<Device*> deviceList;
-typedef QList<textItem*> textItemList;
-typedef QList<cableDev*> cableList;
+typedef QList<Device*> DeviceList;
+typedef QList<TextItem*> TextItemList;
 
 static const int UNDO_LIMIT = 7;
 
@@ -61,10 +61,11 @@ public:
 
     Device* addDeviceOnScene(QPointF coor, int myType = -1); // Добавить устройство на сцену
     Q_INVOKABLE void addDevice(Device *device);
+    Q_INVOKABLE void addTextItem(TextItem *item);
 
     void hideState();
-    cableDev* createConnection(Device *s,Device *e,QString sp,QString ep);
-    textItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
+    Cable* createConnection(Device *s,Device *e,QString sp,QString ep);
+    TextItem* createTextItem(QPointF p, const QString &str = tr("Commentary") );
     bool isOpen () const { return myOpen; }
     void setOpen(bool c) { myOpen = c; }
     void ticTime();
@@ -84,10 +85,10 @@ public:
     QAction* redoAction(QObject *obj) { return commandStack.createRedoAction(obj); }
     void registerDevice(Device *dev);    
     void unregisterDevice(Device *dev);
-    void registerCable(cableDev *cable);
-    void unregisterCable(cableDev *cable);
-    void registerText(textItem *t);
-    void unregisterText(textItem *t);
+    void registerCable(Cable *cable);
+    void unregisterCable(Cable *cable);
+    void registerText(TextItem *t);
+    void unregisterText(TextItem *t);
     void putItems(QMap<QGraphicsItem*,QPointF> map);
     void calibrateAll(QList<QGraphicsItem*> list);
     bool isDevice(QGraphicsItem *t) const;
@@ -98,10 +99,9 @@ signals:
     void tictac();
 public slots:
     void emulateTime();
-    void editorLostFocus(textItem *t);
+    void editorLostFocus(TextItem *t);
     void setMode(int modScene,int curDev);
-    void setShowGrid(bool b);
-    void setShowLabels(bool b);
+    void setShowGrid(bool b);    
     void removeDevice();
     void newScene();
     void closeScene();
@@ -116,9 +116,12 @@ public slots:
     DeviceImpl* addSwitch(int x,int y);
     DeviceImpl* addHub(int x,int y);
     DeviceImpl* addRouter(int x,int y);
-    textItem* addNote(int x, int y);
+    TextItem* addNote(int x, int y);
     QObjectList computerList();
     void addConnection(DeviceImpl *s,DeviceImpl *e,const QString &sp,const QString &se);
+
+    void addCableDev(Cable *cable);
+
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event); // События перемещения
     void mousePressEvent(QGraphicsSceneMouseEvent *event); // нажатия
@@ -128,24 +131,23 @@ private:
     QUndoStack commandStack;    
     Device* deviceWithImpl(DeviceImpl *d);
     bool myOpen;
-    bool myModified;
-    int lastId;
+    bool myModified;    
     abstractState *myState;        
 
 public:
-    deviceList devices() { return myDevices; }
+    DeviceList devices() const { return myDevices; }
 private:
-    deviceList myDevices; //!< Список всех устройств на сцене.
+    DeviceList myDevices; //!< Список всех устройств на сцене.
 
 public:
-    textItemList textItems() const { return myTextItems; }
+    TextItemList textItems() const { return myTextItems; }
 private:
-    textItemList myTextItems; //!< Список всех надписей на сцене.
+    TextItemList myTextItems; //!< Список всех надписей на сцене.
 
 public:
-    cableList connections() const { return myConnections; }
+    CableList connections() const { return myConnections; }
 private:
-    cableList myConnections;
+    CableList myConnections;
 
 public:
     QMenu* itemMenu() { return myItemMenu; }
