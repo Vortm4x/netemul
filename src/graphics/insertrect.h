@@ -22,10 +22,10 @@
 
 #include <QGraphicsRectItem>
 
-class insertRect : public QGraphicsRectItem
+class InsertRect : public QGraphicsRectItem
 {
 public:
-    insertRect();
+    InsertRect();
     void moving(QPointF p);
     bool isReadyInsert() { return collidingItems().isEmpty(); }
     void hideItem() { setPos(-100,-100); }

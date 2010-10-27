@@ -50,8 +50,8 @@ SCRIPT_PATH = "scripts"
 win32 { 
     DESTDIR = ../trunk
     message("Static link ...")
-    DEFINES += QT_NO_DEBUG_OUTPUT
-    CONFIG += static
+#    DEFINES += QT_NO_DEBUG_OUTPUT
+#    CONFIG += static
 }
 macx:message("You have MACX...")
 CONFIG += warn_on

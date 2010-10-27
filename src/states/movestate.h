@@ -24,7 +24,7 @@
 #include <QPointF>
 
 class QGraphicsItem;
-class selectRect;
+class SelectRect;
 
 typedef QList<QGraphicsItem*> itemList;
 
@@ -38,7 +38,7 @@ public:
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 private:    
     itemList filterDevices(itemList list);
-    selectRect *SelectRect; // Временный прямоугольник для выделения
+    SelectRect *selectRect; // Временный прямоугольник для выделения
     QPointF p2Rect; // Точка начала выделения
     QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат
 };

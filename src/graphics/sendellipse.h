@@ -22,11 +22,11 @@
 
 #include <QGraphicsEllipseItem>
 
-class sendEllipse : public QGraphicsEllipseItem
+class SendEllipse : public QGraphicsEllipseItem
 {
 public:
     enum { noSendItem = 0 , oneSendItem = 1 };
-    sendEllipse();
+    SendEllipse();
     void chooseOneDevice();
     void moving(QPointF p);
     void hideItem() { setPos(-100,-100); }

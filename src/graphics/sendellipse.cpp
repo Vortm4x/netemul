@@ -21,7 +21,7 @@
 #include <QPen>
 #include <QBrush>
 
-sendEllipse::sendEllipse()
+SendEllipse::SendEllipse()
 {
     setPen(QPen(Qt::lightGray));
     setBrush(QColor(255,128,0,128));
@@ -31,13 +31,13 @@ sendEllipse::sendEllipse()
 }
 
 
-void sendEllipse::chooseOneDevice()
+void SendEllipse::chooseOneDevice()
 {
     setPen(QPen(Qt::green));
     setBrush(QColor(0,128,0,128));
 }
 
-void sendEllipse::moving(QPointF p)
+void SendEllipse::moving(QPointF p)
 {
     setPos(p);
 }

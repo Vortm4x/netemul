@@ -22,10 +22,10 @@
 
 #include <QGraphicsRectItem>
 
-class selectRect : public QGraphicsRectItem
+class SelectRect : public QGraphicsRectItem
 {
 public:
-    selectRect();
+    SelectRect();
 };
 
 #endif // SELECTRECT_H

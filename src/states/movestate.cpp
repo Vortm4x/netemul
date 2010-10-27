@@ -28,15 +28,15 @@
 
 moveState::moveState(MyCanvas *s) : abstractState(s)
 {
-    SelectRect = 0; // Выделения нет
+    selectRect = 0; // Выделения нет
     p2Rect = QPoint();
 }
 
 moveState::~moveState()
 {
-    if ( SelectRect ) {
-        scene->removeItem(SelectRect);
-        delete SelectRect;
+    if ( selectRect ) {
+        scene->removeItem(selectRect);
+        delete selectRect;
     }
 }
 
@@ -45,8 +45,8 @@ void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
     if ( coordMap.count() ) {
         scene->QGraphicsScene::mouseMoveEvent(event);
     }
-    else  if (SelectRect) // Если есть выделение обновляем его.
-       SelectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
+    else  if (selectRect) // Если есть выделение обновляем его.
+       selectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
 }
 
 void moveState::mousePress(QGraphicsSceneMouseEvent *event)
@@ -62,9 +62,9 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
     } // Иначе создаем прямоугольник выделения.
     else {
         if ( scene->items( event->scenePos() ).count() ) return;
-        SelectRect = new selectRect;
+        selectRect = new SelectRect;
         p2Rect = QPointF( event->scenePos() );
-        scene->addItem(SelectRect);
+        scene->addItem(selectRect);
     }
 }
 
@@ -107,14 +107,14 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
         coordMap.clear();
     }
     else {
-        if ( !SelectRect ) return;
+        if ( !selectRect ) return;
         QPainterPath path;
-        path.addRect(SelectRect->rect());
+        path.addRect(selectRect->rect());
         scene->setSelectionArea(path);
-        scene->removeItem(SelectRect);
-        delete SelectRect;
+        scene->removeItem(selectRect);
+        delete selectRect;
         p2Rect = QPoint();
-        SelectRect = 0 ;
+        selectRect = 0 ;
     }
 }
 

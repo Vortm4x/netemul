@@ -22,19 +22,19 @@
 
 #include "abstractstate.h"
 
-class insertRect;
+class InsertRect;
 
 class insertState : public abstractState
 {
 public:
     insertState(MyCanvas *s);
     ~insertState();
-    void mouseMove(QGraphicsSceneMouseEvent *event);
-    void mousePress(QGraphicsSceneMouseEvent *event);
-    void mouseRelease(QGraphicsSceneMouseEvent*) { }
+    virtual void mouseMove(QGraphicsSceneMouseEvent *event);
+    virtual void mousePress(QGraphicsSceneMouseEvent *event);
+    virtual void mouseRelease(QGraphicsSceneMouseEvent*) { }
     void hideState();
 private:
-    insertRect *InsertRect; // Прямоугольныник для вставки
+    InsertRect *insertRect; // Прямоугольныник для вставки
 };
 
 #endif // INSERTSTATE_H

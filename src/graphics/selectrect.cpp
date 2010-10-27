@@ -21,7 +21,7 @@
 #include <QPen>
 #include <QBrush>
 
-selectRect::selectRect()
+SelectRect::SelectRect()
 {
     setPen(QPen(Qt::blue));
     setBrush(QColor( 0 , 0 ,128 , 64));

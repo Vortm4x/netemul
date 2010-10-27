@@ -25,29 +25,30 @@
 
 insertState::insertState(MyCanvas *s) : abstractState(s)
 {
-    InsertRect = new insertRect;
-    scene->addItem(InsertRect);
+    insertRect = new InsertRect;
+    s->addItem(insertRect);
 }
 
 insertState::~insertState()
-{
-    scene->removeItem(InsertRect);
-    delete InsertRect;
+{    
+    scene->removeItem(insertRect);
+    delete insertRect;
+
 }
 
 void insertState::hideState()
 {
-    InsertRect->setPos(-100,-100);
+    insertRect->setPos(-100,-100);
 }
 
 void insertState::mouseMove(QGraphicsSceneMouseEvent *event)
-{
-    InsertRect->moving( event->scenePos() );
+{      
+    insertRect->moving( event->scenePos() );
 }
 
 void insertState::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    if ( !InsertRect->isReadyInsert() ) return;
+    if ( !insertRect->isReadyInsert() ) return;    
      // Добавляем устройство на сцену
     addCommand *command = new addCommand( scene , event->scenePos() , scene->nowType );
     scene->commandStack.push(command);

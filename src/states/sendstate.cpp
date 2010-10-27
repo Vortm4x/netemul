@@ -28,30 +28,30 @@
 sendState::sendState(MyCanvas *s) : abstractState(s)
 {
     mySendState = noSendItem;
-    SendEllipse = new sendEllipse;
-    scene->addItem(SendEllipse);
+    sendEllipse = new SendEllipse;
+    scene->addItem(sendEllipse);
 }
 
 sendState::~sendState()
 {
-    scene->removeItem( SendEllipse);
-    delete SendEllipse;
+    scene->removeItem( sendEllipse);
+    delete sendEllipse;
 }
 
 void sendState::hideState()
 {
-    SendEllipse->setPos(-100,-100);
+    sendEllipse->setPos(-100,-100);
 }
 
 void sendState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-    if ( SendEllipse ) SendEllipse->moving( event->scenePos() );
+    if ( sendEllipse ) sendEllipse->moving( event->scenePos() );
 }
 
 void sendState::mousePress(QGraphicsSceneMouseEvent*)
 {
-    if ( !SendEllipse->hasUnderDevice() ) return;
-    QGraphicsItem *tempItem = SendEllipse->underDevice();
+    if ( !sendEllipse->hasUnderDevice() ) return;
+    QGraphicsItem *tempItem = sendEllipse->underDevice();
     Device *t = qgraphicsitem_cast<Device*>(tempItem);
     if ( !t ) return;
     if ( !t->isCanSend() ) {
@@ -67,7 +67,7 @@ void sendState::mousePress(QGraphicsSceneMouseEvent*)
         protocol = temp->protocol();
         senderDevice = t;
         mySendState = oneSendItem;
-        SendEllipse->chooseOneDevice();
+        sendEllipse->chooseOneDevice();
         delete temp;
     } else {
         sendDialog *temp = new sendDialog(sendDialog::receiver,t);

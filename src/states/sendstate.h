@@ -23,7 +23,7 @@
 #include "abstractstate.h"
 
 class Device;
-class sendEllipse;
+class SendEllipse;
 
 class sendState : public abstractState
 {
@@ -43,7 +43,7 @@ private:
     QString receiverIp;
     Device *senderDevice;
     int protocol;
-    sendEllipse *SendEllipse; // Кружочек для выделения отправителя и получателя
+    SendEllipse *sendEllipse; // Кружочек для выделения отправителя и получателя
 };
 
 #endif // SENDSTATE_H

@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
     //view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
     view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
+    //view->setMouseTracking(true);
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар
     timeLabel = new QLabel;
@@ -585,7 +586,7 @@ void MainWindow::saveAsFile()
 bool MainWindow::eventFilter(QObject *obj,QEvent *event)
 {
     if ( obj == view ) {
-        if ( event->type() == QEvent::Leave )
+        if ( event->type() == QEvent::Leave )            
             canva->hideState();
         return false;
     } else

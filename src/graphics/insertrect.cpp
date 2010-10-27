@@ -21,16 +21,16 @@
 #include <QPen>
 #include <QBrush>
 
-insertRect::insertRect()
+InsertRect::InsertRect()
 {
     setPos( 0, -50 );
     setPen(QPen(Qt::red));
     setBrush(QColor( 128 , 0 , 0 , 64));
-    setZValue(1000);
+    //setZValue(1000.0);
     setRect( -20 , -20 , 40 ,40);
 }
 
-void insertRect::moving(QPointF p)
+void InsertRect::moving(QPointF p)
 {
     if ( collidingItems().isEmpty() ) {
         setPen(QPen(Qt::blue));

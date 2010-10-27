@@ -54,6 +54,11 @@ MyCanvas::MyCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myModified = false;
     myState = abstractState::initialize(this);
     commandStack.setUndoLimit(UNDO_LIMIT);
+
+    // WHAT THE FUCK???
+    TextItem *i = createTextItem(QPointF(0,0),"123");
+    unregisterText(i);
+    delete i;
 }
 //------------------------------------------------------------------
 /*!
@@ -72,7 +77,7 @@ MyCanvas::~MyCanvas()
  * @param event - переменная события
 */ 
 void MyCanvas::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
+{    
     myState->mouseMove(event);
 }
 //----------------------------------------------------------------------
@@ -165,7 +170,7 @@ void MyCanvas::newFile()
     setBackgroundBrush(QBrush(QPixmap(":im/images/back.png")));
     setSceneRect(0,0,MyCanvas::width,MyCanvas::height);
     myState->goMove();
-    myOpen = true;
+    myOpen = true;    
     play();
 }
 //-------------------------------------------------
@@ -216,7 +221,7 @@ void MyCanvas::openScene(QString fileName)
     QString str;
     s >> str;
     if ( str != QCoreApplication::applicationVersion() ) {
-        QMessageBox::critical(NULL,tr("Error"),tr("Outdated version of the file, file can't be opened"),
+        QMessageBox::critical(0,tr("Error"),tr("Outdated version of the file, file can't be opened"),
                               QMessageBox::Ok , QMessageBox::Ok );
         emit fileClosed();
         return;
