@@ -568,11 +568,12 @@ void MyCanvas::putItems(QMap<QGraphicsItem*,QPointF> map)
         curDevice->setPos( curPoint );
 
         if ( isDevice( curDevice ) ) {
-            Device *d = qgraphicsitem_cast<Device*>(curDevice);
+            Device *d = qgraphicsitem_cast<Device*>(curDevice);            
+            d->setPos( calibrate( d->pos() ) );
             d->updateCables();
         }
     }
-    calibrateAll( map.keys() );
+//    calibrateAll( map.keys() );
     myModified = true;
 }
 

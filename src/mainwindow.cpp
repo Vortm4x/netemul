@@ -68,8 +68,9 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     view->setFocus(); // Даем ему фокус
     view->setRenderHint(QPainter::Antialiasing); // Включаем сглаживание
     view->setOptimizationFlags( QGraphicsView::DontClipPainter  | QGraphicsView::DontSavePainterState  );
-    //view->setViewportUpdateMode( QGraphicsView::BoundingRectViewportUpdate );
-    view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
+//    view->setViewportUpdateMode( QGraphicsView::MinimalViewportUpdate );
+    view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+//    view->setViewportUpdateMode( QGraphicsView::FullViewportUpdate );
     //view->setMouseTracking(true);
     view->installEventFilter(this);
     statusBar()->showMessage(""); // Активизируем статус бар

@@ -103,6 +103,7 @@ protected:
     friend QDataStream& operator<<(QDataStream &stream,const Device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };
 //--------------------------------------------------------------------
 /*!

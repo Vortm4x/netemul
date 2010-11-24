@@ -68,7 +68,7 @@ void Cable::paint(QPainter *painter,const QStyleOptionGraphicsItem *option,QWidg
 
 void Cable::updatePosition()
 {
-    update(boundingRect());
+    update();
 }
 
 /*!

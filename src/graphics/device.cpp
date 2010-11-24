@@ -71,6 +71,8 @@ void Device::createImplHelper()
     pixmapRect = devRect.adjusted(3,3,-3,-3);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
+//    setFlag(QGraphicsItem::ItemSendsScenePositionChanges,true);
+    setFlag( QGraphicsItem::ItemSendsGeometryChanges , true );
 }
 
 void Device::setDeviceImpl(DeviceImpl *im)
@@ -163,6 +165,16 @@ void  Device::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 }
 //----------------------------------------------------------------
 
+
+QVariant Device::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionHasChanged && scene()) {
+        // value is the new position.
+        updateCables();
+        return value.toPointF();
+    }
+    return QGraphicsItem::itemChange(change, value);
+}
 
 void Device::updateCables()
 {
