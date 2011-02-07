@@ -26,60 +26,60 @@
 #include "textstate.h"
 #include "sendstate.h"
 
-abstractState::abstractState(MyCanvas *s)
+AbstractState::AbstractState(MyCanvas *s)
 {
     scene = s;
 }
 
-abstractState* abstractState::initialize(MyCanvas *s)
+AbstractState* AbstractState::initialize(MyCanvas *s)
 {
     return new emptyState(s);
 }
 
-void abstractState::goMove()
+void AbstractState::goMove()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new moveState(scene);
     delete oldState;
 }
 
-void abstractState::goInsert()
+void AbstractState::goInsert()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new insertState(scene);
     delete oldState;
 }
 
-void abstractState::goCable()
+void AbstractState::goCable()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new cableState(scene);
     delete oldState;
 }
 
-void abstractState::goText()
+void AbstractState::goText()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new textState(scene);
     delete oldState;
 }
 
-void abstractState::goSend()
+void AbstractState::goSend()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new sendState(scene);
     delete oldState;
 }
 
-void abstractState::goEmpty()
+void AbstractState::goEmpty()
 {
-    abstractState *oldState = scene->myState;
+    AbstractState *oldState = scene->myState;
     scene->myState = new emptyState(scene);
     delete oldState;
 }
 
 
-void abstractState::goTo(int mode)
+void AbstractState::goTo(int mode)
 {
     switch ( mode ) {
         case move : goMove(); break;

@@ -26,7 +26,6 @@
 #include <QtDebug>
 #include <QtCore/QFile>
 #include <QtCore/QDataStream>
-#include <QtGui/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtGui/QApplication>
 #include <QtXml/QXmlSimpleReader>
@@ -52,7 +51,7 @@ MyCanvas::MyCanvas(QMenu *context, QObject *parent) : QGraphicsScene(parent)
     myTimer = 0;       
     myOpen = false;
     myModified = false;
-    myState = abstractState::initialize(this);
+    myState = AbstractState::initialize(this);
     commandStack.setUndoLimit(UNDO_LIMIT);
 
     // WHAT THE FUCK???
@@ -207,13 +206,13 @@ void MyCanvas::hideState()
   Загружает сцену из файла.
   @param fileName - имя файла из которого осуществляется загрузка.
 */
-void MyCanvas::openScene(QString fileName)
+int MyCanvas::openScene(const QString &fileName)
 {
+    int code = OPEN_OK;
     newFile();
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << tr("Opening file for reading is impossible");
-        return;
+        return READING_FAIL;
     }
     QDataStream s(&file);
     s.setVersion(QDataStream::Qt_4_3);
@@ -221,56 +220,62 @@ void MyCanvas::openScene(QString fileName)
     QString str;
     s >> str;
     if ( str != QCoreApplication::applicationVersion() ) {
-        QMessageBox::critical(0,tr("Error"),tr("Outdated version of the file, file can't be opened"),
-                              QMessageBox::Ok , QMessageBox::Ok );
         emit fileClosed();
-        return;
+        code = OUTDATED_VERSION;
+    } else {
+        QApplication::changeOverrideCursor(Qt::WaitCursor);
+        Device *item;
+        int n,i;
+        s >> n;
+        for ( i = 0 ; i < n ; i++ ) {
+            item = new Device(s);
+            item->setMenu(myItemMenu);
+            addItem(item);
+            myDevices << item;
+        }
+        s >> n;
+        for ( i = 0 ; i < n ; i++ ) {
+            s >> p;
+            Device *start = deviceInPoint(p);
+            s >> p;
+            Device *end = deviceInPoint(p);
+            s >> str;
+            QString startP = str;
+            s >> str;
+            QString endP = str;
+            createConnection( start , end , startP , endP );
+        }
+        s >> n;
+        for ( i = 0 ; i < n ; i++ ) {
+            s >> p; s >> str;
+            createTextItem(p,str);
+        }
+        if ( s.status() != QDataStream::Ok ) {
+            qDebug() << "PPC";
+            code = STREAM_ERROR;
+            emit fileClosed();
+        } else {
+            qDebug() << tr("Scene opened from %1").arg(fileName) ;
+            emit fileOpened();
+        }
+        file.close();
+        QApplication::restoreOverrideCursor();
+        myModified = false;
     }
-    QApplication::changeOverrideCursor(Qt::WaitCursor);
-    Device *item;
-    int n,i;
-    s >> n;
-    for ( i = 0 ; i < n ; i++ ) {
-        item = new Device(s);
-        item->setMenu(myItemMenu);
-        addItem(item);
-        myDevices << item;
-    }
-    s >> n;
-    for ( i = 0 ; i < n ; i++ ) {
-        s >> p;
-        Device *start = deviceInPoint(p);
-        s >> p;
-        Device *end = deviceInPoint(p);
-        s >> str;
-        QString startP = str;
-        s >> str;
-        QString endP = str;
-        createConnection( start , end , startP , endP );
-    }
-    s >> n;
-    for ( i = 0 ; i < n ; i++ ) {
-        s >> p; s >> str;
-        createTextItem(p,str);
-    }
-    if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
-    file.close();
-    QApplication::restoreOverrideCursor();
-    emit fileOpened();
-    qDebug() << tr("Scene opened from %1").arg(fileName) ;
-    myModified = false;
+    return code;
 }
 //-----------------------------------------------------------------------
 
-void MyCanvas::openSceneXml(QString fileName)
+int MyCanvas::openSceneXml(const QString &fileName)
 {
     newFile();
     stop();
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << tr("Opening file for reading is impossible");
-        return;
+        //qDebug() << tr("Opening file for reading is impossible");
+        return READING_FAIL;
     }
+    int code = OPEN_OK;
     QApplication::changeOverrideCursor(Qt::WaitCursor);
 
     SceneXmlReader handler(this);
@@ -280,27 +285,27 @@ void MyCanvas::openSceneXml(QString fileName)
 
     if ( reader.parse(&source) ) {
         emit fileOpened();
+        play();
         qDebug() << tr("Scene opened from %1").arg(fileName) ;
     } else {
-        qDebug("CДелай Ну ХОТЬ ЧТО_НИБУДЬ!!!!!!!!!");
+        code = STREAM_ERROR;
+        emit fileClosed();
     }
-
-    file.close();
-    play();
+    file.close();    
     QApplication::restoreOverrideCursor();
     myModified = false;
+    return code;
 }
 
 /*!
   Сохраняет сцену в файл.
   @param fileName - имя файла в который осуществляется сохранение.
 */
-void MyCanvas::saveScene(QString fileName)
+int MyCanvas::saveScene(const QString &fileName)
 {
     QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << tr("Opening file for writing is impossible %1").arg(fileName);
-        return;
+    if (!file.open(QIODevice::WriteOnly)) {       
+        return WRITING_FAIL;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
     QDataStream s(&file);
@@ -322,20 +327,25 @@ void MyCanvas::saveScene(QString fileName)
     foreach ( TextItem *i, myTextItems ) {
         s << i->pos();
         s << i->toPlainText();
-    }
-    if ( s.status() != QDataStream::Ok ) qDebug() << "PPC";
+    }    
     file.close();
-    QApplication::restoreOverrideCursor();
-    qDebug() << tr("Scene saved in %1").arg(fileName) ;
+    QApplication::restoreOverrideCursor();    
     myModified = false;
+    if ( s.status() != QDataStream::Ok ) {
+        qDebug() << "PPC";
+        return STREAM_ERROR;
+    } else {
+        qDebug() << tr("Scene saved in %1").arg(fileName) ;
+        return OPEN_OK;
+    }
 }
 
-void MyCanvas::saveSceneXml(QString fileName)
+int MyCanvas::saveSceneXml(const QString &fileName)
 {
     QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << tr("Opening file for writing is impossible %1").arg(fileName);
-        return;
+    if (!file.open(QIODevice::WriteOnly)) {
+        //qDebug() << tr("Opening file for writing is impossible %1").arg(fileName);
+        return WRITING_FAIL;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
     sceneXmlWriter s(this);
@@ -344,6 +354,7 @@ void MyCanvas::saveSceneXml(QString fileName)
     QApplication::restoreOverrideCursor();
     qDebug() << tr("Scene saved in %1").arg(fileName) ;
     myModified = false;
+    return OPEN_OK;
 }
 //-------------------------------------------------------------------------
 /*!

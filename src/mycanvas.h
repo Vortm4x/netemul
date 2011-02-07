@@ -32,7 +32,7 @@ class connectDialog;
 class DevicePort;
 class Device;
 class DeviceImpl;
-class abstractState;
+class AbstractState;
 
 typedef QList<Device*> DeviceList;
 typedef QList<TextItem*> TextItemList;
@@ -56,6 +56,9 @@ public:
     enum { width = 2000 , height = 2000 };    
     // типы устройств : Нет устройства , компьютер , концентратор , коммутатор
     enum { noDev = 0 , busDev = 2 ,compDev = 3 , hubDev = 4 , switchDev = 5 , routerDev = 7 };
+
+    enum { OPEN_OK = 0 , READING_FAIL , WRITING_FAIL , OUTDATED_VERSION , STREAM_ERROR };
+
     MyCanvas(QMenu *context,QObject *parent = 0); // Конструктор
     ~MyCanvas();
 
@@ -92,6 +95,16 @@ public:
     void putItems(QMap<QGraphicsItem*,QPointF> map);
     void calibrateAll(QList<QGraphicsItem*> list);
     bool isDevice(QGraphicsItem *t) const;
+
+    static QString IOErrorString(int n) {
+        static const QString strs[] = { tr("Open complite") ,                                        
+                                        tr("Opening file for reading is impossible"),
+                                        tr("Opening file for writing is impossible"),
+                                        tr("Outdated version of the file, file can't be opened"),
+                                        tr("Stream I/O error") };
+        return strs[n];
+    }
+
 signals:
     void uncheck(); //!< Сообщает панели о сбросе текущего устройства
     void fileOpened(); //!< Сообщает главному окно что открыт новый файл
@@ -108,10 +121,10 @@ public slots:
     void play();
     void stop() { killTimer(myTimer); myTimer = 0; } // Выключаем таймер
     bool isPlayed() const { return myTimer; }
-    void saveScene(QString fileName);
-    void openScene(QString fileName);
-    void saveSceneXml(QString fileName);
-    void openSceneXml(QString fileName);
+    int saveScene(const QString &fileName);
+    int openScene(const QString &fileName);
+    int saveSceneXml(const QString &fileName);
+    int openSceneXml(const QString &fileName);
     DeviceImpl* addComputer(int x,int y);
     DeviceImpl* addSwitch(int x,int y);
     DeviceImpl* addHub(int x,int y);
@@ -132,7 +145,7 @@ private:
     Device* deviceWithImpl(DeviceImpl *d);
     bool myOpen;
     bool myModified;    
-    abstractState *myState;        
+    AbstractState *myState;
 
 public:
     DeviceList devices() const { return myDevices; }
@@ -160,7 +173,7 @@ private:
     int myTimer;
 // My dear Friends =)
     friend class statisticsScene;
-    friend class abstractState;
+    friend class AbstractState;
     friend class moveState;
     friend class insertState;
     friend class cableState;
@@ -168,4 +181,5 @@ private:
     friend class sendState;
 };
 //------------------------------------------------------------------
+
 #endif // MYCANVAS_H

@@ -24,7 +24,7 @@
 #include "mycanvas.h"
 #include "device.h"
 
-cableState::cableState(MyCanvas *s) : abstractState(s)
+cableState::cableState(MyCanvas *s) : AbstractState(s)
 {
     line = 0; // Провода нет
 }

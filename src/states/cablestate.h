@@ -24,7 +24,7 @@
 
 class QGraphicsLineItem;
 
-class cableState : public abstractState
+class cableState : public AbstractState
 {
 public:
     cableState(MyCanvas *s);

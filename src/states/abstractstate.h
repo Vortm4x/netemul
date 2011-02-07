@@ -23,12 +23,12 @@
 class MyCanvas;
 class QGraphicsSceneMouseEvent;
 
-class abstractState
+class AbstractState
 {
 public:
-    abstractState(MyCanvas *s);
+    AbstractState(MyCanvas *s);
     enum { move = 0 , cable = 1 , insert = 2 , send = 6 , text = 8};
-    virtual ~abstractState() { }
+    virtual ~AbstractState() { }
     virtual void mouseMove(QGraphicsSceneMouseEvent*) = 0;
     virtual void mousePress(QGraphicsSceneMouseEvent*) = 0;
     virtual void mouseRelease(QGraphicsSceneMouseEvent*) = 0;
@@ -39,7 +39,7 @@ public:
     virtual void goSend();
     virtual void goEmpty();
     virtual void hideState() { }
-    static abstractState* initialize(MyCanvas *s);
+    static AbstractState* initialize(MyCanvas *s);
     void goTo(int mode);
 protected:
     MyCanvas *scene;

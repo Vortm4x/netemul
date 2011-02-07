@@ -536,18 +536,25 @@ void MainWindow::setOpenglMode(bool mode)
 //Слот сохранить
 bool MainWindow::saveFile()
 {
+    int code = MyCanvas::OPEN_OK;
     if ( myFile.isEmpty() ) {
-       saveAsFile();
-       return true;
+        saveAsFile();
+        return true;
     }
     setWindowTitle( myFile );
     if ( myFile.endsWith("net") ) {
-        canva->saveScene(myFile);
+        code = canva->saveScene(myFile);
     }
     else {
-        canva->saveSceneXml(myFile);
+        code = canva->saveSceneXml(myFile);
     }
-    return true;
+    if ( code == MyCanvas::OPEN_OK ) {
+        return true;
+    } else {
+        QMessageBox::critical(this,tr("Save error"),MyCanvas::IOErrorString(code),
+                              QMessageBox::Ok , QMessageBox::Ok );
+        return false;
+    }
 }
 
 void MainWindow::openFile(QString name)
@@ -555,11 +562,16 @@ void MainWindow::openFile(QString name)
     setWindowTitle(name);
     setEnabledFileItems(true);
     showGridAct->setChecked(true);
+    int code = MyCanvas::OPEN_OK;
     if ( name.endsWith("net") ) {
-        canva->openScene(name);
+        code = canva->openScene(name);
     }
     else {
-        canva->openSceneXml(name);
+        code = canva->openSceneXml(name);
+    }
+    if ( code != MyCanvas::OPEN_OK ) {
+        QMessageBox::critical(this,tr("Open error"),MyCanvas::IOErrorString(code),
+                              QMessageBox::Ok , QMessageBox::Ok );
     }
 }
 

@@ -26,7 +26,7 @@
 #include "cabledev.h"
 #include "movecommand.h"
 
-moveState::moveState(MyCanvas *s) : abstractState(s)
+moveState::moveState(MyCanvas *s) : AbstractState(s)
 {
     selectRect = 0; // Выделения нет
     p2Rect = QPoint();

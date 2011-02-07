@@ -24,7 +24,7 @@
 
 class InsertRect;
 
-class insertState : public abstractState
+class insertState : public AbstractState
 {
 public:
     insertState(MyCanvas *s);

@@ -25,7 +25,7 @@
 class Device;
 class SendEllipse;
 
-class sendState : public abstractState
+class sendState : public AbstractState
 {
 public:
     sendState(MyCanvas *s);

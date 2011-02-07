@@ -28,7 +28,7 @@ class SelectRect;
 
 typedef QList<QGraphicsItem*> itemList;
 
-class moveState : public abstractState
+class moveState : public AbstractState
 {
 public:
     moveState(MyCanvas *s);
