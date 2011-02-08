@@ -39,6 +39,8 @@ INCLUDEPATH += . \
     src/factories
 QT += script xml
 
+WARNING += -Wall
+
 unix {
     QMAKE_POST_LINK += cd ipedit && qmake && make && cd ..
 }
@@ -67,19 +69,18 @@ OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = src
 
+INCLUDEPATH += basicnetlib
+LIBS += -lbasicnetlib
+
 # Input
 HEADERS += src/deviceport.h \
     src/frame.h \
-    src/ipaddress.h \
     src/ipedit.h \
-    src/macaddress.h \
     src/mainwindow.h \
     src/mycanvas.h
 SOURCES += src/deviceport.cpp \
     src/frame.cpp \
-    src/ipaddress.cpp \
     src/ipedit.cpp \
-    src/macaddress.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/mycanvas.cpp

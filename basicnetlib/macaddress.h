@@ -21,8 +21,9 @@
 #define MACADDRESS_H
 
 #include <QDataStream>
+#include "basicnetlib_global.h"
 
-class macAddress
+class BASICNETLIBSHARED_EXPORT macAddress
 {
 public:
     macAddress();

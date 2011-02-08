@@ -22,8 +22,9 @@
 
 #include <QDataStream>
 #include <QVariant>
+#include "basicnetlib_global.h"
 
-class IpAddress
+class BASICNETLIBSHARED_EXPORT IpAddress
 {
 public:
     IpAddress();
