@@ -17,63 +17,63 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#ifndef TCPPACKET_H
-#define TCPPACKET_H
+#ifndef UDPPACKET_H
+#define UDPPACKET_H
 
+#include "basicnetlib_global.h"
 #include <QDataStream>
 #include <QSharedData>
 
-class tcpPacketData : public QSharedData
+class udpPacketData : public QSharedData
 {
 public:
-    tcpPacketData() { }
-    tcpPacketData(const tcpPacketData &other);
-    ~tcpPacketData() { }
+    udpPacketData() { }
+    udpPacketData(const udpPacketData &other);
+    ~udpPacketData() { }
     QByteArray toData() const;
-    friend class tcpPacket;
+    friend class udpPacket;
 private:
     quint16 sender; //!< Порт отправителя
     quint16 receiver; //!< Порт получателя
-    quint32 sequence;
-    quint32 ack;
-    quint8 flag;
-    quint16 window;
     QByteArray data; //!< Поле данных
 };
-
 /*!
-  Реализует tcp-сегмент
+  Реализует udp-дейтаграмму
 */
-class tcpPacket
+class BASICNETLIBSHARED_EXPORT udpPacket
 {
 public:
-    enum { User = 7777 , Window = 10240 };
-    enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 4, RST = 8 };
-    tcpPacket() { d = new tcpPacketData; }
-    tcpPacket(const QByteArray &b);
-    tcpPacket(const tcpPacket &other) : d(other.d) { }
-    ~tcpPacket() { }
-    QByteArray toData() const { return d->toData(); }
+    enum { User = 7777 , RIP = 520 , DHCPClient = 67, DHCPServer = 68 } ;
+    udpPacket() { d = new udpPacketData; }
+    udpPacket(const QByteArray &b);
+    udpPacket(const udpPacket &u) : d(u.d) { }
+    ~udpPacket() { }
+    QByteArray toData() const;
     int size() const { return d->data.size(); }
-    void setSender(quint16 s) { d->sender = s; }
-    void setReceiver(quint16 r) { d->receiver = r; }
-    void setSequence(quint32 s) { d->sequence = s; }
-    void setAck(quint32 a) { d->ack = a; }
-    void setFlag(quint8 f) { d->flag = f; }
-    void setWindow(quint16 w) { d->window = w; }
+    void setSender( quint16 i ) { d->sender = i;}
+    void setReceiver( quint16 i ) { d->receiver = i; }
     quint16 sender() const { return d->sender; }
     quint16 receiver() const { return d->receiver; }
-    quint32 sequence() const { return d->sequence; }
-    quint32 ack() const { return d->ack; }
-    quint8 flag() const { return d->flag; }
-    quint16 window() const { return d->window; }
-    QByteArray unpack() const { return d->data; }
     void pack(const QByteArray &b) { d->data = b; }
+    QByteArray unpack() const { return d->data; }
+    QString typeToString() const;
     QString toString() const;
 private:
-    QSharedDataPointer<tcpPacketData> d;
-protected:    
-    friend QDataStream& operator<<( QDataStream &stream, const tcpPacket &p );
+    QSharedDataPointer<udpPacketData> d;
+protected:
+    friend QDataStream& operator<<( QDataStream &stream, const udpPacket &p );
 };
-
-#endif // TCPPACKET_H
+//-----------------------------------------------------
+/*!
+  Записывает udp-дейтаграмму в поток.
+  @param stream - поток для записи.
+  @param p - записываемый пакет.
+  @return ссылку на результирующий поток.
+*/
+inline QDataStream& operator<<( QDataStream &stream, const udpPacket &p )
+{
+    stream << p.toData();
+    return stream;
+}
+//-------------------------------------------------------
+#endif // UDPPACKET_H

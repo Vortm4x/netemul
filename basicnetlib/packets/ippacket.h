@@ -20,6 +20,7 @@
 #ifndef IPPACKET_H
 #define IPPACKET_H
 
+#include "basicnetlib_global.h"
 #include <QSharedData>
 #include "ipaddress.h"
 
@@ -48,7 +49,7 @@ private:
   тип протокола верхнего уровня и поле данных. Остальные папраметры реального пакета пока
   не используются.
 */
-class ipPacket
+class BASICNETLIBSHARED_EXPORT ipPacket
 {
 public:
     /*! Используется для обозначения протокола верхнего уровня. */

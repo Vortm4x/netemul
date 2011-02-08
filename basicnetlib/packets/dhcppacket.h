@@ -20,6 +20,7 @@
 #ifndef DHCPPACKET_H
 #define DHCPPACKET_H
 
+#include "basicnetlib_global.h"
 #include <QSharedData>
 #include "ipaddress.h"
 #include "macaddress.h"
@@ -43,7 +44,7 @@ private:
     macAddress chaddr;
 };
 
-class dhcpPacket
+class BASICNETLIBSHARED_EXPORT dhcpPacket
 {
 public:
     dhcpPacket();

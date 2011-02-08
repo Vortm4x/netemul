@@ -4,7 +4,10 @@
 #
 #-------------------------------------------------
 
+include(packets/packets.pri)
 QT       -= gui
+
+INCLUDEPATH += packets
 
 TARGET = basicnetlib
 TEMPLATE = lib
@@ -14,10 +17,13 @@ DEFINES += BASICNETLIB_LIBRARY
 
 SOURCES += basicnetlib.cpp \
     macaddress.cpp \
-    ipaddress.cpp
+    ipaddress.cpp \
+    frame.cpp
 
 
 HEADERS += basicnetlib.h\
         basicnetlib_global.h \
     macaddress.h \
-    ipaddress.h
+    ipaddress.h \
+    frame.h
+

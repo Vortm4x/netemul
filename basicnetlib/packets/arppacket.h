@@ -20,6 +20,7 @@
 #ifndef ARPPACKET_H
 #define ARPPACKET_H
 
+#include "basicnetlib_global.h"
 #include <QSharedData>
 #include "macaddress.h"
 #include "ipaddress.h"
@@ -41,7 +42,7 @@ private:
     IpAddress receiverIp;
 };
 
-class arpPacket
+class BASICNETLIBSHARED_EXPORT arpPacket
 {
 public:
     arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si , quint8 t);

@@ -8,7 +8,6 @@ include(src/other/other.pri)
 include(src/graphics/graphics.pri)
 include(src/forms/forms.pri)
 include(src/tools/tools.pri)
-include(src/packets/packets.pri)
 include(src/states/states.pri)
 include(src/commands/commands.pri)
 include(src/delegats/delegats.pri)
@@ -31,7 +30,6 @@ INCLUDEPATH += . \
     src/other \
     src/graphics \
     src/tools \
-    src/packets \
     src/states \
     src/commands \
     src/delegats \
@@ -69,17 +67,16 @@ OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = src
 
-INCLUDEPATH += basicnetlib
-LIBS += -lbasicnetlib
+INCLUDEPATH += basicnetlib \
+    basicnetlib/packets
+LIBS += -L. -lbasicnetlib
 
 # Input
 HEADERS += src/deviceport.h \
-    src/frame.h \
     src/ipedit.h \
     src/mainwindow.h \
     src/mycanvas.h
 SOURCES += src/deviceport.cpp \
-    src/frame.cpp \
     src/ipedit.cpp \
     src/main.cpp \
     src/mainwindow.cpp \

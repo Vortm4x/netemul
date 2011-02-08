@@ -20,6 +20,7 @@
 #ifndef FRAME_H
 #define FRAME_H
 
+#include "basicnetlib_global.h"
 #include "macaddress.h"
 #include <QSharedData>
 
@@ -47,7 +48,7 @@ private:
   Реализует кадр, также как и в реальной сети содержит адрес отправителя, получателя и
   поле данных где содержиться информация протокола более высокого уровня.
 */
-class frame
+class BASICNETLIBSHARED_EXPORT frame
 {
 public:
     enum { arp = 100 , ip = 101 };
