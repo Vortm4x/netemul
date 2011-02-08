@@ -6,7 +6,7 @@
 
 QT       += testlib
 
-TARGET = tst_cabletest
+TARGET = cable
 CONFIG   += console
 CONFIG   -= app_bundle
 

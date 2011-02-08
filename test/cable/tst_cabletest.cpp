@@ -12,10 +12,10 @@ class CableTest : public QObject
 public:    
 
 private Q_SLOTS:
-    void testCase1();
+  //  void testCase1();
 };
 
-
+/*
 void CableTest::testCase1()
 {
     Cable *cable = new Cable();
@@ -29,6 +29,7 @@ void CableTest::testCase1()
     QCOMPARE( cable->endPort() , dev2->findPortByName("LAN2") );
 
 }
+*/
 
 QTEST_MAIN(CableTest);
 
