@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include <QtCore/QTime>
 #include "logdialog.h"
-#include "Frame.h"
+#include "frame.h"
 #include "ippacket.h"
 #include "arppacket.h"
 #include "appsetting.h"

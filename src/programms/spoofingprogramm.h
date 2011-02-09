@@ -4,7 +4,7 @@
 #include "programmrep.h"
 #include "ipaddress.h"
 #include "macaddress.h"
-#include "Frame.h"
+#include "frame.h"
 
 class ArpRecord;
 

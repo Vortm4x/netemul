@@ -21,7 +21,7 @@
 #define LOGDIALOG_H
 
 #include "ui_logdialog.h"
-#include "Frame.h"
+#include "frame.h"
 
 static const QColor cl_frame = "#fbec5d";
 static const QColor cl_ipInternal = "#efaf8c";

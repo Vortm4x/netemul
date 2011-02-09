@@ -20,7 +20,10 @@ struct ClientState {
     int time;
     int requestTimer;
     enum { WAIT_REQUEST = 0, IN_USE = 1, DECLINE = 2 };
-    ClientState(StaticDhcpRecord *rec);
+    ClientState(StaticDhcpRecord *rec) {
+
+    }
+
     ClientState() { }
 };
 

@@ -20,13 +20,11 @@
 #include <QtCore/QtDebug>
 #include <QMessageBox>
 #include "smartdevice.h"
-#ifndef __TESTING__
 #include "routeeditor.h"
 #include "adapterproperty.h"
 #include "tablearp.h"
 #include "programmdialog.h"
 #include "logdialog.h"
-#endif
 #include "routemodel.h"
 #include "abstractsocket.h"
 #include "socketfactory.h"
@@ -284,10 +282,8 @@ bool SmartDevice::sendInterrupt(int u)
 //-------------------------------------------------------
 void SmartDevice::tableDialog()
 {
-#ifndef __TESTING__
     routeEditor *d = new routeEditor(this);
     d->show();
-#endif
 }
 
 void SmartDevice::showLogDialog(logDialog *log) const

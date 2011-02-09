@@ -8,7 +8,8 @@ CONFIG      += designer plugin
 TARGET      = $$qtLibraryTarget($$TARGET)
 TEMPLATE    = lib
 QTDIR_build:DESTDIR     = $$QT_BUILD_TREE/plugins/designer
-INCLUDEPATH += "../src"
+INCLUDEPATH += "../src" \
+                ../basicnetlib
 HEADERS     = ../src/ipedit.h \
               ipeditdesignerplugin.h
 SOURCES     = ../src/ipedit.cpp \

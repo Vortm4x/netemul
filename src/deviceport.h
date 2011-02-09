@@ -21,7 +21,7 @@
 #define DEVICEPORT_H
 
 #include <QQueue>
-#include "Frame.h"
+#include "frame.h"
 
 class MacAddress;
 class Cable;

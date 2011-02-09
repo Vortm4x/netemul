@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include "deviceport.h"
 #include "cabledev.h"
-#include "Frame.h"
+#include "frame.h"
 
 DevicePort::DevicePort(QObject *parent)
 {
