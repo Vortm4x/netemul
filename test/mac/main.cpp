@@ -1,7 +1,7 @@
 #include <QtTest>
-#include "../../src/macaddress.h"
+#include "macaddress.h"
 
-class TestMacAddress : public QObject
+class TestmacAddress : public QObject
 {
     Q_OBJECT
 private slots:
@@ -11,14 +11,14 @@ private slots:
     void operators();
 };
 
-void TestMacAddress::toString()
+void TestmacAddress::toString()
 {
     macAddress m;
     m.setMac("01:03:00:00:00:00");
     QCOMPARE(m.toString(), tr("01:03:00:00:00:00"));
 }
 
-void TestMacAddress::setBroadcast()
+void TestmacAddress::setBroadcast()
 {
     macAddress m;
     m.setBroadcast();
@@ -26,7 +26,7 @@ void TestMacAddress::setBroadcast()
     QCOMPARE( m.isBroadcast() , true );
 }
 
-void TestMacAddress::saveAndLoad()
+void TestmacAddress::saveAndLoad()
 {
     macAddress m("01:02:03:04:05:06");
     macAddress t = m;
@@ -47,7 +47,7 @@ void TestMacAddress::saveAndLoad()
     QCOMPARE( t , m);
 }
 
-void TestMacAddress::operators()
+void TestmacAddress::operators()
 {
     macAddress a("01:02:03:04:05:06");
     macAddress b("01:02:03:04:05:07");
@@ -57,5 +57,5 @@ void TestMacAddress::operators()
     QCOMPARE( ++a == b , true );
 }
 
-QTEST_MAIN(TestMacAddress)
+QTEST_MAIN(TestmacAddress)
 #include "main.moc"
