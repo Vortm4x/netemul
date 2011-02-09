@@ -5,32 +5,44 @@
 #include "macaddress.h"
 
 class UdpSocket;
-class dhcpPacket;
+class DhcpPacket;
 class Interface;
 class StaticDhcpRecord;
 class DhcpServerModel;
 
-struct clientState {
+struct ClientState {
     int xid;
     int state;
-    macAddress mac;
+    MacAddress mac;
     IpAddress ip;
     IpAddress mask;
     IpAddress gateway;
     int time;
     int requestTimer;
     enum { WAIT_REQUEST = 0, IN_USE = 1, DECLINE = 2 };
-    clientState(StaticDhcpRecord *rec);
-    clientState() { }
+    ClientState(StaticDhcpRecord *rec);
+    ClientState() { }
 };
 
-class dhcpDemon
+class DhcpDemon : public QObject
 {
+    Q_OBJECT
+
+    Q_PROPERTY( QString interfaceName READ interfaceName WRITE setInterfaceName )
+    Q_PROPERTY( QString beginIp READ beginIp WRITE setBeginIp )
+    Q_PROPERTY( QString endIp READ endIp WRITE setEndIp )
+    Q_PROPERTY( QString mask READ mask WRITE setMask )
+    Q_PROPERTY( QString gateway READ gateway WRITE setGateway )
+    Q_PROPERTY( int time READ time WRITE setTime )
+    Q_PROPERTY( int waitingTime READ waitingTime WRITE setWaitingTime )
+    Q_PROPERTY( bool dynamic READ dynamic WRITE setDynamic )
+
 public:    
     enum { CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
 
-    dhcpDemon(Interface *inter);
-    ~dhcpDemon();
+    DhcpDemon(QObject* parent = 0);
+    DhcpDemon(Interface *inter);
+    ~DhcpDemon();
     void setInterfaceName( QString inter ) { myInterface = inter; }
     void setBeginIp(QString ip) { myBeginIp.setIp(ip); }
     void setEndIp(QString ip) { myEndIp.setIp(ip); }
@@ -55,25 +67,29 @@ public:
 
 // Обработка пакетов
 public:
-    void executeDiscover(dhcpPacket packet);
-    void executeRequest(dhcpPacket packet);
-    void executeDecline(dhcpPacket packet);
+    void executeDiscover(DhcpPacket packet);
+    void executeRequest(DhcpPacket packet);
+    void executeDecline(DhcpPacket packet);
+
+// Функция инициализации для конструкторов
+private:
+    void initialize();
 
 // Функции создания и отправки ответа
 private:
-    void makeAnswer(clientState* client, int type);
-    void sendDhcp(dhcpPacket packet) const;
-    dhcpPacket createDhcpPacket( clientState *client, int state ) const;
+    void makeAnswer(ClientState* client, int type);
+    void sendDhcp(DhcpPacket packet) const;
+    DhcpPacket createDhcpPacket(ClientState *client, int state) const;
 
 // Функции выбора и нахождения записи клиента
 private:
-    clientState* chooseStatic(dhcpPacket packet);
-    clientState* chooseDynamic(dhcpPacket packet);
-    clientState* findClient( int xid ) const;
-    clientState* findClient(IpAddress ip) const;
+    ClientState* chooseStatic(DhcpPacket packet);
+    ClientState* chooseDynamic(DhcpPacket packet);
+    ClientState* findClient( int xid ) const;
+    ClientState* findClient(IpAddress ip) const;
 
 private:
-    QList<clientState*> clients;
+    QList<ClientState*> clients;
     QString myInterface;
     DhcpServerModel *myDhcpModel;
     IpAddress myBeginIp;

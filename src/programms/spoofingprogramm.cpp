@@ -71,22 +71,22 @@ void SpoofingProgram::sendAnswers()
     sendOneAnswer( myClientIp , myServerIp , myServerMac );
 }
 
-void SpoofingProgram::sendOneAnswer(IpAddress sender, IpAddress receiver, macAddress receiverMac)
+void SpoofingProgram::sendOneAnswer(IpAddress sender, IpAddress receiver, MacAddress receiverMac)
 {
-    arpPacket arp;
+    ArpPacket arp;
     Interface *t = myDevice->ipToAdapter( myDevice->findInterfaceIp( receiver ) );
     Q_ASSERT( t != 0 );
     arp.setReceiverIp( receiver );
     arp.setReceiverMac( receiverMac );
     arp.setSenderIp( sender );
     arp.setSenderMac( t->mac() );
-    arp.setType( arpPacket::response );
-    frame f;
+    arp.setType( ArpPacket::response );
+    Frame f;
     f.pack( arp.toData() );
     f.setReceiver( receiverMac );
     f.setSender( t->mac() );
-    f.setType( frame::arp );
-    f.setDifferent(frame::NORMAL);
+    f.setType( Frame::arp );
+    f.setDifferent(Frame::NORMAL);
     t->pushToSocket(f);
 }
 

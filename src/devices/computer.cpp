@@ -76,7 +76,7 @@ void Computer::setSocketsCount(int n)
     }
 }
 
-void Computer::sendConstructedFrame(const QString &interface, frame fr, int count)
+void Computer::sendConstructedFrame(const QString &interface, Frame fr, int count)
 {
     for ( int i = 0 ; i < count ; i++ )
         adapter(interface)->pushToSocket(fr);

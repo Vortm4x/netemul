@@ -22,7 +22,7 @@
 
 #include "boxdevice.h"
 
-class frame;
+class Frame;
 
 class HubDevice : public BoxDevice
 {

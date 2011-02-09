@@ -1,7 +1,7 @@
 #ifndef BASICNETLIB_GLOBAL_H
 #define BASICNETLIB_GLOBAL_H
 
-#include <QtCore/qglobal.h>
+#include <QtCore/QtGlobal>
 
 #if defined(BASICNETLIB_LIBRARY)
 #  define BASICNETLIBSHARED_EXPORT Q_DECL_EXPORT

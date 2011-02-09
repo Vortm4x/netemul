@@ -21,9 +21,9 @@
 #define DEVICEPORT_H
 
 #include <QQueue>
-#include "frame.h"
+#include "Frame.h"
 
-class macAddress;
+class MacAddress;
 class Cable;
 
 /*!
@@ -44,14 +44,14 @@ public:
     bool isShared() { return myShared; }
     void setShared(bool n) { myShared = n; }
     int num() const { return myNum; }
-    void pushToSend(frame &f) { senderQueue.enqueue(f); }
+    void pushToSend(Frame &f) { senderQueue.enqueue(f); }
     bool isConnect() const { return (myCable != 0); }
     bool isCableConnect(const Cable *c) const;
     Cable* cable() const { return myCable; }
     void detectCollision() { /* MAKE IT PLEASE! */ }
     int trafficDigit() const { return senderQueue.size(); }
     void setConnect(Cable *cable);
-    frame popFromReceive() { return receiveQueue.dequeue(); }
+    Frame popFromReceive() { return receiveQueue.dequeue(); }
     void receiveFrame(QByteArray &b);
     void queueEvent();
     void setChecked(bool c);
@@ -64,8 +64,8 @@ signals:
 
 private:
     int myNum;
-    QQueue<frame> senderQueue;
-    QQueue<frame> receiveQueue;
+    QQueue<Frame> senderQueue;
+    QQueue<Frame> receiveQueue;
     Cable *myCable;    
     bool myShared;
 };

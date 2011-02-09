@@ -24,14 +24,14 @@
 #include <QSharedData>
 #include "basicnetlib_global.h"
 
-class tcpPacketData : public QSharedData
+class TcpPacketData : public QSharedData
 {
 public:
-    tcpPacketData() { }
-    tcpPacketData(const tcpPacketData &other);
-    ~tcpPacketData() { }
+    TcpPacketData() { }
+    TcpPacketData(const TcpPacketData &other);
+    ~TcpPacketData() { }
     QByteArray toData() const;
-    friend class tcpPacket;
+    friend class TcpPacket;
 private:
     quint16 sender; //!< Порт отправителя
     quint16 receiver; //!< Порт получателя
@@ -45,15 +45,15 @@ private:
 /*!
   Реализует tcp-сегмент
 */
-class BASICNETLIBSHARED_EXPORT tcpPacket
+class BASICNETLIBSHARED_EXPORT TcpPacket
 {
 public:
     enum { User = 7777 , Window = 10240 };
     enum { NO_FLAGS = 0, SYN = 1, ACK = 2, FIN = 4, RST = 8 };
-    tcpPacket() { d = new tcpPacketData; }
-    tcpPacket(const QByteArray &b);
-    tcpPacket(const tcpPacket &other) : d(other.d) { }
-    ~tcpPacket() { }
+    TcpPacket() { d = new TcpPacketData; }
+    TcpPacket(const QByteArray &b);
+    TcpPacket(const TcpPacket &other) : d(other.d) { }
+    ~TcpPacket() { }
     QByteArray toData() const { return d->toData(); }
     int size() const { return d->data.size(); }
     void setSender(quint16 s) { d->sender = s; }
@@ -72,9 +72,9 @@ public:
     void pack(const QByteArray &b) { d->data = b; }
     QString toString() const;
 private:
-    QSharedDataPointer<tcpPacketData> d;
+    QSharedDataPointer<TcpPacketData> d;
 protected:    
-    friend QDataStream& operator<<( QDataStream &stream, const tcpPacket &p );
+    friend QDataStream& operator<<( QDataStream &stream, const TcpPacket &p );
 };
 
 #endif // TCPPACKET_H

@@ -19,19 +19,19 @@
 ****************************************************************************************/
 #include "frame.h"
 
-frame::frame(const QByteArray &b)
+Frame::Frame(const QByteArray &b)
 {
     d = new frameData;
     QDataStream s(b);
     s >> d->different >> d->sender >> d->receiver >> d->type  >> d->data;
 }
 
-QByteArray frame::toData() const
+QByteArray Frame::toData() const
 {
     return d->toArray();
 }
 
-QString frame::toString() const
+QString Frame::toString() const
 {
     QString temp;
     temp.append(QObject::tr("Ethernet, sender: %1 receiver: %2").arg(d->sender.toString()).arg(d->receiver.toString()));
@@ -43,7 +43,7 @@ QString frame::toString() const
 
 frameData::frameData()
 {
-    different = frame::NORMAL;
+    different = Frame::NORMAL;
 }
 
 QByteArray frameData::toArray() const

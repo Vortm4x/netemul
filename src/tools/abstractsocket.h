@@ -34,7 +34,7 @@ public:
     bool isOurData(IpAddress address, quint16 port);
     virtual bool isBusy() const { return false; }
     void setBind(IpAddress address) { myBind = address; }
-    virtual void treatPacket(ipPacket) { }
+    virtual void treatPacket(IpPacket) { }
     virtual void secondEvent() { }
     virtual void write(IpAddress, quint16, QByteArray) { }
 

@@ -48,7 +48,7 @@ SwitchModel* SwitchChip::modelAt(VirtualNetwork *vlan) const
     return vlan->table();
 }
 
-void SwitchChip::receiveEvent(frame &fr,DevicePort *sender)
+void SwitchChip::receiveEvent(Frame &fr,DevicePort *sender)
 {
     checkReceive(fr);
     emit receiveData(fr,tr("LAN%1").arg(sender->num()));
@@ -63,7 +63,7 @@ void SwitchChip::secondTimerEvent()
         i->secondTimerEvent();
 }
 
-void SwitchChip::sendDataSignal(frame &fr, QString port)
+void SwitchChip::sendDataSignal(Frame &fr, QString port)
 {
     emit sendData(fr, port);
 }
@@ -99,7 +99,7 @@ VirtualNetwork::~VirtualNetwork()
     delete myTable;    
 }
 
-void VirtualNetwork::recieveEvent(frame &fr, DevicePort *sender)
+void VirtualNetwork::recieveEvent(Frame &fr, DevicePort *sender)
 {
     myTable->contains( fr.sender() , mySwitchChip->portToString(sender) );
 

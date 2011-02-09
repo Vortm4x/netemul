@@ -22,6 +22,7 @@
 #include "dhcppacket.h"
 #include "smartdevice.h"
 #include "udpsocket.h"
+#include "socketfactory.h"
 #include <QMessageBox>
 
 #include "dhcpservermodel.h"
@@ -34,21 +35,25 @@ DhcpServerProgram::DhcpServerProgram(QObject *parent) : Program(parent)
     myServerCount++;
     myServerName = QString("Server%1").arg(myServerCount);
     myDemons.clear();
+    qDeleteAll(myDemons);
 }
 
 DhcpServerProgram::~DhcpServerProgram()
 {
+    myDevice->disposeSocket(receiver);
     myDemons.clear();
+    qDeleteAll(myDemons);
 }
 
 void DhcpServerProgram::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) return;
     Program::setDevice(s);
+    receiver = myDevice->openSocket(DhcpDemon::SERVER_SOCKET, SocketFactory::UDP);
     //receiver = new udpSocket(myDevice, SERVER_SOCKET);
     foreach ( Interface *i, myDevice->interfaces() ) {
         if ( i->isConnect() ) {
-            dhcpDemon *demon = new dhcpDemon(i);
+            DhcpDemon *demon = new DhcpDemon(i);
             myDemons << demon;
         }
     }
@@ -64,18 +69,27 @@ void DhcpServerProgram::setDevice(SmartDevice *s)
 
 void DhcpServerProgram::execute(QByteArray data)
 {
-//    if ( myDevice->adapter(myInterface)->ip().isEmpty() ) {
-//        QMessageBox::warning(0,tr("Warning"),tr("Your DHCP server <i>%1</i> isn't configured.").arg(myServerName),
-//                             QMessageBox::Ok, QMessageBox::Ok);
-//        return;
-//    }
-    dhcpPacket packet(data);
-    foreach ( dhcpDemon *demon, myDemons ) {
-        if ( myDevice->adapter(demon->interfaceName())->ip() == packet.siaddr() ) {
+    DhcpPacket packet(data);
+    foreach ( DhcpDemon *demon, myDemons ) {
+        IpAddress deviceIp = myDevice->adapter(demon->interfaceName())->ip();
+        if ( deviceIp.isEmpty() ) {
+            QMessageBox::warning(0,tr("Warning"),
+                 tr("Your DHCP server <i>%1</i> isn't configured.").arg(myServerName),
+                 QMessageBox::Ok, QMessageBox::Ok);
+            return;
+        }
+
+        if ( deviceIp == packet.siaddr() ) {
             switch ( packet.type() ) {
-                case dhcpPacket::DHCPDISCOVER : demon->executeDiscover(packet); break;
-                case dhcpPacket::DHCPREQUEST : demon->executeRequest(packet); break;
-                case dhcpPacket::DHCPDECLINE : demon->executeDecline(packet); break;
+                case DhcpPacket::DHCPDISCOVER :
+                    demon->executeDiscover(packet);
+                    break;
+                case DhcpPacket::DHCPREQUEST :
+                    demon->executeRequest(packet);
+                    break;
+                case DhcpPacket::DHCPDECLINE :
+                    demon->executeDecline(packet);
+                    break;
             }
         }
     }
@@ -85,14 +99,14 @@ void DhcpServerProgram::execute(QByteArray data)
 
 void DhcpServerProgram::incTime()
 {
-    foreach ( dhcpDemon *demon, myDemons ) {
+    foreach ( DhcpDemon *demon, myDemons ) {
         demon->incTime();
     }
 }
 
 void DhcpServerProgram::showProperty()
 {
-    dhcpServerProperty *d = new dhcpServerProperty(myDevice);
+    DhcpServerProperty *d = new DhcpServerProperty(myDevice);
     d->setProgramm(this);
     d->exec();
 }
@@ -105,7 +119,7 @@ void DhcpServerProgram::write(QDataStream &stream) const
 {
     stream << DHCPServer;
     Program::write(stream);
-    dhcpDemon *d = myDemons.at(0);
+    DhcpDemon *d = myDemons.at(0);
     d->dhcpModel()->write(stream);
     stream << d->interfaceName();
     stream << d->beginIp();
@@ -125,7 +139,7 @@ void DhcpServerProgram::write(QDataStream &stream) const
 void DhcpServerProgram::read(QDataStream &stream)
 {
     Program::read(stream);
-    dhcpDemon *d = new dhcpDemon(device()->interfaces().at(0));
+    DhcpDemon *d = new DhcpDemon(device()->interfaces().at(0));
     d->dhcpModel()->read(stream);
     d->read(stream);
 }
@@ -134,12 +148,12 @@ void DhcpServerProgram::read(QDataStream &stream)
 
 
 //---------------------------------------------------
-clientState::clientState(StaticDhcpRecord *rec)
-{
-    ip = rec->yiaddr;
-    mac = rec->chaddr;
-    mask = rec->mask;
-    gateway = rec->gateway;
-    time = rec->time;
-}
+//СlientState::СlientState(StaticDhcpRecord *rec)
+//{
+//    ip = rec->yiaddr;
+//    mac = rec->chaddr;
+//    mask = rec->mask;
+//    gateway = rec->gateway;
+//    time = rec->time;
+//}
 

@@ -24,7 +24,7 @@ HubChip::HubChip(QObject *parent) : BoxChip(parent)
 {
 }
 
-void HubChip::receiveEvent(frame &fr,DevicePort *sender)
+void HubChip::receiveEvent(Frame &fr,DevicePort *sender)
 {
 #ifndef __TESTING__
     checkReceive(fr);

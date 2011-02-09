@@ -27,12 +27,12 @@ class QPushButton;
 class QSpinBox;
 class QComboBox;
 
-class ipEdit;
+class IpEdit;
 class SmartDevice;
 class RouteModel;
 
 /*!
-  Реализует отображение таблицы маршрутизации.
+  � еализует отображение таблицы маршрутизации.
 */
 class routeEditor : public QDialog
 {
@@ -46,9 +46,9 @@ private:
     QStringList filterConnectedSocket(QStringList list);
     QStringList suffixList;
     QStringList ipList;
-    ipEdit *ip_dest;
-    ipEdit *ip_mask;
-    ipEdit *ip_gateway;
+    IpEdit *ip_dest;
+    IpEdit *ip_mask;
+    IpEdit *ip_gateway;
     QComboBox *cb_out;
     QSpinBox *sp_metr;
     QPushButton *btn_add;

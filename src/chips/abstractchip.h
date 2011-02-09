@@ -27,7 +27,7 @@
 #include "frame.h"
 
 class DevicePort;
-class ipPacket;
+class IpPacket;
 
 /*!
   Класс являеться абстрактным устройством приема и обработки кадров.
@@ -44,21 +44,21 @@ class AbstractChip : public QObject
 public:
     AbstractChip(QObject *parent = 0);
     virtual ~AbstractChip() { }
-    virtual void receiveEvent(frame &fr,DevicePort *sender) = 0;
+    virtual void receiveEvent(Frame &fr,DevicePort *sender) = 0;
     virtual int trafficDigit() const = 0;
     QString statisticsString() const { return myStatistics.toString(); }    
     QVariant statisticsObject() const;
     Q_INVOKABLE void setStatisticsObject(StatisticsObject *obj);
-    void checkReceive(frame &f);
-    void checkSend(frame &f);
-    macAddress mac() const { return myMac; }
+    void checkReceive(Frame &f);
+    void checkSend(Frame &f);
+    MacAddress mac() const { return myMac; }
     IpAddress ip() const { return myIp; }
     IpAddress mask() const { return myMask; }
     QString ipString() const { return myIp.toString(); }
     QString macString() const { return myMac.toString(); }
     QString maskString() const { return myMask.toString(); }
     void setMac(const QString &m) { myMac.setMac(m); }
-    void setMac(const macAddress &m) { myMac = m; }
+    void setMac(const MacAddress &m) { myMac = m; }
     void setIp(const QString &str) { if ( !str.isEmpty() ) myIp.setIp(str); }
     void setMask(const QString &str) { if ( !str.isEmpty() ) myMask.setIp(str); }
     void setIp(const IpAddress address) { myIp = address; }
@@ -72,13 +72,13 @@ public:
     quint64 countSendPacket() { return myStatistics.sendPackets; }
     void resetStatics();
 signals:
-    void sendData(frame,QString);
-    void receiveData(frame,QString);
+    void sendData(Frame,QString);
+    void receiveData(Frame,QString);
 protected:
     Statistics myStatistics;
     IpAddress myIp;
     IpAddress myMask;
-    macAddress myMac;
+    MacAddress myMac;
 };
 
 

@@ -4,58 +4,68 @@
 #include "dhcppacket.h"
 #include "dhcpservermodel.h"
 
-dhcpDemon::dhcpDemon(Interface *inter) {
-    myInterface = inter->name();
-    myDhcpModel = new DhcpServerModel;
-    myDynamic = false;
-    myTime = 300;
-    myWaitingTime = 60;
+DhcpDemon::DhcpDemon(QObject *parent) : QObject(parent)
+{
+    initialize();
 }
 
-dhcpDemon::~dhcpDemon() {
+DhcpDemon::DhcpDemon(Interface *inter) {
+    myInterface = inter->name();
+    initialize();
+}
+
+DhcpDemon::~DhcpDemon() {
     delete myDhcpModel;
     //delete receiver;
     clients.clear();
 }
 
-void dhcpDemon::executeDiscover(dhcpPacket packet)
+void DhcpDemon::executeDiscover(DhcpPacket packet)
 {
-    clientState *client = findClient( packet.xid() );
-    if ( client && client->state == clientState::IN_USE ) return;
+    ClientState *client = findClient( packet.xid() );
+    if ( client && client->state == ClientState::IN_USE ) return;
     client = chooseStatic(packet);
     if ( client ) {
-        makeAnswer(client, dhcpPacket::DHCPOFFER);
+        makeAnswer(client, DhcpPacket::DHCPOFFER);
         return;
     }
     if ( !myDynamic ) return;
     client = chooseDynamic(packet);
-    if ( client ) makeAnswer(client,dhcpPacket::DHCPOFFER);
+    if ( client ) makeAnswer(client,DhcpPacket::DHCPOFFER);
 }
 
-void dhcpDemon::executeRequest(dhcpPacket packet)
+void DhcpDemon::executeRequest(DhcpPacket packet)
 {
-    clientState *client = findClient( packet.xid() );
+    ClientState *client = findClient( packet.xid() );
     if ( !client ) return;
 //    if ( packet.siaddr() != myDevice->adapter(myInterface)->ip() ) {
 //        clients.removeOne(client);
 //        delete client;
 //        return;
 //    }
-    makeAnswer( client, dhcpPacket::DHCPACK );
+    makeAnswer( client, DhcpPacket::DHCPACK );
 }
 
-void dhcpDemon::executeDecline(dhcpPacket packet)
+void DhcpDemon::executeDecline(DhcpPacket packet)
 {
-    clientState *client = findClient(packet.yiaddr());
+    ClientState *client = findClient(packet.yiaddr());
     if ( !client ) return;
-    client->state = clientState::DECLINE;
+    client->state = ClientState::DECLINE;
 }
 
-clientState* dhcpDemon::chooseStatic(dhcpPacket packet)
+void DhcpDemon::initialize()
+{
+    myDhcpModel = new DhcpServerModel;
+    myDynamic = false;
+    myTime = 300;
+    myWaitingTime = 60;
+}
+
+ClientState* DhcpDemon::chooseStatic(DhcpPacket packet)
 {
     StaticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
     if ( !rec ) return 0;
-    clientState *client = new clientState(rec);
+    ClientState *client = new ClientState(rec);
     if ( findClient(client->ip) ) return 0;
     client->requestTimer = 0;
     client->xid = packet.xid();
@@ -67,11 +77,11 @@ clientState* dhcpDemon::chooseStatic(dhcpPacket packet)
   Выбираем адрес из динамического диапазона.
   @return указатель на созданную запись.
   */
-clientState* dhcpDemon::chooseDynamic(dhcpPacket packet)
+ClientState* DhcpDemon::chooseDynamic(DhcpPacket packet)
 {
-    clientState *cl = new clientState;
+    ClientState *cl = new ClientState;
     cl->requestTimer = 0;
-    clientState *c = findClient(packet.yiaddr());
+    ClientState *c = findClient(packet.yiaddr());
     if ( !packet.yiaddr().isEmpty() && !c ) cl->ip = packet.yiaddr();
     else cl->ip = giveDynamicIp();
     if ( cl->ip.isEmpty() ) return NULL;
@@ -90,11 +100,11 @@ clientState* dhcpDemon::chooseDynamic(dhcpPacket packet)
   @param state - тип отправляемого сообщения.
   @return созданный пакет.
   */
-dhcpPacket dhcpDemon::createDhcpPacket( clientState *client, int state ) const
+DhcpPacket DhcpDemon::createDhcpPacket( ClientState *client, int state ) const
 {
-    if ( state == dhcpPacket::DHCPOFFER ) client->state = clientState::WAIT_REQUEST;
-    else client->state = clientState::IN_USE;
-    dhcpPacket p;
+    if ( state == DhcpPacket::DHCPOFFER ) client->state = ClientState::WAIT_REQUEST;
+    else client->state = ClientState::IN_USE;
+    DhcpPacket p;
     p.setType( state );
     p.setXid( client->xid );
     p.setChaddr( client->mac );
@@ -107,9 +117,9 @@ dhcpPacket dhcpDemon::createDhcpPacket( clientState *client, int state ) const
 }
 //------------------------------------------------------------
 
-void dhcpDemon::sendDhcp(dhcpPacket packet) const
+void DhcpDemon::sendDhcp(DhcpPacket packet) const
 {
-    udpPacket udp;
+    UdpPacket udp;
     udp.setSender( SERVER_SOCKET );
     udp.setReceiver( CLIENT_SOCKET );
     udp.pack( packet.toData() );
@@ -119,9 +129,9 @@ void dhcpDemon::sendDhcp(dhcpPacket packet) const
     //myDevice->adapter(myInterface)->sendPacket(p);
 }
 
-void dhcpDemon::makeAnswer(clientState *client, int type)
+void DhcpDemon::makeAnswer(ClientState *client, int type)
 {
-    dhcpPacket dhcp = createDhcpPacket(client,type);
+    DhcpPacket dhcp = createDhcpPacket(client,type);
     sendDhcp(dhcp);
 }
 
@@ -129,10 +139,10 @@ void dhcpDemon::makeAnswer(clientState *client, int type)
   @param xid - идентификатрор.
   @return указатель на запись из списка, если xid совпали, или 0 в противном случае.
   */
-clientState* dhcpDemon::findClient(int xid) const
+ClientState* DhcpDemon::findClient(int xid) const
 {
-    foreach ( clientState *i, clients )
-        if ( i->xid == xid && i->state != clientState::DECLINE ) return i;
+    foreach ( ClientState *i, clients )
+        if ( i->xid == xid && i->state != ClientState::DECLINE ) return i;
     return 0;
 }
 //------------------------------------------------------------
@@ -140,9 +150,9 @@ clientState* dhcpDemon::findClient(int xid) const
   @param ip - адрес.
   @return указатель на запись из списка, если ip совпали, или 0 в противном случае.
   */
-clientState* dhcpDemon::findClient(IpAddress ip) const
+ClientState* DhcpDemon::findClient(IpAddress ip) const
 {
-    foreach ( clientState *i, clients )
+    foreach ( ClientState *i, clients )
         if ( i->ip == ip ) return i;
     return 0;
 }
@@ -151,7 +161,7 @@ clientState* dhcpDemon::findClient(IpAddress ip) const
   Выбирает ip-адрес из динамического диапазона
   @return выбранный адрес, или "0.0.0.0", если нет свободных адресов.
   */
-IpAddress dhcpDemon::giveDynamicIp() const
+IpAddress DhcpDemon::giveDynamicIp() const
 {
     bool isContains = false;
     quint32 i = myBeginIp.toInt();
@@ -169,13 +179,13 @@ IpAddress dhcpDemon::giveDynamicIp() const
     return IpAddress("0.0.0.0");
 }
 //-------------------------------------------------------------
-void dhcpDemon::incTime() {
+void DhcpDemon::incTime() {
     bool canDelete = false;
-    foreach ( clientState *i, clients ) {
-        if ( i->state == clientState::WAIT_REQUEST ) {
+    foreach ( ClientState *i, clients ) {
+        if ( i->state == ClientState::WAIT_REQUEST ) {
             if ( ++i->requestTimer == myWaitingTime ) canDelete = true;
         }
-        else if ( i->state == clientState::IN_USE && --i->time == 0 ) canDelete = true;
+        else if ( i->state == ClientState::IN_USE && --i->time == 0 ) canDelete = true;
         if ( canDelete ) {
             canDelete = false;
             clients.removeOne(i);
@@ -184,7 +194,7 @@ void dhcpDemon::incTime() {
     }
 }
 
-void dhcpDemon::read(QDataStream &stream)
+void DhcpDemon::read(QDataStream &stream)
 {
     stream >> myInterface;
     stream >> myBeginIp;

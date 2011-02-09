@@ -83,8 +83,8 @@ public:
     Interface* adapter(const QString &name);
 
     void sendMessage(const QString &a, int size ,int type);
-    void treatPacket(ipPacket &p);
-    void routePacket(ipPacket &p);
+    void treatPacket(IpPacket &p);
+    void routePacket(IpPacket &p);
     void connectedNet(Interface *p);
     void deciSecondTimerEvent();
     void secondTimerEvent();
@@ -111,7 +111,7 @@ public:
 public slots:
     void disposeSocket(AbstractSocket *socket);
     void addConnection(Cable*);
-    void receivePacket(ipPacket p);
+    void receivePacket(IpPacket p);
     void setCheckedSocket(const QString &str);
     void tableChanged(RouteRecord*,int n);
     void setIp(const QString &a, const QString &ip);

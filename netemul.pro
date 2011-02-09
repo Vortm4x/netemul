@@ -49,7 +49,7 @@ DOC_PATH = "doc"
 SCRIPT_PATH = "scripts"
 win32 { 
     DESTDIR = ../trunk
-    message("Static link ...")
+#    message("Static link ...")
 #    DEFINES += QT_NO_DEBUG_OUTPUT
 #    CONFIG += static
 }

@@ -19,9 +19,9 @@
 ****************************************************************************************/
 #include "tcppacket.h"
 
-tcpPacket::tcpPacket(const QByteArray &b)
+TcpPacket::TcpPacket(const QByteArray &b)
 {
-    d = new tcpPacketData;
+    d = new TcpPacketData;
     QDataStream s(b);
     s >> d->receiver >> d->sender >> d->sequence >> d->ack >> d->flag >> d->window >> d->data;
 }
@@ -32,21 +32,21 @@ tcpPacket::tcpPacket(const QByteArray &b)
   @param p - записываемый пакет.
   @return ссылку на результирующий поток.
 */
-QDataStream& operator<<( QDataStream &stream, const tcpPacket &p )
+QDataStream& operator<<( QDataStream &stream, const TcpPacket &p )
 {
     stream << p.toData();
     return stream;
 }
 //-------------------------------------------------------
 
-QString tcpPacket::toString() const
+QString TcpPacket::toString() const
 {
     QString temp;
     temp.append("TCP, "+QObject::tr("sender port: %1, receiver port: %2").arg(d->sender).arg(d->receiver) );
     return temp;
 }
 
-tcpPacketData::tcpPacketData(const tcpPacketData &u) : QSharedData(u)
+TcpPacketData::TcpPacketData(const TcpPacketData &u) : QSharedData(u)
 {
     sender = u.sender;
     receiver = u.receiver;
@@ -57,7 +57,7 @@ tcpPacketData::tcpPacketData(const tcpPacketData &u) : QSharedData(u)
     data = u.data;
 }
 
-QByteArray tcpPacketData::toData() const
+QByteArray TcpPacketData::toData() const
 {
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);

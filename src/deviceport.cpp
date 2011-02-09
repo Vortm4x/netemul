@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include "deviceport.h"
 #include "cabledev.h"
-#include "frame.h"
+#include "Frame.h"
 
 DevicePort::DevicePort(QObject *parent)
 {
@@ -55,9 +55,9 @@ void DevicePort::queueEvent()
 {
     if ( senderQueue.isEmpty() ) return;
     if ( !myShared && myCable->isShared() && myCable->isBusy(this) ) return;
-    frame t = senderQueue.dequeue();
-    if ( t.receiver().isBroadcast() ) t.setDifferent( frame::BROADCAST );
-    else t.setDifferent( frame::NORMAL );
+    Frame t = senderQueue.dequeue();
+    if ( t.receiver().isBroadcast() ) t.setDifferent( Frame::BROADCAST );
+    else t.setDifferent( Frame::NORMAL );
     myCable->input(t.toData(),this);
 }
 //---------------------------------------------------
@@ -85,7 +85,7 @@ void DevicePort::setChecked(bool c)
 
 void DevicePort::receiveFrame(QByteArray &b)
 {
-    frame f(b);
+    Frame f(b);
     receiveQueue.enqueue(f);
 }
 

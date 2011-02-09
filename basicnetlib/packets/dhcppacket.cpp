@@ -21,21 +21,21 @@
 
 static const QString TYPES_DHCP_MESSAGES[] = { "DHCPDISCOVER" , "DHCPOFFER" , "DHCPREQUEST" , "DHCPACK" , "DHCPDECLINE" };
 
-dhcpPacket::dhcpPacket()
+DhcpPacket::DhcpPacket()
 {
-    d = new dhcpPacketData;
+    d = new DhcpPacketData;
 }
 
-dhcpPacket::dhcpPacket(const QByteArray &data)
+DhcpPacket::DhcpPacket(const QByteArray &data)
 {
-    d = new dhcpPacketData;
+    d = new DhcpPacketData;
     QDataStream s(data);
     s >> d->xid >> d->type >> d->yiaddr >> d->siaddr >> d->chaddr >> d->mask >> d->gateway >> d->time;
 }
 /*!
   * Выполняет сериализацию.
   */
-QByteArray dhcpPacket::toData() const
+QByteArray DhcpPacket::toData() const
 {
     return d->toData();
 }
@@ -43,13 +43,13 @@ QByteArray dhcpPacket::toData() const
 /*!
   * Преобразует тип пакета в строковое представление.
   */
-QString dhcpPacket::typeString() const
+QString DhcpPacket::typeString() const
 {
     return TYPES_DHCP_MESSAGES[ d->type ];
 }
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
-dhcpPacketData::dhcpPacketData(const dhcpPacketData &other) : QSharedData(other)
+DhcpPacketData::DhcpPacketData(const DhcpPacketData &other) : QSharedData(other)
 {
     xid = other.xid;
     type = other.type;
@@ -63,7 +63,7 @@ dhcpPacketData::dhcpPacketData(const dhcpPacketData &other) : QSharedData(other)
 /*!
   * Преобразует содержимое в последовательность байт.
   */
-QByteArray dhcpPacketData::toData() const
+QByteArray DhcpPacketData::toData() const
 {
     QByteArray d;
     QDataStream s(&d, QIODevice::WriteOnly);

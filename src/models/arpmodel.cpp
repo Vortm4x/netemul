@@ -25,7 +25,7 @@ ArpModel::ArpModel(QObject *parent) : QObject(parent)
     lastRecord = 0;
 }
 
-ArpRecord* ArpModel::addToTable(IpAddress ip , macAddress mac , int mode )
+ArpRecord* ArpModel::addToTable(IpAddress ip , MacAddress mac , int mode )
 {
     foreach ( ArpRecord *i , myTable ) {
         if ( i->ip == ip && i->mac == mac ) return i;

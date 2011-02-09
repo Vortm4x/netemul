@@ -43,9 +43,9 @@ void UdpSocket::write(IpAddress address, quint16 port, QByteArray data)
         if ( size >= PACKET_SIZE ) tempArray = data.left(PACKET_SIZE);
         else tempArray = data;
         data.remove(0,tempArray.size());
-        ipPacket p( r->out, address );
-        p.setUpProtocol(ipPacket::udp);
-        udpPacket udp;
+        IpPacket p( r->out, address );
+        p.setUpProtocol(IpPacket::udp);
+        UdpPacket udp;
         udp.setReceiver(port);
         udp.setSender(myBindPort);
         udp.pack(tempArray);
@@ -57,9 +57,9 @@ void UdpSocket::write(IpAddress address, quint16 port, QByteArray data)
     }
 }
 
-void UdpSocket::treatPacket(ipPacket p)
+void UdpSocket::treatPacket(IpPacket p)
 {
-    udpPacket udp(p.unpack());
+    UdpPacket udp(p.unpack());
     emit readyRead( udp.unpack() );
 }
 
@@ -68,9 +68,9 @@ void UdpSocket::writeBroadcast(quint16 port, QByteArray data)
     Q_ASSERT( data.size() <= PACKET_SIZE ); // Нельзя рассылать широковешательно много данных
     foreach ( Interface *i , dev->interfaces() ) {
         if ( !i->isConnect() ) continue;
-        ipPacket p( i->ip() , IpAddress::full() );
-        p.setUpProtocol(ipPacket::udp);
-        udpPacket udp;
+        IpPacket p( i->ip() , IpAddress::full() );
+        p.setUpProtocol(IpPacket::udp);
+        UdpPacket udp;
         udp.setReceiver(port);
         udp.setSender(myBindPort);
         udp.pack(data);

@@ -34,7 +34,7 @@ public:
     enum { staticMode = 100 , dinamicMode = 101 };
     ArpModel(QObject *parent = 0 );
     ~ArpModel() { clear(); }
-    ArpRecord* addToTable( IpAddress ip , macAddress mac , int mode );
+    ArpRecord* addToTable( IpAddress ip , MacAddress mac , int mode );
     void deleteFromTable(const QString &ip);
     void deleteFromTable(ArpRecord *r);
     void update();
@@ -59,7 +59,7 @@ private:
 };
 
 struct ArpRecord {
-    macAddress mac;
+    MacAddress mac;
     IpAddress ip;
     int time;
     int mode;

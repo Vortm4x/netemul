@@ -25,7 +25,7 @@
 #include "ipaddress.h"
 
 struct StaticDhcpRecord {
-    macAddress chaddr;
+    MacAddress chaddr;
     IpAddress yiaddr;
     IpAddress mask;
     IpAddress gateway;
@@ -52,7 +52,7 @@ public:
 
     bool containRecord( StaticDhcpRecord *rec) const;
     bool containRecord(IpAddress ip) const;
-    StaticDhcpRecord* recordWithMac(macAddress cha) const;
+    StaticDhcpRecord* recordWithMac(MacAddress cha) const;
     void addStaticRecord(StaticDhcpRecord *rec);
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);

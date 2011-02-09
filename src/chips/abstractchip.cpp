@@ -64,16 +64,16 @@ void AbstractChip::setStatisticsObject(StatisticsObject *obj)
     obj->deleteLater();
 }
 
-void AbstractChip::checkReceive(frame &f)
+void AbstractChip::checkReceive(Frame &f)
 {
     myStatistics.receiveFrames++;
-    if ( f.type() == frame::ip ) myStatistics.receivePackets++;
+    if ( f.type() == Frame::ip ) myStatistics.receivePackets++;
 }
 
-void AbstractChip::checkSend(frame &f)
+void AbstractChip::checkSend(Frame &f)
 {
     myStatistics.sendFrames++;
-    if ( f.type() == frame::ip ) myStatistics.sendPackets++;
+    if ( f.type() == Frame::ip ) myStatistics.sendPackets++;
 }
 
 

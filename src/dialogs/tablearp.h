@@ -28,8 +28,8 @@ class QLineEdit;
 class QComboBox;
 class QStringList;
 class SmartDevice;
-class ipEdit;
-class macAddress;
+class IpEdit;
+class MacAddress;
 class ArpModel;
 
 class tableArp : public QDialog
@@ -51,7 +51,7 @@ private:
     QComboBox *cb_port;
     QStringList s;
     QList<ArpModel*> list;
-    ipEdit *ip;
+    IpEdit *ip;
 public slots:
     void addRecord();
     void deleteRecord();

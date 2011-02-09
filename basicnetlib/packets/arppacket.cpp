@@ -19,9 +19,9 @@
 ****************************************************************************************/
 #include "arppacket.h"
 
-arpPacket::arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si , quint8 t)
+ArpPacket::ArpPacket(MacAddress rm , MacAddress sm , IpAddress ri , IpAddress si , quint8 t)
 {
-    d = new arpPacketData;
+    d = new ArpPacketData;
     d->receiverMac = rm;
     d->senderMac = sm;
     d->receiverIp = ri;
@@ -29,14 +29,14 @@ arpPacket::arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si
     d->type = t;
 }
 
-arpPacket::arpPacket(const QByteArray &b)
+ArpPacket::ArpPacket(const QByteArray &b)
 {
-    d = new arpPacketData;
+    d = new ArpPacketData;
     QDataStream s(b);
     s >> d->type >> d->senderMac >> d->receiverMac >> d->senderIp >> d->receiverIp;
 }
 
-QByteArray arpPacket::toData() const
+QByteArray ArpPacket::toData() const
 {
     return d->toData();
 }
@@ -44,7 +44,7 @@ QByteArray arpPacket::toData() const
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 
-QByteArray arpPacketData::toData() const
+QByteArray ArpPacketData::toData() const
 {
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);
@@ -52,7 +52,7 @@ QByteArray arpPacketData::toData() const
     return t;
 }
 
-arpPacketData::arpPacketData(const arpPacketData &other) : QSharedData(other)
+ArpPacketData::ArpPacketData(const ArpPacketData &other) : QSharedData(other)
 {
     receiverMac = other.receiverMac;
     senderMac = other.senderMac;

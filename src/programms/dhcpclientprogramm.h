@@ -115,12 +115,12 @@ private:
     int myOfferTime;
 
 private:
-    void sendDhcpMessage(dhcpPacket message, InterfaceState *state);
+    void sendDhcpMessage(DhcpPacket message, InterfaceState *state);
     void sendRequest(const QString &name);
     void sendDiscover(const QString &name);
     void sendDecLine(const QString &name);
-    void receiveOffer(dhcpPacket packet);
-    void receiveAck(dhcpPacket packet);
+    void receiveOffer(DhcpPacket packet);
+    void receiveAck(DhcpPacket packet);
     void restartSession( InterfaceState *session);
     InterfaceState* stateAt(const QString name);
     void resetClient( InterfaceState *session);

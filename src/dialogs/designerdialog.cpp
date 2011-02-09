@@ -88,7 +88,7 @@ QWidget* designerDialog::createMainTab()
 
 QWidget* designerDialog::createFrameTab()
 {
-    QWidget *frame = new QWidget;
+    QWidget *Frame = new QWidget;
     QVBoxLayout *lay = new QVBoxLayout;
     QList<QWidget*> list;
     lb_senderMac = new QLabel( tr("Sender mac: ") );
@@ -113,18 +113,18 @@ QWidget* designerDialog::createFrameTab()
     box->setLayout( createLayout( list ) );
     lay->addWidget( box );
     lay->addStretch(1);
-    frame->setLayout( lay );
+    Frame->setLayout( lay );
     connect( rb_arp, SIGNAL(clicked(bool)), SLOT(changeFrameState()) );
     connect( rb_ip, SIGNAL(clicked()), SLOT(changeFrameState()) );
-    return frame;
+    return Frame;
 }
 
 QWidget* designerDialog::createIpTab()
 {
     QWidget *ip = new QWidget;
     QVBoxLayout *lay = new QVBoxLayout;
-    senderIp = new ipEdit( this,tr("Sender ip: ") );
-    receiverIp = new ipEdit( this,tr("Receiver ip: ") );
+    senderIp = new IpEdit( this,tr("Sender ip: ") );
+    receiverIp = new IpEdit( this,tr("Receiver ip: ") );
     lay->addWidget( senderIp );
     lay->addWidget( receiverIp );
     QGroupBox *box = new QGroupBox;
@@ -168,8 +168,8 @@ QWidget* designerDialog::createArpTab()
     le_arpReceiverMac->setText("00:00:00:00:00:00");
     list << lb_arpReceiverMac << le_arpReceiverMac;
     lay->addLayout( createLayout( list ) );
-    arpSenderIp = new ipEdit( this,tr("Sender ip: ") );
-    arpReceiverIp = new ipEdit( this,tr("Receiver ip: ") );
+    arpSenderIp = new IpEdit( this,tr("Sender ip: ") );
+    arpReceiverIp = new IpEdit( this,tr("Receiver ip: ") );
     lay->addWidget( arpSenderIp );
     lay->addWidget( arpReceiverIp );
     lay->addStretch(1);
@@ -257,28 +257,28 @@ QHBoxLayout* designerDialog::createLayout( QList<QWidget*> list )
 
 void designerDialog::apply()
 {
-    frame Frame;
+    Frame Frame;
     Frame.setSender( le_senderMac->text() );
     Frame.setReceiver( le_receiverMac->text() );
     if ( rb_ip->isChecked() ) {
-        Frame.setType( frame::ip );
-        ipPacket Packet( senderIp->ipText() , receiverIp->ipText() );
+        Frame.setType( Frame::ip );
+        IpPacket Packet( senderIp->ipText() , receiverIp->ipText() );
         if ( rb_tcp->isChecked() ) {
-            tcpPacket tcp;
+            TcpPacket tcp;
             tcp.setSender( sb_tcpSenderPort->value() );
             tcp.setReceiver( sb_tcpReceiverPort->value() );
             tcp.setSequence( sb_sequence->value() );
             tcp.setAck( sb_ack->value() );
             quint8 flag = 0;
-            if ( cb_ack->isChecked() ) flag |= tcpPacket::ACK;
-            if ( cb_fin->isChecked() ) flag |= tcpPacket::FIN;
-            if ( cb_reset->isChecked() ) flag |= tcpPacket::RST;
-            if ( cb_syn->isChecked() ) flag |= tcpPacket::SYN;
+            if ( cb_ack->isChecked() ) flag |= TcpPacket::ACK;
+            if ( cb_fin->isChecked() ) flag |= TcpPacket::FIN;
+            if ( cb_reset->isChecked() ) flag |= TcpPacket::RST;
+            if ( cb_syn->isChecked() ) flag |= TcpPacket::SYN;
             tcp.setFlag(flag);
             Packet.pack(tcp.toData());
         }
         else {
-            udpPacket udp;
+            UdpPacket udp;
             udp.setSender( sb_udpSenderPort->value() );
             udp.setReceiver( sb_udpReceiverPort->value() );
             Packet.pack( udp.toData() );
@@ -286,9 +286,9 @@ void designerDialog::apply()
         Frame.pack(Packet.toData());
     }
     else {
-        Frame.setType( frame::arp );
-        arpPacket arp;
-        arp.setType( ( rb_request->isChecked() ) ? arpPacket::request : arpPacket::response );
+        Frame.setType( Frame::arp );
+        ArpPacket arp;
+        arp.setType( ( rb_request->isChecked() ) ? ArpPacket::request : ArpPacket::response );
         arp.setReceiverIp( arpReceiverIp->ipText() );
         arp.setSenderIp( arpSenderIp->ipText() );
         arp.setReceiverMac( le_arpReceiverMac->text() );

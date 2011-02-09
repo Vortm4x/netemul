@@ -20,24 +20,24 @@
 #include "macaddress.h"
 #include <QStringList>
 
-macAddress::macAddress()
+MacAddress::MacAddress()
 {
     for ( int i = 0 ; i < 6 ; i++ )
         myMac[i] = 0;
 }
 
-macAddress::macAddress(QString str)
+MacAddress::MacAddress(QString str)
 {
     setMac(str);
 }
 
-macAddress::macAddress(const macAddress &other)
+MacAddress::MacAddress(const MacAddress &other)
 {
     for (int i = 0 ; i < 6 ; i ++)
         myMac[i] = other.myMac[i];
 }
 
-QString macAddress::toString() const
+QString MacAddress::toString() const
 {
     QString temp = QString("%1").arg( QString().setNum(myMac[0],16), 2 , QChar('0'));
     int i;
@@ -48,14 +48,14 @@ QString macAddress::toString() const
     return temp.toUpper();
 }
 
-macAddress& macAddress::operator=(const macAddress &other)
+MacAddress& MacAddress::operator=(const MacAddress &other)
 {
     for (int i = 0 ; i < 6 ; i ++)
         myMac[i] = other.myMac[i];
     return (*this);
 }
 
-macAddress macAddress::operator++()
+MacAddress MacAddress::operator++()
 {
     int i = 5;
     while ( i >= 0 && myMac[i] == 255) {
@@ -66,10 +66,10 @@ macAddress macAddress::operator++()
     return *this;
 }
 
-macAddress macAddress::operator++(int notused)
+MacAddress MacAddress::operator++(int notused)
 {
     Q_UNUSED(notused);
-    macAddress temp = *this;
+    MacAddress temp = *this;
     int i = 5;
     while ( i >= 0 && myMac[i] == 255) {
         myMac[i] = 0;
@@ -79,14 +79,14 @@ macAddress macAddress::operator++(int notused)
     return temp;
 }
 
-void macAddress::setBroadcast()
+void MacAddress::setBroadcast()
 {
     int i;
     for (i = 0 ; i < 6 ; i++)
         myMac[i] = 0xFF;
 }
 
-bool macAddress::isBroadcast()
+bool MacAddress::isBroadcast()
 {
     int i;
     for (i = 0; i < 6  ; i++)
@@ -94,7 +94,7 @@ bool macAddress::isBroadcast()
     return true;
 }
 
-void macAddress::setRandom()
+void MacAddress::setRandom()
 {
     int i;
     myMac[0] = 0x01;
@@ -102,14 +102,14 @@ void macAddress::setRandom()
         myMac[i] = qrand()%256;
 }
 
-void macAddress::setMac(QString str)
+void MacAddress::setMac(QString str)
 {
     QStringList s = str.split(":");
     for (int i = 0 ; i < 6 ; i++)
         myMac[i] = s.at(i).toInt(0,16);
 }
 
-bool macAddress::isEmpty() const
+bool MacAddress::isEmpty() const
 {
     for ( int i = 0 ; i < 6 ; i++ )
         if ( myMac[i] ) return false;

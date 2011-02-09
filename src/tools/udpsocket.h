@@ -33,7 +33,7 @@ private:
 public:
     enum { PACKET_SIZE = 1024 };
     ~UdpSocket() { }
-    void treatPacket(ipPacket p);
+    void treatPacket(IpPacket p);
     void write(IpAddress address, quint16 port, QByteArray data);
 private:
     void writeBroadcast(quint16 port, QByteArray data);

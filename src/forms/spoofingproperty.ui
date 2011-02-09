@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="ipEdit" name="clientEdit" native="true">
+    <widget class="IpEdit" name="clientEdit" native="true">
      <property name="toolTip">
       <string>Ip address</string>
      </property>
@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item>
-    <widget class="ipEdit" name="serverEdit" native="true">
+    <widget class="IpEdit" name="serverEdit" native="true">
      <property name="toolTip">
       <string>Ip address</string>
      </property>
@@ -83,7 +83,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ipEdit</class>
+   <class>IpEdit</class>
    <extends>QWidget</extends>
    <header>ipedit.h</header>
   </customwidget>

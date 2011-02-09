@@ -100,7 +100,7 @@ void BoxChip::deciSecondTimerEvent()
     foreach ( DevicePort *i , mySockets ) {
         i->queueEvent();
         if ( i->hasReceive() ) {
-            frame t = i->popFromReceive();
+            Frame t = i->popFromReceive();
             receiveEvent(t,i);
         }
     }

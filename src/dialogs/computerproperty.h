@@ -25,7 +25,7 @@
 class QCheckBox;
 
 class ComputerSetting;
-class ipEdit;
+class IpEdit;
 
 class computerProperty : public dialogTemplate
 {
@@ -38,7 +38,7 @@ public:
 private:
     ComputerSetting *comp;
     QCheckBox *cb_route;
-    ipEdit *gateway;
+    IpEdit *gateway;
 public slots:
     void apply();
 };

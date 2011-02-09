@@ -43,35 +43,35 @@ Interface::~Interface()
     qDeleteAll(myWaits);
 }
 
-void Interface::pushToSocket(frame &f)
+void Interface::pushToSocket(Frame &f)
 {
     checkSend(f);
     emit sendData(f,myName);
     mySocket->pushToSend(f);
 }
 
-void Interface::receiveEvent(frame &fr,DevicePort*)
+void Interface::receiveEvent(Frame &fr,DevicePort*)
 {
     checkReceive(fr);
     emit receiveData(fr,myName);
-    if ( fr.type() == frame::ip ) {
-        ipPacket p(fr.unpack());
+    if ( fr.type() == Frame::ip ) {
+        IpPacket p(fr.unpack());
         emit receivedPacket(p);
     }
-    if ( fr.type() == frame::arp ) {
-        arpPacket p(fr.unpack());
+    if ( fr.type() == Frame::arp ) {
+        ArpPacket p(fr.unpack());
         receiveArp(p);
     }
 }
 
-void Interface::sendBroadcast(ipPacket &p)
+void Interface::sendBroadcast(IpPacket &p)
 {
-    frame f = createFrame( macAddress("FF:FF:FF:FF:FF:FF") , frame::ip );
+    Frame f = createFrame( MacAddress("FF:FF:FF:FF:FF:FF") , Frame::ip );
     f.pack( p.toData() );
     pushToSocket(f);
 }
 
-void Interface::sendPacket(ipPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */ )
+void Interface::sendPacket(IpPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */ )
 {
     if ( p.isBroadcast( myMask ) ) {
         sendBroadcast(p);
@@ -82,7 +82,7 @@ void Interface::sendPacket(ipPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */
     else t = gw;
     ArpRecord *a = myArpTable->recordAt(t);
     if ( a ) {
-        frame f = createFrame( a->mac , frame::ip );
+        Frame f = createFrame( a->mac , Frame::ip );
         a->time = 0; // Стартуем заново время жизни arp записи
         f.pack( p.toData() );
         pushToSocket(f);
@@ -97,18 +97,18 @@ void Interface::sendPacket(ipPacket &p,IpAddress gw /* = ipAddress("0.0.0.0") */
     myWaits << waitPacket::create(t,p);
 }
 
-frame Interface::createFrame( macAddress receiverMac, int t)
+Frame Interface::createFrame( MacAddress receiverMac, int t)
 {
-    frame f;
+    Frame f;
     f.setSender(myMac);
     f.setReceiver(receiverMac);
     f.setType(t);
     return f;
 }
 
-void Interface::receiveArp(arpPacket &arp)
+void Interface::receiveArp(ArpPacket &arp)
 {
-    if ( arp.type() == arpPacket::response ) {
+    if ( arp.type() == ArpPacket::response ) {
         if ( arp.senderIp() == myIp ) {
             emit equalIpDetected();
             QMessageBox::warning(0, QObject::tr("The network is not working correctly"),
@@ -119,7 +119,7 @@ void Interface::receiveArp(arpPacket &arp)
         myArpTable->addToTable(  arp.senderIp() , arp.senderMac() , ArpModel::dinamicMode );
         foreach ( waitPacket *i , myWaits )
             if ( i->dest == arp.senderIp() ) {
-                foreach ( ipPacket p, i->packets ) sendPacket(p,arp.senderIp());
+                foreach ( IpPacket p, i->packets ) sendPacket(p,arp.senderIp());
                 myWaits.removeOne(i);
                 delete i;
                 break;
@@ -155,7 +155,7 @@ void Interface::deciSecondEvent()
 {
     mySocket->queueEvent();
     if ( mySocket->hasReceive() ) {
-        frame f = mySocket->popFromReceive();
+        Frame f = mySocket->popFromReceive();
         receiveEvent( f, mySocket );
     }
 }
@@ -179,18 +179,18 @@ void Interface::secondEvent()
 void Interface::sendArpRequest(IpAddress a)
 {
     if ( a.isEmpty() ) return;
-    arpPacket p(  macAddress() , myMac , a , myIp , arpPacket::request );
-    macAddress m;
+    ArpPacket p(  MacAddress() , myMac , a , myIp , ArpPacket::request );
+    MacAddress m;
     m.setBroadcast();
-    frame f = createFrame(m, frame::arp);
+    Frame f = createFrame(m, Frame::arp);
     f.pack(p.toData());
     pushToSocket(f);
 }
 
-void Interface::sendArpResponse(macAddress m, IpAddress a)
+void Interface::sendArpResponse(MacAddress m, IpAddress a)
 {
-    arpPacket p(m, myMac, a, myIp, arpPacket::response);
-    frame f = createFrame(m, frame::arp);
+    ArpPacket p(m, myMac, a, myIp, ArpPacket::response);
+    Frame f = createFrame(m, Frame::arp);
     f.pack(p.toData());
     pushToSocket(f);
 }
@@ -221,7 +221,7 @@ int Interface::trafficDigit() const
 //-------------------------------------------------------
 //-------------------------------------------------------
 
-waitPacket* waitPacket::create(IpAddress a,ipPacket p)
+waitPacket* waitPacket::create(IpAddress a,IpPacket p)
 {
     waitPacket *t = new waitPacket;
     t->dest = a;

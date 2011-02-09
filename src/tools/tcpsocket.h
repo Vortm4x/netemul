@@ -34,8 +34,8 @@ public:
     enum { NONE = 0, WAIT_RESPONSE = 1, WAIT_ACK = 2, R_WAIT = 3, RECEIVE = 4 };
     ~TcpSocket();
     void setConnection();
-    void treatPacket(ipPacket p);
-    void confirmConnection(ipPacket p);
+    void treatPacket(IpPacket p);
+    void confirmConnection(IpPacket p);
     void secondEvent();
     void write(IpAddress a, quint16 p, QByteArray data);
     bool isBusy() const { return !buffer.isEmpty(); }
@@ -43,13 +43,13 @@ signals:
     void writeEnd();
     void receiveEnd();
 private:
-    void sendMessage(tcpPacket t) const;
+    void sendMessage(TcpPacket t) const;
     void sendWindow();
     void sendAck();
-    void receiveSynAck(tcpPacket t);
-    void receiveAck(tcpPacket t);
+    void receiveSynAck(TcpPacket t);
+    void receiveAck(TcpPacket t);
     void error();
-    tcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;
+    TcpPacket createPacket( quint32 sequence, quint32 ack, quint8 flag) const;
     int state;
     quint16 myReceiverPort;
     quint32 sendIsn;

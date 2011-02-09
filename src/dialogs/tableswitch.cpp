@@ -40,7 +40,7 @@ TableSwitch::TableSwitch(SwitchTableSetting *s)
 
 void TableSwitch::addRecord()
 {    
-    t_sw->addToTable( macAddress( le_macAddress->text() ) , cb_port->currentText()  , SwitchModel::staticMode);
+    t_sw->addToTable( MacAddress( le_macAddress->text() ) , cb_port->currentText()  , SwitchModel::staticMode);
     le_macAddress->setText("00:00:00:00:00:00");
 }
 

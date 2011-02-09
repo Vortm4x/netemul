@@ -29,7 +29,7 @@ class HubChip : public BoxChip
     Q_OBJECT
 public:
     void addSocket(int n);
-    void receiveEvent(frame &fr,DevicePort *sender);
+    void receiveEvent(Frame &fr,DevicePort *sender);
 #ifndef __TESTING__
     void detectCollision();
 #endif

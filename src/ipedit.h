@@ -28,12 +28,12 @@ class QLabel;
 /**
   Виджет для ввода ip адреса.
 */
-class ipEdit : public QWidget
+class IpEdit : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( QString labelText READ labelText WRITE setLabelText DESIGNABLE true)
 public:                
-    ipEdit(QWidget *parent = 0, QString str = "");
+    IpEdit(QWidget *parent = 0, QString str = "");
     void setText(QString str);
     IpAddress ipText() const { return IpAddress(text()); }
     QString text() const;

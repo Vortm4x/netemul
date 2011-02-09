@@ -26,7 +26,7 @@
 
 class DevicePort;
 /*!
-  Реализует компьютер.
+  � еализует компьютер.
 */
 class Computer : public SmartDevice
 {
@@ -48,7 +48,7 @@ public:
     bool canManageInterface() const { return true; }
     bool isCanSend() const { return true; }
     virtual void setRouteModel(RouteModel *model);
-    void sendConstructedFrame(const QString &interface,frame fr, int count);
+    void sendConstructedFrame(const QString &interface,Frame fr, int count);
 protected:
     void write(QDataStream &stream) const { stream << compDev; SmartDevice::write(stream);}
     void read(QDataStream &stream) { SmartDevice::read(stream); }

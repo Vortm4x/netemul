@@ -29,12 +29,12 @@ class SmartDevice;
 class MacAddressDelegate;
 class IpAddressDelegate;
 
-class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
+class DhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 {
     Q_OBJECT
 public:
-    dhcpServerProperty(SmartDevice *dev,QWidget *parent = 0);
-    ~dhcpServerProperty();
+    DhcpServerProperty(SmartDevice *dev, QWidget *parent = 0);
+    ~DhcpServerProperty();
     void setProgramm( DhcpServerProgram *prog );
 public slots:
     void addRecord();

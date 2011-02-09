@@ -73,7 +73,7 @@ QVariant SwitchModel::data(const QModelIndex &m, int role) const
     return QVariant();
 }
 
-MacRecord* SwitchModel::addToTable(const macAddress &mac, const QString &port, int mode)
+MacRecord* SwitchModel::addToTable(const MacAddress &mac, const QString &port, int mode)
 {
     foreach ( MacRecord *i , table )
         if ( i->mac == mac ) return NULL;
@@ -92,7 +92,7 @@ void SwitchModel::addToTable(MacRecord *rec)
     reset();
 }
 
-void SwitchModel::deleteFromTable(const macAddress &mac)
+void SwitchModel::deleteFromTable(const MacAddress &mac)
 {
     foreach ( MacRecord *i , table )
         if ( i->mac == mac ) {
@@ -109,7 +109,7 @@ void SwitchModel::deleteFromTable(MacRecord *r)
     reset();
 }
 
-void SwitchModel::contains(const macAddress &m, const QString &port)
+void SwitchModel::contains(const MacAddress &m, const QString &port)
 {
     bool cont = false;
     foreach ( MacRecord *i , table )
@@ -121,7 +121,7 @@ void SwitchModel::contains(const macAddress &m, const QString &port)
     if ( !cont ) addToTable( m , port , dinamicMode );
 }
 
-QString SwitchModel::portWithMac(const macAddress &m)
+QString SwitchModel::portWithMac(const MacAddress &m)
 {
     if ( !lastPort.isEmpty() && m == lastMac ) return lastPort;
     foreach ( MacRecord *i , table ) {

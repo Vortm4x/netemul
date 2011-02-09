@@ -26,45 +26,45 @@
 #include "ipaddress.h"
 
 
-class arpPacketData : public QSharedData
+class ArpPacketData : public QSharedData
 {
 public:
-    arpPacketData() { }
-    arpPacketData(const arpPacketData &other);
-    ~arpPacketData() { }
+    ArpPacketData() { }
+    ArpPacketData(const ArpPacketData &other);
+    ~ArpPacketData() { }
     QByteArray toData() const;
-    friend class arpPacket;
+    friend class ArpPacket;
 private:
     quint8 type;
-    macAddress senderMac;
-    macAddress receiverMac;
+    MacAddress senderMac;
+    MacAddress receiverMac;
     IpAddress senderIp;
     IpAddress receiverIp;
 };
 
-class BASICNETLIBSHARED_EXPORT arpPacket
+class BASICNETLIBSHARED_EXPORT ArpPacket
 {
 public:
-    arpPacket(macAddress rm , macAddress sm , IpAddress ri , IpAddress si , quint8 t);
-    arpPacket(const arpPacket &other) : d(other.d) { }
-    arpPacket() { d = new arpPacketData; }
-    arpPacket(const QByteArray &b);
+    ArpPacket(MacAddress rm , MacAddress sm , IpAddress ri , IpAddress si , quint8 t);
+    ArpPacket(const ArpPacket &other) : d(other.d) { }
+    ArpPacket() { d = new ArpPacketData; }
+    ArpPacket(const QByteArray &b);
     QByteArray toData() const;
     enum { request = 0 , response = 1 };
     void setType(int i) { d->type = i; }
     int type() const { return d->type; }
-    void setSenderMac(macAddress m) { d->senderMac = m; }
+    void setSenderMac(MacAddress m) { d->senderMac = m; }
     void setSenderIp(IpAddress a) { d->senderIp = a; }
-    void setReceiverMac(macAddress m) { d->receiverMac = m; }
+    void setReceiverMac(MacAddress m) { d->receiverMac = m; }
     void setReceiverIp(IpAddress a) { d->receiverIp = a; }
-    macAddress senderMac() const { return d->senderMac; }
+    MacAddress senderMac() const { return d->senderMac; }
     IpAddress senderIp() const { return d->senderIp; }
-    macAddress receiverMac() const  { return d->receiverMac; }
+    MacAddress receiverMac() const  { return d->receiverMac; }
     IpAddress receiverIp() const { return d->receiverIp; }
 private:
-    QSharedDataPointer<arpPacketData> d;
+    QSharedDataPointer<ArpPacketData> d;
 protected:
-    friend QDataStream& operator<<(QDataStream &stream,const arpPacket &p);
+    friend QDataStream& operator<<(QDataStream &stream,const ArpPacket &p);
 };
 //-------------------------------------------------------------------
 /*!
@@ -73,7 +73,7 @@ protected:
   @param p - пакет для записи.
   @return обновленный поток.
 */
-inline QDataStream& operator<<(QDataStream &stream,const arpPacket &p)
+inline QDataStream& operator<<(QDataStream &stream,const ArpPacket &p)
 {
     stream << p.toData();
     return stream;

@@ -63,7 +63,7 @@ Interface* SmartDevice::adapter(const QString &name)
 void SmartDevice::addInterface(Interface *in)
 {
     myInterfaces << in;
-    connect( in, SIGNAL(receivedPacket(ipPacket)) , SLOT(receivePacket(ipPacket)) );
+    connect( in, SIGNAL(receivedPacket(IpPacket)) , SLOT(receivePacket(IpPacket)) );
     connect( in , SIGNAL(cableConnected(Cable*)) , SLOT(addConnection(Cable*)) );
 }
 
@@ -89,7 +89,7 @@ bool SmartDevice::hasConnentSockets() const {
     return false;
 }
 
-void SmartDevice::receivePacket(ipPacket p)
+void SmartDevice::receivePacket(IpPacket p)
 {
     if ( p.decTtl() == 0 ) return;
     Interface *f = qobject_cast<Interface*>(sender());
@@ -100,7 +100,7 @@ void SmartDevice::receivePacket(ipPacket p)
   Маршрутизирует пакет.
   @param p - указатель на пакет.
 */
-void SmartDevice::routePacket(ipPacket &p)
+void SmartDevice::routePacket(IpPacket &p)
 {
     if ( !myRouter ) return; // Выходим если нет маршрутизации.
     RouteRecord *t = myRouteTable->recordAt(p.receiver());
@@ -207,7 +207,7 @@ IpAddress SmartDevice::gateway() const
 /*!
   Отправляет сообщение посланное из интерфейса программы.
   @param a - Адрес назначения.
-  @param size - Размер сообщения в кб(на деле сколько пакетов).
+  @param size - � азмер сообщения в кб(на деле сколько пакетов).
   @param type - Протокол с помощью которого происходит отправка.
 */
 void SmartDevice::sendMessage( const QString &a , int size ,int type)
@@ -222,7 +222,7 @@ void SmartDevice::sendMessage( const QString &a , int size ,int type)
   Обрабатывает входящий пакет.
   @param p - указатель на пакет.
 */
-void SmartDevice::treatPacket(ipPacket &p)
+void SmartDevice::treatPacket(IpPacket &p)
 {
     quint16 port = p.receiverSocket();
     foreach ( AbstractSocket *i, mySockets )
@@ -294,8 +294,8 @@ void SmartDevice::showLogDialog(logDialog *log) const
 {
     connect( log ,SIGNAL(changeInterface(QString)) , this ,SLOT(setCheckedSocket(QString)) );
     foreach ( Interface *i , myInterfaces ) {
-        connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
-        connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
+        connect( i , SIGNAL(receiveData(Frame,QString)) , log , SLOT(receiveData(Frame,QString)) );
+        connect( i , SIGNAL(sendData(Frame,QString)) , log , SLOT(sendData(Frame,QString)) );
     }
 }
 
@@ -558,7 +558,7 @@ void SmartDevice::disposeSocket(AbstractSocket *socket)
 }
 
 //------------------------------------------------------------------------------
-//----------------------Функии класса adapterSetting----------------------------
+//----------------------Функии класса AdapterSetting----------------------------
 //------------------------------------------------------------------------------
 /*!
   * Функция устанавливает текущий выбранный интерфейс в настройках адаптеров.

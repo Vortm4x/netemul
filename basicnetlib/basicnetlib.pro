@@ -7,7 +7,8 @@
 include(packets/packets.pri)
 QT       -= gui
 
-INCLUDEPATH += packets
+INCLUDEPATH += . \
+    packets
 
 TARGET = basicnetlib
 TEMPLATE = lib
@@ -21,9 +22,9 @@ SOURCES += basicnetlib.cpp \
     frame.cpp
 
 
-HEADERS += basicnetlib.h\
-        basicnetlib_global.h \
+HEADERS += basicnetlib.h \
     macaddress.h \
     ipaddress.h \
-    frame.h
+    frame.h \
+    basicnetlib_global.h
 

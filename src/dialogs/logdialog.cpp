@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include <QtCore/QTime>
 #include "logdialog.h"
-#include "frame.h"
+#include "Frame.h"
 #include "ippacket.h"
 #include "arppacket.h"
 #include "appsetting.h"
@@ -40,39 +40,39 @@ logDialog::~logDialog()
     emit changeInterface("");
 }
 
-void logDialog::receiveData(frame fr,QString port)
+void logDialog::receiveData(Frame fr,QString port)
 {
     if ( cb_sockets->currentText() != port ) return;
     printRecord(receive,fr);
 }
 
-void logDialog::sendData(frame fr,QString port)
+void logDialog::sendData(Frame fr,QString port)
 {
     if ( cb_sockets->currentText() != port ) return;
     printRecord(send,fr);
 }
 
-void logDialog::printRecord(int c, frame fr)
+void logDialog::printRecord(int c, Frame fr)
 {
     if ( cb_type->currentIndex() != all ) {
-        if ( (cb_type->currentIndex() == arp) != (fr.type() == frame::arp) ) return;
-        ipPacket p(fr.unpack());
-        if ( cb_type->currentIndex() == udp && p.upProtocol() != ipPacket::udp ) return;
-        if ( cb_type->currentIndex() == tcp && p.upProtocol() != ipPacket::tcp ) return;
+        if ( (cb_type->currentIndex() == arp) != (fr.type() == Frame::arp) ) return;
+        IpPacket p(fr.unpack());
+        if ( cb_type->currentIndex() == udp && p.upProtocol() != IpPacket::udp ) return;
+        if ( cb_type->currentIndex() == tcp && p.upProtocol() != IpPacket::tcp ) return;
     }
     QString s;
     QTreeWidgetItem *main = new QTreeWidgetItem(lw_log);
     if ( cb_time->isChecked() ) s.append( QTime::currentTime().toString("hh:mm:ss.z")+ " " );
     if ( c == send ) s.append(tr("sent ")); else s.append(tr("received "));
-    if ( fr.type() == frame::ip ) s.append(parseIp(fr,main)); else s.append(parseArp(fr,main));
+    if ( fr.type() == Frame::ip ) s.append(parseIp(fr,main)); else s.append(parseArp(fr,main));
     main->setText(0,s);
     lw_log->scrollToBottom();
 }
 
-QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
+QString logDialog::parseIp(Frame fr,QTreeWidgetItem *parent)
 {
     QString s;
-    ipPacket p(fr.unpack());
+    IpPacket p(fr.unpack());
     s.append( p.sender().toString() + " >> " + p.receiver().toString() + tr(" Type: "));
     QTreeWidgetItem *item = new QTreeWidgetItem(parent);
     item->setText(0,fr.toString());
@@ -80,19 +80,19 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
     item = new QTreeWidgetItem(parent);
     item->setText(0,p.toString());
     item->setBackgroundColor(0,cl_ipInternal);
-    if ( p.upProtocol() == ipPacket::udp ) {
-        udpPacket udp(p.unpack());
+    if ( p.upProtocol() == IpPacket::udp ) {
+        UdpPacket udp(p.unpack());
         s.append( udp.typeToString());
         QTreeWidgetItem *t = new QTreeWidgetItem(parent);
         t->setText(0,udp.toString());
         t->setBackgroundColor(0,cl_udpInternal);
         switch ( udp.receiver() ) {
-            case udpPacket::User : parent->setBackgroundColor(0,cl_user); break;
-            case udpPacket::RIP: parent->setBackgroundColor(0,cl_rip); break;
-            case udpPacket::DHCPClient: case udpPacket::DHCPServer:
+            case UdpPacket::User : parent->setBackgroundColor(0,cl_user); break;
+            case UdpPacket::RIP: parent->setBackgroundColor(0,cl_rip); break;
+            case UdpPacket::DHCPClient: case UdpPacket::DHCPServer:
                         parent->setBackgroundColor(0,cl_dhcp);
                         {
-                            dhcpPacket dhcp( udp.unpack() );
+                            DhcpPacket dhcp( udp.unpack() );
                             t = newItemWidget(parent, tr("DHCP Message, Type: %1").arg( dhcp.typeString() ) );
                             newItemWidget(t, tr("Xid: %1, Yiaddr: %2").arg( dhcp.xid() ).arg( dhcp.yiaddr().toString()) );
                             newItemWidget(t, tr("Siaddr: %1, Chaddr: %2").arg( dhcp.siaddr().toString()).arg(dhcp.chaddr().toString()) );
@@ -102,7 +102,7 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
         }
     }
     else {
-        tcpPacket tcp(p.unpack());
+        TcpPacket tcp(p.unpack());
         s.append(" TCP ");
         parent->setBackgroundColor(0,cl_tcpData);
         QTreeWidgetItem *item = new QTreeWidgetItem(parent);
@@ -112,27 +112,27 @@ QString logDialog::parseIp(frame fr,QTreeWidgetItem *parent)
         t->setText(0, tr("ISN %1, ACK %2").arg(tcp.sequence()).arg(tcp.ack()));
         t->setBackgroundColor(0, cl_tcpInternal);
         t = new QTreeWidgetItem(item);
-        if ( tcp.flag() == tcpPacket::NO_FLAGS )
+        if ( tcp.flag() == TcpPacket::NO_FLAGS )
             t->setText(0, tr("flags: No flags"));
-        else if ( tcp.flag() == tcpPacket::ACK )
+        else if ( tcp.flag() == TcpPacket::ACK )
             t->setText(0, tr("flags: Ack"));
-        else if (tcp.flag() == tcpPacket::SYN) t->setText(0,tr("flags: SYN"));
-        else if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK)) t->setText(0,tr("flags: SYN, ACK"));
+        else if (tcp.flag() == TcpPacket::SYN) t->setText(0,tr("flags: SYN"));
+        else if ( tcp.flag() == (TcpPacket::SYN | TcpPacket::ACK)) t->setText(0,tr("flags: SYN, ACK"));
         else t->setText(0, tr("flags: Fin"));
         t->setBackgroundColor(0, cl_tcpInternal);
     }
     return s;
 }
 
-QString logDialog::parseArp(frame fr,QTreeWidgetItem *parent)
+QString logDialog::parseArp(Frame fr,QTreeWidgetItem *parent)
 {
     QString s;
     QString type;
     parent->setBackgroundColor(0, cl_arp );
-    arpPacket p(fr.unpack());
-    if ( p.type() == arpPacket::request ) type = tr("request");
+    ArpPacket p(fr.unpack());
+    if ( p.type() == ArpPacket::request ) type = tr("request");
     else type = tr("response");
-    if ( p.type() == arpPacket::request) {
+    if ( p.type() == ArpPacket::request) {
         s.append( p.senderIp().toString());
         s.append(tr(" search ") + p.receiverIp().toString() );
     }

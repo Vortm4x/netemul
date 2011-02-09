@@ -27,13 +27,13 @@
 /*!
   * Содержит в себе разделяемые между ip пакетами данные.
 */
-class ipPacketData : public QSharedData
+class IpPacketData : public QSharedData
 {
 public:
-    ipPacketData() {  }
-    ipPacketData(const ipPacketData &other);
-    ~ipPacketData() {  }
-    friend class ipPacket;
+    IpPacketData() {  }
+    IpPacketData(const IpPacketData &other);
+    ~IpPacketData() {  }
+    friend class IpPacket;
 private:
     IpAddress sender; //!< Адрес отправителя.
     IpAddress receiver; //!< Адрес получателя.
@@ -49,16 +49,16 @@ private:
   тип протокола верхнего уровня и поле данных. Остальные папраметры реального пакета пока
   не используются.
 */
-class BASICNETLIBSHARED_EXPORT ipPacket
+class BASICNETLIBSHARED_EXPORT IpPacket
 {
 public:
     /*! Используется для обозначения протокола верхнего уровня. */
     enum { udp = 0 , tcp = 1 };
-    ipPacket() { d = new ipPacketData; d->ttl = 64; }
-    ipPacket(const QByteArray &b);
-    ipPacket(IpAddress s,IpAddress r);
-    ~ipPacket() { }
-    ipPacket(const ipPacket &other) : d(other.d) { }
+    IpPacket() { d = new IpPacketData; d->ttl = 64; }
+    IpPacket(const QByteArray &b);
+    IpPacket(IpAddress s,IpAddress r);
+    ~IpPacket() { }
+    IpPacket(const IpPacket &other) : d(other.d) { }
     QByteArray toData() const;
     QString toString() const;
 
@@ -78,10 +78,10 @@ public:
     int size() { return d->data.size(); }
     QByteArray unpack() const  { return d->data; }
 private:
-    QSharedDataPointer<ipPacketData> d; //!< Данные пакета.
+    QSharedDataPointer<IpPacketData> d; //!< Данные пакета.
 protected:
-    friend bool operator==(const ipPacket &p1,const ipPacket &p2);
-    friend QDataStream& operator<<(QDataStream &stream,const ipPacket &p);
+    friend bool operator==(const IpPacket &p1,const IpPacket &p2);
+    friend QDataStream& operator<<(QDataStream &stream,const IpPacket &p);
 };
 //---------------------------------------------------------------------------
 /*!
@@ -90,7 +90,7 @@ protected:
   @param p - записываемый пакет.
   @return ссылку на результирующий поток.
 */
-inline QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
+inline QDataStream& operator<<(QDataStream &stream,const IpPacket &p)
 {
     stream << p.toData();
     return stream;
@@ -100,12 +100,12 @@ inline QDataStream& operator<<(QDataStream &stream,const ipPacket &p)
   Назначает пакету широковещательный адрес исходя из маски.
   @param mask - Маска.
 */
-inline void ipPacket::setBroadcast(const IpAddress mask)
+inline void IpPacket::setBroadcast(const IpAddress mask)
 {
     d->receiver = d->sender | ~mask;
 }
 //---------------------------------------------------
-inline bool operator==(const ipPacket &p1,const ipPacket &p2)
+inline bool operator==(const IpPacket &p1,const IpPacket &p2)
 {
     return ( p1.sender() == p2.sender() && p1.receiver() == p2.receiver() );
 }

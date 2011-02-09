@@ -23,18 +23,11 @@
 #include "programmrep.h"
 #include "dhcpdemon.h"
 
+class AbstractSocket;
 
 class DhcpServerProgram : public Program
 {
     Q_OBJECT
-//    Q_PROPERTY( QString interfaceName READ interfaceName WRITE setInterfaceName )
-//    Q_PROPERTY( QString beginIp READ beginIp WRITE setBeginIp )
-//    Q_PROPERTY( QString endIp READ endIp WRITE setEndIp )
-//    Q_PROPERTY( QString mask READ mask WRITE setMask )
-//    Q_PROPERTY( QString gateway READ gateway WRITE setGateway )
-//    Q_PROPERTY( int time READ time WRITE setTime )
-//    Q_PROPERTY( int waitingTime READ waitingTime WRITE setWaitingTime )
-//    Q_PROPERTY( bool dynamic READ dynamic WRITE setDynamic )
 public:
     enum { DHCPServer = 2 };
     DhcpServerProgram(QObject *parent = 0);
@@ -63,8 +56,8 @@ public slots:
 private:
     static int myServerCount;
     QString myServerName;
-    QList<dhcpDemon*> myDemons;
-    UdpSocket *receiver;
+    QList<DhcpDemon*> myDemons;
+    AbstractSocket *receiver;
 };
 
 #endif // DHCPSERVERPROGRAMM_H

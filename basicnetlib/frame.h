@@ -35,31 +35,31 @@ public:
                                     different(other.different) , data(other.data) { }
     ~frameData() {  }
     QByteArray toArray() const;
-    friend class frame;
+    friend class Frame;
 private:
-    macAddress sender; //!< Mac-адрес отправителя
-    macAddress receiver; //!< Mac-адрес получателя
+    MacAddress sender; //!< Mac-адрес отправителя
+    MacAddress receiver; //!< Mac-адрес получателя
     qint8 type; //!< Показывает несет ли в себе кадр ip-пакет или arp сообщение.
     qint8 different; //!< Разновидность фрэйма, влияет на его цвет и отображение
     QByteArray data; //!< Данные протокола более высокого уровня.
 };
 
 /*!
-  Реализует кадр, также как и в реальной сети содержит адрес отправителя, получателя и
+ Реализует кадр, также как и в реальной сети содержит адрес отправителя, получателя и
   поле данных где содержиться информация протокола более высокого уровня.
 */
-class BASICNETLIBSHARED_EXPORT frame
+class BASICNETLIBSHARED_EXPORT Frame
 {
 public:
     enum { arp = 100 , ip = 101 };
     enum { NORMAL = 3 , BROADCAST = 4 };
-    frame() { d = new frameData; }
-    frame(const frame &other) : d(other.d) { }
-    frame(const QByteArray &b);
-    macAddress sender() const { return d->sender; }
-    void setSender(macAddress temp) { d->sender = temp; }
-    macAddress receiver() const { return d->receiver; }
-    void setReceiver(macAddress temp) { d->receiver = temp;  }
+    Frame() { d = new frameData; }
+    Frame(const Frame &other) : d(other.d) { }
+    Frame(const QByteArray &b);
+    MacAddress sender() const { return d->sender; }
+    void setSender(MacAddress temp) { d->sender = temp; }
+    MacAddress receiver() const { return d->receiver; }
+    void setReceiver(MacAddress temp) { d->receiver = temp;  }
     void setDifferent(qint8 t) { d->different = t; }
     int type() const { return d->type; }
     void setType(int t) { d->type = t; }
@@ -70,7 +70,7 @@ public:
 private:
     QSharedDataPointer<frameData> d;
 protected:
-    friend QDataStream& operator<<(QDataStream &stream, const frame &f);
+    friend QDataStream& operator<<(QDataStream &stream, const Frame &f);
 };
 
 /*!
@@ -79,7 +79,7 @@ protected:
   @param f - ссылка на кадр.
   @return результирующий поток.
 */
-inline QDataStream& operator<<(QDataStream &stream, const frame &f)
+inline QDataStream& operator<<(QDataStream &stream, const Frame &f)
 {
     stream << f.toData();
     return stream;

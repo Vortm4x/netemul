@@ -21,7 +21,7 @@
 #define LOGDIALOG_H
 
 #include "ui_logdialog.h"
-#include "frame.h"
+#include "Frame.h"
 
 static const QColor cl_frame = "#fbec5d";
 static const QColor cl_ipInternal = "#efaf8c";
@@ -47,16 +47,16 @@ public:
 signals:
     void changeInterface(QString);
 public  slots:
-    void receiveData(frame fr,QString port);
-    void sendData(frame fr,QString port);
+    void receiveData(Frame fr,QString port);
+    void sendData(Frame fr,QString port);
 protected:
     bool eventFilter(QObject *obj,QEvent *e);
     void changeEvent(QEvent *e);
 private:
-    void printRecord( int c, frame fr );
+    void printRecord( int c, Frame fr );
     QTreeWidgetItem* newItemWidget( QTreeWidgetItem *parent , const QString &text , const QColor color = "#FFFFFF");
-    QString parseIp(frame fr,QTreeWidgetItem *parent);
-    QString parseArp(frame fr,QTreeWidgetItem *parent);
+    QString parseIp(Frame fr,QTreeWidgetItem *parent);
+    QString parseArp(Frame fr,QTreeWidgetItem *parent);
 };
 
 #endif // LOGDIALOG_H

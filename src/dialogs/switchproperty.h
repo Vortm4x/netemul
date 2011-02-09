@@ -28,7 +28,7 @@ class QLabel;
 class QCheckBox;
 
 class BoxSetting;
-class ipEdit;
+class IpEdit;
 
 class switchProperty : public dialogTemplate
 {

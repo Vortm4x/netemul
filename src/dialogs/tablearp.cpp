@@ -56,7 +56,7 @@ tableArp::tableArp()
     le_mac->setInputMask("HH:HH:HH:HH:HH:HH;_");
     le_mac->setText("00:00:00:00:00:00");
     temp->addWidget(le_mac);
-    ip = new ipEdit(this,tr("Ip-address: "));
+    ip = new IpEdit(this,tr("Ip-address: "));
     temp->addWidget(ip);
     lb = new QLabel( tr("Netcard") );
     cb_port = new QComboBox;

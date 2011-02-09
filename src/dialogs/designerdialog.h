@@ -30,7 +30,7 @@ class QTabWidget;
 class QHBoxLayout;
 class QSpinBox;
 class QComboBox;
-class ipEdit;
+class IpEdit;
 class Computer;
 
 static const int MAX_PORT = 65535;
@@ -93,10 +93,10 @@ private:
     QSpinBox *sb_ack;    
     QSpinBox *sb_count;
     QComboBox *combo_interface;
-    ipEdit *senderIp;
-    ipEdit *receiverIp;
-    ipEdit *arpSenderIp;
-    ipEdit *arpReceiverIp;
+    IpEdit *senderIp;
+    IpEdit *receiverIp;
+    IpEdit *arpSenderIp;
+    IpEdit *arpReceiverIp;
     Computer *myComputer;
 };
 

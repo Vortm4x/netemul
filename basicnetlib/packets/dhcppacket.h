@@ -25,14 +25,14 @@
 #include "ipaddress.h"
 #include "macaddress.h"
 
-class dhcpPacketData : public QSharedData
+class DhcpPacketData : public QSharedData
 {
 public:
-    dhcpPacketData() { time = 0; }
-    dhcpPacketData(const dhcpPacketData &other);
-    ~dhcpPacketData() { }
+    DhcpPacketData() { time = 0; }
+    DhcpPacketData(const DhcpPacketData &other);
+    ~DhcpPacketData() { }
     QByteArray toData() const;
-    friend class dhcpPacket;
+    friend class DhcpPacket;
 private:
     int xid;
     int type;
@@ -41,23 +41,23 @@ private:
     IpAddress gateway;
     IpAddress yiaddr;
     IpAddress siaddr;
-    macAddress chaddr;
+    MacAddress chaddr;
 };
 
-class BASICNETLIBSHARED_EXPORT dhcpPacket
+class BASICNETLIBSHARED_EXPORT DhcpPacket
 {
 public:
-    dhcpPacket();
-    dhcpPacket(const QByteArray &data);
-    dhcpPacket(const dhcpPacket &other) : d(other.d) { }
-    ~dhcpPacket() { }
+    DhcpPacket();
+    DhcpPacket(const QByteArray &data);
+    DhcpPacket(const DhcpPacket &other) : d(other.d) { }
+    ~DhcpPacket() { }
     QByteArray toData() const;
     enum { DHCPDISCOVER , DHCPOFFER , DHCPREQUEST , DHCPACK , DHCPDECLINE };
     void setYiaddr(IpAddress a) { d->yiaddr = a; }
     void setSiaddr(IpAddress a) { d->siaddr = a; }
     void setMask(IpAddress a) { d->mask = a; }
     void setGateway(IpAddress a) { d->gateway = a; }
-    void setChaddr(macAddress a) { d->chaddr = a; }    
+    void setChaddr(MacAddress a) { d->chaddr = a; }
     void setXid(int x) { d->xid = x; }
     void setType(int t) { d->type = t; }
     void setTime(int t) { d->time = t; }
@@ -68,10 +68,10 @@ public:
     IpAddress siaddr() const { return d->siaddr; }
     IpAddress mask() const { return d->mask; }
     IpAddress gateway() const { return d->gateway; }
-    macAddress chaddr() const { return d->chaddr; }
+    MacAddress chaddr() const { return d->chaddr; }
     QString typeString() const;
 private:
-    QSharedDataPointer<dhcpPacketData> d;
+    QSharedDataPointer<DhcpPacketData> d;
 };
 
 #endif // DHCPPACKET_H

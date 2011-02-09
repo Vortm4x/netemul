@@ -33,10 +33,10 @@ public:
     SwitchChip(QObject *parent);
     static SwitchChip* create(QObject *parent);
     ~SwitchChip();
-    void receiveEvent(frame &fr,DevicePort *sender);
+    void receiveEvent(Frame &fr,DevicePort *sender);
     void dialog();
     void secondTimerEvent();
-    void sendDataSignal(frame &fr, QString port);
+    void sendDataSignal(Frame &fr, QString port);
     SwitchModel* modelAt(VirtualNetwork *vlan) const;
     VirtualNetwork* vlanAt(int n) const { return myVlans.at(n); }
     Q_INVOKABLE void addVirtualNetwork(VirtualNetwork *vlan);
@@ -59,9 +59,9 @@ public:
     VirtualNetwork(QObject *parent = 0);
     ~VirtualNetwork();
 public:
-    void recieveEvent(frame&fr, DevicePort *sender);
+    void recieveEvent(Frame&fr, DevicePort *sender);
     void secondTimerEvent();
-// Работа со списком
+// � абота со списком
 public:
     bool containPort(DevicePort *port) const;
     void includeAllPorts(QStringList list);

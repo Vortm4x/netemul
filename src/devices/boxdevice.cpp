@@ -48,8 +48,8 @@ void BoxDevice::deciSecondTimerEvent()
 void BoxDevice::showLogDialog(logDialog *log) const
 {
     connect( log , SIGNAL(changeInterface(QString)) , this , SLOT(setCheckedSocket(QString)) );
-    connect( myChip , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
-    connect( myChip , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
+    connect( myChip , SIGNAL(receiveData(Frame,QString)) , log , SLOT(receiveData(Frame,QString)) );
+    connect( myChip , SIGNAL(sendData(Frame,QString)) , log , SLOT(sendData(Frame,QString)) );
 }
 
 QIcon BoxDevice::isConnectSocketIcon(const QString &socket) const

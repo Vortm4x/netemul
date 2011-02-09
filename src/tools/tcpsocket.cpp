@@ -52,14 +52,14 @@ void TcpSocket::setConnection()
 {
     waitingTime = 0;
     timeout = 0;   
-    tcpPacket t = createPacket(isn, 0, tcpPacket::SYN);
+    TcpPacket t = createPacket(isn, 0, TcpPacket::SYN);
     sendMessage(t);
     state = WAIT_RESPONSE;
 }
 
-void TcpSocket::sendMessage(tcpPacket t) const
+void TcpSocket::sendMessage(TcpPacket t) const
 {
-    ipPacket p;
+    IpPacket p;
     p.pack(t.toData());
     IpAddress gw;
     RouteRecord *r = dev->routeModel()->recordAt(myBind);
@@ -71,16 +71,16 @@ void TcpSocket::sendMessage(tcpPacket t) const
     dev->ipToAdapter(r->out)->sendPacket(p,gw);
 }
 
-void TcpSocket::treatPacket(ipPacket p)
+void TcpSocket::treatPacket(IpPacket p)
 {
-    tcpPacket tcp(p.unpack());
-    if ( state == NONE && tcp.flag() != tcpPacket::SYN ) { emit imFinished(this); return; }
+    TcpPacket tcp(p.unpack());
+    if ( state == NONE && tcp.flag() != TcpPacket::SYN ) { emit imFinished(this); return; }
 
-    if ( tcp.flag() == tcpPacket::ACK) { receiveAck(tcp); return; }
+    if ( tcp.flag() == TcpPacket::ACK) { receiveAck(tcp); return; }
 
-    if ( tcp.flag() == tcpPacket::NO_FLAGS ) {
+    if ( tcp.flag() == TcpPacket::NO_FLAGS ) {
         if ( state == R_WAIT ) {
-            tcpPacket a = createPacket(0,0,tcpPacket::RST);
+            TcpPacket a = createPacket(0,0,TcpPacket::RST);
             sendMessage(a);
             emit imFinished(this);
             return;
@@ -89,7 +89,7 @@ void TcpSocket::treatPacket(ipPacket p)
         lastNum = tcp.sequence();
         return;
     }
-    if ( tcp.flag() == tcpPacket::FIN ) {
+    if ( tcp.flag() == TcpPacket::FIN ) {
         lastNum = tcp.sequence();
         sendAck();
         emit receiveEnd();
@@ -97,29 +97,29 @@ void TcpSocket::treatPacket(ipPacket p)
             emit imFinished(this);
         }
     }
-    if ( tcp.flag() == (tcpPacket::SYN | tcpPacket::ACK) ) { receiveSynAck(tcp); return; }
-    if ( tcp.flag() == tcpPacket::SYN ) {
+    if ( tcp.flag() == (TcpPacket::SYN | TcpPacket::ACK) ) { receiveSynAck(tcp); return; }
+    if ( tcp.flag() == TcpPacket::SYN ) {
         confirmConnection(p);
         return;
     }
-    if ( tcp.flag() == tcpPacket::RST ) {
+    if ( tcp.flag() == TcpPacket::RST ) {
         error();
         return;
     }
 }
 
-void TcpSocket::receiveSynAck(tcpPacket t)
+void TcpSocket::receiveSynAck(TcpPacket t)
 {
     if ( state != WAIT_RESPONSE ) return;
     timeout = 2*waitingTime;
     if ( t.ack() != isn ) return;
     isn = t.sequence();
-    tcpPacket a = createPacket(0, t.sequence(), tcpPacket::ACK);
+    TcpPacket a = createPacket(0, t.sequence(), TcpPacket::ACK);
     sendMessage(a);
     sendWindow();
 }
 
-void TcpSocket::receiveAck(tcpPacket t)
+void TcpSocket::receiveAck(TcpPacket t)
 {
     if ( state == R_WAIT ) { state = RECEIVE; return; }
     if ( state != WAIT_ACK ) return;
@@ -139,24 +139,24 @@ void TcpSocket::receiveAck(tcpPacket t)
     sendWindow();
 }
 
-tcpPacket TcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
+TcpPacket TcpSocket::createPacket(quint32 sequence, quint32 ack, quint8 flag) const
 {
-    tcpPacket t;
+    TcpPacket t;
     t.setSender(myBindPort);
     t.setReceiver(myReceiverPort);
     t.setSequence( sequence );
     t.setAck(ack);
     t.setFlag(flag);
-    t.setWindow(tcpPacket::Window);
+    t.setWindow(TcpPacket::Window);
     return t;
 }
 
-void TcpSocket::confirmConnection(ipPacket p)
+void TcpSocket::confirmConnection(IpPacket p)
 {    
-    tcpPacket tcp(p.unpack());
+    TcpPacket tcp(p.unpack());
     myReceiverPort = tcp.sender();
     myBind = p.sender();
-    tcpPacket t = createPacket(isn, tcp.sequence(), tcpPacket::SYN | tcpPacket::ACK);
+    TcpPacket t = createPacket(isn, tcp.sequence(), TcpPacket::SYN | TcpPacket::ACK);
     sendMessage(t);
     state = R_WAIT;
 }
@@ -166,7 +166,7 @@ void TcpSocket::sendWindow()
     if ( sendingNum++ > AppSetting::sendingNum() ) { error(); return; }
     panicTime = 0;
     sendIsn = isn;
-    QByteArray data = buffer.left(tcpPacket::Window);
+    QByteArray data = buffer.left(TcpPacket::Window);
     int count = 0;
     int size = data.size();
     while ( size >= PACKET_SIZE ) {
@@ -174,8 +174,8 @@ void TcpSocket::sendWindow()
         size -= PACKET_SIZE;
     }
     for ( int j = 0; j < count; j++ ) {
-        tcpPacket t = createPacket(isn,0,tcpPacket::NO_FLAGS);
-        if ( buffer.size()<=tcpPacket::Window && j==count-1) t.setFlag(tcpPacket::FIN);
+        TcpPacket t = createPacket(isn,0,TcpPacket::NO_FLAGS);
+        if ( buffer.size()<=TcpPacket::Window && j==count-1) t.setFlag(TcpPacket::FIN);
         t.pack(data.left(PACKET_SIZE));
         data.remove(0,PACKET_SIZE);
         sendMessage(t);
@@ -186,7 +186,7 @@ void TcpSocket::sendWindow()
 
 void TcpSocket::sendAck()
 {
-     tcpPacket t = createPacket( 0, lastNum + 1, tcpPacket::ACK);
+     TcpPacket t = createPacket( 0, lastNum + 1, TcpPacket::ACK);
      sendMessage(t);
      inputTime = 0;
      lastNum = 0;

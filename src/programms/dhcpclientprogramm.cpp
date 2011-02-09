@@ -101,8 +101,8 @@ void DhcpClientProgram::sendRequest(const QString &name)
         return;
     }
     t->time = myOfferTime;
-    dhcpPacket message;
-    message.setType( dhcpPacket::DHCPREQUEST );
+    DhcpPacket message;
+    message.setType( DhcpPacket::DHCPREQUEST );
     message.setXid( t->xid );
     message.setChaddr( myDevice->adapter(t->name)->mac() );
     message.setSiaddr( t->serverAddress );
@@ -120,8 +120,8 @@ void DhcpClientProgram::sendDiscover(const QString &name)
     t->state = InterfaceState::CS_WAIT_VARIANT;
     t->time = myOfferTime;
     t->count = 0;
-    dhcpPacket message;
-    message.setType( dhcpPacket::DHCPDISCOVER );
+    DhcpPacket message;
+    message.setType( DhcpPacket::DHCPDISCOVER );
     message.setXid(t->xid);
     message.setChaddr( myDevice->adapter(t->name)->mac() );
     if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
@@ -132,8 +132,8 @@ void DhcpClientProgram::sendDecLine(const QString &name)
 {
     InterfaceState *t = stateAt(name);
     if ( !t ) return;
-    dhcpPacket message;
-    message.setType( dhcpPacket::DHCPDECLINE );
+    DhcpPacket message;
+    message.setType( DhcpPacket::DHCPDECLINE );
     message.setXid( t->xid );
     if ( !t->lastIp.isEmpty() ) message.setYiaddr( t->lastIp );
     message.setChaddr( myDevice->adapter( t->name )->mac() );
@@ -145,10 +145,10 @@ void DhcpClientProgram::sendDecLine(const QString &name)
   */
 void DhcpClientProgram::processData(QByteArray data)
 {
-    dhcpPacket packet(data);
+    DhcpPacket packet(data);
     switch ( packet.type() ) {
-        case dhcpPacket::DHCPOFFER: receiveOffer(packet); break;
-        case dhcpPacket::DHCPACK: receiveAck(packet); break;
+        case DhcpPacket::DHCPOFFER: receiveOffer(packet); break;
+        case DhcpPacket::DHCPACK: receiveAck(packet); break;
     }
 }
 //---------------------------------------------------------------
@@ -166,7 +166,7 @@ void DhcpClientProgram::restartSession(InterfaceState *session)
   Обрабатывает входящее предложение настроек.
   @param packet - пакет с настройками.
   */
-void DhcpClientProgram::receiveOffer(dhcpPacket packet)
+void DhcpClientProgram::receiveOffer(DhcpPacket packet)
 {
     foreach ( InterfaceState *i , myStates )
         if ( i->xid == packet.xid() && i->state == InterfaceState::CS_WAIT_VARIANT ) {
@@ -181,7 +181,7 @@ void DhcpClientProgram::receiveOffer(dhcpPacket packet)
   Обрабатывает вхоодящий АСК.
   @param packet - ack пакет
   */
-void DhcpClientProgram::receiveAck(dhcpPacket packet)
+void DhcpClientProgram::receiveAck(DhcpPacket packet)
 {
     foreach ( InterfaceState *i , myStates )
         if ( i->xid == packet.xid() && i->state == InterfaceState::CS_WAIT_RESPONSE ) {
@@ -203,16 +203,16 @@ void DhcpClientProgram::receiveAck(dhcpPacket packet)
   @param message - пакет.
   @param state - поток-отправитель.
   */
-void DhcpClientProgram::sendDhcpMessage(dhcpPacket message, InterfaceState *state)
+void DhcpClientProgram::sendDhcpMessage(DhcpPacket message, InterfaceState *state)
 {
     if (!myDevice->adapter(state->name)->isConnect() ) return;
-    udpPacket udp;
+    UdpPacket udp;
     udp.setSender(CLIENT_SOCKET);
     udp.setReceiver(SERVER_SOCKET);
     udp.pack( message.toData() );
-    ipPacket packet( myDevice->adapter(state->name)->ip() , IpAddress::full() );
+    IpPacket packet( myDevice->adapter(state->name)->ip() , IpAddress::full() );
     packet.pack( udp.toData() );
-    packet.setUpProtocol( ipPacket::udp );
+    packet.setUpProtocol( IpPacket::udp );
     myDevice->adapter(state->name)->sendPacket( packet);
 }
 //---------------------------------------------------------------

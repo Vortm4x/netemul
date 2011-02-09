@@ -27,7 +27,7 @@ class QLineEdit;
 class QLabel;
 class QPushButton;
 
-class ipEdit;
+class IpEdit;
 class HubSetting;
 
 class hubProperty : public dialogTemplate

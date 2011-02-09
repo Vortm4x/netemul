@@ -24,14 +24,14 @@
 #include <QDataStream>
 #include <QSharedData>
 
-class udpPacketData : public QSharedData
+class UdpPacketData : public QSharedData
 {
 public:
-    udpPacketData() { }
-    udpPacketData(const udpPacketData &other);
-    ~udpPacketData() { }
+    UdpPacketData() { }
+    UdpPacketData(const UdpPacketData &other);
+    ~UdpPacketData() { }
     QByteArray toData() const;
-    friend class udpPacket;
+    friend class UdpPacket;
 private:
     quint16 sender; //!< Порт отправителя
     quint16 receiver; //!< Порт получателя
@@ -40,14 +40,14 @@ private:
 /*!
   Реализует udp-дейтаграмму
 */
-class BASICNETLIBSHARED_EXPORT udpPacket
+class BASICNETLIBSHARED_EXPORT UdpPacket
 {
 public:
     enum { User = 7777 , RIP = 520 , DHCPClient = 67, DHCPServer = 68 } ;
-    udpPacket() { d = new udpPacketData; }
-    udpPacket(const QByteArray &b);
-    udpPacket(const udpPacket &u) : d(u.d) { }
-    ~udpPacket() { }
+    UdpPacket() { d = new UdpPacketData; }
+    UdpPacket(const QByteArray &b);
+    UdpPacket(const UdpPacket &u) : d(u.d) { }
+    ~UdpPacket() { }
     QByteArray toData() const;
     int size() const { return d->data.size(); }
     void setSender( quint16 i ) { d->sender = i;}
@@ -59,9 +59,9 @@ public:
     QString typeToString() const;
     QString toString() const;
 private:
-    QSharedDataPointer<udpPacketData> d;
+    QSharedDataPointer<UdpPacketData> d;
 protected:
-    friend QDataStream& operator<<( QDataStream &stream, const udpPacket &p );
+    friend QDataStream& operator<<( QDataStream &stream, const UdpPacket &p );
 };
 //-----------------------------------------------------
 /*!
@@ -70,7 +70,7 @@ protected:
   @param p - записываемый пакет.
   @return ссылку на результирующий поток.
 */
-inline QDataStream& operator<<( QDataStream &stream, const udpPacket &p )
+inline QDataStream& operator<<( QDataStream &stream, const UdpPacket &p )
 {
     stream << p.toData();
     return stream;

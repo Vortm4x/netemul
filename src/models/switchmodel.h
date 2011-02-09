@@ -26,7 +26,7 @@
 class DevicePort;
 
 struct MacRecord {
-    macAddress mac;
+    MacAddress mac;
     QString port;
     int time;
     int mode;
@@ -82,15 +82,15 @@ public:
     QVariantList recordList() const;
 
     void updateMac();
-    void deleteFromTable(const macAddress &mac);
+    void deleteFromTable(const MacAddress &mac);
     void deleteFromTable(MacRecord *r);
-    MacRecord* addToTable(const macAddress &mac ,const QString &port, int mode);
+    MacRecord* addToTable(const MacAddress &mac ,const QString &port, int mode);
     void addToTable(MacRecord *rec);
-    void contains(const macAddress &m , const QString &port);
-    QString portWithMac(const macAddress &m);
+    void contains(const MacAddress &m , const QString &port);
+    QString portWithMac(const MacAddress &m);
 private:   
     QString lastPort;
-    macAddress lastMac;
+    MacAddress lastMac;
     MacRecordList table;
 };
 

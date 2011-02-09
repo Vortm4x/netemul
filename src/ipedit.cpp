@@ -31,7 +31,7 @@
   @param parent - виджет родитель.
 
   */
-ipEdit::ipEdit(QWidget *parent /* = 0 */, QString str /* = "" */) : QWidget(parent)
+IpEdit::IpEdit(QWidget *parent /* = 0 */, QString str /* = "" */) : QWidget(parent)
 {
     QIntValidator *v = new QIntValidator(1,255,this);
     QHBoxLayout *all = new QHBoxLayout;
@@ -65,19 +65,19 @@ ipEdit::ipEdit(QWidget *parent /* = 0 */, QString str /* = "" */) : QWidget(pare
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
-void ipEdit::setText(QString str)
+void IpEdit::setText(QString str)
 {
     QStringList s = str.split(".");
     for (int i = 0 ; i < 4 ; i++)
         part[i]->setText(s.at(i));
 }
 
-QSize ipEdit::sizeHint() const
+QSize IpEdit::sizeHint() const
 {
     return QSize(label->width() + part[0]->width() * 4 + 50, part[0]->height() +10 );
 }
 
-QString ipEdit::text() const
+QString IpEdit::text() const
 {
     QString s;
     s = part[0]->text();
@@ -89,7 +89,7 @@ QString ipEdit::text() const
 /*!
   Сбрасывает значения всех полей в 0.
 */
-void ipEdit::clear()
+void IpEdit::clear()
 {
     for (int i = 0 ; i < 4 ; i++)
         part[i]->setText("0");
@@ -99,7 +99,7 @@ void ipEdit::clear()
   Исходя из первого байта ip адреса выставляет маску по умолчанию для этого класса сетей.
   @param u- первый байт ip адреса.
 */
-void ipEdit::setDefaultMask(quint8 u)
+void IpEdit::setDefaultMask(quint8 u)
 {
     int n;
     if ( u >= 1 && u < 127 ) n = 1; // Далее это число
@@ -113,16 +113,16 @@ void ipEdit::setDefaultMask(quint8 u)
 //----------------------------------------
 /*!
   Слот посылает сигнал о том что изменился первый октет ip адреса
-  сигнал может быть перехвачен другим ipEdit и использован для задания маски через
+  сигнал может быть перехвачен другим IpEdit и использован для задания маски через
   слот setDefaultMask.
 */
-void ipEdit::changeMask(QString s)
+void IpEdit::changeMask(QString s)
 {
     quint8 u = s.toInt();
     emit maskChanged(u);
 }
 //-------------------------------------------
-bool ipEdit::eventFilter(QObject *obj, QEvent *event)
+bool IpEdit::eventFilter(QObject *obj, QEvent *event)
 {
     if ( event->type() == QEvent::KeyPress ) {
         QKeyEvent *e = static_cast<QKeyEvent*>(event);
@@ -137,17 +137,17 @@ bool ipEdit::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj,event);
 }
 
-void ipEdit::setLabelVisible(bool isVisible)
+void IpEdit::setLabelVisible(bool isVisible)
 {
     label->setVisible(isVisible);
 }
 
-void ipEdit::setLabelText(const QString text)
+void IpEdit::setLabelText(const QString text)
 {
     label->setText(text);
 }
 
-QString ipEdit::labelText() const
+QString IpEdit::labelText() const
 {
     return label->text();
 }

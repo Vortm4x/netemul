@@ -4,7 +4,7 @@
 #include "programmrep.h"
 #include "ipaddress.h"
 #include "macaddress.h"
-#include "frame.h"
+#include "Frame.h"
 
 class ArpRecord;
 
@@ -30,15 +30,15 @@ public:
 public slots:
     void execute(ArpRecord *record);
 private:
-    void sendOneAnswer( IpAddress sender , IpAddress receiver , macAddress receiverMac );
+    void sendOneAnswer( IpAddress sender , IpAddress receiver , MacAddress receiverMac );
     void sendAnswers();
 
     IpAddress myServerIp;
     IpAddress myClientIp;
     bool isReady;
     bool hasAttack;
-    macAddress myServerMac;
-    macAddress myClientMac;
+    MacAddress myServerMac;
+    MacAddress myClientMac;
 };
 
 #endif // SNIFFERPROGRAMM_H

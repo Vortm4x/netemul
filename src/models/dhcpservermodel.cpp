@@ -127,7 +127,7 @@ bool DhcpServerModel::containRecord(IpAddress ip) const
     return false;
 }
 
-StaticDhcpRecord* DhcpServerModel::recordWithMac(macAddress cha) const
+StaticDhcpRecord* DhcpServerModel::recordWithMac(MacAddress cha) const
 {
     if ( table.isEmpty() ) return 0;
     foreach ( StaticDhcpRecord *i, table )

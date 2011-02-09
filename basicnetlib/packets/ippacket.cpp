@@ -19,16 +19,16 @@
 ****************************************************************************************/
 #include "ippacket.h"
 
-ipPacket::ipPacket(const QByteArray &b)
+IpPacket::IpPacket(const QByteArray &b)
 {
-    d = new ipPacketData;
+    d = new IpPacketData;
     QDataStream s(b);
     s >> d->sender >> d->receiver >> d->upProtocol >> d->data >> d->ttl;
 }
 
-ipPacket::ipPacket(IpAddress s,IpAddress r)
+IpPacket::IpPacket(IpAddress s,IpAddress r)
 {
-    d = new ipPacketData;
+    d = new IpPacketData;
     d->sender = s ;
     d->receiver = r;
     d->ttl = 64;
@@ -38,26 +38,26 @@ ipPacket::ipPacket(IpAddress s,IpAddress r)
   @param mask - маска сети, по которой идет проверка.
   @return - true - широковещательный, false - в противном случае.
 */
-bool ipPacket::isBroadcast(const IpAddress mask) const
+bool IpPacket::isBroadcast(const IpAddress mask) const
 {
     IpAddress a = ~mask;
     if ( ( d->receiver & a ) == a) return true;
     return false;
 }
 //----------------------------------------------------
-QByteArray ipPacket::toData() const
+QByteArray IpPacket::toData() const
 {
     return d->toData();
 }
 
-QString ipPacket::toString() const
+QString IpPacket::toString() const
 {
     QString temp;
     temp.append(QObject::tr("IP packet, sender: %1, receiver: %2 TTL: %3").arg(d->sender.toString()).arg(d->receiver.toString()).arg(d->ttl));
     return temp;
 }
 
-quint16 ipPacket::receiverSocket() const
+quint16 IpPacket::receiverSocket() const
 {
     QDataStream stream(d->data);
     quint16 t;
@@ -65,7 +65,7 @@ quint16 ipPacket::receiverSocket() const
     return t;
 }
 
-quint8 ipPacket::decTtl()
+quint8 IpPacket::decTtl()
 {
     d->ttl--;
     return d->ttl;
@@ -76,7 +76,7 @@ quint8 ipPacket::decTtl()
 /*!
   * Переводит пакет в массив байт.
 */
-QByteArray ipPacketData::toData() const
+QByteArray IpPacketData::toData() const
 {
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);
@@ -87,7 +87,7 @@ QByteArray ipPacketData::toData() const
 /*!
  * Копирующий конструктор данных.
 */
-ipPacketData::ipPacketData(const ipPacketData &other) : QSharedData(other)
+IpPacketData::IpPacketData(const IpPacketData &other) : QSharedData(other)
 {
     sender = other.sender;
     receiver = other.receiver;

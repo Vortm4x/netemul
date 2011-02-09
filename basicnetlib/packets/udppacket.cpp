@@ -19,19 +19,19 @@
 ****************************************************************************************/
 #include "udppacket.h"
 
-QByteArray udpPacket::toData() const
+QByteArray UdpPacket::toData() const
 {
     return d->toData();
 }
 
-udpPacket::udpPacket(const QByteArray &b)
+UdpPacket::UdpPacket(const QByteArray &b)
 {
-    d = new udpPacketData;
+    d = new UdpPacketData;
     QDataStream s(b);
     s >> d->receiver >> d->sender >> d->data;
 }
 
-QString udpPacket::typeToString() const
+QString UdpPacket::typeToString() const
 {
     switch ( d->receiver ) {
         case User: return QObject::tr("UDP Message user");
@@ -41,7 +41,7 @@ QString udpPacket::typeToString() const
     }
 }
 
-QString udpPacket::toString() const
+QString UdpPacket::toString() const
 {
     QString temp;
     temp.append("UDP, "+QObject::tr("sender port: %1, receiver port: %2").arg(d->sender).arg(d->receiver) );
@@ -51,14 +51,14 @@ QString udpPacket::toString() const
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-udpPacketData::udpPacketData(const udpPacketData &u) : QSharedData(u)
+UdpPacketData::UdpPacketData(const UdpPacketData &u) : QSharedData(u)
 {
     sender = u.sender;
     receiver = u.receiver;
     data = u.data;
 }
 
-QByteArray udpPacketData::toData() const
+QByteArray UdpPacketData::toData() const
 {
     QByteArray t;
     QDataStream s(&t,QIODevice::WriteOnly);

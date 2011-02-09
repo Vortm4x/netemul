@@ -29,7 +29,7 @@ class QLabel;
 class QPushButton;
 
 class DevicePort;
-class ipEdit;
+class IpEdit;
 class AdapterSetting;
 
 /**
@@ -56,8 +56,8 @@ private:
     QTabBar *tab_interfaces;
     QLineEdit *le_name;
     QLineEdit *le_mac;
-    ipEdit *le_ip;
-    ipEdit *le_mask;
+    IpEdit *le_ip;
+    IpEdit *le_mask;
     QPushButton *btn_add;
     QPushButton *btn_del;
     QCheckBox *cb_auto;

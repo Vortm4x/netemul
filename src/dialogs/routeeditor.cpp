@@ -45,11 +45,11 @@ routeEditor::routeEditor(SmartDevice *s)
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->installEventFilter(this);
     all->addWidget(table);
-    ip_dest = new ipEdit(this,tr("Destination: "));
+    ip_dest = new IpEdit(this,tr("Destination: "));
     all->addWidget(ip_dest);
-    ip_mask = new ipEdit(this,tr("Mask: "));
+    ip_mask = new IpEdit(this,tr("Mask: "));
     all->addWidget(ip_mask);
-    ip_gateway = new ipEdit(this,tr("Gateway: "));
+    ip_gateway = new IpEdit(this,tr("Gateway: "));
     all->addWidget(ip_gateway);
     QHBoxLayout *temp = new QHBoxLayout;
     temp->addWidget( new QLabel(tr("Interface: ")) );

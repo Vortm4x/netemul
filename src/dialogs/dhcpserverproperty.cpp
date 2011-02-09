@@ -25,7 +25,7 @@
 #include "macaddressdelegate.h"
 #include "ipaddressdelegate.h"
 
-dhcpServerProperty::dhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
+DhcpServerProperty::DhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
 {
     setupUi(this);
     device = dev;
@@ -40,12 +40,12 @@ dhcpServerProperty::dhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 *
     connect( ie_begin , SIGNAL(maskChanged(quint8)) , ie_mask , SLOT(setDefaultMask(quint8)) );
 }
 
-dhcpServerProperty::~dhcpServerProperty()
+DhcpServerProperty::~DhcpServerProperty()
 {
     delete macDelegate;
 }
 
-void dhcpServerProperty::setProgramm(DhcpServerProgram *prog)
+void DhcpServerProperty::setProgramm(DhcpServerProgram *prog)
 {
 //    myProgramm = prog;
 //    myModel = myProgramm->dhcpModel();
@@ -63,17 +63,17 @@ void dhcpServerProperty::setProgramm(DhcpServerProgram *prog)
 //    le_name->setText(myProgramm->serverName());
 }
 
-void dhcpServerProperty::addRecord()
+void DhcpServerProperty::addRecord()
 {
     myModel->insertRow( myModel->rowCount() );
 }
 
-void dhcpServerProperty::deleteRecord()
+void DhcpServerProperty::deleteRecord()
 {
     myModel->removeRow( tv_static->currentIndex().row() );
 }
 
-void dhcpServerProperty::changeState(bool b)
+void DhcpServerProperty::changeState(bool b)
 {
     ie_begin->setEnabled(b);
     ie_end->setEnabled(b);
@@ -83,7 +83,7 @@ void dhcpServerProperty::changeState(bool b)
     lb_term->setEnabled(b);
 }
 
-void dhcpServerProperty::apply()
+void DhcpServerProperty::apply()
 {
     if ( ie_begin->ipText() > ie_end->ipText() ) {
         QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong IP range."), QMessageBox::Ok, QMessageBox::Ok);
@@ -101,7 +101,7 @@ void dhcpServerProperty::apply()
     accept();
 }
 
-void dhcpServerProperty::changeEvent(QEvent *e)
+void DhcpServerProperty::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
     switch (e->type()) {

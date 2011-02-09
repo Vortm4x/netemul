@@ -23,7 +23,7 @@
 #include "boxdevice.h"
 #include "macaddress.h"
 
-class frame;
+class Frame;
 class SwitchModel;
 class SwitchTableSetting;
 class SwitchChip;

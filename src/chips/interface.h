@@ -37,9 +37,9 @@ struct waitPacket
     IpAddress dest;
     int time;
     quint8 count;
-    QList<ipPacket> packets;
-    void insert(ipPacket p) { packets << p; }
-    static waitPacket* create(IpAddress a,ipPacket p);
+    QList<IpPacket> packets;
+    void insert(IpPacket p) { packets << p; }
+    static waitPacket* create(IpAddress a,IpPacket p);
 };
 
 class Interface : public AbstractChip
@@ -50,11 +50,11 @@ public:
     Interface(QObject *parent = 0);
     static Interface* create(QObject *parent = 0);
     ~Interface();
-    void receiveEvent(frame &fr,DevicePort*);
-    void receiveIp(ipPacket &ip);
-    void receiveArp(arpPacket &arp);
-    void sendPacket(ipPacket &p,IpAddress gw = IpAddress("0.0.0.0"));
-    void sendBroadcast(ipPacket &p);
+    void receiveEvent(Frame &fr,DevicePort*);
+    void receiveIp(IpPacket &ip);
+    void receiveArp(ArpPacket &arp);
+    void sendPacket(IpPacket &p,IpAddress gw = IpAddress("0.0.0.0"));
+    void sendBroadcast(IpPacket &p);
     DevicePort* socket() const { return mySocket; }
     Cable* socketCable() const;
     bool isConnect() const;    
@@ -62,11 +62,11 @@ public:
     void deciSecondEvent();
     void secondEvent();
     void sendArpRequest(IpAddress a);
-    void sendArpResponse(macAddress m, IpAddress a);
+    void sendArpResponse(MacAddress m, IpAddress a);
     int trafficDigit() const;
     bool isBusy() const;    
 
-    frame createFrame( macAddress receiverMac , int t);
+    Frame createFrame( MacAddress receiverMac , int t);
     void setChecked(bool b);
     ArpModel* arpTable() const { return myArpTable; }
     Q_INVOKABLE void setArpModel(ArpModel *model) {
@@ -75,7 +75,7 @@ public:
         }
     }
 
-    void pushToSocket(frame &f);
+    void pushToSocket(Frame &f);
 
     virtual void write(QDataStream &stream) const;
     virtual void read(QDataStream &stream);
@@ -87,7 +87,7 @@ public slots:
 
 signals:
     void cableConnected(Cable*);
-    void receivedPacket(ipPacket);
+    void receivedPacket(IpPacket);
     void equalIpDetected();
 private:
     QString myName;
