@@ -35,7 +35,7 @@ Computer::Computer(QObject *parent) : SmartDevice(parent)
 Computer* Computer::create(QObject *parent)
 {
     Computer *c = new Computer(parent);
-    c->setSocketsCount(appSetting::defaultComputerCount());
+    c->setSocketsCount(AppSetting::defaultComputerCount());
     c->setRouteModel( new RouteModel(c) );
     c->routeModel()->addToTable("127.0.0.0","255.0.0.0","127.0.0.1","127.0.0.1",0,RouteModel::connectMode);
     c->setNote(tr("<b>Computer</b><!--You can use HTML.-->"));
@@ -50,11 +50,9 @@ void Computer::showDesignerDialog()
 
 void Computer::dialog()
 {
-#ifndef __TESTING__
     computerProperty *d = new computerProperty;
-    d->setDevice( new computerSetting(this) );
+    d->setDevice( new ComputerSetting(this) );
     d->exec();
-#endif
 }
 
 void Computer::setSocketsCount(int n)

@@ -25,11 +25,11 @@
 class MyCanvas;
 class Cable;
 
-class addCableCommand : public QUndoCommand
+class AddCableCommand : public QUndoCommand
 {
 public:
-    addCableCommand(MyCanvas *s, Cable *c);
-    ~addCableCommand();
+    AddCableCommand(MyCanvas *s, Cable *c);
+    ~AddCableCommand();
     void redo();
     void undo();
 private:

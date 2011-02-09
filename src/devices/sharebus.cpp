@@ -19,13 +19,13 @@
 ****************************************************************************************/
 #include "sharebus.h"
 
-shareBus::shareBus(int c)
+ShareBus::ShareBus(int c)
 {
     Q_UNUSED(c);
     widthDev = defaultWidth;
 }
 
-DevicePort* shareBus::addInterface(QString str, int t)
+DevicePort* ShareBus::addInterface(QString str, int t)
 {
     Q_UNUSED(str);
     Q_UNUSED(t);

@@ -29,7 +29,7 @@
 /*!
   Конструктор создает основной интерфейс диалога.
 */
-adapterProperty::adapterProperty(adapterSetting *s)
+adapterProperty::adapterProperty(AdapterSetting *s)
 {
     setWindowTitle(tr("Netcard"));
     sd = s;

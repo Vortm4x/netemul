@@ -27,7 +27,7 @@ class QLineEdit;
 class QLabel;
 class QCheckBox;
 
-class boxSetting;
+class BoxSetting;
 class ipEdit;
 
 class switchProperty : public dialogTemplate
@@ -37,9 +37,9 @@ class switchProperty : public dialogTemplate
 public:
     switchProperty();
     ~switchProperty();
-    void setSwitch(boxSetting *d);
+    void setSwitch(BoxSetting *d);
 private:
-    boxSetting *sw;
+    BoxSetting *sw;
     QComboBox *cb_count;    
     QCheckBox *chb_manual;
     QLabel *lb_statics;

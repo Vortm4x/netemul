@@ -5,10 +5,10 @@
 
 class MyCanvas;
 
-class sceneXmlWriter : public QXmlStreamWriter
+class SceneXmlWriter : public QXmlStreamWriter
 {
 public:
-    sceneXmlWriter(MyCanvas *scene);
+    SceneXmlWriter(MyCanvas *scene);
     void writeScene(QIODevice *dev);
 
 private:

@@ -121,7 +121,7 @@ Cable* MyCanvas::createConnection(Device *s , Device *e , QString sp,QString ep)
     cable->setEndPort( p2 );
     cable->setStartItem(s);
     cable->setEndItem(e);
-    addCableCommand *com = new addCableCommand(this, cable);
+    AddCableCommand *com = new AddCableCommand(this, cable);
     commandStack.push(com);
     myModified = true;
     cable->updatePosition();
@@ -156,7 +156,7 @@ void MyCanvas::removeDevice()
 {
     myModified = true;
     QList<QGraphicsItem*> list = selectedItems(); // Получаем список выделенных элементов.
-    deleteCommand *com = new deleteCommand(this,list);
+    DeleteCommand *com = new DeleteCommand(this,list);
     commandStack.push(com);
 }
 //------------------------------------------------------
@@ -348,7 +348,7 @@ int MyCanvas::saveSceneXml(const QString &fileName)
         return WRITING_FAIL;
     }
     QApplication::changeOverrideCursor(Qt::WaitCursor);
-    sceneXmlWriter s(this);
+    SceneXmlWriter s(this);
     s.writeScene(&file);
     file.close();
     QApplication::restoreOverrideCursor();
@@ -370,8 +370,11 @@ void MyCanvas::timerEvent(QTimerEvent*)
 void MyCanvas::ticTime()
 {
     static int n = 9;
-    foreach ( Cable *t , myConnections)
-        if ( t->isBusy() ) t->motion();
+    foreach ( Cable *t , myConnections) {
+        if ( t->isBusy() ) {
+            t->motion();
+        }
+    }
     n--;
     foreach ( Device *i, myDevices ) {
         i->deciSecondTimerEvent();
@@ -527,20 +530,20 @@ Device* MyCanvas::deviceWithImpl(DeviceImpl *d)
 
 int MyCanvas::animateSpeed() const
 {
-    return appSetting::animateSpeed();
+    return AppSetting::animateSpeed();
 }
 
 void MyCanvas::setAnimateSpeed(int n)
 {
     if (!myTimer ) return;
     killTimer(myTimer);
-    appSetting::setAnimateSpeed(n);
-    myTimer = startTimer(appSetting::realAnimateSpeed());
+    AppSetting::setAnimateSpeed(n);
+    myTimer = startTimer(AppSetting::realAnimateSpeed());
 }
 
 void MyCanvas::play()
 {
-    myTimer = startTimer( appSetting::realAnimateSpeed() );
+    myTimer = startTimer( AppSetting::realAnimateSpeed() );
 }
 
 QObjectList MyCanvas::computerList()

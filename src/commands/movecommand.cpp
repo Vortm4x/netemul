@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include "movecommand.h"
 
-moveCommand::moveCommand(MyCanvas *s,mapWithCoords o,mapWithCoords r)
+MoveCommand::MoveCommand(MyCanvas *s,mapWithCoords o,mapWithCoords r)
 {
     scene = s;
     old = o;
@@ -27,12 +27,12 @@ moveCommand::moveCommand(MyCanvas *s,mapWithCoords o,mapWithCoords r)
     setText(QObject::tr("Move"));
 }
 
-void moveCommand::undo()
+void MoveCommand::undo()
 {
     scene->putItems(old);
 }
 
-void moveCommand::redo()
+void MoveCommand::redo()
 {
     scene->putItems(recent);
 }

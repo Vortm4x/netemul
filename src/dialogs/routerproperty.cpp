@@ -52,7 +52,7 @@ routerProperty::routerProperty()
  Задает диалогу устройство для работы.
  @param r - указатель на роутер.
 */
-void routerProperty::setRouter(routerSetting *r)
+void routerProperty::setRouter(RouterSetting *r)
 {
     rt = r;
     cb_route->setChecked(r->isRouter());

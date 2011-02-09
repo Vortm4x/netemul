@@ -71,7 +71,6 @@ void Device::createImplHelper()
     pixmapRect = devRect.adjusted(3,3,-3,-3);
     setFlag(QGraphicsItem::ItemIsMovable, true); // Устройство можно двигать
     setFlag(QGraphicsItem::ItemIsSelectable, true); // И выделять
-//    setFlag(QGraphicsItem::ItemSendsScenePositionChanges,true);
     setFlag( QGraphicsItem::ItemSendsGeometryChanges , true );
 }
 

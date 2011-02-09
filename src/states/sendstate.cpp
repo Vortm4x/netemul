@@ -25,30 +25,30 @@
 #include "sendellipse.h"
 #include "device.h"
 
-sendState::sendState(MyCanvas *s) : AbstractState(s)
+SendState::SendState(MyCanvas *s) : AbstractState(s)
 {
     mySendState = noSendItem;
     sendEllipse = new SendEllipse;
     scene->addItem(sendEllipse);
 }
 
-sendState::~sendState()
+SendState::~SendState()
 {
     scene->removeItem( sendEllipse);
     delete sendEllipse;
 }
 
-void sendState::hideState()
+void SendState::hideState()
 {
     sendEllipse->setPos(-100,-100);
 }
 
-void sendState::mouseMove(QGraphicsSceneMouseEvent *event)
+void SendState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if ( sendEllipse ) sendEllipse->moving( event->scenePos() );
 }
 
-void sendState::mousePress(QGraphicsSceneMouseEvent*)
+void SendState::mousePress(QGraphicsSceneMouseEvent*)
 {
     if ( !sendEllipse->hasUnderDevice() ) return;
     QGraphicsItem *tempItem = sendEllipse->underDevice();

@@ -30,7 +30,7 @@ class QPushButton;
 
 class DevicePort;
 class ipEdit;
-class adapterSetting;
+class AdapterSetting;
 
 /**
   Класс диалога настройки адаптеров.
@@ -40,7 +40,7 @@ class adapterProperty : public dialogTemplate
     Q_OBJECT
     Q_DISABLE_COPY(adapterProperty)
 public:
-    adapterProperty(adapterSetting *s);
+    adapterProperty(AdapterSetting *s);
     ~adapterProperty();
 private slots:
     void updateTab(int n);
@@ -51,7 +51,7 @@ private slots:
     void onAutoClicked(bool isAuto);
     void apply();
 private:
-    adapterSetting *sd;
+    AdapterSetting *sd;
     QLabel *lb_statics;
     QTabBar *tab_interfaces;
     QLineEdit *le_name;

@@ -6,7 +6,7 @@ virtualNetworkDialog::virtualNetworkDialog(QWidget *parent) : QDialog(parent)
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void virtualNetworkDialog::setDevice( virtualNetworkSetting *device)
+void virtualNetworkDialog::setDevice( VirtualNetworkSetting *device)
 {
     myDevice = device;
 }

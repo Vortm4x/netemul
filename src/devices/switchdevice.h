@@ -25,7 +25,7 @@
 
 class frame;
 class SwitchModel;
-class switchTableSetting;
+class SwitchTableSetting;
 class SwitchChip;
 
 // Пока такое коротенькое объявление для свитча
@@ -34,7 +34,6 @@ class SwitchDevice : public BoxDevice
 {
     Q_OBJECT
 public:
-    friend class switchTableSetting;
     enum { switchDev = 5 };
     int type() const { return switchDev; }
     SwitchDevice(QObject *parent = 0); //Пока конструктор и прорисовка
@@ -55,11 +54,14 @@ public:
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
+
+public:
+    friend class SwitchTableSetting;
 };
 
-class switchTableSetting {
+class SwitchTableSetting {
 public:
-    switchTableSetting(SwitchDevice *s) : sw(s) { }
+    SwitchTableSetting(SwitchDevice *s) : sw(s) { }
     SwitchModel* switchTable();
     int socketsCount() const { return sw->myChip->socketsCount(); }
     void removeFromTable(int row);
@@ -68,9 +70,9 @@ private:
     SwitchDevice *sw;
 };
 
-class virtualNetworkSetting {
+class VirtualNetworkSetting {
 public:
-    virtualNetworkSetting( SwitchDevice *device ) : myDevice(device) { }
+    VirtualNetworkSetting( SwitchDevice *device ) : myDevice(device) { }
 private:
     SwitchDevice *myDevice;
 };

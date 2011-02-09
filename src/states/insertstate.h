@@ -24,11 +24,11 @@
 
 class InsertRect;
 
-class insertState : public AbstractState
+class InsertState : public AbstractState
 {
 public:
-    insertState(MyCanvas *s);
-    ~insertState();
+    InsertState(MyCanvas *s);
+    ~InsertState();
     virtual void mouseMove(QGraphicsSceneMouseEvent *event);
     virtual void mousePress(QGraphicsSceneMouseEvent *event);
     virtual void mouseRelease(QGraphicsSceneMouseEvent*) { }

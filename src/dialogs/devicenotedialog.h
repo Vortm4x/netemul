@@ -3,20 +3,20 @@
 
 #include "ui_devicenotedialog.h"
 
-class deviceSetting;
+class DeviceSetting;
 
 class deviceNoteDialog : public QDialog, private Ui::deviceNoteDialog {
     Q_OBJECT
 public:
     deviceNoteDialog(QWidget *parent = 0);
-    void setDevice(deviceSetting *device);
+    void setDevice(DeviceSetting *device);
     ~deviceNoteDialog();
 public slots:
     void apply();
 protected:
     void changeEvent(QEvent *e);
 private:
-    deviceSetting *myDevice;
+    DeviceSetting *myDevice;
 };
 
 #endif // DEVICENOTEDIALOG_H

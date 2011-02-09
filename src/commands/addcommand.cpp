@@ -21,7 +21,7 @@
 #include "addcommand.h"
 #include "mycanvas.h"
 
-addCommand::addCommand(MyCanvas *s, QPointF point , int type)
+AddCommand::AddCommand(MyCanvas *s, QPointF point , int type)
 {
     scene = s;
     myDevice = 0;
@@ -29,18 +29,18 @@ addCommand::addCommand(MyCanvas *s, QPointF point , int type)
     myType = type;
 }
 
-addCommand::~addCommand()
+AddCommand::~AddCommand()
 {
     if ( !isOnScene ) delete myDevice;
 }
 
-void addCommand::undo()
+void AddCommand::undo()
 {
     scene->unregisterDevice(myDevice);
     isOnScene = false;
 }
 
-void addCommand::redo()
+void AddCommand::redo()
 {
     if ( myDevice ) scene->registerDevice(myDevice);
     else {

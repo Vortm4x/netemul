@@ -24,11 +24,11 @@
 
 class QGraphicsLineItem;
 
-class cableState : public AbstractState
+class CableState : public AbstractState
 {
 public:
-    cableState(MyCanvas *s);
-    ~cableState();
+    CableState(MyCanvas *s);
+    ~CableState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*);

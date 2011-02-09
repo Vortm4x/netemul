@@ -21,7 +21,7 @@
 #include "mycanvas.h"
 #include "statisticsscene.h"
 
-staticsDialog::staticsDialog(statisticsScene *statistics, QWidget *parent) :QDialog(parent)
+staticsDialog::staticsDialog(StatisticsScene *statistics, QWidget *parent) :QDialog(parent)
 {
     setupUi(this);
     deviceLabel->setText( statistics->devicesString() );

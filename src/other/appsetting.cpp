@@ -23,30 +23,30 @@
 #include <QLocale>
 #include "appsetting.h"
 
-int appSetting::_defaultComputerCount = 0;
-int appSetting::_defaultHubCount = 0;
-int appSetting::_defaultRouterCount = 0;
-int appSetting::_defaultSwitchCount = 0;
-int appSetting::_ttlArp = 0;
-int appSetting::_ttlMac = 0;
-bool appSetting::_defaultHubManual = false;
-bool appSetting::_defaultSwitchManual = false;
-int appSetting::_speed = 100;
-int appSetting::_language = 0;
-int appSetting::_sendingNum = 1;
-int appSetting::_waitingTime = 80;
-int appSetting::_arpResponceTime = 45;
-bool appSetting::_hasOpengl = false;
-bool appSetting::_autosave = false;
-int appSetting::_autosaveInterval = 10;
-QString appSetting::_scriptPath = "";
-QTranslator* appSetting::mas[LANGUAGE_COUNT*2];
+int AppSetting::_defaultComputerCount = 0;
+int AppSetting::_defaultHubCount = 0;
+int AppSetting::_defaultRouterCount = 0;
+int AppSetting::_defaultSwitchCount = 0;
+int AppSetting::_ttlArp = 0;
+int AppSetting::_ttlMac = 0;
+bool AppSetting::_defaultHubManual = false;
+bool AppSetting::_defaultSwitchManual = false;
+int AppSetting::_speed = 100;
+int AppSetting::_language = 0;
+int AppSetting::_sendingNum = 1;
+int AppSetting::_waitingTime = 80;
+int AppSetting::_arpResponceTime = 45;
+bool AppSetting::_hasOpengl = false;
+bool AppSetting::_autosave = false;
+int AppSetting::_autosaveInterval = 10;
+QString AppSetting::_scriptPath = "";
+QTranslator* AppSetting::mas[LANGUAGE_COUNT*2];
 
-appSetting::appSetting()
+AppSetting::AppSetting()
 {
 }
 
-void appSetting::defaultNums()
+void AppSetting::defaultNums()
 {
     _defaultComputerCount = 1;
     _defaultHubCount = 4;
@@ -66,9 +66,8 @@ void appSetting::defaultNums()
         QCoreApplication::removeTranslator(mas[i]);
 }
 
-void appSetting::readSetting()
+void AppSetting::readSetting()
 {
-#ifndef __TESTING__
     QString translationsPath(TRANSLATIONS_PATH);
     for ( int i = 0 ; i < LANGUAGE_COUNT*2 ; i++ ) mas[i] = new QTranslator;
     mas[1]->load("netemul_ru" , translationsPath);
@@ -95,12 +94,10 @@ void appSetting::readSetting()
     _hasOpengl = setting.value("main/opengl",false).toBool();
     _autosave = setting.value("main/autosave",false).toBool();
     _autosaveInterval = setting.value("main/autosaveInterval",10).toInt();    
-#endif
 }
 
-void appSetting::writeSetting()
+void AppSetting::writeSetting()
 {
-#ifndef __TESTING__
     for ( int i = 0 ; i < LANGUAGE_COUNT*2 ; i++ ) delete mas[i];
     QSettings setting("FROST","netemul");
     setting.setValue("computer/socketCount" , _defaultComputerCount );
@@ -120,10 +117,9 @@ void appSetting::writeSetting()
     setting.setValue("main/opengl", _hasOpengl );
     setting.setValue("main/autosave",_autosave);
     setting.setValue("main/autosaveInterval",_autosaveInterval);    
-#endif
 }
 
-void appSetting::setLanguage(int n)
+void AppSetting::setLanguage(int n)
 {
     if ( n == _language ) return;
     _language = n;

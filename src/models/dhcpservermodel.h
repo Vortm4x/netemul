@@ -24,7 +24,7 @@
 #include "macaddress.h"
 #include "ipaddress.h"
 
-struct staticDhcpRecord {
+struct StaticDhcpRecord {
     macAddress chaddr;
     IpAddress yiaddr;
     IpAddress mask;
@@ -36,11 +36,11 @@ struct staticDhcpRecord {
 
 static const int COLUMN_COUNT = 5;
 
-class dhcpServerModel : public QAbstractTableModel
+class DhcpServerModel : public QAbstractTableModel
 {
 public:
-    dhcpServerModel(QObject *parent = 0) : QAbstractTableModel(parent) { }
-    ~dhcpServerModel();
+    DhcpServerModel(QObject *parent = 0) : QAbstractTableModel(parent) { }
+    ~DhcpServerModel();
     int rowCount( const QModelIndex &r = QModelIndex() ) const;
     int columnCount( const QModelIndex &r = QModelIndex() ) const;
     QVariant headerData( int s , Qt::Orientation o, int role ) const;
@@ -50,14 +50,14 @@ public:
     bool removeRow(int row, const QModelIndex &parent = QModelIndex() );
     bool setData(const QModelIndex &index,const QVariant &value, int role = Qt::EditRole);
 
-    bool containRecord( staticDhcpRecord *rec) const;
+    bool containRecord( StaticDhcpRecord *rec) const;
     bool containRecord(IpAddress ip) const;
-    staticDhcpRecord* recordWithMac(macAddress cha) const;
-    void addStaticRecord(staticDhcpRecord *rec);
+    StaticDhcpRecord* recordWithMac(macAddress cha) const;
+    void addStaticRecord(StaticDhcpRecord *rec);
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
-    QList<staticDhcpRecord*> table;
+    QList<StaticDhcpRecord*> table;
 };
 
 #endif // DHCPSERVERMODEL_H

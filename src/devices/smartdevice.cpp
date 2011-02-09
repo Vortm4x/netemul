@@ -41,7 +41,9 @@ SmartDevice::SmartDevice(QObject *parent) : DeviceImpl(parent) , myRouter(false)
 SmartDevice::~SmartDevice()
 {    
     qDeleteAll(mySockets);
+    mySockets.clear();
     qDeleteAll(myInterfaces);
+    myInterfaces.clear();
 }
 
 const Interface* SmartDevice::adapter(const QString &s) const
@@ -290,44 +292,36 @@ void SmartDevice::tableDialog()
 
 void SmartDevice::showLogDialog(logDialog *log) const
 {
-#ifndef __TESTING__
     connect( log ,SIGNAL(changeInterface(QString)) , this ,SLOT(setCheckedSocket(QString)) );
     foreach ( Interface *i , myInterfaces ) {
         connect( i , SIGNAL(receiveData(frame,QString)) , log , SLOT(receiveData(frame,QString)) );
         connect( i , SIGNAL(sendData(frame,QString)) , log , SLOT(sendData(frame,QString)) );
     }
-#endif
 }
 
 void SmartDevice::adapterDialog()
 {
-#ifndef __TESTING__
-    adapterProperty *d = new adapterProperty( new adapterSetting(this) );
+    adapterProperty *d = new adapterProperty( new AdapterSetting(this) );
     d->show();
-#endif
 }
 
 void SmartDevice::programmsDialog()
 {
-#ifndef __TESTING__
     programmDialog *d = new programmDialog;
     d->setDevice(this);
     d->show();
-#endif
 }
 
 void SmartDevice::arpDialog()
 {
-#ifndef __TESTING__
     tableArp *d = new tableArp;
     d->setDevice(this);
     d->exec();
-#endif
 }
 
-featuresMap SmartDevice::featuresList() const
+FeaturesMap SmartDevice::featuresList() const
 {
-    featuresMap t;
+    FeaturesMap t;
     foreach ( Program *i , myPrograms )
         t.insert(i->featureName(),i->isEnable());
     return t;
@@ -552,15 +546,15 @@ AbstractSocket* SmartDevice::openSocket(quint16 port, int type)
     }
     connect( s , SIGNAL(imFinished(AbstractSocket*)) , this , SLOT(disposeSocket(AbstractSocket*)) );
     mySockets << s;
-    qDebug("Socket %d created",type);
     return s;
 }
 
 void SmartDevice::disposeSocket(AbstractSocket *socket)
 {
-    qDebug("Socket removed");
-    mySockets.removeOne(socket);
-    delete socket;
+    if ( mySockets.contains(socket) ) {
+        mySockets.removeOne(socket);
+        delete socket;
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -569,7 +563,7 @@ void SmartDevice::disposeSocket(AbstractSocket *socket)
 /*!
   * Функция устанавливает текущий выбранный интерфейс в настройках адаптеров.
   */
-void adapterSetting::setCurrent(int n)
+void AdapterSetting::setCurrent(int n)
 {
     cur = n;
     oldMask = sd->myInterfaces[cur]->mask();
@@ -579,7 +573,7 @@ void adapterSetting::setCurrent(int n)
 /*!
   * Изменяет таблицу маршрутизации в соответсвии с новыми настройками интрефейсов.
   */
-void adapterSetting::connectedNet()
+void AdapterSetting::connectedNet()
 {
     RouteRecord *t = sd->routeModel()->recordAt( oldMask & oldIp );
     if ( t ) { // Удаляем запись со старыми натсройками
@@ -589,13 +583,13 @@ void adapterSetting::connectedNet()
 }
 //--------------------------------------------------------------------------
 
-bool adapterSetting::isUnderDhcpControl() const
+bool AdapterSetting::isUnderDhcpControl() const
 {
     DhcpClientProgram *t = qobject_cast<DhcpClientProgram*>( sd->programAt(Program::DHCPClient) );
     return t->isUnderDhcpControl( sd->myInterfaces.at(cur)->name() );
 }
 
-void adapterSetting::setUnderDhcpControl(bool isUnder)
+void AdapterSetting::setUnderDhcpControl(bool isUnder)
 {
     DhcpClientProgram *t = qobject_cast<DhcpClientProgram*>( sd->programAt( Program::DHCPClient) );
     t->observeInterface( sd->myInterfaces.at(cur)->name() , isUnder );

@@ -27,7 +27,7 @@
 
 class MyCanvas;
 class settingDialog;
-class sceneControl;
+class SceneControl;
 
 class QActionGroup;
 class QToolBar;
@@ -87,7 +87,7 @@ private:
     void setOpenglMode(bool mode);
     QString myFile; // Имя текущего файла
     MyCanvas *canva;
-    sceneControl *sceneControler;
+    SceneControl *sceneControler;
     QGraphicsView *view; // Графическое представление нашей сцены
 
     QPainter *printerPainter;

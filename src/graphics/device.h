@@ -34,7 +34,7 @@ class DevicePort;
 /*!
   Устройство, это основная единица с которой мы имеем дело в программе,
 */
-class Device : public QGraphicsObject , public visualizable
+class Device : public QGraphicsObject , public Visualizable
 {
     Q_OBJECT
 public:
@@ -98,7 +98,7 @@ private:
     void createImplHelper();
     DeviceImpl *impl;
     QMenu *popUpMenu; //!< Всплывающее меню для устройства
-    featuresMap myFeatures;
+    FeaturesMap myFeatures;
 protected:    
     friend QDataStream& operator<<(QDataStream &stream,const Device &dev);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event); // Событие контекстного меню

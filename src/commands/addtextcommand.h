@@ -26,11 +26,11 @@
 class MyCanvas;
 class TextItem;
 
-class addTextCommand : public QUndoCommand
+class AddTextCommand : public QUndoCommand
 {
 public:
-    addTextCommand(MyCanvas *s, QPointF p);
-    ~addTextCommand();
+    AddTextCommand(MyCanvas *s, QPointF p);
+    ~AddTextCommand();
     void undo();
     void redo();
 private:

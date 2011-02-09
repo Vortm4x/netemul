@@ -71,7 +71,7 @@ testDialog::~testDialog()
 void testDialog::updateList()
 {
     listWidget->clear();
-    QDir t(appSetting::scriptPath());
+    QDir t(AppSetting::scriptPath());
     QStringList h;
     h << "*.js";
     QStringList s = t.entryList(h);
@@ -114,7 +114,7 @@ void testDialog::start()
 bool testDialog::test(QString s)
 {
     qDebug() << s << " started";
-    QString g = appSetting::scriptPath()+s+".js";
+    QString g = AppSetting::scriptPath()+s+".js";
     QFile file(g);
     file.open(QIODevice::ReadOnly);
     QString temporary = file.readAll();
@@ -144,10 +144,10 @@ void testDialog::selectAll(bool c)
 void testDialog::setScriptPath()
 {
     QString name = QFileDialog::getExistingDirectory( this,
-                   tr("Choose a directory with scripts"), appSetting::scriptPath() );
+                   tr("Choose a directory with scripts"), AppSetting::scriptPath() );
     if ( name.isEmpty() ) return;
     if ( name.at( name.length() - 1 ) != '/' ) name.push_back('/');
-    appSetting::setScriptPath(name);
+    AppSetting::setScriptPath(name);
     updateList();
 }
 

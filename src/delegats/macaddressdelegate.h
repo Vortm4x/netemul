@@ -22,11 +22,11 @@
 
 #include <QItemDelegate>
 
-class macAddressDelegate : public QItemDelegate
+class MacAddressDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    macAddressDelegate(QObject *parent = 0);
+    MacAddressDelegate(QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&,
                            const QModelIndex&) const;
 

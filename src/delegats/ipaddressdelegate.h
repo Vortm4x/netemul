@@ -22,10 +22,10 @@
 
 #include <QItemDelegate>
 
-class ipAddressDelegate : public QItemDelegate
+class IpAddressDelegate : public QItemDelegate
 {
 public:
-    ipAddressDelegate(QObject *parent = 0);
+    IpAddressDelegate(QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&,
                            const QModelIndex&) const;
 

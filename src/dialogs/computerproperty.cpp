@@ -49,7 +49,7 @@ computerProperty::~computerProperty()
     delete comp;
 }
 
-void computerProperty::setDevice(computerSetting *c)
+void computerProperty::setDevice(ComputerSetting *c)
 {
     comp = c;
     gateway->setText( c->gateway() );

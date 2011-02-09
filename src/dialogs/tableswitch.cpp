@@ -21,7 +21,7 @@
 #include "switchdevice.h"
 #include "switchmodel.h"
 
-TableSwitch::TableSwitch(switchTableSetting *s)
+TableSwitch::TableSwitch(SwitchTableSetting *s)
 {
     sw = s;
     t_sw = s->switchTable();

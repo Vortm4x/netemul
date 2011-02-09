@@ -72,7 +72,7 @@ switchProperty::~switchProperty()
     delete sw;
 }
 
-void switchProperty::setSwitch(boxSetting *d)
+void switchProperty::setSwitch(BoxSetting *d)
 {
     sw = d;
     cb_count->setCurrentIndex( cb_count->findText( QString::number( d->socketsCount() ) ) );

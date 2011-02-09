@@ -163,7 +163,7 @@ void TcpSocket::confirmConnection(ipPacket p)
 
 void TcpSocket::sendWindow()
 {
-    if ( sendingNum++ > appSetting::sendingNum() ) { error(); return; }
+    if ( sendingNum++ > AppSetting::sendingNum() ) { error(); return; }
     panicTime = 0;
     sendIsn = isn;
     QByteArray data = buffer.left(tcpPacket::Window);
@@ -201,7 +201,7 @@ void TcpSocket::error()
 void TcpSocket::secondEvent()
 {
     waitingTime++;
-    if ( waitingTime > appSetting::waitingTime() && state == WAIT_RESPONSE ) {
+    if ( waitingTime > AppSetting::waitingTime() && state == WAIT_RESPONSE ) {
         error();
         return;
     }

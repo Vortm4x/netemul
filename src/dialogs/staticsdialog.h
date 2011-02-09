@@ -23,13 +23,13 @@
 #include "ui_staticsdialog.h"
 
 class MyCanvas;
-class statisticsScene;
+class StatisticsScene;
 
 class staticsDialog : public QDialog, private Ui::staticsDialog {
     Q_OBJECT
     Q_DISABLE_COPY(staticsDialog)
 public:
-    staticsDialog(statisticsScene *statistics, QWidget *parent = 0);
+    staticsDialog(StatisticsScene *statistics, QWidget *parent = 0);
 protected:
     void changeEvent(QEvent *e);
 };

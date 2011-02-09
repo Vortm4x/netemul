@@ -42,10 +42,10 @@ public slots:
     void setSocketsCount(int n);
 };
 
-class routerSetting : public smartSetting
+class RouterSetting : public SmartSetting
 {
 public:
-    routerSetting(RouterDevice *r) : smartSetting(r) , rd(r) { }
+    RouterSetting(RouterDevice *r) : SmartSetting(r) , rd(r) { }
     void setSocketsCount(int n) { rd->setSocketsCount(n); }
 private:
     RouterDevice *rd;

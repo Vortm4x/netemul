@@ -22,22 +22,24 @@
 
 #include "abstractstate.h"
 #include <QPointF>
+#include <QList>
+#include <QMap>
 
 class QGraphicsItem;
 class SelectRect;
 
-typedef QList<QGraphicsItem*> itemList;
+typedef QList<QGraphicsItem*> QGraphicsItemList;
 
-class moveState : public AbstractState
+class MoveState : public AbstractState
 {
 public:
-    moveState(MyCanvas *s);
-    ~moveState();
+    MoveState(MyCanvas *s);
+    ~MoveState();
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 private:    
-    itemList filterDevices(itemList list);
+    QGraphicsItemList filterDevices(QGraphicsItemList list);
     SelectRect *selectRect; // Временный прямоугольник для выделения
     QPointF p2Rect; // Точка начала выделения
     QMap<QGraphicsItem*,QPointF> coordMap; //!< Соответствия перемещаемых в данный момент устройств и их координат

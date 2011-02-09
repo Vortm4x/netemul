@@ -32,8 +32,8 @@ dhcpServerProperty::dhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 *
     setAttribute(Qt::WA_DeleteOnClose);
     foreach ( Interface *i, device->interfaces() )
         if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
-    macDelegate = new macAddressDelegate(this);
-    ipDelegate = new ipAddressDelegate(this);
+    macDelegate = new MacAddressDelegate(this);
+    ipDelegate = new IpAddressDelegate(this);
     tv_static->setItemDelegateForColumn(0, macDelegate );
     for ( int i = 1 ; i <= 3 ; i++ )
         tv_static->setItemDelegateForColumn(i,ipDelegate);

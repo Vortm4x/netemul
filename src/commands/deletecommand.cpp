@@ -23,7 +23,7 @@
 #include "device.h"
 #include "textitem.h"
 
-deleteCommand::deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
+DeleteCommand::DeleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
 {
     scene = s;
     foreach ( QGraphicsItem *i, list) {
@@ -38,7 +38,7 @@ deleteCommand::deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list)
     setText(QObject::tr("Delete"));
 }
 
-deleteCommand::~deleteCommand()
+DeleteCommand::~DeleteCommand()
 {
     if ( isOnScene ) return;
     qDeleteAll(extractDevices);
@@ -46,7 +46,7 @@ deleteCommand::~deleteCommand()
     qDeleteAll(extractText);
 }
 
-void deleteCommand::undo()
+void DeleteCommand::undo()
 {
     foreach ( Device *i, extractDevices ) scene->registerDevice(i);
     foreach ( Cable *i, extractCables ) createConnection(i);
@@ -54,7 +54,7 @@ void deleteCommand::undo()
     isOnScene = true;
 }
 
-void deleteCommand::redo()
+void DeleteCommand::redo()
 {
     foreach ( Device *i, extractDevices ) scene->unregisterDevice(i);
     foreach ( Cable *i, extractCables ) deleteConnection(i);
@@ -62,13 +62,13 @@ void deleteCommand::redo()
     isOnScene = false;
 }
 
-void deleteCommand::deleteConnection(Cable *cable)
+void DeleteCommand::deleteConnection(Cable *cable)
 {
 //    cable->unregisterCable();
     scene->unregisterCable(cable);
 }
 
-void deleteCommand::createConnection(Cable *cable)
+void DeleteCommand::createConnection(Cable *cable)
 {
 //    cable->registerCable();
     scene->registerCable(cable);

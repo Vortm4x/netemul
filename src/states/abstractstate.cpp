@@ -33,48 +33,48 @@ AbstractState::AbstractState(MyCanvas *s)
 
 AbstractState* AbstractState::initialize(MyCanvas *s)
 {
-    return new emptyState(s);
+    return new EmptyState(s);
 }
 
 void AbstractState::goMove()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new moveState(scene);
+    scene->myState = new MoveState(scene);
     delete oldState;
 }
 
 void AbstractState::goInsert()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new insertState(scene);
+    scene->myState = new InsertState(scene);
     delete oldState;
 }
 
 void AbstractState::goCable()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new cableState(scene);
+    scene->myState = new CableState(scene);
     delete oldState;
 }
 
 void AbstractState::goText()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new textState(scene);
+    scene->myState = new TextState(scene);
     delete oldState;
 }
 
 void AbstractState::goSend()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new sendState(scene);
+    scene->myState = new SendState(scene);
     delete oldState;
 }
 
 void AbstractState::goEmpty()
 {
     AbstractState *oldState = scene->myState;
-    scene->myState = new emptyState(scene);
+    scene->myState = new EmptyState(scene);
     delete oldState;
 }
 

@@ -21,7 +21,7 @@
 #include "mycanvas.h"
 #include "device.h"
 
-statisticsScene::statisticsScene(MyCanvas *scene)
+StatisticsScene::StatisticsScene(MyCanvas *scene)
 {
     myScene = scene;
     comps = 0 ; routers = 0;
@@ -38,7 +38,7 @@ statisticsScene::statisticsScene(MyCanvas *scene)
     }
 }
 
-QString statisticsScene::devicesString()
+QString StatisticsScene::devicesString()
 {
     QString temp;
     temp += tr("Number of devices: %1\n").arg(  myScene->devicesCount() );
@@ -50,7 +50,7 @@ QString statisticsScene::devicesString()
     return temp;
 }
 
-QString statisticsScene::trafficString()
+QString StatisticsScene::trafficString()
 {
     return statistics.toString();
 }

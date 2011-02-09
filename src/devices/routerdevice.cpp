@@ -31,7 +31,7 @@ RouterDevice::RouterDevice(QObject *parent) : SmartDevice(parent)
 RouterDevice* RouterDevice::create(QObject *parent)
 {
     RouterDevice *r = new RouterDevice(parent);
-    r->setSocketsCount( appSetting::defaultRouterCount() );
+    r->setSocketsCount( AppSetting::defaultRouterCount() );
     r->setRouteModel( new RouteModel() );
     r->setNote(tr("<b>Router</b><!--You can use HTML.-->"));
     return r;
@@ -40,7 +40,7 @@ RouterDevice* RouterDevice::create(QObject *parent)
 void RouterDevice::dialog()
 {
     routerProperty *d = new routerProperty;
-    routerSetting *set = new routerSetting(this);
+    RouterSetting *set = new RouterSetting(this);
     d->setRouter(set);
     d->exec();
     delete d;

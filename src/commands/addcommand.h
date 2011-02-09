@@ -25,11 +25,11 @@
 class MyCanvas;
 class Device;
 
-class addCommand : public QUndoCommand
+class AddCommand : public QUndoCommand
 {
 public:
-    addCommand(MyCanvas *s , QPointF point , int type);
-    ~addCommand();
+    AddCommand(MyCanvas *s , QPointF point , int type);
+    ~AddCommand();
     void undo();
     void redo();
 private:

@@ -22,7 +22,7 @@
 
 #include "dialogtemplate.h"
 
-class routerSetting;
+class RouterSetting;
 class QCheckBox;
 class QGroupBox;
 class QComboBox;
@@ -33,9 +33,9 @@ class routerProperty : public dialogTemplate
     Q_DISABLE_COPY(routerProperty)
 public:
     routerProperty();
-    void setRouter(routerSetting *r);
+    void setRouter(RouterSetting *r);
 private:
-    routerSetting *rt;
+    RouterSetting *rt;
     QCheckBox *cb_route;
     QComboBox *cb_count;
 public slots:

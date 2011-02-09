@@ -3,17 +3,17 @@
 
 #include "ui_virtualnetworkdialog.h"
 
-class virtualNetworkSetting;
+class VirtualNetworkSetting;
 
 class virtualNetworkDialog : public QDialog, private Ui::virtualNetworkDialog {
     Q_OBJECT
 public:
     virtualNetworkDialog(QWidget *parent = 0);
-    void setDevice( virtualNetworkSetting *device);
+    void setDevice( VirtualNetworkSetting *device);
 protected:
     void changeEvent(QEvent *e);
 private:
-    virtualNetworkSetting *myDevice;
+    VirtualNetworkSetting *myDevice;
 };
 
 #endif // VIRTUALNETWORKDIALOG_H

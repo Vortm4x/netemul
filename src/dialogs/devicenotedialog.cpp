@@ -7,7 +7,7 @@ deviceNoteDialog::deviceNoteDialog(QWidget *parent) : QDialog(parent)
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void deviceNoteDialog::setDevice(deviceSetting *device)
+void deviceNoteDialog::setDevice(DeviceSetting *device)
 {
     myDevice = device;
     te_text->setPlainText( device->note() );

@@ -44,7 +44,7 @@ public:
     QString deviceName() const { return "hub"; }
     QString deviceCommandName() const { return tr("Hub"); }
     QString pixmapName() const { return ":/im/images/hub.png"; }
-    friend class hubSetting;
+    friend class HubSetting;
 protected:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
@@ -52,12 +52,12 @@ private:
     quint32 m_collision;
 };
 
-class hubSetting : public boxSetting
+class HubSetting : public BoxSetting
 {
 public:
-    hubSetting(HubDevice *d) : boxSetting(d) , hd(d) { }
+    HubSetting(HubDevice *d) : BoxSetting(d) , hd(d) { }
     quint32 collisions() const { return hd->m_collision; }
-    void reset() { boxSetting::reset(); hd->m_collision = 0; }
+    void reset() { BoxSetting::reset(); hd->m_collision = 0; }
 private:
     HubDevice *hd;
 };

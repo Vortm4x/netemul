@@ -23,34 +23,34 @@
 #include "insertrect.h"
 #include "addcommand.h"
 
-insertState::insertState(MyCanvas *s) : AbstractState(s)
+InsertState::InsertState(MyCanvas *s) : AbstractState(s)
 {
     insertRect = new InsertRect;
     s->addItem(insertRect);
 }
 
-insertState::~insertState()
+InsertState::~InsertState()
 {    
     scene->removeItem(insertRect);
     delete insertRect;
 
 }
 
-void insertState::hideState()
+void InsertState::hideState()
 {
     insertRect->setPos(-100,-100);
 }
 
-void insertState::mouseMove(QGraphicsSceneMouseEvent *event)
+void InsertState::mouseMove(QGraphicsSceneMouseEvent *event)
 {      
     insertRect->moving( event->scenePos() );
 }
 
-void insertState::mousePress(QGraphicsSceneMouseEvent *event)
+void InsertState::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if ( !insertRect->isReadyInsert() ) return;    
      // Добавляем устройство на сцену
-    addCommand *command = new addCommand( scene , event->scenePos() , scene->nowType );
+    AddCommand *command = new AddCommand( scene , event->scenePos() , scene->nowType );
     scene->commandStack.push(command);
     scene->myModified = true;
 }

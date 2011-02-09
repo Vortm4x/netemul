@@ -33,8 +33,8 @@ SwitchDevice* SwitchDevice::create(QObject *parent)
 {
     SwitchDevice *s = new SwitchDevice(parent);
     s->setBoxChip( SwitchChip::create(s) );
-    s->setSocketsCount( appSetting::defaultSwitchCount() );
-    s->setManual( appSetting::defaultSwitchManual() );
+    s->setSocketsCount( AppSetting::defaultSwitchCount() );
+    s->setManual( AppSetting::defaultSwitchManual() );
     s->setNote(tr("<b>Switch</b><!--You can use HTML.-->"));
     return s;
 }
@@ -58,13 +58,13 @@ void SwitchDevice::read(QDataStream &stream)
 void SwitchDevice::dialog()
 {
     switchProperty *d = new switchProperty;
-    d->setSwitch( new boxSetting(this) );
+    d->setSwitch( new BoxSetting(this) );
     d->show();
 }
 
 void SwitchDevice::tableDialog()
 {
-    switchTableSetting *set = new switchTableSetting(this);
+    SwitchTableSetting *set = new SwitchTableSetting(this);
     TableSwitch *t = new TableSwitch(set);
     t->exec();
     delete t;
@@ -74,7 +74,7 @@ void SwitchDevice::tableDialog()
 void SwitchDevice::showVirtualNetworkDialog()
 {
     virtualNetworkDialog *d = new virtualNetworkDialog;
-    d->setDevice( new virtualNetworkSetting(this) );
+    d->setDevice( new VirtualNetworkSetting(this) );
     d->show();
 }
 
@@ -90,7 +90,7 @@ void SwitchDevice::secondTimerEvent()
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-SwitchModel* switchTableSetting::switchTable()
+SwitchModel* SwitchTableSetting::switchTable()
 {
     return sw->concreteChip()->modelAt( sw->concreteChip()->vlanAt(0) );
 }

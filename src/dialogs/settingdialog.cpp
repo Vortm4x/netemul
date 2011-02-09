@@ -29,38 +29,38 @@ settingDialog::settingDialog()
 
 void settingDialog::currentValues()
 {
-    sp_arpResponce->setValue( appSetting::arpResponceTime() );
+    sp_arpResponce->setValue( AppSetting::arpResponceTime() );
 
-    sp_ttlArp->setValue( appSetting::ttlArp() );
+    sp_ttlArp->setValue( AppSetting::ttlArp() );
 
     computerComboBox->setCurrentIndex( computerComboBox->findText(QString::number(
-            appSetting::defaultComputerCount() ) ) );
+            AppSetting::defaultComputerCount() ) ) );
 
     hubComboBox->setCurrentIndex( hubComboBox->findText(
-                                  QString::number( appSetting::defaultHubCount() ) ) );
+                                  QString::number( AppSetting::defaultHubCount() ) ) );
 
     switchComboBox->setCurrentIndex( switchComboBox->findText(
-                       QString::number( appSetting::defaultSwitchCount() ) ) );
+                       QString::number( AppSetting::defaultSwitchCount() ) ) );
 
-    sp_ttlMac->setValue( appSetting::ttlMac() );
+    sp_ttlMac->setValue( AppSetting::ttlMac() );
 
     routerComboBox->setCurrentIndex( routerComboBox->findText(QString::number(
-            appSetting::defaultRouterCount() ) ) );
+            AppSetting::defaultRouterCount() ) ) );
 
-    int s = appSetting::animateSpeed();
+    int s = AppSetting::animateSpeed();
     sl_speed->setValue(s);
 
-    languageBox->setCurrentIndex( appSetting::language() );
+    languageBox->setCurrentIndex( AppSetting::language() );
 
-    sb_send->setValue(appSetting::sendingNum());
+    sb_send->setValue(AppSetting::sendingNum());
 
-    sb_waitingTime->setValue(appSetting::waitingTime());
+    sb_waitingTime->setValue(AppSetting::waitingTime());
 
-    cb_opengl->setChecked( appSetting::hasOpengl() );
+    cb_opengl->setChecked( AppSetting::hasOpengl() );
 
-    cb_autosave->setChecked( appSetting::isAutosave() );
+    cb_autosave->setChecked( AppSetting::isAutosave() );
 
-    sb_autosave->setValue( appSetting::autosaveInterval() );
+    sb_autosave->setValue( AppSetting::autosaveInterval() );
 
     btn_apply->setEnabled(false);
 }
@@ -72,20 +72,20 @@ void settingDialog::applyEnable()
 
 void settingDialog::apply()
 {
-    appSetting::setDefaultComputerCount( computerComboBox->currentText().toInt() );
-    appSetting::setDefaultHubCount(  hubComboBox->currentText().toInt() );
-    appSetting::setDefaultSwitchCount(  switchComboBox->currentText().toInt() );
-    appSetting::setDefaultRouterCount(  routerComboBox->currentText().toInt() );
-    appSetting::setTtlArp( sp_ttlArp->value() );
-    appSetting::setArpResponceTime( sp_arpResponce->value() );
-    appSetting::setTtlMac( sp_ttlMac->value() );
-    appSetting::setAnimateSpeed(sl_speed->value());
-    appSetting::setLanguage( languageBox->currentIndex() );
-    appSetting::setSendingNum(sb_send->value());
-    appSetting::setWaitingTime(sb_waitingTime->value());
-    appSetting::setHasOpengl( cb_opengl->isChecked() );
-    appSetting::setAutosaveInterval( sb_autosave->value() );
-    appSetting::setAutosave( cb_autosave->isChecked() );
+    AppSetting::setDefaultComputerCount( computerComboBox->currentText().toInt() );
+    AppSetting::setDefaultHubCount(  hubComboBox->currentText().toInt() );
+    AppSetting::setDefaultSwitchCount(  switchComboBox->currentText().toInt() );
+    AppSetting::setDefaultRouterCount(  routerComboBox->currentText().toInt() );
+    AppSetting::setTtlArp( sp_ttlArp->value() );
+    AppSetting::setArpResponceTime( sp_arpResponce->value() );
+    AppSetting::setTtlMac( sp_ttlMac->value() );
+    AppSetting::setAnimateSpeed(sl_speed->value());
+    AppSetting::setLanguage( languageBox->currentIndex() );
+    AppSetting::setSendingNum(sb_send->value());
+    AppSetting::setWaitingTime(sb_waitingTime->value());
+    AppSetting::setHasOpengl( cb_opengl->isChecked() );
+    AppSetting::setAutosaveInterval( sb_autosave->value() );
+    AppSetting::setAutosave( cb_autosave->isChecked() );
     btn_apply->setEnabled(false);
     if ( sender() == btn_ok ) accept();
 }
@@ -97,7 +97,7 @@ void settingDialog::autosaveChanged(bool isAutosave)
 
 void settingDialog::defaultSettings()
 {
-    appSetting::defaultNums();
+    AppSetting::defaultNums();
     currentValues();   
 }
 
@@ -106,7 +106,7 @@ void settingDialog::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::LanguageChange:
         retranslateUi(this);
-        languageBox->setCurrentIndex( appSetting::language() );
+        languageBox->setCurrentIndex( AppSetting::language() );
         listWidget->setSpacing( listWidget->spacing() );
         break;
     default:

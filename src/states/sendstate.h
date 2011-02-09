@@ -21,15 +21,16 @@
 #define SENDSTATE_H
 
 #include "abstractstate.h"
+#include <QString>
 
 class Device;
 class SendEllipse;
 
-class sendState : public AbstractState
+class SendState : public AbstractState
 {
 public:
-    sendState(MyCanvas *s);
-    ~sendState();
+    SendState(MyCanvas *s);
+    ~SendState();
     enum { noSendItem = 0 , oneSendItem = 1 };
     void mouseMove(QGraphicsSceneMouseEvent *event);
     void mousePress(QGraphicsSceneMouseEvent*);

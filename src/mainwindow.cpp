@@ -79,9 +79,9 @@ MainWindow::MainWindow(QWidget *parent, QStringList param) : QMainWindow(parent)
     readSetting();
     setCentralWidget(view);
     retranslate();
-    setOpenglMode( appSetting::hasOpengl() );        
+    setOpenglMode( AppSetting::hasOpengl() );        
     autosaveTimer = new QTimer(this);
-    autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
+    autosaveTimer->start( AppSetting::autosaveInterval() * 60000 );
     connect( autosaveTimer , SIGNAL(timeout()) , SLOT(autosave()) );
     printer = 0;
     printerPainter = 0;
@@ -421,7 +421,7 @@ void MainWindow::createScene()
     connect( canva , SIGNAL(fileClosed()) , SLOT(closeFile()) );
     connect( canva , SIGNAL(fileOpened()) , SLOT(newFile()) );
     connect( canva , SIGNAL(tictac()) , SLOT(incTime()) );
-    sceneControler = new sceneControl(this,canva);
+    sceneControler = new SceneControl(this,canva);
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , itemMenu , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , controlBar , SLOT(setEnabled(bool)) );
     connect( sceneControler , SIGNAL(selectOneDevice(bool)) , logAct , SLOT(setVisible(bool)) );
@@ -519,9 +519,9 @@ void MainWindow::setting()
 {
     settingDialog *d = new settingDialog;
     d->exec();
-    canva->setAnimateSpeed( appSetting::animateSpeed() );
-    setOpenglMode( appSetting::hasOpengl() );
-    autosaveTimer->start( appSetting::autosaveInterval() * 60000 );
+    canva->setAnimateSpeed( AppSetting::animateSpeed() );
+    setOpenglMode( AppSetting::hasOpengl() );
+    autosaveTimer->start( AppSetting::autosaveInterval() * 60000 );
 }
 
 void MainWindow::setOpenglMode(bool mode)
@@ -617,7 +617,7 @@ void MainWindow::writeSetting()
     setting.setValue("left" , pos().x() );
     setting.setValue("top" , pos().y() );
     setting.endGroup();
-    appSetting::writeSetting();
+    AppSetting::writeSetting();
 
 }
 //---------------------------------------------------
@@ -633,7 +633,7 @@ void MainWindow::readSetting()
     move( setting.value( "left" , 100 ).toInt() ,
           setting.value( "top" , 100 ).toInt() );
     setting.endGroup();
-    appSetting::readSetting();
+    AppSetting::readSetting();
 }
 //----------------------------------------------------
 /*!
@@ -665,7 +665,7 @@ void MainWindow::helpDialog()
     if ( sender() == aboutDeviceAct ) dest = sceneControler->deviceName();
     else dest = "index";
     QString t;
-    switch ( appSetting::language() ) {
+    switch ( AppSetting::language() ) {
         case 1: t = "ru"; break;
         default: t = "en";
     }
@@ -706,7 +706,7 @@ void MainWindow::playBack()
   */
 void MainWindow::statistics()
 {
-    statisticsScene s(canva);
+    StatisticsScene s(canva);
     staticsDialog *d = new staticsDialog(&s);
     d->exec();
 }
@@ -750,7 +750,7 @@ void MainWindow::printPreviewDialog()
 
 void MainWindow::autosave()
 {
-    if ( appSetting::isAutosave()  && canva->isOpen() ) saveFile();
+    if ( AppSetting::isAutosave()  && canva->isOpen() ) saveFile();
 }
 
 void MainWindow::incTime()

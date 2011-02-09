@@ -21,24 +21,24 @@
 #include <QLineEdit>
 #include <QStringList>
 
-ipAddressDelegate::ipAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
+IpAddressDelegate::IpAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
 {
 }
 
-QWidget* ipAddressDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+QWidget* IpAddressDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
 {
     QLineEdit *line = new QLineEdit(parent);
     return line;
 }
 
-void ipAddressDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void IpAddressDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QString data = index.model()->data(index,Qt::EditRole ).toString();
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     line->setText(data);
 }
 
-void ipAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const
+void IpAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const
 {
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     QString data = line->text();
@@ -47,7 +47,7 @@ void ipAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
     model->setData(index,data,Qt::EditRole);
 }
 
-void ipAddressDelegate::updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex&) const
+void IpAddressDelegate::updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex&) const
 {
     editor->setGeometry( option.rect );
 }

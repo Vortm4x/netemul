@@ -67,7 +67,7 @@ public:
     QStringList interfacesIp() const;
     QList<Cable*> cableList() const;
     DevicePort* findPortByName(const QString &name) const;
-    featuresMap featuresList() const;
+    FeaturesMap featuresList() const;
     void addInterface();
     bool isConnectSocket(const QString &socket) const { return adapter(socket)->isConnect(); }
     bool hasConnentSockets() const;
@@ -139,15 +139,15 @@ protected:
     virtual void read(QDataStream &stream);
 // FRIENDS:
 public:
-    friend class adapterSetting;
+    friend class AdapterSetting;
 };
 //-------------------------------------------------------------------
 /*!
   Модель данных для настроек адаптеров.
 */
-class adapterSetting {
+class AdapterSetting {
 public:
-    adapterSetting(SmartDevice *s) : sd(s) { }
+    AdapterSetting(SmartDevice *s) : sd(s) { }
     void setCurrent(int n);
     int current() const { return cur; }
     void resetStatics() { sd->myInterfaces.at(cur)->resetStatics(); }
@@ -179,9 +179,9 @@ private:
 };
 //-------------------------------------------------------------
 
-class smartSetting  : public deviceSetting {
+class SmartSetting  : public DeviceSetting {
 public:
-    smartSetting(SmartDevice *d) : deviceSetting(d) , sd(d) { }
+    SmartSetting(SmartDevice *d) : DeviceSetting(d) , sd(d) { }
     int socketsCount() const { return sd->socketsCount(); }
     bool isRouter() const { return sd->isRouter(); }
     void setRouter(bool b) { sd->setRouter(b); }

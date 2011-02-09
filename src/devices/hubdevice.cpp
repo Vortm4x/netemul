@@ -32,8 +32,8 @@ HubDevice* HubDevice::create(QObject *parent)
 {
     HubDevice *h = new HubDevice(parent);
     h->setBoxChip(new HubChip(h));
-    h->setSocketsCount( appSetting::defaultHubCount() );
-    h->setManual( appSetting::defaultHubManual() );
+    h->setSocketsCount( AppSetting::defaultHubCount() );
+    h->setManual( AppSetting::defaultHubManual() );
     h->setNote(tr( "<b>Hub</b><!--You can use HTML.-->" ) );
     return h;
 }
@@ -66,7 +66,7 @@ void HubDevice::write(QDataStream &stream) const
 void HubDevice::dialog()
 {
     hubProperty *d = new hubProperty;
-    hubSetting *set = new hubSetting(this);
+    HubSetting *set = new HubSetting(this);
     d->setHub(set);
     d->exec();
     delete set;

@@ -7,8 +7,8 @@
 class UdpSocket;
 class dhcpPacket;
 class Interface;
-class staticDhcpRecord;
-class dhcpServerModel;
+class StaticDhcpRecord;
+class DhcpServerModel;
 
 struct clientState {
     int xid;
@@ -20,7 +20,7 @@ struct clientState {
     int time;
     int requestTimer;
     enum { WAIT_REQUEST = 0, IN_USE = 1, DECLINE = 2 };
-    clientState(staticDhcpRecord *rec);
+    clientState(StaticDhcpRecord *rec);
     clientState() { }
 };
 
@@ -47,7 +47,7 @@ public:
     int time() const { return myTime; }
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
-    dhcpServerModel* dhcpModel() { return myDhcpModel; }
+    DhcpServerModel* dhcpModel() { return myDhcpModel; }
     void incTime();
     IpAddress giveDynamicIp() const;
 
@@ -75,7 +75,7 @@ private:
 private:
     QList<clientState*> clients;
     QString myInterface;
-    dhcpServerModel *myDhcpModel;
+    DhcpServerModel *myDhcpModel;
     IpAddress myBeginIp;
     IpAddress myEndIp;
     IpAddress myMask;

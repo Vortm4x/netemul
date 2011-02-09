@@ -24,10 +24,8 @@
 */
 AbstractChip::AbstractChip(QObject *parent) : QObject(parent)
 {
-#ifndef __TESTING__
     myMac.setRandom();
     resetStatics();
-#endif
 }
 //--------------------------------------------------------------
 /*!

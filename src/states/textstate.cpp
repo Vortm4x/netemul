@@ -22,9 +22,9 @@
 #include "mycanvas.h"
 #include "addtextcommand.h"
 
-void textState::mousePress(QGraphicsSceneMouseEvent *event)
+void TextState::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    addTextCommand *com = new addTextCommand(scene, event->scenePos() );
+    AddTextCommand *com = new AddTextCommand(scene, event->scenePos() );
     scene->commandStack.push(com);
     scene->myModified = true;
     emit scene->uncheck();

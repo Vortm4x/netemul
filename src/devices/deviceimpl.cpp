@@ -28,7 +28,7 @@ DeviceImpl::DeviceImpl(QObject *parent) : QObject(parent)
 void DeviceImpl::showDeviceNoteDialog()
 {
     deviceNoteDialog *d = new deviceNoteDialog;
-    d->setDevice( new deviceSetting(this) );
+    d->setDevice( new DeviceSetting(this) );
     d->exec();
 }
 

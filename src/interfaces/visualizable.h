@@ -1,7 +1,7 @@
 #ifndef VISUALIZABLE_H
 #define VISUALIZABLE_H
 
-class visualizable
+class Visualizable
 {
 public:
     virtual void onImplChange() = 0;

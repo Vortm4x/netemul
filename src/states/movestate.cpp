@@ -26,13 +26,13 @@
 #include "cabledev.h"
 #include "movecommand.h"
 
-moveState::moveState(MyCanvas *s) : AbstractState(s)
+MoveState::MoveState(MyCanvas *s) : AbstractState(s)
 {
     selectRect = 0; // Выделения нет
     p2Rect = QPoint();
 }
 
-moveState::~moveState()
+MoveState::~MoveState()
 {
     if ( selectRect ) {
         scene->removeItem(selectRect);
@@ -40,7 +40,7 @@ moveState::~moveState()
     }
 }
 
-void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
+void MoveState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if ( coordMap.count() ) {
         scene->QGraphicsScene::mouseMoveEvent(event);
@@ -49,7 +49,7 @@ void moveState::mouseMove(QGraphicsSceneMouseEvent *event)
        selectRect->setRect(QRectF( event->scenePos() , p2Rect ).normalized());
 }
 
-void moveState::mousePress(QGraphicsSceneMouseEvent *event)
+void MoveState::mousePress(QGraphicsSceneMouseEvent *event)
 {
     scene->QGraphicsScene::mousePressEvent(event);
     // Если есть выделенные элементы и мы щелкаем на одном из них
@@ -68,7 +68,7 @@ void moveState::mousePress(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
+void MoveState::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
     scene->QGraphicsScene::mouseReleaseEvent(event);
     if ( coordMap.count() ) {
@@ -83,7 +83,7 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
             curPoint = i.value();
             if ( curDevice->type() == TextItem::Type ) continue;
 
-            itemList underItems = curDevice->collidingItems();
+            QGraphicsItemList underItems = curDevice->collidingItems();
             if ( !scene->sceneRect().contains( curDevice->pos()) || filterDevices(underItems).count() ) {
                 needReturn = true;
                 break; // while( i.has...)
@@ -98,7 +98,7 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
                 if ( i->type() != Cable::Type )
                     rec.insert(i, i->scenePos() );
              }
-            moveCommand *c = new moveCommand(scene,old, rec);
+            MoveCommand *c = new MoveCommand(scene,old, rec);
             scene->commandStack.push(c);
             coordMap.clear();
             return;
@@ -118,9 +118,9 @@ void moveState::mouseRelease(QGraphicsSceneMouseEvent *event)
     }
 }
 
-itemList moveState::filterDevices(itemList list)
+QGraphicsItemList MoveState::filterDevices(QGraphicsItemList list)
 {
-    itemList temp;
+    QGraphicsItemList temp;
     foreach ( QGraphicsItem *i , list )
         if ( scene->isDevice(i)  ) temp << i;
     return temp;

@@ -167,7 +167,7 @@ void Interface::secondEvent()
         if ( --i->time ) continue;
         if ( i->count <= COUNT_AGAINST_SEND ) {
             i->count++;
-            i->time = qrand()%(appSetting::arpResponceTime()*i->count)+appSetting::arpResponceTime();
+            i->time = qrand()%(AppSetting::arpResponceTime()*i->count)+AppSetting::arpResponceTime();
             sendArpRequest( i->dest );
         } else {
             myWaits.removeOne(i);
@@ -226,7 +226,7 @@ waitPacket* waitPacket::create(IpAddress a,ipPacket p)
     waitPacket *t = new waitPacket;
     t->dest = a;
     t->packets << p;
-    t->time = appSetting::arpResponceTime();
+    t->time = AppSetting::arpResponceTime();
     t->count = 0;
     return t;
 }

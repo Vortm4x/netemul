@@ -22,10 +22,10 @@
 
 #include "abstractstate.h"
 
-class textState : public AbstractState
+class TextState : public AbstractState
 {
 public:
-    textState(MyCanvas *s) : AbstractState(s) { }
+    TextState(MyCanvas *s) : AbstractState(s) { }
     void mouseMove(QGraphicsSceneMouseEvent*) { }
     void mousePress(QGraphicsSceneMouseEvent *event);
     void mouseRelease(QGraphicsSceneMouseEvent*) { }

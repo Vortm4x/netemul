@@ -21,12 +21,12 @@
 #include "device.h"
 #include "mycanvas.h"
 
-sceneControl::sceneControl(QObject *parent , MyCanvas *s ) : QObject(parent) , scene(s)
+SceneControl::SceneControl(QObject *parent , MyCanvas *s ) : QObject(parent) , scene(s)
 {
     connect( scene , SIGNAL(selectionChanged()) , SLOT(observeSelection()) );
 }
 
-void sceneControl::observeSelection()
+void SceneControl::observeSelection()
 {
     if ( Device *t = scene->oneSelectedDevice() ) {
         emit selectTableDevice( t->hasTable() );
@@ -44,77 +44,77 @@ void sceneControl::observeSelection()
     }
 }
 
-QString sceneControl::tableName() const
+QString SceneControl::tableName() const
 {
     return scene->oneSelectedDevice()->tableName();
 }
 
-void sceneControl::propertyDialog() const
+void SceneControl::propertyDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->dialog();
 }
 
-void sceneControl::tableDialog() const
+void SceneControl::tableDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->tableDialog();
 }
 
-void sceneControl::adapterDialog() const
+void SceneControl::adapterDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->adapterDialog();
 }
 
-void sceneControl::programmsDialog() const
+void SceneControl::programmsDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->programmsDialog();
 }
 
-void sceneControl::arpDialog() const
+void SceneControl::arpDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->arpDialog();
 }
 
-void sceneControl::showLogDialog(logDialog *log) const
+void SceneControl::showLogDialog(logDialog *log) const
 {
     Device *t = scene->oneSelectedDevice();
     t->showLogDialog(log);
 }
 
-void sceneControl::showDesignerDialog() const
+void SceneControl::showDesignerDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->showDesignerDialog();
 }
 
-void sceneControl::showDeviceNoteDialog() const
+void SceneControl::showDeviceNoteDialog() const
 {
     Device *t = scene->oneSelectedDevice();
     t->showDeviceNoteDialog();
 }
 
-void sceneControl::showVirtualNetworkDialog() const
+void SceneControl::showVirtualNetworkDialog() const
 {
     scene->oneSelectedDevice()->showVirtualNetworkDialog();
 }
 
-bool sceneControl::isSelect() const
+bool SceneControl::isSelect() const
 {
     if ( scene->oneSelectedDevice() ) return true;
     return false;
 }
 
-QString sceneControl::note() const
+QString SceneControl::note() const
 {
     Device *t = scene->oneSelectedDevice();
     return t->toolTip();
 }
 
-QIcon sceneControl::tableIcon() const
+QIcon SceneControl::tableIcon() const
 {
     Device *t = scene->oneSelectedDevice();
     if ( !t->hasTable() ) return QIcon();
@@ -122,13 +122,13 @@ QIcon sceneControl::tableIcon() const
     else return QIcon(":/im/images/table_arp.png");
 }
 
-QString sceneControl::deviceName() const
+QString SceneControl::deviceName() const
 {
     Device *t = scene->oneSelectedDevice();
     return t->deviceName();
 }
 
-QStringList sceneControl::sockets() const
+QStringList SceneControl::sockets() const
 {
     Device *t = scene->oneSelectedDevice();
     return t->sockets();

@@ -172,13 +172,13 @@ private:
 
     int myTimer;
 // My dear Friends =)
-    friend class statisticsScene;
+    friend class StatisticsScene;
     friend class AbstractState;
-    friend class moveState;
-    friend class insertState;
-    friend class cableState;
-    friend class textState;
-    friend class sendState;
+    friend class MoveState;
+    friend class InsertState;
+    friend class CableState;
+    friend class TextState;
+    friend class SendState;
 };
 //------------------------------------------------------------------
 

@@ -50,7 +50,7 @@ public:
     enum { normal = 3 , broadcast = 4 };
     int type() const { return Type; }
     QRectF boundingRect() const {
-        return QRectF(startItem->pos(),endItem->pos()).normalized(); //.adjusted(-5,-5,5,5);
+        return cachedRect;
     }
     bool isCollisionCable() const { return isCollision; }    
     Cable(QGraphicsObject *parent = 0);
@@ -79,7 +79,11 @@ public:
     QPointF startPos() const { return startItem->pos(); }
     QPointF endPos() const { return endItem->pos(); }
 
+    void computeCache();
+
 private:    
+    QRectF cachedRect;
+    QLineF cachedLine;
     QGraphicsItem *startItem;
     QGraphicsItem *endItem;
     DevicePort *myStartPort;
@@ -88,6 +92,7 @@ private:
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                 QWidget *widget = 0); // Как будем рисовать
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 private:
     void killRandomPackets(QQueue<bitStream*> stream);
     void killCurrentPackets();

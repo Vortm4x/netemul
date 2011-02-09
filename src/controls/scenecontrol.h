@@ -26,11 +26,11 @@
 class MyCanvas;
 class logDialog;
 
-class sceneControl : public QObject
+class SceneControl : public QObject
 {
     Q_OBJECT
 public:
-    sceneControl(QObject *parent,MyCanvas *s);
+    SceneControl(QObject *parent,MyCanvas *s);
     bool isSelect() const;
     QString tableName() const;
     QString note() const;

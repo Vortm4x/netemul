@@ -30,7 +30,6 @@ SendEllipse::SendEllipse()
     setRect(-10,-10,20,20);
 }
 
-
 void SendEllipse::chooseOneDevice()
 {
     setPen(QPen(Qt::green));

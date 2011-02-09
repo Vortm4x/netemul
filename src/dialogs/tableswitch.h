@@ -22,16 +22,16 @@
 
 #include "ui_tableswitch.h"
 
-class switchTableSetting;
+class SwitchTableSetting;
 class SwitchModel;
 
 class TableSwitch : public QDialog , private Ui::tableSwitch
 {
     Q_OBJECT    
 public:
-    explicit TableSwitch(switchTableSetting *s);
+    explicit TableSwitch(SwitchTableSetting *s);
 private:
-    switchTableSetting *sw;
+    SwitchTableSetting *sw;
     SwitchModel *t_sw;
 private slots:
     void addRecord();

@@ -20,7 +20,7 @@
 #include "addtextcommand.h"
 #include "mycanvas.h"
 
-addTextCommand::addTextCommand(MyCanvas *s, QPointF p)
+AddTextCommand::AddTextCommand(MyCanvas *s, QPointF p)
 {
     scene = s;
     point = p;
@@ -28,18 +28,18 @@ addTextCommand::addTextCommand(MyCanvas *s, QPointF p)
     setText(QObject::tr("Add note"));
 }
 
-addTextCommand::~addTextCommand()
+AddTextCommand::~AddTextCommand()
 {
     if ( !isOnScene ) delete text;
 }
 
-void addTextCommand::undo()
+void AddTextCommand::undo()
 {
     scene->unregisterText(text);
     isOnScene = false;
 }
 
-void addTextCommand::redo()
+void AddTextCommand::redo()
 {
     if ( isFirst ) {
         text = scene->createTextItem(point);

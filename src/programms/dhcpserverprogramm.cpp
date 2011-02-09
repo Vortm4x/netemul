@@ -134,7 +134,7 @@ void DhcpServerProgram::read(QDataStream &stream)
 
 
 //---------------------------------------------------
-clientState::clientState(staticDhcpRecord *rec)
+clientState::clientState(StaticDhcpRecord *rec)
 {
     ip = rec->yiaddr;
     mac = rec->chaddr;

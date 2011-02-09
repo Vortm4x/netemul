@@ -6,7 +6,7 @@
 
 dhcpDemon::dhcpDemon(Interface *inter) {
     myInterface = inter->name();
-    myDhcpModel = new dhcpServerModel;
+    myDhcpModel = new DhcpServerModel;
     myDynamic = false;
     myTime = 300;
     myWaitingTime = 60;
@@ -53,7 +53,7 @@ void dhcpDemon::executeDecline(dhcpPacket packet)
 
 clientState* dhcpDemon::chooseStatic(dhcpPacket packet)
 {
-    staticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
+    StaticDhcpRecord *rec = myDhcpModel->recordWithMac(packet.chaddr());
     if ( !rec ) return 0;
     clientState *client = new clientState(rec);
     if ( findClient(client->ip) ) return 0;

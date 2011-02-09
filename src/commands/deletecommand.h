@@ -29,11 +29,11 @@ class Cable;
 class Device;
 class TextItem;
 
-class deleteCommand : public QUndoCommand
+class DeleteCommand : public QUndoCommand
 {
 public:
-    deleteCommand(MyCanvas *s, QList<QGraphicsItem*> list);
-    ~deleteCommand();
+    DeleteCommand(MyCanvas *s, QList<QGraphicsItem*> list);
+    ~DeleteCommand();
     void undo();
     void redo();
     void deleteConnection(Cable *cable);

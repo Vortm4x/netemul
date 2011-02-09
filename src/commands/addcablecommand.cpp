@@ -21,26 +21,26 @@
 #include "mycanvas.h"
 #include "cabledev.h"
 
-addCableCommand::addCableCommand(MyCanvas *s, Cable *c)
+AddCableCommand::AddCableCommand(MyCanvas *s, Cable *c)
 {
     scene = s;
     cable = c;
     setText(QObject::tr("Add cable"));
 }
 
-addCableCommand::~addCableCommand()
+AddCableCommand::~AddCableCommand()
 {
     if ( !isOnScene) delete cable;
 }
 
-void addCableCommand::undo()
+void AddCableCommand::undo()
 {
 //    cable->unregisterCable();
     scene->unregisterCable(cable);
     isOnScene = false;
 }
 
-void addCableCommand::redo()
+void AddCableCommand::redo()
 {
 //    cable->registerCable();
     scene->registerCable(cable);

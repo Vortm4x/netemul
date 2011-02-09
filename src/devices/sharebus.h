@@ -28,11 +28,11 @@ class DevicePort;
 // который унаследован от device , так как у общей шины будет отличаться
 // реализация и отображение от остальных устройств
 //
-class shareBus : public DeviceImpl
+class ShareBus : public DeviceImpl
 {
 public:
     enum { defaultWidth = 200 };
-    shareBus(int c);
+    ShareBus(int c);
     DevicePort* addInterface(QString str,int t);
     void dialog() { }
     bool hasTable() const { return false; }

@@ -4,12 +4,12 @@
 
 #include <QMetaObject>
 
-sceneXmlWriter::sceneXmlWriter(MyCanvas *scene) : myScene(scene)
+SceneXmlWriter::SceneXmlWriter(MyCanvas *scene) : myScene(scene)
 {
     setAutoFormatting(true);
 }
 
-void sceneXmlWriter::writeEntity(const QObject *entity)
+void SceneXmlWriter::writeEntity(const QObject *entity)
 {
     const QMetaObject *t = entity->metaObject();
     writeStartElement(t->className());
@@ -40,7 +40,7 @@ void sceneXmlWriter::writeEntity(const QObject *entity)
     writeEndElement();
 }
 
-void sceneXmlWriter::writeScene(QIODevice *dev)
+void SceneXmlWriter::writeScene(QIODevice *dev)
 {
     setDevice(dev);
     writeStartDocument();

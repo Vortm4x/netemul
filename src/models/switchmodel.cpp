@@ -137,7 +137,7 @@ QString SwitchModel::portWithMac(const macAddress &m)
 
 void SwitchModel::updateMac()
 {
-    int t = appSetting::ttlMac();
+    int t = AppSetting::ttlMac();
     foreach ( MacRecord *i , table )
         if ( ++i->time >= t ) deleteFromTable(i);
 }

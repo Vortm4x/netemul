@@ -29,8 +29,7 @@ class BoxDevice : public DeviceImpl
     Q_OBJECT
     Q_PROPERTY( bool isManual READ isManual WRITE setManual )
 public:
-    friend class boxSetting;
-    BoxDevice(QObject *parent = 0);
+            BoxDevice(QObject *parent = 0);
     virtual ~BoxDevice();
     bool isConnectSocket(const QString &socket) const { return myChip->isConnectSocket(socket); }
     QIcon isConnectSocketIcon(const QString &socket) const;
@@ -66,12 +65,15 @@ protected:
     bool myManual;
     BoxChip *myChip;
     virtual void write(QDataStream &stream) const;
-    virtual void read(QDataStream &stream);    
+    virtual void read(QDataStream &stream);
+
+public:
+    friend class BoxSetting;
 };
 
-class boxSetting : public deviceSetting {
+class BoxSetting : public DeviceSetting {
 public:
-    boxSetting(BoxDevice *h) : deviceSetting(h) , box(h) {  }
+    BoxSetting(BoxDevice *h) : DeviceSetting(h) , box(h) {  }
     int socketsCount() const { return box->myChip->socketsCount(); }
     QString snmpMac() const { return box->myChip->mac().toString(); }
     QString snmpIp() const { return box->myChip->ip().toString(); }

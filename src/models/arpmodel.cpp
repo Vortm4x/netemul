@@ -71,7 +71,7 @@ void ArpModel::deleteFromTable(ArpRecord *r)
 
 void ArpModel::update()
 {
-    int n = appSetting::ttlArp();
+    int n = AppSetting::ttlArp();
     foreach ( ArpRecord *i , myTable )
         if ( ++i->time >= n ) deleteFromTable(i);
 }

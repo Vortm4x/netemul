@@ -28,7 +28,7 @@ static const int LANGUAGE_COUNT = 4;
 static const int main_digit = 10000;
 static const int little_digit = 20;
 
-class appSetting
+class AppSetting
 {
 public:
     static int defaultComputerCount() { return _defaultComputerCount; }
@@ -90,8 +90,8 @@ private:
     static QString _scriptPath;
     static bool _hasOpengl;
 protected:
-    appSetting();
-    ~appSetting();
+    AppSetting();
+    ~AppSetting();
 };
 
 

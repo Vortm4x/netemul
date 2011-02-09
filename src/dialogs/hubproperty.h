@@ -28,7 +28,7 @@ class QLabel;
 class QPushButton;
 
 class ipEdit;
-class hubSetting;
+class HubSetting;
 
 class hubProperty : public dialogTemplate
 {
@@ -36,9 +36,9 @@ Q_OBJECT
 public:
     hubProperty();
     ~hubProperty();
-    void setHub(hubSetting *s);
+    void setHub(HubSetting *s);
 private:
-    hubSetting *st;
+    HubSetting *st;
     QComboBox *cb_count;
     QLabel *lb_statics;
     QLabel *lb_mac;

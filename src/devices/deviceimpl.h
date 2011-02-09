@@ -31,7 +31,7 @@ class Cable;
 class logDialog;
 class DevicePort;
 
-typedef QMap<QString,bool> featuresMap;
+typedef QMap<QString,bool> FeaturesMap;
 
 class DeviceImpl : public QObject
 {
@@ -46,7 +46,7 @@ public:
     virtual int type() const = 0;
 
     virtual QStringList sockets() const = 0;
-    virtual featuresMap featuresList() const { return featuresMap(); }
+    virtual FeaturesMap featuresList() const { return FeaturesMap(); }
     virtual bool isConnectSocket(const QString &socket) const = 0;
     virtual QIcon isConnectSocketIcon( const QString &socket) const = 0;
     virtual QString socketName(const Cable *c) const = 0;
@@ -90,7 +90,7 @@ public:
 
     virtual bool isCanSend() const { return false; }
 
-    void setVisualizator( visualizable *view ) { myView = view; }
+    void setVisualizator( Visualizable *view ) { myView = view; }
     void updateView() const { myView->onImplChange(); }
 public:    
 
@@ -113,14 +113,14 @@ public slots:
     virtual quint64 sendFrameCount(const QString&) { return 0; }
     virtual quint64 receiveFrameCount(const QString&) { return 0; }
 protected:
-    visualizable *myView;
+    Visualizable *myView;
 private:
     QString myNote;
 };
 
-class deviceSetting {
+class DeviceSetting {
 public:
-    deviceSetting(DeviceImpl *d) : dev(d) { }
+    DeviceSetting(DeviceImpl *d) : dev(d) { }
     QString note() const { return dev->note(); }
     void setNote(const QString &str) { dev->setNote(str); }
 private:

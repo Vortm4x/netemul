@@ -52,7 +52,7 @@ class StatisticsObject : public QObject
     Q_PROPERTY(quint64 sendFrames READ sendFrames WRITE setSendFrames )
     Q_PROPERTY(quint64 sendPackets READ sendPackets WRITE setSendPackets )
 public:
-    StatisticsObject(Statistics s) { st = s; qDebug("Hello"); }
+    StatisticsObject(Statistics s) { st = s; }
     StatisticsObject(QObject *parent = 0 ) : QObject(parent) { }    
     Statistics statistics() const { return st; }
     void setReceiveFrames(quint64 f) { st.receiveFrames = f; }

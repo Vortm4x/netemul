@@ -24,12 +24,12 @@
 #include "mycanvas.h"
 #include "device.h"
 
-cableState::cableState(MyCanvas *s) : AbstractState(s)
+CableState::CableState(MyCanvas *s) : AbstractState(s)
 {
     line = 0; // Провода нет
 }
 
-cableState::~cableState()
+CableState::~CableState()
 {
     if ( line ) {
         scene->removeItem(line);
@@ -37,13 +37,13 @@ cableState::~cableState()
     }
 }
 
-void cableState::mouseMove(QGraphicsSceneMouseEvent *event)
+void CableState::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     // Заново прорисовываем линию от начала кабеля до Текущей точки
     if ( line ) line->setLine(QLineF( line->line().p1(), event->scenePos()));
 }
 
-void cableState::mousePress(QGraphicsSceneMouseEvent *event)
+void CableState::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if ( scene->items( event->scenePos() ).isEmpty() ) return; // не будем водить кабеля из пустых мест
     line =  new QGraphicsLineItem(QLineF(event->scenePos(), event->scenePos()));
@@ -52,7 +52,7 @@ void cableState::mousePress(QGraphicsSceneMouseEvent *event)
     scene->addItem(line);
 }
 
-void cableState::mouseRelease(QGraphicsSceneMouseEvent*)
+void CableState::mouseRelease(QGraphicsSceneMouseEvent*)
 {
     if ( !line ) return;
     QString start,end;

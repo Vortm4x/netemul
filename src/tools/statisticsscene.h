@@ -26,11 +26,11 @@
 
 class MyCanvas;
 
-class statisticsScene : public QObject
+class StatisticsScene : public QObject
 {
     Q_OBJECT
 public:
-    statisticsScene(MyCanvas *scene);
+    StatisticsScene(MyCanvas *scene);
     QString devicesString();
     QString trafficString();
 private:

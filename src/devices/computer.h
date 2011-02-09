@@ -55,9 +55,9 @@ protected:
 };
 //---------------------------------------------
 
-class computerSetting : public smartSetting {
+class ComputerSetting : public SmartSetting {
 public:
-    computerSetting( Computer *c ) : smartSetting(c) , cp(c) { }
+    ComputerSetting( Computer *c ) : SmartSetting(c) , cp(c) { }
     QString gateway() const { return cp->gateway().toString(); }
     void setGateway(const QString &str) { cp->setGateway(str); }
 private:

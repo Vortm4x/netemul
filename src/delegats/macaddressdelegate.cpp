@@ -20,33 +20,33 @@
 #include "macaddressdelegate.h"
 #include <QLineEdit>
 
-macAddressDelegate::macAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
+MacAddressDelegate::MacAddressDelegate(QObject *parent /* = 0 */) : QItemDelegate(parent)
 {
 
 }
 
-QWidget* macAddressDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+QWidget* MacAddressDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
 {
     QLineEdit *line = new QLineEdit(parent);
     line->setInputMask("HH:HH:HH:HH:HH:HH;_");
     return line;
 }
 
-void macAddressDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void MacAddressDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     QString data = index.model()->data(index,Qt::EditRole ).toString();
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     line->setText(data);
 }
 
-void macAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const
+void MacAddressDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,const QModelIndex &index) const
 {
     QLineEdit *line = static_cast<QLineEdit*>(editor);
     QString data = line->text();
     model->setData(index,data,Qt::EditRole);
 }
 
-void macAddressDelegate::updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex&) const
+void MacAddressDelegate::updateEditorGeometry(QWidget *editor,const QStyleOptionViewItem &option,const QModelIndex&) const
 {
     editor->setGeometry( option.rect );
 }

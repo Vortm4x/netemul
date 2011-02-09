@@ -24,10 +24,10 @@
 #include "ipedit.h"
 
 class DhcpServerProgram;
-class dhcpServerModel;
+class DhcpServerModel;
 class SmartDevice;
-class macAddressDelegate;
-class ipAddressDelegate;
+class MacAddressDelegate;
+class IpAddressDelegate;
 
 class dhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 {
@@ -44,10 +44,10 @@ public slots:
 protected:
     void changeEvent(QEvent *e);
 private:
-    macAddressDelegate *macDelegate;
-    ipAddressDelegate *ipDelegate;
+    MacAddressDelegate *macDelegate;
+    IpAddressDelegate *ipDelegate;
     DhcpServerProgram *myProgramm;
-    dhcpServerModel *myModel;
+    DhcpServerModel *myModel;
     SmartDevice *device;
 };
 
