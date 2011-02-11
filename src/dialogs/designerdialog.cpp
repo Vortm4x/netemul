@@ -262,7 +262,7 @@ void designerDialog::apply()
     Frame.setReceiver( le_receiverMac->text() );
     if ( rb_ip->isChecked() ) {
         Frame.setType( Frame::ip );
-        IpPacket Packet( senderIp->ipText() , receiverIp->ipText() );
+        IpPacket Packet( senderIp->ipAddress() , receiverIp->ipAddress() );
         if ( rb_tcp->isChecked() ) {
             TcpPacket tcp;
             tcp.setSender( sb_tcpSenderPort->value() );
@@ -289,8 +289,8 @@ void designerDialog::apply()
         Frame.setType( Frame::arp );
         ArpPacket arp;
         arp.setType( ( rb_request->isChecked() ) ? ArpPacket::request : ArpPacket::response );
-        arp.setReceiverIp( arpReceiverIp->ipText() );
-        arp.setSenderIp( arpSenderIp->ipText() );
+        arp.setReceiverIp( arpReceiverIp->ipAddress() );
+        arp.setSenderIp( arpSenderIp->ipAddress() );
         arp.setReceiverMac( le_arpReceiverMac->text() );
         arp.setSenderMac( le_arpSenderMac->text() );
         Frame.pack(arp.toData());

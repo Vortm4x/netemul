@@ -23,12 +23,12 @@
 #include "routeeditor.h"
 #include "adapterproperty.h"
 #include "tablearp.h"
-#include "programmdialog.h"
+#include "programdialog.h"
 #include "logdialog.h"
 #include "routemodel.h"
 #include "abstractsocket.h"
 #include "socketfactory.h"
-#include "dhcpclientprogramm.h"
+#include "dhcpclientprogram.h"
 
 
 SmartDevice::SmartDevice(QObject *parent) : DeviceImpl(parent) , myRouter(false) ,
@@ -205,7 +205,7 @@ IpAddress SmartDevice::gateway() const
 /*!
   Отправляет сообщение посланное из интерфейса программы.
   @param a - Адрес назначения.
-  @param size - � азмер сообщения в кб(на деле сколько пакетов).
+  @param size -  азмер сообщения в кб(на деле сколько пакетов).
   @param type - Протокол с помощью которого происходит отправка.
 */
 void SmartDevice::sendMessage( const QString &a , int size ,int type)
@@ -301,9 +301,9 @@ void SmartDevice::adapterDialog()
     d->show();
 }
 
-void SmartDevice::programmsDialog()
+void SmartDevice::programsDialog()
 {
-    programmDialog *d = new programmDialog;
+    ProgramDialog *d = new ProgramDialog;
     d->setDevice(this);
     d->show();
 }
@@ -501,7 +501,7 @@ Statistics SmartDevice::deviceStatistics() const
     return s;
 }
 
-bool SmartDevice::hasProgramm(int id)
+bool SmartDevice::hasProgram(int id)
 {
     foreach ( Program *i , myPrograms )
         if ( i->id() == id ) return true;

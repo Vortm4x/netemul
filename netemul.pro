@@ -1,5 +1,5 @@
 include(src/chips/chips.pri)
-include(src/programms/programms.pri)
+include(src/programs/programs.pri)
 include(src/controls/controls.pri)
 include(src/devices/devices.pri)
 include(src/models/models.pri)
@@ -23,7 +23,7 @@ INCLUDEPATH += . \
     src \
     src/chips \
     src/controls \
-    src/programms \
+    src/programs \
     src/devices \
     src/models \
     src/dialogs \

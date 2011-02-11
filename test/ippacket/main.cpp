@@ -15,8 +15,8 @@ private slots:
     void saveLoadTcp();
     void saveLoadUdp();
 private:
-    ipPacket tcpIp;
-    ipPacket udpIp;
+    IpPacket tcpIp;
+    IpPacket udpIp;
 };
 //---------------------------------------
 /*!
@@ -24,7 +24,7 @@ private:
 */
 void TestIpPacket::setBroadcast()
 {
-    ipPacket p;
+    IpPacket p;
     p.setReceiver(IpAddress("192.168.1.13"));
     QCOMPARE(p.isBroadcast("255.255.0.0") , false );
     p.setSender(IpAddress("192.168.1.2"));
@@ -33,20 +33,20 @@ void TestIpPacket::setBroadcast()
     p.setSender(IpAddress("192.168.1.255"));
     p.setBroadcast("255.255.255.0");
     QCOMPARE( p.isBroadcast("255.255.255.0") , true);
-    ipPacket a = p;
-    ipPacket b = p;
+    IpPacket a = p;
+    IpPacket b = p;
     QCOMPARE( a.sender() , b.sender() );
 }
 //------------------------------------------
 
 void TestIpPacket::saveLoadTcp()
 {
-    tcpPacket *p = new tcpPacket;
+    TcpPacket *p = new TcpPacket;
     p->setSender(1024);
     p->setReceiver(512);
     tcpIp.pack(p->toData());
     delete p;
-    p = new tcpPacket( tcpIp.unpack() );
+    p = new TcpPacket( tcpIp.unpack() );
     QCOMPARE( p->sender() , quint16(1024) );
     QCOMPARE( p->receiver() ,quint16( 512 ));
     delete p;
@@ -54,12 +54,12 @@ void TestIpPacket::saveLoadTcp()
 
 void TestIpPacket::saveLoadUdp()
 {
-    udpPacket *p = new udpPacket;
+    UdpPacket *p = new UdpPacket;
     p->setSender(1024);
     p->setReceiver(512);
     udpIp.pack( p->toData() );
     delete p;
-    p = new udpPacket( udpIp.unpack() );
+    p = new UdpPacket( udpIp.unpack() );
     QCOMPARE( p->sender() , quint16(1024) );
     QCOMPARE( p->receiver() , quint16(512) );
     delete p;

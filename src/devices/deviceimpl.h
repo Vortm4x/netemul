@@ -66,7 +66,7 @@ public:
     virtual void showLogDialog(logDialog*) const = 0;
     virtual void tableDialog() { qFatal("error not compatibility Table!"); }
     virtual void adapterDialog() { qFatal("error not compatibility adapter!"); }
-    virtual void programmsDialog() { qFatal("error not compatibility"); }
+    virtual void programsDialog() { qFatal("error not compatibility"); }
     virtual void arpDialog() { qFatal("error not compatibility"); }
     virtual void showDesignerDialog() { qFatal("Error designer!"); }
     virtual void showVirtualNetworkDialog() { qFatal("Error virtual network"); }

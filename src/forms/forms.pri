@@ -1,4 +1,4 @@
-FORMS += src/forms/programmdialog.ui \
+FORMS += src/forms/programdialog.ui \
     src/forms/testdialog.ui \
     src/forms/connectdialog.ui \
     src/forms/tableswitch.ui \

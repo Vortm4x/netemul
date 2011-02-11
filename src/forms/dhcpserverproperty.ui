@@ -27,6 +27,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <layout class="QHBoxLayout" name="tab_lay"/>
+   </item>
+   <item>
     <widget class="QCheckBox" name="cb_turnOn">
      <property name="text">
       <string>Turn on/off dhcp-server on this interface.</string>
@@ -34,7 +37,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="static_lb">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -225,7 +228,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="waiting_lb">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -305,63 +308,6 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Choose interface:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cb_interface">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>0</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Give server's name:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="le_name"/>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -398,8 +344,8 @@
    <slot>addRecord()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>694</x>
-     <y>214</y>
+     <x>704</x>
+     <y>263</y>
     </hint>
     <hint type="destinationlabel">
      <x>234</x>
@@ -415,7 +361,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>789</x>
-     <y>214</y>
+     <y>263</y>
     </hint>
     <hint type="destinationlabel">
      <x>260</x>
@@ -430,8 +376,8 @@
    <slot>changeState(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>244</y>
+     <x>51</x>
+     <y>292</y>
     </hint>
     <hint type="destinationlabel">
      <x>114</x>
@@ -455,11 +401,28 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>cb_turnOn</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dhspServerProperty</receiver>
+   <slot>onTurnedOnOff(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>144</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>3</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>addRecord()</slot>
   <slot>deleteRecord()</slot>
   <slot>changeState(bool)</slot>
   <slot>apply()</slot>
+  <slot>onTurnedOnOff(bool)</slot>
  </slots>
 </ui>

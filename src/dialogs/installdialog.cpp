@@ -19,7 +19,7 @@
 ****************************************************************************************/
 #include <QtGui/QMessageBox>
 #include "installdialog.h"
-#include "ripprogramm.h"
+#include "ripprogram.h"
 #include "smartdevice.h"
 
 installDialog::installDialog(QWidget *parent) : QDialog(parent)
@@ -38,7 +38,7 @@ void installDialog::setDevice(SmartDevice *d)
 */
 void installDialog::install()
 {
-    if ( smart->hasProgramm( list->currentRow() ) ) {
+    if ( smart->hasProgram( list->currentRow() ) ) {
             QMessageBox::warning(0,tr("Error") , tr("Program already installed.") ,
                                  QMessageBox::Ok , QMessageBox::Ok );
             return;

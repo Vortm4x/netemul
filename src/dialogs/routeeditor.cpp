@@ -108,7 +108,7 @@ routeEditor::~routeEditor()
 
 void routeEditor::addRecord()
 {
-    model->addToTable( ip_dest->ipText() , ip_mask->ipText() , ip_gateway->ipText() , ipList.at( cb_out->currentIndex() )
+    model->addToTable( ip_dest->ipAddress() , ip_mask->ipAddress() , ip_gateway->ipAddress() , ipList.at( cb_out->currentIndex() )
                        , sp_metr->value(), RouteModel::staticMode );
     ip_dest->clear();
     ip_mask->clear();

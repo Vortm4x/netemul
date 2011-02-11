@@ -13,14 +13,14 @@ private slots:
 
 void TestmacAddress::toString()
 {
-    macAddress m;
+    MacAddress m;
     m.setMac("01:03:00:00:00:00");
     QCOMPARE(m.toString(), tr("01:03:00:00:00:00"));
 }
 
 void TestmacAddress::setBroadcast()
 {
-    macAddress m;
+    MacAddress m;
     m.setBroadcast();
     QCOMPARE( m.toString() , tr("FF:FF:FF:FF:FF:FF"));
     QCOMPARE( m.isBroadcast() , true );
@@ -28,8 +28,8 @@ void TestmacAddress::setBroadcast()
 
 void TestmacAddress::saveAndLoad()
 {
-    macAddress m("01:02:03:04:05:06");
-    macAddress t = m;
+    MacAddress m("01:02:03:04:05:06");
+    MacAddress t = m;
     QFile f("test3");
     if ( f.open(QIODevice::WriteOnly) ) {
         QDataStream s(&f);
@@ -49,8 +49,8 @@ void TestmacAddress::saveAndLoad()
 
 void TestmacAddress::operators()
 {
-    macAddress a("01:02:03:04:05:06");
-    macAddress b("01:02:03:04:05:07");
+    MacAddress a("01:02:03:04:05:06");
+    MacAddress b("01:02:03:04:05:07");
     QCOMPARE( a < b  , true );
     QCOMPARE( a >= b , false );
     QCOMPARE( a++ == b++ , false );

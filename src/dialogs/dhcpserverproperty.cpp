@@ -19,19 +19,29 @@
 ****************************************************************************************/
 #include <QMessageBox>
 #include "dhcpserverproperty.h"
-#include "dhcpserverprogramm.h"
 #include "dhcpservermodel.h"
 #include "smartdevice.h"
 #include "macaddressdelegate.h"
 #include "ipaddressdelegate.h"
 
-DhcpServerProperty::DhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 */) : QDialog(parent)
+DhcpServerProperty::DhcpServerProperty(DhcpServerSetting *setting, QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
-    device = dev;
+    myPortMap = new QMap<int, Interface*>;
+    mySetting = setting;
+    SmartDevice *dev = mySetting->program()->device();
     setAttribute(Qt::WA_DeleteOnClose);
-    foreach ( Interface *i, device->interfaces() )
-        if ( i->isConnect() ) cb_interface->addItem( QIcon(":im/images/ok.png"), i->name() );
+    port_tb = new QTabBar;
+    tab_lay->addWidget(port_tb);
+    foreach ( Interface *i, dev->interfaces() ) {
+        if ( i->isConnect() ) {
+            int index = port_tb->addTab(QIcon(":im/images/ok.png"), i->name() );
+            myPortMap->insert(index, i);
+        }
+    }
+    connect(port_tb, SIGNAL(currentChanged(int)), SLOT(onCurrentChanged(int)));
+    port_tb->setCurrentIndex(0);
+    onCurrentChanged(0);
     macDelegate = new MacAddressDelegate(this);
     ipDelegate = new IpAddressDelegate(this);
     tv_static->setItemDelegateForColumn(0, macDelegate );
@@ -42,34 +52,66 @@ DhcpServerProperty::DhcpServerProperty(SmartDevice *dev,QWidget *parent /* = 0 *
 
 DhcpServerProperty::~DhcpServerProperty()
 {
+    myPortMap->clear();
+    delete mySetting;
     delete macDelegate;
+    delete ipDelegate;
 }
 
-void DhcpServerProperty::setProgramm(DhcpServerProgram *prog)
+//----------Private functions--------------
+void DhcpServerProperty::clearForm()
 {
-//    myProgramm = prog;
-//    myModel = myProgramm->dhcpModel();
-//    tv_static->setModel( myModel );
-//    QHeaderView *h = tv_static->horizontalHeader();
-//    h->setResizeMode( QHeaderView::Stretch );
-//    cb_dynamic->setChecked(myProgramm->dynamic());
-//    sb_time->setValue(myProgramm->time());
-//    ie_begin->setText(myProgramm->beginIp());
-//    ie_end->setText(myProgramm->endIp());
-//    ie_mask->setText(myProgramm->mask());
-//    ie_gatew->setText(myProgramm->gateway());
-//    cb_interface->setCurrentIndex( cb_interface->findText(myProgramm->interfaceName() ));
-//    sb_waitingTime->setValue( myProgramm->waitingTime() );
-//    le_name->setText(myProgramm->serverName());
+    tv_static->clearSpans();
+    cb_turnOn->setChecked(false);
+    cb_dynamic->setChecked(false);
+    sb_time->cleanText();
+    ie_begin->clear();
+    ie_end->clear();
+    ie_gatew->clear();
+    ie_mask->clear();
+    sb_waitingTime->cleanText();
+}
+
+//----------Private slots--------------
+void DhcpServerProperty::onCurrentChanged(int index)
+{
+    myDaemon = mySetting->daemonOf(myPortMap->value(index));
+    if ( myDaemon == NULL ) clearForm();
+    myModel = myDaemon->dhcpModel();
+    cb_turnOn->setChecked(myDaemon->isTurnOn());
+    onTurnedOnOff(cb_turnOn->isChecked());
+    tv_static->setModel(myModel);
+    QHeaderView *h = tv_static->horizontalHeader();
+    h->setResizeMode( QHeaderView::Stretch );
+    cb_dynamic->setChecked(myDaemon->dynamic());
+    sb_time->setValue(myDaemon->time());
+    ie_begin->setText(myDaemon->beginIp());
+    ie_end->setText(myDaemon->endIp());
+    ie_gatew->setText(myDaemon->gateway());
+    ie_mask->setText(myDaemon->mask());
+    sb_waitingTime->setValue(myDaemon->waitingTime());
+}
+
+void DhcpServerProperty::onTurnedOnOff(bool b)
+{
+    static_lb->setEnabled(b);
+    tv_static->setEnabled(b);
+    btn_add->setEnabled(b);
+    btn_del->setEnabled(b);
+    waiting_lb->setEnabled(b);
+    sb_waitingTime->setEnabled(b);
+    cb_dynamic->setEnabled(b);
 }
 
 void DhcpServerProperty::addRecord()
 {
+    if ( myModel == NULL ) return;
     myModel->insertRow( myModel->rowCount() );
 }
 
 void DhcpServerProperty::deleteRecord()
 {
+    if ( myModel == NULL ) return;
     myModel->removeRow( tv_static->currentIndex().row() );
 }
 
@@ -85,21 +127,21 @@ void DhcpServerProperty::changeState(bool b)
 
 void DhcpServerProperty::apply()
 {
-    if ( ie_begin->ipText() > ie_end->ipText() ) {
+    if ( ie_begin->ipAddress() > ie_end->ipAddress() ) {
         QMessageBox::warning(0,tr("Wrong range"),tr("You have entered a wrong IP range."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
-//    myProgramm->setInterfaceName(cb_interface->currentText());
-//    myProgramm->setBeginIp(ie_begin->ipText().toString());
-//    myProgramm->setEndIp(ie_end->ipText().toString());
-//    myProgramm->setMask(ie_mask->ipText().toString());
-//    myProgramm->setGateway(ie_gatew->ipText().toString());
-//    myProgramm->setTime(sb_time->value());
-//    myProgramm->setDynamic(cb_dynamic->isChecked());
-//    myProgramm->setWaitingTime(sb_waitingTime->value());
-//    myProgramm->setServerName(le_name->text());
+    myDaemon->setTurnOn(cb_turnOn->isChecked());
+    myDaemon->setBeginIp(ie_begin->ipAddress());
+    myDaemon->setEndIp(ie_end->ipAddress());
+    myDaemon->setDynamic(cb_dynamic->isChecked());
+    myDaemon->setGateway(ie_gatew->ipAddress());
+    myDaemon->setMask(ie_mask->ipAddress());
+    myDaemon->setTime(sb_time->value());
+    myDaemon->setWaitingTime(sb_waitingTime->value());
     accept();
 }
+//-----------------------------------------
 
 void DhcpServerProperty::changeEvent(QEvent *e)
 {

@@ -123,8 +123,8 @@ void tableArp::updateTable()
 */
 void tableArp::addRecord()
 {
-    if ( le_mac->text() == "00:00:00:00:00:00" || ip->text() == "0.0.0.0" ) return;
-    list.at(s.indexOf(cb_port->currentText()))->addToTable( ip->text(), le_mac->text(), ArpModel::staticMode );
+    if ( le_mac->text() == "00:00:00:00:00:00" || ip->ipText() == "0.0.0.0" ) return;
+    list.at(s.indexOf(cb_port->currentText()))->addToTable( ip->ipText(), le_mac->text(), ArpModel::staticMode );
     updateTable();
     ip->setText("0.0.0.0");
     le_mac->setText("00:00:00:00:00:00");

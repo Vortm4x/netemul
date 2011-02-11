@@ -10,6 +10,9 @@ TARGET = ipaddress
 CONFIG  += console
 CONFIG  -= app_bundle
 TEMPLATE = app
-SOURCES += main.cpp \
-           ../../src/ipaddress.cpp
-HEADERS += ../../src/ipaddress.h
+
+INCLUDEPATH += ../../basicnetlib
+
+LIBS += -L../.. -lbasicnetlib
+
+SOURCES += main.cpp

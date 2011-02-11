@@ -59,7 +59,7 @@ void computerProperty::setDevice(ComputerSetting *c)
 
 void computerProperty::apply()
 {
-    comp->setGateway(gateway->text());
+    comp->setGateway(gateway->ipText());
     comp->setRouter( cb_route->isChecked() );
     if ( sender() == btn_ok ) accept();
 }

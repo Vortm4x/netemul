@@ -35,8 +35,8 @@ class IpEdit : public QWidget
 public:                
     IpEdit(QWidget *parent = 0, QString str = "");
     void setText(QString str);
-    IpAddress ipText() const { return IpAddress(text()); }
-    QString text() const;
+    IpAddress ipAddress() const { return IpAddress(ipText()); }
+    QString ipText() const;
     void setLabelText(const QString text);
     QString labelText() const;
     void clear();   

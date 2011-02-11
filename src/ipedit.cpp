@@ -77,7 +77,7 @@ QSize IpEdit::sizeHint() const
     return QSize(label->width() + part[0]->width() * 4 + 50, part[0]->height() +10 );
 }
 
-QString IpEdit::text() const
+QString IpEdit::ipText() const
 {
     QString s;
     s = part[0]->text();

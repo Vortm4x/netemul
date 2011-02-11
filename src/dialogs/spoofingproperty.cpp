@@ -1,5 +1,5 @@
 #include "spoofingproperty.h"
-#include "spoofingprogramm.h"
+#include "spoofingprogram.h"
 #include "ui_spoofingproperty.h"
 
 spoofingProperty::spoofingProperty(QWidget *parent) :
@@ -25,8 +25,8 @@ void spoofingProperty::setProgramm(SpoofingProgram *p)
 
 void spoofingProperty::apply()
 {
-    pr->setClientIp( ui->clientEdit->ipText() );
-    pr->setServerIp( ui->serverEdit->ipText() );
+    pr->setClientIp( ui->clientEdit->ipAddress() );
+    pr->setServerIp( ui->serverEdit->ipAddress() );
     accept();
 }
 

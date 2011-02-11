@@ -147,14 +147,14 @@ void adapterProperty::updateTab(int n)
 void adapterProperty::apply()
 {
     sd->setMac( le_mac->text() );
-    sd->setIp( le_ip->text() );
-    sd->setMask( le_mask->text() );
+    sd->setIp( le_ip->ipText() );
+    sd->setMask( le_mask->ipText() );
     sd->connectedNet();
     sd->setCurrent( tab_interfaces->currentIndex() );
     if ( sd->hasDhcpClient() ) {
         sd->setUnderDhcpControl( cb_auto->isChecked() );
     }
-    if ( sd->isConnect() ) sd->sendArpRequest(le_ip->text());
+    if ( sd->isConnect() ) sd->sendArpRequest(le_ip->ipText());
     if ( sender() == btn_ok ) accept();
 }
 //------------------------------------------------------------

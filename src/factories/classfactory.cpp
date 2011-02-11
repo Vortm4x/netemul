@@ -8,11 +8,12 @@
 #include "switchchip.h"
 #include "routemodel.h"
 #include "switchmodel.h"
-#include "ripprogramm.h"
+#include "ripprogram.h"
 #include "arpmodel.h"
-#include "dhcpclientprogramm.h"
-#include "dhcpserverprogramm.h"
-#include "spoofingprogramm.h"
+#include "dhcpdaemon.h"
+#include "dhcpclientprogram.h"
+#include "dhcpserverprogram.h"
+#include "spoofingprogram.h"
 #include "statistics.h"
 #include "textitem.h"
 
@@ -66,7 +67,9 @@ QObject* ClassFactory::createInstance(const QString &str, QObject *parent)
         return new ArpModel(parent);
     } else if ( str == "ArpRecordObject" ) {
         return new ArpRecordObject(parent);
-    } else {        
+    } else if ( str == "DhcpDaemon" ) {
+        return new DhcpDaemon(parent);
+    } else {
         return 0;
     }
 }

@@ -18,7 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "ripproperty.h"
-#include "ripprogramm.h"
+#include "ripprogram.h"
 
 ripProperty::ripProperty(QWidget *parent) : QDialog(parent)
 {

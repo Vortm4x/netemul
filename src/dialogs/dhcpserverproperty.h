@@ -22,10 +22,9 @@
 
 #include <ui_dhcpserverproperty.h>
 #include "ipedit.h"
+#include "dhcpserverprogram.h"
 
-class DhcpServerProgram;
 class DhcpServerModel;
-class SmartDevice;
 class MacAddressDelegate;
 class IpAddressDelegate;
 
@@ -33,22 +32,34 @@ class DhcpServerProperty : public QDialog, private Ui::dhspServerProperty
 {
     Q_OBJECT
 public:
-    DhcpServerProperty(SmartDevice *dev, QWidget *parent = 0);
+    DhcpServerProperty(DhcpServerSetting *setting, QWidget *parent = 0);
     ~DhcpServerProperty();
-    void setProgramm( DhcpServerProgram *prog );
-public slots:
+    void setProgram( DhcpServerProgram *prog );
+
+protected:
+    void changeEvent(QEvent *e);
+
+private slots:
+    void onCurrentChanged(int index);
+    void onTurnedOnOff(bool b);
     void addRecord();
     void deleteRecord();
     void changeState(bool);
     void apply();
-protected:
-    void changeEvent(QEvent *e);
+
+private: // Functions
+    void clearForm();
+
+
 private:
     MacAddressDelegate *macDelegate;
     IpAddressDelegate *ipDelegate;
-    DhcpServerProgram *myProgramm;
     DhcpServerModel *myModel;
-    SmartDevice *device;
+    DhcpServerSetting* mySetting;
+    DhcpDaemon* myDaemon;
+    QMap<int, Interface*> *myPortMap;
+
+    QTabBar *port_tb;
 };
 
 #endif // DHCPSERVERPROPERTY_H

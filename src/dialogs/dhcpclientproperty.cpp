@@ -18,7 +18,7 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include "dhcpclientproperty.h"
-#include "dhcpclientprogramm.h"
+#include "dhcpclientprogram.h"
 
 dhcpClientProperty::dhcpClientProperty(QWidget *parent) : QDialog(parent)
 {

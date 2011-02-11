@@ -24,7 +24,7 @@
 #include <QtGui/QIcon>
 #include "deviceimpl.h"
 #include "interface.h"
-#include "programmrep.h"
+#include "programrep.h"
 
 class RouteModel;
 class ArpModel;
@@ -49,7 +49,7 @@ public:
     QString tableName() const { return tr("Routing Table"); }
     virtual void tableDialog();
     virtual void adapterDialog();
-    virtual void programmsDialog();
+    virtual void programsDialog();
     virtual void arpDialog();
     virtual void showLogDialog(logDialog *log) const;
 
@@ -101,7 +101,7 @@ public:
     void setRouter(bool n) { myRouter = n; }
     bool isRouter() const { return myRouter; }
     bool hasTable() const { return true; }
-    bool hasProgramm(int id);
+    bool hasProgram(int id);
     IpAddress gateway() const;
     QString gatewayString() const { return gateway().toString(); }
     AbstractSocket* openSocket(quint16 port , int type);
@@ -165,7 +165,7 @@ public:
     void setCheckedSocket(const QString &str) { sd->setCheckedSocket(str); }
     QString statics() const { return sd->myInterfaces.at(cur)->statisticsString(); }
     void sendArpRequest(IpAddress a) { sd->myInterfaces.at(cur)->sendArpRequest(a); }
-    bool hasDhcpClient() const { return sd->hasProgramm( Program::DHCPClient ); }
+    bool hasDhcpClient() const { return sd->hasProgram( Program::DHCPClient ); }
     bool isUnderDhcpControl() const;
     void setUnderDhcpControl(bool isUnder);
     bool canManageInterface() const { return sd->canManageInterface(); }

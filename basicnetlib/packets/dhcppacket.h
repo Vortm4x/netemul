@@ -39,9 +39,9 @@ private:
     int time;
     IpAddress mask;
     IpAddress gateway;
-    IpAddress yiaddr;
-    IpAddress siaddr;
-    MacAddress chaddr;
+    IpAddress yiaddr; // proposed ip
+    IpAddress siaddr; // server's ip
+    MacAddress chaddr; // sender's mac-address
 };
 
 class BASICNETLIBSHARED_EXPORT DhcpPacket

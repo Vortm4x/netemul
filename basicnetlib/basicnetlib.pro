@@ -28,3 +28,8 @@ HEADERS += basicnetlib.h \
     frame.h \
     basicnetlib_global.h
 
+ # install
+ #target.path =
+ #sources.files = $$SOURCES $$HEADERS $$RESOURCES $$FORMS basictools.pro
+ #sources.path = $$[QT_INSTALL_EXAMPLES]/tools/plugandpaintplugins/basictools
+ #INSTALLS += target sources

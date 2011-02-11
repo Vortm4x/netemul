@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "../../src/ipaddress.h"
+#include "ipaddress.h"
 
 class TestIpAddress : public QObject
 {

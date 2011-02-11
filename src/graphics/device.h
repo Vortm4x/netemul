@@ -66,7 +66,7 @@ public:
     void dialog() { impl->dialog(); }
     void tableDialog() const { impl->tableDialog(); }
     void adapterDialog() const { impl->adapterDialog(); }
-    void programmsDialog() const { impl->programmsDialog(); }
+    void programmsDialog() const { impl->programsDialog(); }
     void arpDialog() const { impl->arpDialog(); }
     void showLogDialog(logDialog *log) const { impl->showLogDialog(log); }
     void showDesignerDialog() const { impl->showDesignerDialog(); }
