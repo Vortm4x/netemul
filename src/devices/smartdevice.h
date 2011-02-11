@@ -24,7 +24,7 @@
 #include <QtGui/QIcon>
 #include "deviceimpl.h"
 #include "interface.h"
-#include "programrep.h"
+#include "program.h"
 
 class RouteModel;
 class ArpModel;
