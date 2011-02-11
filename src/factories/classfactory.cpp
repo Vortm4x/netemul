@@ -13,6 +13,7 @@
 #include "dhcpdaemon.h"
 #include "dhcpclientprogram.h"
 #include "dhcpserverprogram.h"
+#include "dhcpservermodel.h"
 #include "spoofingprogram.h"
 #include "statistics.h"
 #include "textitem.h"
@@ -69,6 +70,10 @@ QObject* ClassFactory::createInstance(const QString &str, QObject *parent)
         return new ArpRecordObject(parent);
     } else if ( str == "DhcpDaemon" ) {
         return new DhcpDaemon(parent);
+    } else if ( str == "DhcpServerModel" ) {
+        return new DhcpServerModel(parent);
+    } else if ( str == "StaticDhcpRecordObject" ) {
+        return new StaticDhcpRecordObject(parent);
     } else {
         return 0;
     }

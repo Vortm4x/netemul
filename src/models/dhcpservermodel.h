@@ -24,6 +24,8 @@
 #include "macaddress.h"
 #include "ipaddress.h"
 
+class StaticDhcpRecordObject;
+
 struct StaticDhcpRecord {
     MacAddress chaddr;
     IpAddress yiaddr;
@@ -38,8 +40,10 @@ static const int COLUMN_COUNT = 5;
 
 class DhcpServerModel : public QAbstractTableModel
 {
+    Q_OBJECT
+    Q_PROPERTY( QVariantList staticDhcpRecordObject READ staticDhcpRecordObjectsList )
 public:
-    DhcpServerModel(QObject *parent = 0) : QAbstractTableModel(parent) { }
+    DhcpServerModel(QObject *parent = 0);
     ~DhcpServerModel();
     int rowCount( const QModelIndex &r = QModelIndex() ) const;
     int columnCount( const QModelIndex &r = QModelIndex() ) const;
@@ -50,14 +54,52 @@ public:
     bool removeRow(int row, const QModelIndex &parent = QModelIndex() );
     bool setData(const QModelIndex &index,const QVariant &value, int role = Qt::EditRole);
 
+    Q_INVOKABLE void addStaticDhcpRecordObject(StaticDhcpRecordObject *r);
+    QVariantList staticDhcpRecordObjectsList() const;
+
     bool containRecord( StaticDhcpRecord *rec) const;
     bool containRecord(IpAddress ip) const;
     StaticDhcpRecord* recordWithMac(MacAddress cha) const;
     void addStaticRecord(StaticDhcpRecord *rec);
+
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 private:
-    QList<StaticDhcpRecord*> table;
+    QList<StaticDhcpRecord*> myTable;
+};
+
+class StaticDhcpRecordObject : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY( QString chaddr READ chaddr WRITE setChaddr )
+    Q_PROPERTY( QString yiaddr READ yiaddr WRITE setYiaddr )
+    Q_PROPERTY( QString mask READ mask WRITE setMask )
+    Q_PROPERTY( QString gateway READ gateway WRITE setGateway )
+    Q_PROPERTY( int time READ time WRITE setTime )
+public:
+    StaticDhcpRecordObject(StaticDhcpRecord *record) {
+        myRecord = record;
+    }
+
+    StaticDhcpRecordObject(QObject *parent = 0) : QObject(parent) {
+        myRecord = new StaticDhcpRecord();
+    }
+
+    StaticDhcpRecord* record() const { return myRecord; }
+
+    void setChaddr(const QString &str) { myRecord->chaddr.setMac(str); }
+    void setYiaddr(const QString &str) { myRecord->yiaddr.setIp(str); }
+    void setMask(const QString &str) { myRecord->mask.setIp(str); }
+    void setGateway(const QString &str) { myRecord->gateway.setIp(str); }
+    void setTime(int t) { myRecord->time = t; }
+    QString chaddr() const { return myRecord->chaddr.toString(); }
+    QString yiaddr() const { return myRecord->yiaddr.toString(); }
+    QString mask() const { return myRecord->mask.toString(); }
+    QString gateway() const { return myRecord->gateway.toString(); }
+    int time() const { return myRecord->time; }
+private:
+    StaticDhcpRecord *myRecord;
+
 };
 
 #endif // DHCPSERVERMODEL_H

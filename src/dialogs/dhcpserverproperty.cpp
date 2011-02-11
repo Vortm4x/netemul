@@ -18,6 +18,8 @@
 ** 02111-1307 USA.
 ****************************************************************************************/
 #include <QMessageBox>
+//#include <QApplication>
+//#include <QStyle>
 #include "dhcpserverproperty.h"
 #include "dhcpservermodel.h"
 #include "smartdevice.h"
@@ -31,6 +33,7 @@ DhcpServerProperty::DhcpServerProperty(DhcpServerSetting *setting, QWidget *pare
     mySetting = setting;
     SmartDevice *dev = mySetting->program()->device();
     setAttribute(Qt::WA_DeleteOnClose);
+    btn_apply->setIcon(QIcon(qApp->style()->standardIcon( QStyle::SP_DialogApplyButton)));
     port_tb = new QTabBar;
     tab_lay->addWidget(port_tb);
     foreach ( Interface *i, dev->interfaces() ) {
@@ -139,8 +142,14 @@ void DhcpServerProperty::apply()
     myDaemon->setMask(ie_mask->ipAddress());
     myDaemon->setTime(sb_time->value());
     myDaemon->setWaitingTime(sb_waitingTime->value());
+}
+
+void DhcpServerProperty::onOkButtonClicked()
+{
+    apply();
     accept();
 }
+
 //-----------------------------------------
 
 void DhcpServerProperty::changeEvent(QEvent *e)

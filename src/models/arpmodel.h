@@ -69,7 +69,8 @@ struct ArpRecord {
     }
 };
 
-class ArpRecordObject : public QObject {
+class ArpRecordObject : public QObject
+{
     Q_OBJECT
     Q_PROPERTY( QString mac READ mac WRITE setMac )
     Q_PROPERTY( QString ip READ ip WRITE setIp )

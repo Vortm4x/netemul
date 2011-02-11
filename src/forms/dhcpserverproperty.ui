@@ -285,6 +285,13 @@
       </spacer>
      </item>
      <item>
+      <widget class="QPushButton" name="btn_apply">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="btn_ok">
        <property name="text">
         <string>Ok</string>
@@ -386,34 +393,50 @@
    </hints>
   </connection>
   <connection>
-   <sender>btn_ok</sender>
-   <signal>clicked()</signal>
-   <receiver>dhspServerProperty</receiver>
-   <slot>apply()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>693</x>
-     <y>451</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>540</x>
-     <y>364</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>cb_turnOn</sender>
    <signal>toggled(bool)</signal>
    <receiver>dhspServerProperty</receiver>
    <slot>onTurnedOnOff(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>144</x>
-     <y>15</y>
+     <x>153</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>248</x>
      <y>3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_ok</sender>
+   <signal>clicked()</signal>
+   <receiver>dhspServerProperty</receiver>
+   <slot>onOkButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>644</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>448</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_apply</sender>
+   <signal>clicked()</signal>
+   <receiver>dhspServerProperty</receiver>
+   <slot>apply()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>564</x>
+     <y>448</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>446</y>
     </hint>
    </hints>
   </connection>
@@ -424,5 +447,6 @@
   <slot>changeState(bool)</slot>
   <slot>apply()</slot>
   <slot>onTurnedOnOff(bool)</slot>
+  <slot>onOkButtonClicked()</slot>
  </slots>
 </ui>

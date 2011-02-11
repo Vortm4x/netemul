@@ -46,6 +46,7 @@ private slots:
     void deleteRecord();
     void changeState(bool);
     void apply();
+    void onOkButtonClicked();
 
 private: // Functions
     void clearForm();

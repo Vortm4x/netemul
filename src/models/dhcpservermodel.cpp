@@ -19,16 +19,18 @@
 ****************************************************************************************/
 #include "dhcpservermodel.h"
 
+DhcpServerModel::DhcpServerModel(QObject *parent /*= 0*/) : QAbstractTableModel(parent) {}
+
 DhcpServerModel::~DhcpServerModel()
 {
-    qDeleteAll(table);
-    table.clear();
+    qDeleteAll(myTable);
+    myTable.clear();
 }
 
 int DhcpServerModel::rowCount( const QModelIndex &r/* = QModelIndex() */) const
 {
-    if ( r.isValid() || table.isEmpty() ) return 0;
-    return table.size();
+    if ( r.isValid() || myTable.isEmpty() ) return 0;
+    return myTable.size();
 }
 
 int DhcpServerModel::columnCount( const QModelIndex &r/* = QModelIndex() */) const
@@ -60,8 +62,8 @@ Qt::ItemFlags DhcpServerModel::flags(const QModelIndex &r) const
 
 QVariant DhcpServerModel::data(const QModelIndex &r, int role/* = Qt::DisplayRole */) const
 {
-    if ( !r.isValid() || table.isEmpty() ) return QVariant();
-    StaticDhcpRecord *rec = table.at( r.row() );
+    if ( !r.isValid() || myTable.isEmpty() ) return QVariant();
+    StaticDhcpRecord *rec = myTable.at( r.row() );
     if ( role == Qt::DisplayRole || role == Qt::EditRole )
         switch( r.column() ) {
             case 0: return rec->chaddr.toString();
@@ -76,7 +78,7 @@ QVariant DhcpServerModel::data(const QModelIndex &r, int role/* = Qt::DisplayRol
 bool DhcpServerModel::setData(const QModelIndex &index, const QVariant &value, int role/* = Qt::EditRole*/)
 {
     if ( index.isValid() && role == Qt::EditRole ) {
-        StaticDhcpRecord *rec = table.at(index.row());
+        StaticDhcpRecord *rec = myTable.at(index.row());
         if ( value.toString().isEmpty() ) return false;
         switch ( index.column() ) {
             case 0: rec->chaddr.setMac(value.toString()); break;
@@ -85,7 +87,7 @@ bool DhcpServerModel::setData(const QModelIndex &index, const QVariant &value, i
             case 3: rec->gateway.setIp(value.toString()); break;
             case 4: rec->time = value.toInt(); break;
         }
-        table.replace( index.row(), rec);
+        myTable.replace( index.row(), rec);
         emit dataChanged(index, index);
         return true;
     }
@@ -97,7 +99,7 @@ bool DhcpServerModel::insertRow(int,const QModelIndex &parent)
     Q_UNUSED(parent);
     StaticDhcpRecord *newRecord = new StaticDhcpRecord;
     newRecord->time = 0;
-    table << newRecord;
+    myTable << newRecord;
     reset();
     return true;
 }
@@ -105,7 +107,7 @@ bool DhcpServerModel::insertRow(int,const QModelIndex &parent)
 bool DhcpServerModel::removeRow(int row, const QModelIndex &parent)
 {
     Q_UNUSED(parent);
-    StaticDhcpRecord *record = table.takeAt(row);
+    StaticDhcpRecord *record = myTable.takeAt(row);
     if ( record ) delete record;
     reset();
     return true;
@@ -113,37 +115,55 @@ bool DhcpServerModel::removeRow(int row, const QModelIndex &parent)
 
 bool DhcpServerModel::containRecord(StaticDhcpRecord *rec) const
 {
-    if ( table.isEmpty() ) return false;
-    foreach ( StaticDhcpRecord *i, table )
+    if ( myTable.isEmpty() ) return false;
+    foreach ( StaticDhcpRecord *i, myTable )
         if ( i == rec ) return true;
     return false;
 }
 
 bool DhcpServerModel::containRecord(IpAddress ip) const
 {
-    if ( table.isEmpty() ) return false;
-    foreach ( StaticDhcpRecord *i, table )
+    if ( myTable.isEmpty() ) return false;
+    foreach ( StaticDhcpRecord *i, myTable )
         if ( i->yiaddr == ip ) return true;
     return false;
 }
 
 StaticDhcpRecord* DhcpServerModel::recordWithMac(MacAddress cha) const
 {
-    if ( table.isEmpty() ) return 0;
-    foreach ( StaticDhcpRecord *i, table )
+    if ( myTable.isEmpty() ) return 0;
+    foreach ( StaticDhcpRecord *i, myTable )
         if ( i->chaddr == cha ) return i;
     return 0;
 }
 
 void DhcpServerModel::addStaticRecord(StaticDhcpRecord *rec)
 {
-    table << rec;
+    myTable << rec;
 }
+
+QVariantList DhcpServerModel::staticDhcpRecordObjectsList() const
+{
+    QVariantList list;
+    foreach ( StaticDhcpRecord *i , myTable ) {
+        QObject *o = new StaticDhcpRecordObject(i);
+        list << qVariantFromValue(o);
+    }
+    return list;
+}
+
+void DhcpServerModel::addStaticDhcpRecordObject(StaticDhcpRecordObject *r)
+{
+    addStaticRecord( r->record() );
+    r->deleteLater();
+}
+
+//-----------------------------------------------------------------------------
 
 void DhcpServerModel::write(QDataStream &stream) const
 {
-    stream << table.size();
-    foreach ( StaticDhcpRecord *i, table )
+    stream << myTable.size();
+    foreach ( StaticDhcpRecord *i, myTable )
         i->write(stream);
 }
 
@@ -157,7 +177,6 @@ void DhcpServerModel::read(QDataStream &stream)
         addStaticRecord(rec);
     }
 }
-
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -170,4 +189,5 @@ void StaticDhcpRecord::read(QDataStream &stream)
 {
     stream >> chaddr >> yiaddr >> mask >> gateway >> time;
 }
-
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
