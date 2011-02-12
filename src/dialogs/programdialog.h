@@ -20,7 +20,7 @@
 #ifndef PROGRAMMDIALOG_H
 #define PROGRAMMDIALOG_H
 
-#include "ui_programmdialog.h"
+#include "ui_programdialog.h"
 
 class SmartDevice;
 
