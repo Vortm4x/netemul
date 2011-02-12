@@ -3,6 +3,7 @@
 
 #include "ipaddress.h"
 #include "macaddress.h"
+#include "ippacket.h"
 
 class UdpSocket;
 class DhcpPacket;
@@ -20,14 +21,11 @@ struct ClientState {
     int time;
     int requestTimer;
     enum { WAIT_REQUEST = 0, IN_USE = 1, DECLINE = 2 };
-    ClientState(StaticDhcpRecord *rec) {
-
-    }
-
+    ClientState(StaticDhcpRecord *rec);
     ClientState() { }
 };
 
-class DhcpDemon : public QObject
+class DhcpDaemon : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( QString interfaceName READ interfaceName WRITE setInterfaceName )
@@ -38,21 +36,25 @@ class DhcpDemon : public QObject
     Q_PROPERTY( int time READ time WRITE setTime )
     Q_PROPERTY( int waitingTime READ waitingTime WRITE setWaitingTime )
     Q_PROPERTY( bool dynamic READ dynamic WRITE setDynamic )
+    Q_PROPERTY( bool turnOn READ isTurnOn WRITE setTurnOn )
 public:    
     enum { CLIENT_SOCKET = 67 , SERVER_SOCKET = 68 };
 
-    DhcpDemon(QObject* parent = 0);
-    DhcpDemon(Interface *inter);
-    ~DhcpDemon();
-    void setInterfaceName( QString inter ) { myInterface = inter; }
-    void setBeginIp(QString ip) { myBeginIp.setIp(ip); }
-    void setEndIp(QString ip) { myEndIp.setIp(ip); }
-    void setMask(QString m) { myMask.setIp(m); }
-    void setGateway(QString g) { myGateway.setIp(g); }
+    DhcpDaemon(QObject* parent = 0);
+    DhcpDaemon(Interface *inter, QObject* parent = 0);
+    ~DhcpDaemon();
+    void setInterface(Interface *inter);
+    void setInterfaceName(const QString &inter) { myInterfaceName = inter; }
+    void setBeginIp(const QString &ip) { myBeginIp.setIp(ip); }
+    void setEndIp(const QString &ip) { myEndIp.setIp(ip); }
+    void setMask(const QString &ip) { myMask.setIp(ip); }
+    void setGateway(const QString &ip) { myGateway.setIp(ip); }
     void setTime(int t) { myTime = t; }
     void setWaitingTime(int t) { myWaitingTime = t; }
     void setDynamic(bool b) { myDynamic = b; }
-    QString interfaceName() const { return myInterface; }
+    void setTurnOn(bool b) { myTurnOn = b; }
+    Interface* interface() const { return myInterface; }
+    QString interfaceName() const { return myInterfaceName; }
     QString beginIp() const { return myBeginIp.toString(); }
     QString endIp() const { return myEndIp.toString(); }
     QString mask() const { return myMask.toString(); }
@@ -60,17 +62,23 @@ public:
     int time() const { return myTime; }
     int waitingTime() const { return myWaitingTime; }
     bool dynamic() const { return myDynamic; }
+    bool isTurnOn() const { return myTurnOn; }
     DhcpServerModel* dhcpModel() { return myDhcpModel; }
     void incTime();
     IpAddress giveDynamicIp() const;
 
     void read(QDataStream &stream);
 
+    Q_INVOKABLE void addDhcpServerModel(DhcpServerModel *model);
+
 // Обработка пакетов
 public:
     void executeDiscover(DhcpPacket packet);
     void executeRequest(DhcpPacket packet);
     void executeDecline(DhcpPacket packet);
+
+public slots:
+    void execute(IpPacket p);
 
 // Функция инициализации для конструкторов
 private:
@@ -91,7 +99,8 @@ private:
 
 private:
     QList<ClientState*> clients;
-    QString myInterface;
+    Interface *myInterface;
+    QString myInterfaceName;
     DhcpServerModel *myDhcpModel;
     IpAddress myBeginIp;
     IpAddress myEndIp;
@@ -100,6 +109,7 @@ private:
     int myTime;
     int myWaitingTime;
     bool myDynamic;
+    bool myTurnOn;
 };
 
 #endif // DHCPDEMON_H

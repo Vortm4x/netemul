@@ -21,7 +21,7 @@
 #define DHCPSERVERPROGRAMM_H
 
 #include "program.h"
-#include "dhcpdemon.h"
+#include "dhcpdaemon.h"
 
 class AbstractSocket;
 
@@ -47,17 +47,31 @@ public:
     void write(QDataStream &stream) const;
     void read(QDataStream &stream);
 
-// Слоты
+    DhcpDaemon* daemonOf(Interface *inter);
+
+    Q_INVOKABLE void addDhcpDaemon(DhcpDaemon *daemon);
+
+    // Слоты
 public slots:
-    void execute(QByteArray data);
-//    void checkInterface(QString port);
+    void checkInterfaceOnConnect(QString port);
+    void checkInterfaceOnDelete(QString port);
 
 // Переменные
 private:
     static int myServerCount;
     QString myServerName;
-    QList<DhcpDemon*> myDemons;
-    AbstractSocket *receiver;
+    QMap<Interface*, DhcpDaemon*> myDaemons;
+};
+
+class DhcpServerSetting
+{
+public:
+    DhcpServerSetting(DhcpServerProgram *prog) { myProgram = prog; }
+    DhcpServerProgram* program() { return myProgram; }
+    DhcpDaemon* daemonOf(Interface *inter) { return myProgram->daemonOf(inter); }
+
+private:
+    DhcpServerProgram *myProgram;
 };
 
 #endif // DHCPSERVERPROGRAMM_H

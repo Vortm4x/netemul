@@ -17,12 +17,12 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include "programmdialog.h"
+#include "programdialog.h"
 #include "smartdevice.h"
 #include "installdialog.h"
 #include <QCheckBox>
 
-programmDialog::programmDialog(QWidget *parent) : QDialog(parent)
+ProgramDialog::ProgramDialog(QWidget *parent) : QDialog(parent)
 {
     setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -31,7 +31,7 @@ programmDialog::programmDialog(QWidget *parent) : QDialog(parent)
 /*!
   Обновляет список программ.
 */
-void programmDialog::updateList()
+void ProgramDialog::updateList()
 {
     list->clear();
     foreach ( Program *i, s->programs() ){
@@ -44,13 +44,13 @@ void programmDialog::updateList()
     }
 }
 //-------------------------------------------------
-void programmDialog::programmChanged()
+void ProgramDialog::programmChanged()
 {
     btn_remove->setEnabled( list->currentItem() );
     btn_settings->setEnabled( list->currentItem() );
 }
 
-void programmDialog::stateChanged(QListWidgetItem *item)
+void ProgramDialog::stateChanged(QListWidgetItem *item)
 {
     if ( !item ) return;
     Program *p = s->programAt( item->data( Qt::UserRole).toInt() );
@@ -58,7 +58,7 @@ void programmDialog::stateChanged(QListWidgetItem *item)
     p->updateView();
 }
 
-void programmDialog::setDevice( SmartDevice *d )
+void ProgramDialog::setDevice( SmartDevice *d )
 {
     s = d;
     updateList();
@@ -67,7 +67,7 @@ void programmDialog::setDevice( SmartDevice *d )
   Слот, вызываемый при нажатии на кнопку Ok,
   выполняет все принятые изменения, закрывает диалог.
 */
-void programmDialog::apply()
+void ProgramDialog::apply()
 {
     for ( int i = 0; i < list->count(); i++) {
         QListWidgetItem *n = list->item(i);
@@ -81,7 +81,7 @@ void programmDialog::apply()
   Слот вызывает диалог установки программ,
   обновляет список установленных программ.
 */
-void programmDialog::add()
+void ProgramDialog::add()
 {
     installDialog *d = new installDialog;
     d->setDevice( s );
@@ -93,20 +93,20 @@ void programmDialog::add()
 /*!
   Слот удаляет выделенную программу.
 */
-void programmDialog::remove()
+void ProgramDialog::remove()
 {
     QListWidgetItem *w = list->currentItem();
     s->removeProgram( s->programAt(w->data(Qt::UserRole).toInt() ) );
     updateList();
 }
 
-void programmDialog::settings()
+void ProgramDialog::settings()
 {
     s->programAt( list->currentItem()->data(Qt::UserRole).toInt() )->showProperty();
 }
 
 //-----------------------------------------------------
-void programmDialog::changeEvent(QEvent *e)
+void ProgramDialog::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
     switch (e->type()) {

@@ -21,7 +21,7 @@
 #include "cabledev.h"
 #include "frame.h"
 
-DevicePort::DevicePort(QObject *parent)
+DevicePort::DevicePort(QObject *parent) :QObject(parent)
 {
     myShared = false;
     myCable = 0;

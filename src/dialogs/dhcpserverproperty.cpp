@@ -135,11 +135,11 @@ void DhcpServerProperty::apply()
         return;
     }
     myDaemon->setTurnOn(cb_turnOn->isChecked());
-    myDaemon->setBeginIp(ie_begin->ipAddress());
-    myDaemon->setEndIp(ie_end->ipAddress());
+    myDaemon->setBeginIp(ie_begin->ipText());
+    myDaemon->setEndIp(ie_end->ipText());
     myDaemon->setDynamic(cb_dynamic->isChecked());
-    myDaemon->setGateway(ie_gatew->ipAddress());
-    myDaemon->setMask(ie_mask->ipAddress());
+    myDaemon->setGateway(ie_gatew->ipText());
+    myDaemon->setMask(ie_mask->ipText());
     myDaemon->setTime(sb_time->value());
     myDaemon->setWaitingTime(sb_waitingTime->value());
 }

@@ -27,11 +27,12 @@ class SmartDevice;
 /*!
   Реализует диалог установленных пограмм устройства.
 */
-class programmDialog : public QDialog, private Ui::programmDialog {
+class ProgramDialog : public QDialog, private Ui::ProgramDialog
+{
     Q_OBJECT
-    Q_DISABLE_COPY(programmDialog)
+    Q_DISABLE_COPY(ProgramDialog)
 public:
-    programmDialog(QWidget *parent = 0);
+    ProgramDialog(QWidget *parent = 0);
     void setDevice( SmartDevice *d );
 protected:
     void updateList();

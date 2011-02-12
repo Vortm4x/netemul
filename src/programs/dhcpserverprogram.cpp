@@ -34,81 +34,75 @@ DhcpServerProgram::DhcpServerProgram(QObject *parent) : Program(parent)
     myName = tr("DHCP server");       
     myServerCount++;
     myServerName = QString("Server%1").arg(myServerCount);
-    myDemons.clear();
-    qDeleteAll(myDemons);
+    myDaemons.clear();
+    qDeleteAll(myDaemons);
 }
 
 DhcpServerProgram::~DhcpServerProgram()
 {
-    myDevice->disposeSocket(receiver);
-    myDemons.clear();
-    qDeleteAll(myDemons);
+    myDaemons.clear();
+    qDeleteAll(myDaemons);
 }
 
 void DhcpServerProgram::setDevice(SmartDevice *s)
 {
     if ( s == 0 ) return;
     Program::setDevice(s);
-    receiver = myDevice->openSocket(DhcpDemon::SERVER_SOCKET, SocketFactory::UDP);
-    //receiver = new udpSocket(myDevice, SERVER_SOCKET);
     foreach ( Interface *i, myDevice->interfaces() ) {
         if ( i->isConnect() ) {
-            DhcpDemon *demon = new DhcpDemon(i);
-            myDemons << demon;
+            DhcpDaemon *daemon = new DhcpDaemon(i, this);
+            myDaemons.insert(i, daemon);
         }
     }
-    receiver->setBind("0.0.0.0");
-    connect( receiver , SIGNAL(readyRead(QByteArray)), SLOT(execute(QByteArray)));
-    connect( myDevice, SIGNAL(interfaceConnected(QString)), SLOT(checkInterface(QString)) );
+    connect( myDevice, SIGNAL(interfaceConnected(QString)), SLOT(checkInterfaceOnConnect(QString)) );
+    connect( myDevice, SIGNAL(interfaceDeleted(QString)), SLOT(checkInterfaceOnDelete(QString)) );
 }
 
-//void dhcpServerProgramm::checkInterface(QString port)
-//{
-//    if ( myInterface.isEmpty() ) setInterfaceName(port);
-//}
-
-void DhcpServerProgram::execute(QByteArray data)
+void DhcpServerProgram::checkInterfaceOnConnect(QString port)
 {
-    DhcpPacket packet(data);
-    foreach ( DhcpDemon *demon, myDemons ) {
-        IpAddress deviceIp = myDevice->adapter(demon->interfaceName())->ip();
-        if ( deviceIp.isEmpty() ) {
-            QMessageBox::warning(0,tr("Warning"),
-                 tr("Your DHCP server <i>%1</i> isn't configured.").arg(myServerName),
-                 QMessageBox::Ok, QMessageBox::Ok);
-            return;
-        }
-
-        if ( deviceIp == packet.siaddr() ) {
-            switch ( packet.type() ) {
-                case DhcpPacket::DHCPDISCOVER :
-                    demon->executeDiscover(packet);
-                    break;
-                case DhcpPacket::DHCPREQUEST :
-                    demon->executeRequest(packet);
-                    break;
-                case DhcpPacket::DHCPDECLINE :
-                    demon->executeDecline(packet);
-                    break;
-            }
-        }
+    Interface *i = myDevice->adapter(port);
+    if ( !myDaemons.contains(i) ) {
+        DhcpDaemon *daem = new DhcpDaemon(i, this);
+        myDaemons.insert(i, daem);
     }
 }
 
-
+void DhcpServerProgram::checkInterfaceOnDelete(QString port)
+{
+    Interface *i = myDevice->adapter(port);
+    if ( !myDaemons.contains(i) ) {
+        DhcpDaemon *daem = myDaemons.take(i);
+        delete daem;
+    }
+}
 
 void DhcpServerProgram::incTime()
 {
-    foreach ( DhcpDemon *demon, myDemons ) {
+    foreach ( DhcpDaemon *demon, myDaemons.values() ) {
         demon->incTime();
     }
 }
 
 void DhcpServerProgram::showProperty()
 {
-    DhcpServerProperty *d = new DhcpServerProperty(myDevice);
-    d->setProgramm(this);
+    DhcpServerSetting *setting = new DhcpServerSetting(this);
+    DhcpServerProperty *d = new DhcpServerProperty(setting);
     d->exec();
+}
+
+DhcpDaemon* DhcpServerProgram::daemonOf(Interface *inter)
+{
+    return myDaemons.value(inter);
+}
+
+void DhcpServerProgram::addDhcpDaemon(DhcpDaemon *daemon)
+{
+    Interface *i = daemon->interface();
+    if ( !i ) {
+        i = myDevice->adapter(daemon->interfaceName());
+        daemon->setInterface(i);
+    }
+    myDaemons.insert(i, daemon);
 }
 
 /*!
@@ -119,7 +113,7 @@ void DhcpServerProgram::write(QDataStream &stream) const
 {
     stream << DHCPServer;
     Program::write(stream);
-    DhcpDemon *d = myDemons.at(0);
+    DhcpDaemon *d = myDaemons.values().at(0);
     d->dhcpModel()->write(stream);
     stream << d->interfaceName();
     stream << d->beginIp();
@@ -139,21 +133,9 @@ void DhcpServerProgram::write(QDataStream &stream) const
 void DhcpServerProgram::read(QDataStream &stream)
 {
     Program::read(stream);
-    DhcpDemon *d = new DhcpDemon(device()->interfaces().at(0));
+    DhcpDaemon *d = new DhcpDaemon(device()->interfaces().at(0));
     d->dhcpModel()->read(stream);
     d->read(stream);
 }
 //---------------------------------------------------
-
-
-
-//---------------------------------------------------
-//СlientState::СlientState(StaticDhcpRecord *rec)
-//{
-//    ip = rec->yiaddr;
-//    mac = rec->chaddr;
-//    mask = rec->mask;
-//    gateway = rec->gateway;
-//    time = rec->time;
-//}
 
