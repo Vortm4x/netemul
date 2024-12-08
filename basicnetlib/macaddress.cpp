@@ -19,6 +19,7 @@
 ****************************************************************************************/
 #include "macaddress.h"
 #include <QStringList>
+#include <QRandomGenerator>
 
 MacAddress::MacAddress()
 {
@@ -99,7 +100,7 @@ void MacAddress::setRandom()
     int i;
     myMac[0] = 0x01;
     for ( i = 1 ; i < 6 ; i++ )
-        myMac[i] = qrand()%256;
+        myMac[i] = QRandomGenerator::global()->bounded(256);
 }
 
 void MacAddress::setMac(QString str)

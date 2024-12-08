@@ -28,7 +28,7 @@ TableSwitch::TableSwitch(SwitchTableSetting *s)
     setupUi(this);
     table->setModel(t_sw);
     QHeaderView *h = table->horizontalHeader();
-    h->setResizeMode( QHeaderView::Stretch );
+    h->setSectionResizeMode( QHeaderView::Stretch );
     int n = s->socketsCount();
     for ( int i = 0 ; i < n ; i++ )
         cb_port->addItem(tr("LAN%1").arg(i+1));

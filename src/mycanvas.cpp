@@ -17,18 +17,18 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtGui/QGraphicsSceneMouseEvent>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QMenu>
+#include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
+#include <QGraphicsView>
+#include <QMenu>
 #include <QAction>
 #include <QPainter>
 #include <QtDebug>
-#include <QtCore/QFile>
-#include <QtCore/QDataStream>
-#include <QtGui/QTextCursor>
-#include <QtGui/QApplication>
-#include <QtXml/QXmlSimpleReader>
+#include <QFile>
+#include <QDataStream>
+#include <QTextCursor>
+#include <QApplication>
+#include <QXmlSimpleReader>
 
 #include "mycanvas.h"
 #include "device.h"

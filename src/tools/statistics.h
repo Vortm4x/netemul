@@ -20,7 +20,7 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include <QtCore/QDataStream>
+#include <QDataStream>
 
 class Statistics
 {    

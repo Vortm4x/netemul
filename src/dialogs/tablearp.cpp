@@ -46,7 +46,7 @@ tableArp::tableArp()
     head << tr("Mac-address") << tr("Ip-address") << tr("Record type") << tr("Netcard name")
         << tr("TTL") ;
     table->setHorizontalHeaderLabels(head);
-    table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     all->addWidget(table);
     QHBoxLayout *temp = new QHBoxLayout;
     QLabel *lb = new QLabel(tr("Mac-address: "));

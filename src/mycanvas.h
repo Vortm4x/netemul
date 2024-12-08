@@ -20,8 +20,8 @@
 #ifndef MYCANVAS_H
 #define MYCANVAS_H
 
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QUndoStack>
+#include <QGraphicsScene>
+#include <QUndoStack>
 #include "textitem.h"
 #include "cabledev.h"
 

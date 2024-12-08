@@ -20,8 +20,8 @@
 #ifndef STATISTICSSCENE_H
 #define STATISTICSSCENE_H
 
-#include <QtCore/QString>
-#include <QtCore/QObject>
+#include <QString>
+#include <QObject>
 #include "statistics.h"
 
 class MyCanvas;

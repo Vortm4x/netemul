@@ -17,7 +17,7 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtCore/QtDebug>
+#include <QtDebug>
 #include <QMessageBox>
 #include "smartdevice.h"
 #include "routeeditor.h"

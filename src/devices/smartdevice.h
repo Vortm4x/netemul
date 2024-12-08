@@ -20,8 +20,8 @@
 #ifndef SMARTDEVICE_H
 #define SMARTDEVICE_H
 
-#include <QtCore/QVector>
-#include <QtGui/QIcon>
+#include <QVector>
+#include <QIcon>
 #include "deviceimpl.h"
 #include "interface.h"
 #include "program.h"

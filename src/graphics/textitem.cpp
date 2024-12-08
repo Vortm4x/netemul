@@ -19,15 +19,20 @@
 ****************************************************************************************/
 #include "textitem.h"
 #include <QPainter>
+#include <qgraphicsscene.h>
 
 /*!
   Передает параметры предку и делает надпись перемещаемой и выделяемой.
 */
 TextItem::TextItem(QPointF p, QGraphicsItem *parent /* = 0 */ , QGraphicsScene *scene /* = 0 */)
-        : QGraphicsTextItem(parent,scene)
+        : QGraphicsTextItem(parent)
 {
-     setPos(p);
-     init();
+    setPos(p);
+    if (scene)
+    {
+        scene->addItem(this);  // Add to the scene if the pointer is valid
+    }
+    init();
 }
 
 TextItem::TextItem(QObject *parent)

@@ -20,7 +20,7 @@
 #ifndef TESTDIALOG_H
 #define TESTDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QtScript>
 #include "ui_testdialog.h"
 //#define __NO_TOOLS__ 0

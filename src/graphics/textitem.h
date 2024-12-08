@@ -22,7 +22,7 @@
 
 #include <QGraphicsTextItem>
 #include <QtScript>
-
+#include <QGraphicsScene>
 /*!
   Реализует текстовую надпись на сцене.
 */

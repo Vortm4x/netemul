@@ -40,7 +40,7 @@ routeEditor::routeEditor(SmartDevice *s)
     table->setAlternatingRowColors(true);
     model = dev->routeModel();
     table->setModel(model);
-    table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->installEventFilter(this);

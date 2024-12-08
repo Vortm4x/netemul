@@ -21,6 +21,10 @@ set(UIS
 
 qt5_wrap_ui(FORMS ${UIS})
 
+set(HEADERS ${HEADERS}
+    ${FORMS}
+)
+
 set(INCLUDE_DEPS ${INCLUDE_DEPS}
-    ${CMAKE_BINARY_DIR}/${SOURCE_DIR}/${MODULE_DIR}
+    ${CMAKE_BINARY_DIR}
 )

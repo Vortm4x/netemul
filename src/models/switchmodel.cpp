@@ -88,8 +88,9 @@ MacRecord* SwitchModel::addToTable(const MacAddress &mac, const QString &port, i
 
 void SwitchModel::addToTable(MacRecord *rec)
 {
+    beginResetModel();
     table << rec;
-    reset();
+    endResetModel();
 }
 
 void SwitchModel::deleteFromTable(const MacAddress &mac)
@@ -103,10 +104,11 @@ void SwitchModel::deleteFromTable(const MacAddress &mac)
 
 void SwitchModel::deleteFromTable(MacRecord *r)
 {
+    beginResetModel();
     table.removeOne(r);
     delete r;
     lastPort = "";
-    reset();
+    endResetModel();
 }
 
 void SwitchModel::contains(const MacAddress &m, const QString &port)

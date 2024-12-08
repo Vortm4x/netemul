@@ -17,10 +17,10 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtGui/QLabel>
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMessageBox>
+#include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QMessageBox>
 #include "hubproperty.h"
 #include "hubdevice.h"
 #include "ipedit.h"

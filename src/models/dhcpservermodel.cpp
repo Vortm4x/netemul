@@ -97,19 +97,21 @@ bool DhcpServerModel::setData(const QModelIndex &index, const QVariant &value, i
 bool DhcpServerModel::insertRow(int,const QModelIndex &parent)
 {
     Q_UNUSED(parent);
+    beginResetModel();
     StaticDhcpRecord *newRecord = new StaticDhcpRecord;
     newRecord->time = 0;
     myTable << newRecord;
-    reset();
+    endResetModel();
     return true;
 }
 
 bool DhcpServerModel::removeRow(int row, const QModelIndex &parent)
 {
     Q_UNUSED(parent);
+    beginResetModel();
     StaticDhcpRecord *record = myTable.takeAt(row);
     if ( record ) delete record;
-    reset();
+    endResetModel();
     return true;
 }
 

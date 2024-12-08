@@ -85,7 +85,7 @@ void DhcpServerProperty::onCurrentChanged(int index)
     onTurnedOnOff(cb_turnOn->isChecked());
     tv_static->setModel(myModel);
     QHeaderView *h = tv_static->horizontalHeader();
-    h->setResizeMode( QHeaderView::Stretch );
+    h->setSectionResizeMode( QHeaderView::Stretch );
     cb_dynamic->setChecked(myDaemon->dynamic());
     sb_time->setValue(myDaemon->time());
     ie_begin->setText(myDaemon->beginIp());

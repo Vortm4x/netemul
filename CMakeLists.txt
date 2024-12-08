@@ -9,6 +9,8 @@ find_package(Qt5 REQUIRED COMPONENTS
     LinguistTools
     Xml
     Script
+    OpenGL
+    PrintSupport
 )
 
 set(CMAKE_AUTOMOC ON)
@@ -85,6 +87,8 @@ target_link_libraries(
     Qt5::Widgets
     Qt5::Xml
     Qt5::Script
+    Qt5::OpenGL
+    Qt5::PrintSupport
     basicnetlib
 )
 

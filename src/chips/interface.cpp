@@ -17,8 +17,9 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtCore/QList>
-#include <QtGui/QMessageBox>
+#include <QList>
+#include <QMessageBox>
+#include <QRandomGenerator>
 #include "interface.h"
 #include "deviceport.h"
 #include "appsetting.h"
@@ -167,7 +168,11 @@ void Interface::secondEvent()
         if ( --i->time ) continue;
         if ( i->count <= COUNT_AGAINST_SEND ) {
             i->count++;
-            i->time = qrand()%(AppSetting::arpResponceTime()*i->count)+AppSetting::arpResponceTime();
+            const int& arpResponceTime = AppSetting::arpResponceTime();
+            i->time = QRandomGenerator::global()->bounded(
+                arpResponceTime,
+                arpResponceTime * (i->count + 1)
+            );
             sendArpRequest( i->dest );
         } else {
             myWaits.removeOne(i);

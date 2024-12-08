@@ -17,11 +17,11 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtGui/QLabel>
-#include <QtGui/QComboBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMessageBox>
-#include <QtGui/QCheckBox>
+#include <QLabel>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QCheckBox>
 #include "switchproperty.h"
 #include "switchdevice.h"
 #include "ipedit.h"

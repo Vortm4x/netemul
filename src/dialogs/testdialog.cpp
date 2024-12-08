@@ -17,9 +17,9 @@
 ** Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 ** 02111-1307 USA.
 ****************************************************************************************/
-#include <QtCore/QtDebug>
-#include <QtCore/QFile>
-#include <QtGui/QFileDialog>
+#include <QtDebug>
+#include <QFile>
+#include <QFileDialog>
 #include "testdialog.h"
 #include "mycanvas.h"
 #include "deviceimpl.h"

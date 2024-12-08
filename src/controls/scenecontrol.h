@@ -20,8 +20,8 @@
 #ifndef SCENECONTROL_H
 #define SCENECONTROL_H
 
-#include <QtCore/QObject>
-#include <QtGui/QIcon>
+#include <QObject>
+#include <QIcon>
 
 class MyCanvas;
 class logDialog;
